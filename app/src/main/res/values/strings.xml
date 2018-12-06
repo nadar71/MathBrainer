@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">MathBrainer</string>
+    <string name="play">Play</string>
+    <string name="math_brainer">Math Brainer</string>
+    <string name="_2">2</string>
+    <string name="_1">1</string>
+    <string name="op">op</string>
+    <string name="score">Score : </string>
+    <string name="button">Button</string>
+    <string name="nan">nan</string>
+    <string name="todo">TODO</string>
+    <string name="level">Level :</string>
+    <string name="_0">0</string>
+    <string name="lifes">Lifes :</string>
+    <string name="your_answer">Your Answer</string>
+    <string name="statistics">Statistics</string>
+    <string name="scoreMain">Score</string>
+    <string name="settings">settings</string>
+    <string name="numbertobedoubledvalue">numberToBeDoubledValue</string>
+    <string name="the_double_is">The Double is :</string>
+    <string name="youranswerdoubletext">yourAnswerDoubleText</string>
+    <string name="hints">Hints</string>
+    <string name="backgroundimg">backgroundImg</string>
+    <string name="hint1btntext">hint1BtnText</string>
+    <string name="hint2btntext">hint2BtnText</string>
+    <string name="hint3btntext">hint3BtnText</string>
+    <string name="hint">Hint</string>
+    <string name="plusSign">+</string>
+    <string name="differenceSign">-</string>
+    <string name="multSign">x</string>
+    <string name="divSign">/</string>
+    <string name="choice_01">choice_01</string>
+    <string name="choice_02">choice_02</string>
+
+
+
+    <string name="operand_01value">operand_01Value</string>
+    <string name="operand_02value">operand_02Value</string>
+    <string name="operand_03value">operand_03Value</string>
+    <string name="operand_04value">operand_04Value</string>
+    <string name="operand_05value">operand_05Value</string>
+    <string name="operand_06value">operand_06Value</string>
+    <string name="operand_07value">operand_07Value</string>
+    <string name="operand_08value">operand_08Value</string>
+
+    <string name="answer_01value">1</string>
+    <string name="answer_02value">2</string>
+    <string name="answer_03value">3</string>
+    <string name="answer_04value">4</string>
+    <string name="answer_05value">5</string>
+    <string name="answer_06value">6</string>
+    <string name="answer_07value">7</string>
+    <string name="answer_08value">8</string>
+    <string name="answer_09value">9</string>
+
+    <string name="choice_03">choice_03</string>
+    <string name="write_quick_result">Write quick result</string>
+    <string name="quick_count">Quick Count</string>
+    <string name="resultchoosestatsvalues">resultChooseStatsValues</string>
+    <string name="choose_quick_result">Choose quick result</string>
+    <string name="doubling">Doubling</string>
+    <string name="falling_ops">Falling Ops</string>
+    <string name="fallingstatsvalues">fallingStatsValues</string>
+    <string name="doublingstatsvalues">doublingStatsValues</string>
+    <string name="countstatsvalues">countStatsValues</string>
+    <string name="numbers_order">Numbers order</string>
+    <string name="numberorderstatsvalues">numberOrderStatsValues</string>
+    <string name="random_ops">Random Ops</string>
+    <string name="randomopsstatsvalues">randomOpsStatsValues</string>
+    <string name="sounds_sequence">Sounds Sequence</string>
+    <string name="soundseqstatsvalues">soundSeqStatsValues</string>
+    <string name="choose_your_game">Choose your Game</string>
+    <string name="resultwritestatsvalues">resultWriteStatsValues</string>
+</resources>
