@@ -26,6 +26,7 @@
         <activity android:name=".NumberOrderActivity" />
         <activity android:name=".RandomOperationActivity" />
         <activity android:name=".SoundsSeqActivity" />
+        <activity android:name=".MainSettingsActivity"></activity>
 
 
     </application>
