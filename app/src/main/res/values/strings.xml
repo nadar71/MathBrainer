@@ -16,9 +16,7 @@
     <string name="statistics">Statistics</string>
     <string name="scoreMain">Score</string>
     <string name="settings">settings</string>
-    <string name="numbertobedoubledvalue">numberToBeDoubledValue</string>
-    <string name="the_double_is">The Double is :</string>
-    <string name="youranswerdoubletext">yourAnswerDoubleText</string>
+    <string name="the_double_is"> X 2 = </string>
     <string name="hints">Hints</string>
     <string name="backgroundimg">backgroundImg</string>
     <string name="hint1btntext">hint1BtnText</string>
