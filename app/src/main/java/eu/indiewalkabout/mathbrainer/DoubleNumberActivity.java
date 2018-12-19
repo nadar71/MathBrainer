@@ -1,6 +1,7 @@
 package eu.indiewalkabout.mathbrainer;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -9,6 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import android.widget.Toast;
@@ -54,6 +56,10 @@ public class DoubleNumberActivity extends AppCompatActivity {
     // score var
     private int score = 0;
 
+    // countdown objects
+    ProgressBar countdownBar;
+    MyCountDownTimer myCountDownTimer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,20 +73,16 @@ public class DoubleNumberActivity extends AppCompatActivity {
         playerInput_et         = (EditText)  findViewById(R.id.playerInput_et);
 
         // init lifes led images
-        //*
         lifesValue_iv = new ArrayList<ImageView>();
         lifesValue_iv.add((ImageView) findViewById(R.id.life_01_iv));
         lifesValue_iv.add((ImageView) findViewById(R.id.life_02_iv));
         lifesValue_iv.add((ImageView) findViewById(R.id.life_03_iv));
-        //*/
-        /*
-        lifesValue_iv_01 = (ImageView) findViewById(R.id.life_01_iv);
-        lifesValue_iv_02 = (ImageView) findViewById(R.id.life_02_iv);
-        lifesValue_iv_03 = (ImageView) findViewById(R.id.life_03_iv);
-        */
+
+        // countdown ref
+        countdownBar = (ProgressBar)findViewById(R.id.progressbar);
 
 
-        // start with first challenge
+        // start with first challenge and countdown init
         newChallenge();
 
         // set first level
@@ -104,6 +106,7 @@ public class DoubleNumberActivity extends AppCompatActivity {
     }
 
 
+
     /**
      * -------------------------------------------------------------------------------------------------
      * Check if player input is right/wrong and update score
@@ -113,7 +116,9 @@ public class DoubleNumberActivity extends AppCompatActivity {
         int inputNum = 0;
 
         // get the player input
-        inputNum = Integer.parseInt(playerInput_et.getText().toString());
+        String tmp = playerInput_et.getText().toString();
+        if (tmp.isEmpty()) { tmp = "0";}
+        inputNum = Integer.parseInt(tmp);
 
         Log.d(TAG, "checkPlayerInput: inputNum : " + inputNum);
 
@@ -129,7 +134,7 @@ public class DoubleNumberActivity extends AppCompatActivity {
             if (countChallenge > numChallengeEachLevel){
                 // reset counter
                 countChallenge = 0;
-                
+
                 updateLevel();
             }
 
@@ -140,11 +145,13 @@ public class DoubleNumberActivity extends AppCompatActivity {
         } else {
             Toast.makeText(DoubleNumberActivity.this, "WRONG...", Toast.LENGTH_SHORT).show();
 
-            // lose a life
-            updateLifes();
+            // lose a life, check if it's game over
+            boolean gameover = isGameOver();
 
             // new number to double
-            newChallenge();
+            if (gameover == false) {
+                newChallenge();
+            }
 
         }
     }
@@ -163,13 +170,18 @@ public class DoubleNumberActivity extends AppCompatActivity {
 
     /**
      * -------------------------------------------------------------------------------------------------
-     * Update lifes view
+     * Update lifes view and check if it's game over or not
+     * @return boolean  : return true/false in case of gameover/gamecontinuing
      * -------------------------------------------------------------------------------------------------
      */
-    private void updateLifes() {
+    private boolean isGameOver() {
         lifes--;
 
-        Log.d(TAG, "updateLifes: " + lifes);
+        Log.d(TAG, "isGameOver: " + lifes);
+
+        // Update UI
+        lifesValue_iv.get(lifes).setVisibility(View.INVISIBLE);
+
         // check game over condition
         if ( lifes <= 0){
             // hide input field
@@ -180,9 +192,15 @@ public class DoubleNumberActivity extends AppCompatActivity {
             inpMng.hideSoftInputFromWindow(playerInput_et.getWindowToken(), 0);
 
             endGame();
+            return true;
 
+        }else {
+            // lifes remaining >0, restart a new counter
+            countdownBarStart();
+            return false;
         }
-        // todo : hide images/change color
+
+
     }
 
     /**
@@ -200,6 +218,9 @@ public class DoubleNumberActivity extends AppCompatActivity {
         playerInput_et.setText("");
         Log.d(TAG, "newChallenge: " + countChallenge);
 
+        // reset countdown if any and restart if
+        countdownBarStart();
+
     }
 
 
@@ -209,6 +230,10 @@ public class DoubleNumberActivity extends AppCompatActivity {
      * -------------------------------------------------------------------------------------------------
      */
     private void endGame() {
+        // reset counter
+        countdownReset();
+
+        // todo : game over screen
         Toast.makeText(DoubleNumberActivity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
 
     }
@@ -231,7 +256,77 @@ public class DoubleNumberActivity extends AppCompatActivity {
             max = 100 * level + 50 * (level - 1);
             Log.d(TAG, "updatingLevel: new min : "+min+" new max: "+max+" new level : "+level);
         }
+    }
+
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     *                                  Countdown bar
+     *                                     stuff
+     * ---------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Instantiate, Init and Start the countdown bar
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void countdownBarStart() {
+
+        // reset counter if any
+        countdownReset();
+
+        // countdown bar counter
+        countdownBar.setProgress(30);
+        myCountDownTimer = new MyCountDownTimer(30000, 1000);
+        myCountDownTimer.start();
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Reset and destroy countdown bar
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void countdownReset() {
+        // countdown bar counter
+        if (myCountDownTimer != null) {
+            myCountDownTimer.cancel();
+            myCountDownTimer = null;
+        }
+    }
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Counter class temporary here
+     * ---------------------------------------------------------------------------------------------
+     */
+    public class MyCountDownTimer extends CountDownTimer {
+
+        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            Log.d(TAG, "onTick: "+String.valueOf(millisUntilFinished));
+            int progress = (int) (millisUntilFinished/1000);
+            countdownBar.setProgress(progress);
+        }
+
+        @Override
+        public void onFinish() {
+            Log.d(TAG, "Time OVER !");
+            countdownBar.setProgress(0);
+
+            //update lives
+            isGameOver();
+        }
+
 
     }
+
 
 }
