@@ -50,7 +50,7 @@ public class DoubleNumberActivity extends AppCompatActivity {
     private int max = 100;
 
     // num of challenge to be in the test
-    private int numChallengeEachLevel =  3;
+    private int numChallengeEachLevel =  3; // TODO : DEBUG NUMBER , INCREASE IT
     private int countChallenge        =  1;
 
     // score var
@@ -59,6 +59,10 @@ public class DoubleNumberActivity extends AppCompatActivity {
     // countdown objects
     ProgressBar countdownBar;
     MyCountDownTimer myCountDownTimer;
+
+    // max time, increased by level growing
+    private long timerLength            = MyCountDownTimer.DEFAULT_MILLISINFUTURE;
+    private long timerCountDownInterval = MyCountDownTimer.DEFAULT_COUNTDOWNINTERVAL;
 
 
     @Override
@@ -254,8 +258,12 @@ public class DoubleNumberActivity extends AppCompatActivity {
         if (level > 1){
             min = max;
             max = 100 * level + 50 * (level - 1);
-            Log.d(TAG, "updatingLevel: new min : "+min+" new max: "+max+" new level : "+level);
+
+            // increase time accordingly, but slightly
+            timerLength = timerLength + 1000 ;
+            Log.d(TAG, "updatingLevel: New Level! new min : "+min+" new max: "+max+" new level : "+level+" Timer now at : " + (timerLength/1000) + " sec.");
         }
+
     }
 
 
@@ -279,8 +287,8 @@ public class DoubleNumberActivity extends AppCompatActivity {
         countdownReset();
 
         // countdown bar counter
-        countdownBar.setProgress(30);
-        myCountDownTimer = new MyCountDownTimer(30000, 1000);
+        countdownBar.setProgress((int)timerLength/1000);
+        myCountDownTimer = new MyCountDownTimer(timerLength, timerCountDownInterval);
         myCountDownTimer.start();
     }
 
@@ -305,8 +313,25 @@ public class DoubleNumberActivity extends AppCompatActivity {
      */
     public class MyCountDownTimer extends CountDownTimer {
 
+        public static final long DEFAULT_MILLISINFUTURE    = 30000;
+        public static final long DEFAULT_COUNTDOWNINTERVAL = 1000;
+
+        private long        millisInFuture;
+        private long        countDownInterval;
+        private ProgressBar horiz_countdownBar;
+
         public MyCountDownTimer(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
+            this.millisInFuture    = millisInFuture;
+            this.countDownInterval = countDownInterval;
+        }
+
+
+        public MyCountDownTimer(long millisInFuture, long countDownInterval, ProgressBar horiz_countdownBar) {
+            super(millisInFuture, countDownInterval);
+            this.millisInFuture      = millisInFuture;
+            this.countDownInterval   = countDownInterval;
+            this.horiz_countdownBar  = horiz_countdownBar;
         }
 
         @Override
@@ -326,6 +351,21 @@ public class DoubleNumberActivity extends AppCompatActivity {
         }
 
 
+        public long getMillisInFuture() {
+            return millisInFuture;
+        }
+
+        public void setMillisInFuture(long millisInFuture) {
+            this.millisInFuture = millisInFuture;
+        }
+
+        public long getCountDownInterval() {
+            return countDownInterval;
+        }
+
+        public void setCountDownInterval(long countDownInterval) {
+            this.countDownInterval = countDownInterval;
+        }
     }
 
 
