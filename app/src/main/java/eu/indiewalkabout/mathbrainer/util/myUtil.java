@@ -13,7 +13,8 @@ public class myUtil {
 
     /**
      * ---------------------------------------------------------------------------------------------
-     * Return a pseudo- random int based on api level, for retrocompat
+     * Return a pseudo- random int based on api level, for retrocompat;
+     * I return random value in the interval, margins included.
      * @param min
      * @param max
      * @return

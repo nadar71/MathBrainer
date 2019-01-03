@@ -43,7 +43,9 @@
         android:text="@string/level"
         android:textAlignment="viewStart"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
+        app:layout_constraintTop_toBottomOf="@+id/progressbar"
+        android:layout_marginLeft="8dp"
+        android:gravity="start" />
 
     <TextView
         android:id="@+id/levelValue_tv"
@@ -53,7 +55,8 @@
         android:layout_marginTop="8dp"
         android:text="@string/_0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/level_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/level_tv"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:id="@+id/scoreLabel_tv"
@@ -66,7 +69,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toEndOf="@+id/level_tv"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
+        app:layout_constraintTop_toBottomOf="@+id/progressbar"
+        android:gravity="start" />
 
     <TextView
         android:id="@+id/scoreValue_tv"
@@ -90,7 +94,8 @@
         android:text="@string/lifes"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
+        app:layout_constraintTop_toBottomOf="@+id/progressbar"
+        android:layout_marginRight="60dp" />
 
 
 
@@ -142,6 +147,8 @@
             app:srcCompat="@android:drawable/presence_online" />
     </GridLayout>
 
+
+    <!-- - - - - QUIZ SECTION - - - - - - - - - - - - - - - - - - -->
     <TextView
         android:id="@+id/randomNum_tv"
         android:layout_width="wrap_content"

@@ -31,7 +31,6 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     // view ref
     private TextView             numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
     private ArrayList<ImageView> lifesValue_iv ;
-    // private ImageView lifesValue_iv_01, lifesValue_iv_02, lifesValue_iv_03;
     private EditText             playerInput_et;
 
 
@@ -49,7 +48,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     private int max = 100;
 
     // num of challenge to be in the test
-    private int numChallengeEachLevel =  10; // TODO : DEBUG NUMBER , INCREASE IT
+    private int numChallengeEachLevel =  10;
     private int countChallenge        =  1;
 
     // score var
@@ -290,109 +289,6 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     *                                  Countdown bar
-     *                                     stuff
-     * ---------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Instantiate, Init and Start the countdown bar
-     * ---------------------------------------------------------------------------------------------
-     */
-    /*
-    private void countdownBarStart() {
-
-        // reset counter if any
-        countdownReset();
-
-        // countdown bar counter
-        countdownBar.setProgress((int)timerLength/1000);
-        myCountDownTimer = new MyCountDownTimer(timerLength, timerCountDownInterval);
-        myCountDownTimer.start();
-    }
-*/
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Reset and destroy countdown bar
-     * ---------------------------------------------------------------------------------------------
-     */
-    /*
-    private void countdownReset() {
-        // countdown bar counter
-        if (myCountDownTimer != null) {
-            myCountDownTimer.cancel();
-            myCountDownTimer = null;
-        }
-    }
-*/
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Counter class temporary here
-     * ---------------------------------------------------------------------------------------------
-     */
-    /*
-    public class MyCountDownTimer extends CountDownTimer {
-
-        public static final long DEFAULT_MILLISINFUTURE    = 30000;
-        public static final long DEFAULT_COUNTDOWNINTERVAL = 1000;
-
-        private long        millisInFuture;
-        private long        countDownInterval;
-        private ProgressBar horiz_countdownBar;
-
-        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);
-            this.millisInFuture    = millisInFuture;
-            this.countDownInterval = countDownInterval;
-        }
-
-
-        public MyCountDownTimer(long millisInFuture, long countDownInterval, ProgressBar horiz_countdownBar) {
-            super(millisInFuture, countDownInterval);
-            this.millisInFuture      = millisInFuture;
-            this.countDownInterval   = countDownInterval;
-            this.horiz_countdownBar  = horiz_countdownBar;
-        }
-
-        @Override
-        public void onTick(long millisUntilFinished) {
-            Log.d(TAG, "onTick: "+String.valueOf(millisUntilFinished));
-            int progress = (int) (millisUntilFinished/1000);
-            countdownBar.setProgress(progress);
-        }
-
-        @Override
-        public void onFinish() {
-            Log.d(TAG, "Time OVER !");
-            countdownBar.setProgress(0);
-
-            //update lives
-            isGameOver();
-        }
-
-
-        public long getMillisInFuture() {
-            return millisInFuture;
-        }
-
-        public void setMillisInFuture(long millisInFuture) {
-            this.millisInFuture = millisInFuture;
-        }
-
-        public long getCountDownInterval() {
-            return countDownInterval;
-        }
-
-        public void setCountDownInterval(long countDownInterval) {
-            this.countDownInterval = countDownInterval;
-        }
-    }
-    */
 
 
 }
