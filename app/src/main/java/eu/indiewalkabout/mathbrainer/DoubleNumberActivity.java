@@ -1,7 +1,6 @@
 package eu.indiewalkabout.mathbrainer;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -24,7 +23,7 @@ import eu.indiewalkabout.mathbrainer.util.*;
  * Given a number, write its double
  * -------------------------------------------------------------------------------------------------
  */
-public class DoubleNumberActivity extends AppCompatActivity {
+public class DoubleNumberActivity extends AppCompatActivity implements IGameFunctions {
 
     // tag for log
     private final static String TAG = DoubleNumberActivity.class.getSimpleName();
@@ -50,7 +49,7 @@ public class DoubleNumberActivity extends AppCompatActivity {
     private int max = 100;
 
     // num of challenge to be in the test
-    private int numChallengeEachLevel =  3; // TODO : DEBUG NUMBER , INCREASE IT
+    private int numChallengeEachLevel =  10; // TODO : DEBUG NUMBER , INCREASE IT
     private int countChallenge        =  1;
 
     // score var
@@ -58,11 +57,11 @@ public class DoubleNumberActivity extends AppCompatActivity {
 
     // countdown objects
     ProgressBar countdownBar;
-    MyCountDownTimer myCountDownTimer;
+    CountDownIndicator countDownIndicator;
 
     // max time, increased by level growing
-    private long timerLength            = MyCountDownTimer.DEFAULT_MILLISINFUTURE;
-    private long timerCountDownInterval = MyCountDownTimer.DEFAULT_COUNTDOWNINTERVAL;
+    private long timerLength            = CountDownIndicator.DEFAULT_MILLISINFUTURE;
+    private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
 
 
     @Override
@@ -84,6 +83,9 @@ public class DoubleNumberActivity extends AppCompatActivity {
 
         // countdown ref
         countdownBar = (ProgressBar)findViewById(R.id.progressbar);
+
+        // Create new count down indicator, without starting it
+        countDownIndicator = new CountDownIndicator(DoubleNumberActivity.this, (ProgressBar) countdownBar, DoubleNumberActivity.this);
 
 
         // start with first challenge and countdown init
@@ -121,7 +123,12 @@ public class DoubleNumberActivity extends AppCompatActivity {
 
         // get the player input
         String tmp = playerInput_et.getText().toString();
-        if (tmp.isEmpty()) { tmp = "0";}
+
+        // nothing inserted, ignore
+        if (tmp.isEmpty()) {
+            return;
+        }
+
         inputNum = Integer.parseInt(tmp);
 
         Log.d(TAG, "checkPlayerInput: inputNum : " + inputNum);
@@ -175,10 +182,13 @@ public class DoubleNumberActivity extends AppCompatActivity {
     /**
      * -------------------------------------------------------------------------------------------------
      * Update lifes view and check if it's game over or not
+     * @override of IGameFunctions isGameOver()
      * @return boolean  : return true/false in case of gameover/gamecontinuing
      * -------------------------------------------------------------------------------------------------
      */
-    private boolean isGameOver() {
+    @Override
+    public boolean isGameOver() {
+        // update life counts
         lifes--;
 
         Log.d(TAG, "isGameOver: " + lifes);
@@ -200,12 +210,24 @@ public class DoubleNumberActivity extends AppCompatActivity {
 
         }else {
             // lifes remaining >0, restart a new counter
-            countdownBarStart();
+            countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
             return false;
         }
 
 
     }
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Update progress bar
+     * -------------------------------------------------------------------------------------------------
+     */
+    @Override
+    public void updateProgressBar(int progress) {
+        countdownBar.setProgress(progress);
+    }
+
 
     /**
      * -------------------------------------------------------------------------------------------------
@@ -223,7 +245,7 @@ public class DoubleNumberActivity extends AppCompatActivity {
         Log.d(TAG, "newChallenge: " + countChallenge);
 
         // reset countdown if any and restart if
-        countdownBarStart();
+        countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
 
     }
 
@@ -235,7 +257,7 @@ public class DoubleNumberActivity extends AppCompatActivity {
      */
     private void endGame() {
         // reset counter
-        countdownReset();
+        countDownIndicator.countdownReset();
 
         // todo : game over screen
         Toast.makeText(DoubleNumberActivity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
@@ -281,6 +303,7 @@ public class DoubleNumberActivity extends AppCompatActivity {
      * Instantiate, Init and Start the countdown bar
      * ---------------------------------------------------------------------------------------------
      */
+    /*
     private void countdownBarStart() {
 
         // reset counter if any
@@ -291,13 +314,14 @@ public class DoubleNumberActivity extends AppCompatActivity {
         myCountDownTimer = new MyCountDownTimer(timerLength, timerCountDownInterval);
         myCountDownTimer.start();
     }
-
+*/
 
     /**
      * ---------------------------------------------------------------------------------------------
      * Reset and destroy countdown bar
      * ---------------------------------------------------------------------------------------------
      */
+    /*
     private void countdownReset() {
         // countdown bar counter
         if (myCountDownTimer != null) {
@@ -305,12 +329,13 @@ public class DoubleNumberActivity extends AppCompatActivity {
             myCountDownTimer = null;
         }
     }
-
+*/
     /**
      * ---------------------------------------------------------------------------------------------
      * Counter class temporary here
      * ---------------------------------------------------------------------------------------------
      */
+    /*
     public class MyCountDownTimer extends CountDownTimer {
 
         public static final long DEFAULT_MILLISINFUTURE    = 30000;
@@ -367,6 +392,7 @@ public class DoubleNumberActivity extends AppCompatActivity {
             this.countDownInterval = countDownInterval;
         }
     }
+    */
 
 
 }
