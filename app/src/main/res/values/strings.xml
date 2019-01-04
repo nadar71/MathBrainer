@@ -31,7 +31,6 @@
     <string name="choice_02">choice_02</string>
 
 
-
     <string name="operand_01value">operand_01Value</string>
     <string name="operand_02value">operand_02Value</string>
     <string name="operand_03value">operand_03Value</string>
@@ -91,11 +90,11 @@
     <string name="settings_order_by_key" translatable="false">order_by</string>
     <string name="settings_order_by_default" translatable="false">@string/settings_order_by_NAME_value</string>
 
-        <!-- Label for order-by magnitude option [CHAR LIMIT=20] -->
-        <string name="settings_order_by_NAME_label">Name</string>
-        <string name="settings_order_by_NAME_value" translatable="false">name</string>
+    <!-- Label for order-by magnitude option [CHAR LIMIT=20] -->
+    <string name="settings_order_by_NAME_label">Name</string>
+    <string name="settings_order_by_NAME_value" translatable="false">name</string>
 
-        <!-- Label for order-by most recent option [CHAR LIMIT=20] -->
-        <string name="settings_order_by_DATE_label">Date</string>
-        <string name="settings_order_by_DATE_value" translatable="false">date</string>
+    <!-- Label for order-by most recent option [CHAR LIMIT=20] -->
+    <string name="settings_order_by_DATE_label">Date</string>
+    <string name="settings_order_by_DATE_value" translatable="false">date</string>
 </resources>

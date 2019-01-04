@@ -10,7 +10,8 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -19,48 +20,44 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChooseGameActivity"
+        <activity
+            android:name=".ChooseGameActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".MathRandomOp_Write_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MathRandomOp_Write_Activity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".MathRandomOp_Choose_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CountObjectsActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".CountObjectsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DoubleNumberActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".DoubleNumberActivity"
-            android:theme="@style/AppThemeNoActionBar"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".FallingOperationsActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".FallingOperationsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NumberOrderActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".NumberOrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RandomOperationActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".RandomOperationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SoundsSeqActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".SoundsSeqActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainSettingsActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".MainSettingsActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-
-
+            android:screenOrientation="portrait" />
+        <activity android:name=".MathRandomOp_Choose_Activity"></activity>
     </application>
 
 </manifest>

@@ -36,6 +36,7 @@ public class CountDownIndicator extends ProgressBar{
         this.countdownReset();
 
         // countdown bar counter
+        countdownBar.setMax((int)timerLength/1000);
         countdownBar.setProgress((int)timerLength/1000);
         mathCountDownTimer = new MathCountDownTimer(timerLength, timerCountDownInterval,this);
         mathCountDownTimer.start();

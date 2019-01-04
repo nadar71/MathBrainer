@@ -149,7 +149,7 @@
 
     <!-- - - - - QUIZ SECTION - - - - - - - - - - - - - - - - - - -->
     <TextView
-        android:id="@+id/firstOperand_choose"
+        android:id="@+id/firstOperand_tv"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -163,7 +163,7 @@
         app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv" />
 
     <TextView
-        android:id="@+id/secondOperand_choose"
+        android:id="@+id/secondOperand_tv"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -173,13 +173,13 @@
         android:text="@string/_2"
         android:textAlignment="center"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/operationSymbol_choose"
+        app:layout_constraintBottom_toTopOf="@+id/operationSymbol_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operationSymbol_choose"
+        app:layout_constraintTop_toBottomOf="@+id/operationSymbol_tv"
         app:layout_constraintVertical_bias="0.576" />
 
     <TextView
-        android:id="@+id/operationSymbol_choose"
+        android:id="@+id/operationSymbol_tv"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -189,13 +189,13 @@
         android:gravity="center_vertical"
         android:text="@string/op"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/firstOperand_choose"
-        app:layout_constraintEnd_toStartOf="@+id/secondOperand_choose"
+        app:layout_constraintBottom_toTopOf="@+id/firstOperand_tv"
+        app:layout_constraintEnd_toStartOf="@+id/secondOperand_tv"
         app:layout_constraintHorizontal_bias="0.573"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/firstOperand_choose"
-        app:layout_constraintTop_toBottomOf="@+id/firstOperand_choose" />
+        app:layout_constraintStart_toEndOf="@+id/firstOperand_tv"
+        app:layout_constraintTop_toBottomOf="@+id/firstOperand_tv" />
 
 
     <GridLayout
@@ -207,10 +207,12 @@
         android:columnCount="3"
         android:rowCount="3"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operationSymbol_choose"
-        app:layout_constraintVertical_bias="0.19">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/operationSymbol_tv"
+        app:layout_constraintVertical_bias="0.344">
 
         <Button
             android:id="@+id/answer_01Btn"

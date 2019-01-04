@@ -38,7 +38,7 @@ public class MathRandomOp_Write_Activity extends AppCompatActivity implements IG
     private char operation;
 
     // correct answer
-    int answerOK;
+    private int answerOK;
 
     // starting level
     private int level = 0;
