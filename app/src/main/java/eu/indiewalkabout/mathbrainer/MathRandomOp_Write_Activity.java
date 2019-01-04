@@ -21,10 +21,10 @@ import eu.indiewalkabout.mathbrainer.util.myUtil;
 
 
 
-public class MathOperationWriteActivity extends AppCompatActivity implements IGameFunctions {
+public class MathRandomOp_Write_Activity extends AppCompatActivity implements IGameFunctions {
 
     // tag for log
-    private final static String TAG = MathOperationWriteActivity.class.getSimpleName();
+    private final static String TAG = MathRandomOp_Write_Activity.class.getSimpleName();
 
     // view ref
     private TextView numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
@@ -77,7 +77,7 @@ public class MathOperationWriteActivity extends AppCompatActivity implements IGa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_math_operation_write);
+        setContentView(R.layout.activity_math_randomop_write);
 
         // set views ref
         firstOperand_tv    = (TextView)  findViewById(R.id.firstOperand_tv);
@@ -98,7 +98,7 @@ public class MathOperationWriteActivity extends AppCompatActivity implements IGa
         countdownBar = (ProgressBar)findViewById(R.id.progressbar);
 
         // Create new count down indicator, without starting it
-        countDownIndicator = new CountDownIndicator(MathOperationWriteActivity.this, (ProgressBar) countdownBar, MathOperationWriteActivity.this);
+        countDownIndicator = new CountDownIndicator(MathRandomOp_Write_Activity.this, (ProgressBar) countdownBar, MathRandomOp_Write_Activity.this);
 
 
         // start with first challenge and countdown init
@@ -148,7 +148,7 @@ public class MathOperationWriteActivity extends AppCompatActivity implements IGa
 
         // check if result is ok...
         if (inputNum != 0  && inputNum == answerOK) {
-            Toast.makeText(MathOperationWriteActivity.this, "OK!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MathRandomOp_Write_Activity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
 
@@ -167,7 +167,7 @@ public class MathOperationWriteActivity extends AppCompatActivity implements IGa
 
             // ...otherwise a life will be lost
         } else {
-            Toast.makeText(MathOperationWriteActivity.this, "WRONG...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MathRandomOp_Write_Activity.this, "WRONG...", Toast.LENGTH_SHORT).show();
 
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
@@ -340,7 +340,7 @@ public class MathOperationWriteActivity extends AppCompatActivity implements IGa
         countDownIndicator.countdownReset();
 
         // todo : game over screen
-        Toast.makeText(MathOperationWriteActivity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
+        Toast.makeText(MathRandomOp_Write_Activity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
 
     }
 

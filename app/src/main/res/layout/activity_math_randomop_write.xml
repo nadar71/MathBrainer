@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="eu.indiewalkabout.mathbrainer.MathOperationWriteActivity">
+    tools:context="eu.indiewalkabout.mathbrainer.MathRandomOp_Write_Activity">
 
     <ImageView
         android:id="@+id/backgroundImg"
@@ -21,7 +21,6 @@
         app:layout_constraintVertical_bias="0.126"
         app:srcCompat="@drawable/summer" />
 
-
     <ProgressBar
         android:id="@+id/progressbar"
         style="@android:style/Widget.ProgressBar.Horizontal"
@@ -34,35 +33,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-
     <TextView
         android:id="@+id/level_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:gravity="start"
         android:text="@string/level"
         android:textAlignment="viewStart"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar"
-        android:layout_marginLeft="8dp"
-        android:gravity="start" />
+        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
 
     <TextView
         android:id="@+id/levelValue_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/_0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/level_tv"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/level_tv" />
 
     <TextView
         android:id="@+id/scoreLabel_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="start"
         android:text="@string/score"
         android:textAlignment="viewStart"
         app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
@@ -70,8 +68,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toEndOf="@+id/level_tv"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar"
-        android:gravity="start" />
+        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
 
     <TextView
         android:id="@+id/scoreValue_tv"
@@ -91,22 +88,21 @@
         android:layout_width="36dp"
         android:layout_height="19dp"
         android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
         android:gravity="center_vertical"
         android:text="@string/lifes"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar"
-        android:layout_marginRight="60dp" />
-
+        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
 
 
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:columnCount="3"
         android:rowCount="1"
@@ -127,8 +123,8 @@
             android:id="@+id/life_02_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:contentDescription="@string/todo"
             app:layout_constraintEnd_toStartOf="@+id/life_03_iv"
             app:layout_constraintStart_toEndOf="@+id/life_01_iv"
@@ -150,136 +146,71 @@
 
 
     <!-- - - - - QUIZ SECTION - - - - - - - - - - - - - - - - - - -->
+
     <TextView
-        android:id="@+id/firstOperand_choose"
-        android:layout_width="47dp"
-        android:layout_height="59dp"
+        android:id="@+id/firstOperand_tv"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="224dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="84dp"
         android:gravity="center_vertical"
         android:text="@string/_1"
         android:textAlignment="center"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="32dp" />
+        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv" />
 
     <TextView
-        android:id="@+id/secondOperand_choose"
-        android:layout_width="47dp"
-        android:layout_height="59dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginTop="224dp"
+        android:id="@+id/secondOperand_tv"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
         android:gravity="center_vertical"
         android:text="@string/_2"
         android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/operationSymbol_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="40dp" />
+        app:layout_constraintTop_toBottomOf="@+id/operationSymbol_tv" />
 
     <TextView
-        android:id="@+id/operationSymbol_choose"
-        android:layout_width="42dp"
-        android:layout_height="31dp"
-        android:layout_marginTop="240dp"
+        android:id="@+id/operationSymbol_tv"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:text="@string/op"
         android:textAlignment="center"
-        app:layout_constraintEnd_toStartOf="@+id/secondOperand_choose"
-        app:layout_constraintHorizontal_bias="0.508"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/firstOperand_tv"
+        app:layout_constraintEnd_toStartOf="@+id/secondOperand_tv"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/firstOperand_choose"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/firstOperand_tv"
+        app:layout_constraintTop_toBottomOf="@+id/firstOperand_tv"
+        app:layout_constraintVertical_bias="0.569" />
 
 
-    <GridLayout
-        android:id="@+id/answerBtnGrid"
+    <EditText
+        android:id="@+id/playerInput_et"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:columnCount="3"
-        android:rowCount="3"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:inputType="number"
+        android:text="@string/your_answer"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operationSymbol_choose"
-        app:layout_constraintVertical_bias="0.19">
-
-        <Button
-            android:id="@+id/answer_01Btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/answer_01value"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:layout_editor_absoluteY="313dp" />
-
-        <Button
-            android:id="@+id/answer_02Btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/answer_02value"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:layout_editor_absoluteY="240dp" />
-
-        <Button
-            android:id="@+id/answer_03Btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/answer_03value"
-            tools:layout_editor_absoluteX="36dp"
-            tools:layout_editor_absoluteY="240dp" />
-
-        <Button
-            android:id="@+id/answer_04Btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/answer_04value"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:layout_editor_absoluteY="313dp" />
-
-        <Button
-            android:id="@+id/answer_05Btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/answer_05value"
-            tools:layout_editor_absoluteX="263dp"
-            tools:layout_editor_absoluteY="240dp" />
-
-        <Button
-            android:id="@+id/answer_06Btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/answer_06value"
-            tools:layout_editor_absoluteX="36dp"
-            tools:layout_editor_absoluteY="313dp" />
-
-        <Button
-            android:id="@+id/answer_07Btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/answer_07value"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:layout_editor_absoluteY="313dp" />
-
-        <Button
-            android:id="@+id/answer_08Btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/answer_08value"
-            tools:layout_editor_absoluteX="263dp"
-            tools:layout_editor_absoluteY="240dp" />
-
-        <Button
-            android:id="@+id/answer_09Btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/answer_09value"
-            tools:layout_editor_absoluteX="36dp"
-            tools:layout_editor_absoluteY="313dp" />
-
-    </GridLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/operationSymbol_tv"
+        app:layout_constraintVertical_bias="0.25" />
 
 </android.support.constraint.ConstraintLayout>

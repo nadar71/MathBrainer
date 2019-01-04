@@ -25,7 +25,7 @@ public class ChooseGameActivity extends AppCompatActivity {
         ResultWriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this, MathOperationWriteActivity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, MathRandomOp_Write_Activity.class);
                 startActivity(intent);
             }
         });
@@ -34,7 +34,7 @@ public class ChooseGameActivity extends AppCompatActivity {
         ResultChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this,MathOperationChooseActivity.class);
+                Intent intent = new Intent(ChooseGameActivity.this,MathRandomOp_Choose_Activity.class);
                 startActivity(intent);
             }
         });

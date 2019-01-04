@@ -7,33 +7,14 @@
     tools:context="eu.indiewalkabout.mathbrainer.ChooseGameActivity">
 
 
-
-    <TextView
-        android:id="@+id/chooseGameLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="56dp"
-        android:gravity="center_horizontal"
-        android:text="@string/choose_your_game"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-
-        />
-
     <Button
         android:id="@+id/ResultWriteBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="128dp"
-        android:text="@string/write_quick_result"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:text="+ - * /  _____"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,22 +23,22 @@
         android:id="@+id/resultWriteStatsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="196dp"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="144dp"
+        android:layout_marginEnd="196dp"
         android:text="@string/resultwritestatsvalues"
+        app:layout_constraintBottom_toTopOf="@+id/ResultWriteBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.054"
         app:layout_constraintStart_toEndOf="@+id/ResultWriteBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ResultWriteBtn" />
 
     <Button
         android:id="@+id/ResultChooseBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:text="@string/choose_quick_result"
+        android:text="+-*/   _?_"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ResultWriteBtn" />
 
@@ -65,39 +46,38 @@
         android:id="@+id/resultChooseStatsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginLeft="72dp"
         android:text="@string/resultchoosestatsvalues"
+        app:layout_constraintBottom_toTopOf="@+id/ResultChooseBtn"
         app:layout_constraintStart_toEndOf="@+id/ResultChooseBtn"
-        app:layout_constraintTop_toBottomOf="@+id/resultWriteStatsText" />
+        app:layout_constraintTop_toBottomOf="@+id/ResultChooseBtn"
+        app:layout_constraintVertical_bias="0.509" />
 
     <Button
         android:id="@+id/quickCountBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_height="34dp"
         android:layout_marginTop="8dp"
         android:text="@string/quick_count"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ResultChooseBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        tools:layout_editor_absoluteX="32dp" />
 
     <TextView
         android:id="@+id/countStatsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
-        android:layout_marginTop="44dp"
         android:text="@string/countstatsvalues"
-        app:layout_constraintStart_toEndOf="@+id/quickCountBtn"
-        app:layout_constraintTop_toBottomOf="@+id/resultChooseStatsText" />
+        tools:layout_editor_absoluteX="208dp"
+        tools:layout_editor_absoluteY="166dp" />
 
     <Button
         android:id="@+id/doublingBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="41dp"
+        android:layout_height="35dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:text="@string/doubling"
+        android:text="2*"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quickCountBtn" />
 
@@ -106,15 +86,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="136dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginLeft="136dp"
         android:text="@string/doublingstatsvalues"
+        app:layout_constraintBottom_toTopOf="@+id/doublingBtn"
         app:layout_constraintStart_toEndOf="@+id/doublingBtn"
-        app:layout_constraintTop_toBottomOf="@+id/countStatsLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/doublingBtn"
+        app:layout_constraintVertical_bias="0.481" />
 
     <Button
         android:id="@+id/fallingBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="@string/falling_ops"
@@ -124,17 +106,19 @@
     <TextView
         android:id="@+id/fallingStatsText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="36dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
         android:text="@string/fallingstatsvalues"
+        app:layout_constraintBottom_toTopOf="@+id/fallingBtn"
         app:layout_constraintStart_toEndOf="@+id/fallingBtn"
-        app:layout_constraintTop_toBottomOf="@+id/doublingStatsText" />
+        app:layout_constraintTop_toBottomOf="@+id/fallingBtn"
+        app:layout_constraintVertical_bias="0.48" />
 
     <Button
         android:id="@+id/orderBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="34dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="@string/numbers_order"
@@ -145,16 +129,18 @@
         android:id="@+id/numberOrderStatsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
         android:text="@string/numberorderstatsvalues"
+        app:layout_constraintBottom_toTopOf="@+id/orderBtn"
         app:layout_constraintStart_toEndOf="@+id/orderBtn"
-        app:layout_constraintTop_toBottomOf="@+id/fallingStatsText" />
+        app:layout_constraintTop_toBottomOf="@+id/orderBtn"
+        app:layout_constraintVertical_bias="0.49" />
 
     <Button
         android:id="@+id/randomOpsBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="@string/random_ops"
@@ -165,16 +151,18 @@
         android:id="@+id/randomOpsStatsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
         android:text="@string/randomopsstatsvalues"
+        app:layout_constraintBottom_toTopOf="@+id/randomOpsBtn"
         app:layout_constraintStart_toEndOf="@+id/randomOpsBtn"
-        app:layout_constraintTop_toBottomOf="@+id/numberOrderStatsLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/randomOpsBtn"
+        app:layout_constraintVertical_bias="0.49" />
 
     <Button
         android:id="@+id/soundsSeqBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="34dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="@string/sounds_sequence"
@@ -185,11 +173,13 @@
         android:id="@+id/soundSeqStatsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
         android:text="@string/soundseqstatsvalues"
+        app:layout_constraintBottom_toTopOf="@+id/soundsSeqBtn"
         app:layout_constraintStart_toEndOf="@+id/soundsSeqBtn"
-        app:layout_constraintTop_toBottomOf="@+id/randomOpsStatsLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/soundsSeqBtn"
+        app:layout_constraintVertical_bias="0.509" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -202,4 +192,55 @@
         android:id="@+id/group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="42dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:text="+"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="95dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="44dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="-"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintVertical_bias="0.538" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="42dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="*"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintStart_toEndOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintVertical_bias="0.538" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="42dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="/"
+        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/button3"
+        app:layout_constraintTop_toBottomOf="@+id/button3"
+        app:layout_constraintVertical_bias="0.538" />
 </android.support.constraint.ConstraintLayout>

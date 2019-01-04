@@ -23,11 +23,11 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".MathOperationWriteActivity"
+        <activity android:name=".MathRandomOp_Write_Activity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".MathOperationChooseActivity"
+        <activity android:name=".MathRandomOp_Choose_Activity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
 

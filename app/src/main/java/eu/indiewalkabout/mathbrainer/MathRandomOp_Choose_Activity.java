@@ -7,12 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.app.AlertDialog;
 
 import java.util.Random;
 
-public class MathOperationChooseActivity extends AppCompatActivity {
+public class MathRandomOp_Choose_Activity extends AppCompatActivity {
 
     // fields
     //private String[] operands = {"+","-","*","%"};
@@ -26,15 +25,15 @@ public class MathOperationChooseActivity extends AppCompatActivity {
     TextView secondOperand_choose;
     TextView operationSymbol_choose;
 
-    Button _answer_01Btn;
-    Button _answer_02Btn;
-    Button _answer_03Btn;
-    Button _answer_04Btn;
-    Button _answer_05Btn;
-    Button _answer_06Btn;
-    Button _answer_07Btn;
-    Button _answer_08Btn;
-    Button _answer_09Btn;
+    Button answer01Btn;
+    Button answer02Btn;
+    Button answer03Btn;
+    Button answer04Btn;
+    Button answer05Btn;
+    Button answer06Btn;
+    Button answer07Btn;
+    Button answer08Btn;
+    Button answer09Btn;
 
     private int correctAnswer = 0;
     private int correctBtnNumber = 1;
@@ -43,33 +42,33 @@ public class MathOperationChooseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_math_operation_choose);
+        setContentView(R.layout.activity_math_randomop_choose);
 
         // Views references
         firstOperand_choose    =   findViewById(R.id.firstOperand_choose);
         secondOperand_choose   =   findViewById(R.id.secondOperand_choose);
         operationSymbol_choose =   findViewById(R.id.operationSymbol_choose);
 
-        _answer_01Btn =  findViewById(R.id.answer_01Btn);
-        _answer_02Btn =  findViewById(R.id.answer_02Btn);
-        _answer_03Btn =  findViewById(R.id.answer_03Btn);
-        _answer_04Btn =  findViewById(R.id.answer_04Btn);
-        _answer_05Btn =  findViewById(R.id.answer_05Btn);
-        _answer_06Btn =  findViewById(R.id.answer_06Btn);
-        _answer_07Btn =  findViewById(R.id.answer_07Btn);
-        _answer_08Btn =  findViewById(R.id.answer_08Btn);
-        _answer_09Btn =  findViewById(R.id.answer_09Btn);
+        answer01Btn =  findViewById(R.id.answer_01Btn);
+        answer02Btn =  findViewById(R.id.answer_02Btn);
+        answer03Btn =  findViewById(R.id.answer_03Btn);
+        answer04Btn =  findViewById(R.id.answer_04Btn);
+        answer05Btn =  findViewById(R.id.answer_05Btn);
+        answer06Btn =  findViewById(R.id.answer_06Btn);
+        answer07Btn =  findViewById(R.id.answer_07Btn);
+        answer08Btn =  findViewById(R.id.answer_08Btn);
+        answer09Btn =  findViewById(R.id.answer_09Btn);
 
-        _answer_01Btn.setOnClickListener(new View.OnClickListener() {
+        answer01Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button b = (Button) view;
                 int btnValue = Integer.parseInt((String)b.getText());
                 if (btnValue==correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "OK !", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "OK !", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("OK ! Next challenge?", "","Yes");
                 } else if (btnValue!=correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("...WRONG !!! Next challenge?", "","Yes");
                 }
 
@@ -77,16 +76,16 @@ public class MathOperationChooseActivity extends AppCompatActivity {
         });
 
 
-        _answer_02Btn.setOnClickListener(new View.OnClickListener() {
+        answer02Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button b = (Button) view;
                 int btnValue = Integer.parseInt((String)b.getText());
                 if (btnValue==correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "OK !", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "OK !", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("OK ! Next challenge?", "","Yes");
                 } else if (btnValue!=correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("...WRONG !!! Next challenge?", "","Yes");
                 }
 
@@ -94,33 +93,16 @@ public class MathOperationChooseActivity extends AppCompatActivity {
         });
 
 
-        _answer_03Btn.setOnClickListener(new View.OnClickListener() {
+        answer03Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button b = (Button) view;
                 int btnValue = Integer.parseInt((String)b.getText());
                 if (btnValue==correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "OK !", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "OK !", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("OK ! Next challenge?", "","Yes");
                 } else if (btnValue!=correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
-                    setDialog_1Btn("...WRONG !!! Next challenge?", "","Yes");
-                }
-                // setChooseMathChallenge();
-            }
-        });
-
-
-        _answer_04Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Button b = (Button) view;
-                int btnValue = Integer.parseInt((String)b.getText());
-                if (btnValue==correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "OK !", Toast.LENGTH_SHORT).show();
-                    setDialog_1Btn("OK ! Next challenge?", "","Yes");
-                } else if (btnValue!=correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("...WRONG !!! Next challenge?", "","Yes");
                 }
                 // setChooseMathChallenge();
@@ -128,16 +110,16 @@ public class MathOperationChooseActivity extends AppCompatActivity {
         });
 
 
-        _answer_05Btn.setOnClickListener(new View.OnClickListener() {
+        answer04Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button b = (Button) view;
                 int btnValue = Integer.parseInt((String)b.getText());
                 if (btnValue==correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "OK !", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "OK !", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("OK ! Next challenge?", "","Yes");
                 } else if (btnValue!=correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("...WRONG !!! Next challenge?", "","Yes");
                 }
                 // setChooseMathChallenge();
@@ -145,16 +127,16 @@ public class MathOperationChooseActivity extends AppCompatActivity {
         });
 
 
-        _answer_06Btn.setOnClickListener(new View.OnClickListener() {
+        answer05Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button b = (Button) view;
                 int btnValue = Integer.parseInt((String)b.getText());
                 if (btnValue==correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "OK !", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "OK !", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("OK ! Next challenge?", "","Yes");
                 } else if (btnValue!=correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("...WRONG !!! Next challenge?", "","Yes");
                 }
                 // setChooseMathChallenge();
@@ -162,16 +144,16 @@ public class MathOperationChooseActivity extends AppCompatActivity {
         });
 
 
-        _answer_07Btn.setOnClickListener(new View.OnClickListener() {
+        answer06Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button b = (Button) view;
                 int btnValue = Integer.parseInt((String)b.getText());
                 if (btnValue==correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "OK !", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "OK !", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("OK ! Next challenge?", "","Yes");
                 } else if (btnValue!=correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("...WRONG !!! Next challenge?", "","Yes");
                 }
                 // setChooseMathChallenge();
@@ -179,16 +161,16 @@ public class MathOperationChooseActivity extends AppCompatActivity {
         });
 
 
-        _answer_08Btn.setOnClickListener(new View.OnClickListener() {
+        answer07Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button b = (Button) view;
                 int btnValue = Integer.parseInt((String)b.getText());
                 if (btnValue==correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "OK !", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "OK !", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("OK ! Next challenge?", "","Yes");
                 } else if (btnValue!=correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("...WRONG !!! Next challenge?", "","Yes");
                 }
                 // setChooseMathChallenge();
@@ -196,16 +178,33 @@ public class MathOperationChooseActivity extends AppCompatActivity {
         });
 
 
-        _answer_09Btn.setOnClickListener(new View.OnClickListener() {
+        answer08Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button b = (Button) view;
                 int btnValue = Integer.parseInt((String)b.getText());
                 if (btnValue==correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "OK !", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "OK !", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("OK ! Next challenge?", "","Yes");
                 } else if (btnValue!=correctAnswer) {
-                    // Toast.makeText(MathOperationChooseActivity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
+                    setDialog_1Btn("...WRONG !!! Next challenge?", "","Yes");
+                }
+                // setChooseMathChallenge();
+            }
+        });
+
+
+        answer09Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Button b = (Button) view;
+                int btnValue = Integer.parseInt((String)b.getText());
+                if (btnValue==correctAnswer) {
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "OK !", Toast.LENGTH_SHORT).show();
+                    setDialog_1Btn("OK ! Next challenge?", "","Yes");
+                } else if (btnValue!=correctAnswer) {
+                    // Toast.makeText(MathRandomOp_Choose_Activity.this, "....WRONG !!!", Toast.LENGTH_SHORT).show();
                     setDialog_1Btn("...WRONG !!! Next challenge?", "","Yes");
                 }
                 // setChooseMathChallenge();
@@ -239,26 +238,31 @@ public class MathOperationChooseActivity extends AppCompatActivity {
 
         // set current answer
         switch(choosenOperand){
+
             case 1 : //+
                 correctAnswer = firstOperandValue + secondOperandValue;
                 operationSymbol_choose.setText("+");
                 Log.i("RESULT : ",correctAnswer + " =  "+ firstOperandValue + "+"+secondOperandValue );
                 break;
+
             case 2 : //-
                 correctAnswer = firstOperandValue - secondOperandValue;
                 operationSymbol_choose.setText("-");
                 Log.i("RESULT : ",correctAnswer + " =  "+ firstOperandValue + "-"+secondOperandValue );
                 break;
+
             case 3 : //*
                 correctAnswer = firstOperandValue * secondOperandValue;
                 operationSymbol_choose.setText("X");
                 Log.i("RESULT : ",correctAnswer + " =  "+ firstOperandValue + "*"+secondOperandValue );
                 break;
+
             case 4 : // /
                 correctAnswer = ( firstOperandValue / secondOperandValue);
                 operationSymbol_choose.setText(":");
                 Log.i("RESULT : ",correctAnswer + " =  "+ firstOperandValue + "/"+secondOperandValue );
                 break;
+
             default:
                 break;
         }
@@ -292,15 +296,15 @@ public class MathOperationChooseActivity extends AppCompatActivity {
      */
     Button getTheBtnNumber(int num){
       switch(num){
-          case 1 : return _answer_01Btn;
-          case 2 : return _answer_02Btn;
-          case 3 : return _answer_03Btn;
-          case 4 : return _answer_04Btn;
-          case 5 : return _answer_05Btn;
-          case 6 : return _answer_06Btn;
-          case 7 : return _answer_07Btn;
-          case 8 : return _answer_08Btn;
-          case 9 : return _answer_09Btn;
+          case 1 : return answer01Btn;
+          case 2 : return answer02Btn;
+          case 3 : return answer03Btn;
+          case 4 : return answer04Btn;
+          case 5 : return answer05Btn;
+          case 6 : return answer06Btn;
+          case 7 : return answer07Btn;
+          case 8 : return answer08Btn;
+          case 9 : return answer09Btn;
           default: break;
       }
       return null;
@@ -309,7 +313,7 @@ public class MathOperationChooseActivity extends AppCompatActivity {
 
 
     void setDialog_1Btn(String title, String msg,String btnText){
-        AlertDialog alertDialog = new AlertDialog.Builder(MathOperationChooseActivity.this)
+        AlertDialog alertDialog = new AlertDialog.Builder(MathRandomOp_Choose_Activity.this)
                 //set icon
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 //set title
