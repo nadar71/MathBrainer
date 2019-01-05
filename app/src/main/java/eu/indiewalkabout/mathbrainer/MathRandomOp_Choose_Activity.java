@@ -52,17 +52,15 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
     private int min        = 1;
     private int max        = 100;
 
+    private int multMin    = 1;
     private int multHMax   = 30;
     private int multLMax   = 15;
 
+    private int divMin     = 1;
     private int divHMax    = 15;
     private int divLMax    = 11;
 
-    // random range for answer btn number
-    private int minAnswerBtnNum              = 3;
-    private int maxAnswerBtnNum              = 9;
-    private int currentLevelAnswerBtnVisible = 3;
-    private int levelAnswerBtnTotalNum       = 3;
+
 
     // store wring answer to avoid duplicates
     ArrayList<Integer> wrongAnswer;
@@ -70,9 +68,17 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
     // operation symbols
     private char[] symbols = {'+','-','*','/'};
 
-    // num of challenge to be in the test
+    // num of challenge to pass to next level
+    // changing while level growing
     private int numChallengeEachLevel =  25;
     private int countChallenge        =  1;
+
+    // random range for answer btn number
+    // changing while level growing
+    private int minAnswerBtnNum              = 3;
+    private int maxAnswerBtnNum              = 9;
+    private int currentLevelAnswerBtnVisible = 3;
+    private int levelAnswerBtnTotalNum       = 3;
 
     // score var
     private int score = 0;
@@ -340,8 +346,11 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
         // clear wrong answers list
         wrongAnswer.clear();
 
+        // reset the number of visible button
+        currentLevelAnswerBtnVisible = levelAnswerBtnTotalNum;
+
         // set operation to be processed
-        operation    = symbols[myUtil.randRange_ApiCheck(min, symbols.length-1)];
+        operation    = symbols[myUtil.randRange_ApiCheck(0, symbols.length-1)];
 
         // calculate the quiz operation
         calculateOperation();
@@ -381,13 +390,13 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
 
             case '*':
                 // set operands to be processed
-                int guess = myUtil.randRange_ApiCheck(min, 2);
+                int guess = myUtil.randRange_ApiCheck(1, 2);
                 if (guess == 1){
-                    firstOperand  = myUtil.randRange_ApiCheck(min, multHMax);
-                    secondOperand = myUtil.randRange_ApiCheck(min, multLMax);
+                    firstOperand  = myUtil.randRange_ApiCheck(multMin, multHMax);
+                    secondOperand = myUtil.randRange_ApiCheck(multMin, multLMax);
                 }else{
-                    firstOperand  = myUtil.randRange_ApiCheck(min, multLMax);
-                    secondOperand = myUtil.randRange_ApiCheck(min, multHMax);
+                    firstOperand  = myUtil.randRange_ApiCheck(multMin, multLMax);
+                    secondOperand = myUtil.randRange_ApiCheck(multMin, multHMax);
                 }
 
                 // store correct answer
@@ -396,9 +405,9 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
 
             case '/':
                 // set operands to be processed
-                secondOperand = myUtil.randRange_ApiCheck(min, divHMax);
+                secondOperand = myUtil.randRange_ApiCheck(divMin, divHMax);
                 // store correct answer
-                answerOK = myUtil.randRange_ApiCheck(min, divLMax);
+                answerOK = myUtil.randRange_ApiCheck(divMin, divLMax);
                 firstOperand  = answerOK * secondOperand;
 
                 break;
@@ -445,8 +454,13 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
                         do {
                             result = randomOffsetSum();
                         } while (wrongAnswer.lastIndexOf(result) > 0);
+                        wrongAnswer.add(result);
 
                         tmpBtn.setText(String.valueOf(result));
+
+                        // make btn visible based on num answer btn visible per level
+                        setAnswerBtnVisibility(tmpBtn);
+
                         break;
                     }
 
@@ -456,8 +470,13 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
                         do {
                             result = randomOffsetMult();
                         } while (wrongAnswer.lastIndexOf(result) > 0);
+                        wrongAnswer.add(result);
 
                         tmpBtn.setText(String.valueOf(result));
+
+                        // make btn visible based on num answer btn visible per level
+                        setAnswerBtnVisibility(tmpBtn);
+
                         break;
                     }
 
@@ -467,15 +486,43 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
                         do {
                             result = randomOffsetSum();
                         } while (wrongAnswer.lastIndexOf(result) > 0);
+                        wrongAnswer.add(result);
 
                         tmpBtn.setText(String.valueOf(result));
+
+                        // make btn visible based on num answer btn visible per level
+                        setAnswerBtnVisibility(tmpBtn);
+
                         break;
                     }
                     default:
                         break;
 
                 }
+            }else { // the btn with the right answer must be alwys visible
+                tmpBtn = getTheBtnNumber(correctBtnNumber);
+                tmpBtn.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Set btn visible or not depending on current level button visible
+     * @param thisBtn
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void setAnswerBtnVisibility(Button thisBtn) {
+
+        int guess = myUtil.randomSignChooser();
+        if ( (guess > 0 ) && (currentLevelAnswerBtnVisible > 0)  ) {
+            thisBtn.setVisibility(View.VISIBLE);
+            currentLevelAnswerBtnVisible--;
+        }else{
+            thisBtn.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -488,7 +535,7 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
     private int randomOffsetSum(){
         int result = myUtil.randRange_ApiCheck(1, (int)(offset * 1.5));
         if ( (result >= 1) && (result <= 3) ) {
-            return answerOK + randomSignChooser()* result;
+            return answerOK + myUtil.randomSignChooser()* result;
         }
         return answerOK + result;
     }
@@ -501,49 +548,34 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
      */
     private int randomOffsetMult(){
         int result = myUtil.randRange_ApiCheck(1, offset * 2);
-        int sign   = randomSignChooser();
+        int sign   = myUtil.randomSignChooser();
 
         if ( (result >= 4) && (result <= 11) ){
             if (sign > 0 ) {
-                return answerOK + randomSignChooser() * result;
+                return answerOK + myUtil.randomSignChooser() * result;
             } else {
-                return (int) ( answerOK + ( randomSignChooser() * (int) ( 10 + result) * 0.1));
+                return (int) ( answerOK + ( myUtil.randomSignChooser() * (int) ( 10 + result) * 0.1));
             }
 
         } else if ((result > 11) && (result <= 16)) {
             if (sign > 0 ) {
-                return answerOK + randomSignChooser() * result;
+                return answerOK + myUtil.randomSignChooser() * result;
             } else {
                 return (int) answerOK * (int)(result * 0.1);
             }
 
         } else if (result > 16)  {
             if (sign > 0 ) {
-                return answerOK + randomSignChooser() * result;
+                return answerOK + myUtil.randomSignChooser() * result;
             } else {
-                return  (int) ( answerOK + ( randomSignChooser() * (int) ( 3 + result) * 0.1));
+                return  (int) ( answerOK + ( myUtil.randomSignChooser() * (int) ( 3 + result) * 0.1));
             }
 
         } else
-            return answerOK + randomSignChooser() * result;
+            return answerOK + myUtil.randomSignChooser() * result;
 
     }
 
-
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Random answer for sum generator
-     * ---------------------------------------------------------------------------------------------
-     */
-    private int randomSignChooser(){
-        int result = myUtil.randRange_ApiCheck(1, 2);
-        if (result == 1)
-           return -1;
-        else
-            return 1;
-    }
 
 
     /**
@@ -610,6 +642,9 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
             divLMax += 1;
 
             numChallengeEachLevel += 5;
+
+            // increase the number of visible answer button
+            if (level < 9 ) levelAnswerBtnTotalNum++;
 
             // increase time accordingly, but slightly
             timerLength = timerLength + 5000 ;

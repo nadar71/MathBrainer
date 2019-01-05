@@ -50,15 +50,19 @@ public class MathRandomOp_Write_Activity extends AppCompatActivity implements IG
     private int min        = 1;
     private int max        = 100;
 
+
+    private int multMin    = 1;
     private int multHMax   = 30;
     private int multLMax   = 15;
 
+    private int divMin     = 1;
     private int divHMax    = 15;
     private int divLMax    = 11;
 
     private char[] symbols = {'+','-','*','/'};
 
-    // num of challenge to be in the test
+    // num of challenge to pass to next level
+    // changing while level growing
     private int numChallengeEachLevel =  25;
     private int countChallenge        =  1;
 
@@ -249,7 +253,7 @@ public class MathRandomOp_Write_Activity extends AppCompatActivity implements IG
      */
     private void newChallenge() {
         // set operation to be processed
-        operation    = symbols[myUtil.randRange_ApiCheck(min, symbols.length-1)];
+        operation    = symbols[myUtil.randRange_ApiCheck(0, symbols.length-1)];
 
         // calculate the quiz operation
         calculateOperation();
@@ -295,13 +299,13 @@ public class MathRandomOp_Write_Activity extends AppCompatActivity implements IG
             case '*':
                 //operationSymbol_tv.setText("*");
                 // set operands to be processed
-                int guess = myUtil.randRange_ApiCheck(min, 2);
+                int guess = myUtil.randRange_ApiCheck(1, 2);
                 if (guess == 1){
-                    firstOperand  = myUtil.randRange_ApiCheck(min, multHMax);
-                    secondOperand = myUtil.randRange_ApiCheck(min, multLMax);
+                    firstOperand  = myUtil.randRange_ApiCheck(multMin, multHMax);
+                    secondOperand = myUtil.randRange_ApiCheck(multMin, multLMax);
                 }else{
-                    firstOperand  = myUtil.randRange_ApiCheck(min, multLMax);
-                    secondOperand = myUtil.randRange_ApiCheck(min, multHMax);
+                    firstOperand  = myUtil.randRange_ApiCheck(multMin, multLMax);
+                    secondOperand = myUtil.randRange_ApiCheck(multMin, multHMax);
                 }
 
                 // store correct answer
@@ -311,9 +315,9 @@ public class MathRandomOp_Write_Activity extends AppCompatActivity implements IG
             case '/':
                 //operationSymbol_tv.setText("/");
                 // set operands to be processed
-                secondOperand = myUtil.randRange_ApiCheck(min, divHMax);
+                secondOperand = myUtil.randRange_ApiCheck(divMin, divHMax);
                 // store correct answer
-                answerOK = myUtil.randRange_ApiCheck(min, divLMax);
+                answerOK = myUtil.randRange_ApiCheck(divMin, divLMax);
                 firstOperand  = answerOK * secondOperand;
 
                 break;

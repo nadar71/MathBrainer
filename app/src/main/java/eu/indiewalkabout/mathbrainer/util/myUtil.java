@@ -31,5 +31,19 @@ public class myUtil {
 
 
 
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Random answer for sum generator
+     * ---------------------------------------------------------------------------------------------
+     */
+    public static int randomSignChooser(){
+        int result = myUtil.randRange_ApiCheck(1, 2);
+        if (result == 1)
+            return -1;
+        else
+            return 1;
+    }
+
+
 
 }

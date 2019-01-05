@@ -205,23 +205,23 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="42dp"
+        android:layout_width="61dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="8dp"
-        android:text="+"
+        android:text="+ _?_"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ResultChooseBtn" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="44dp"
+        android:layout_width="66dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:text="-"
+        android:text="- _?_"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintStart_toEndOf="@+id/button"
         app:layout_constraintTop_toBottomOf="@+id/button"
@@ -229,12 +229,12 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="42dp"
+        android:layout_width="67dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:text="*"
+        android:text="* _?_"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintStart_toEndOf="@+id/button2"
         app:layout_constraintTop_toBottomOf="@+id/button2"
@@ -242,12 +242,12 @@
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="42dp"
+        android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:text="/"
+        android:text="/ _?_"
         app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
