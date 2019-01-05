@@ -4,32 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="eu.indiewalkabout.mathbrainer.SoundsSeqActivity">
+    tools:context="eu.indiewalkabout.mathbrainer.othergames.SoundsSeqActivity">
 
+    <ImageView
+        android:id="@+id/backgroundImg"
+        android:layout_width="0dp"
+        android:layout_height="836dp"
+        android:contentDescription="@string/backgroundimg"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.126"
+        app:srcCompat="@drawable/summer" />
 
-    <TextView
-        android:id="@+id/scoreLabel_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/score"
-        android:textAlignment="viewStart"
-        app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
-        app:layout_constraintStart_toEndOf="@+id/level_tv"
+    <ProgressBar
+        android:id="@+id/progressbar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:max="30"
+        android:progress="100"
+        android:progressDrawable="@drawable/horizontal_progress_drawable_red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/level_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="@string/level"
         android:textAlignment="viewStart"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/progressbar"
+        android:layout_marginLeft="8dp"
+        android:gravity="start" />
 
     <TextView
         android:id="@+id/levelValue_tv"
@@ -39,31 +54,49 @@
         android:layout_marginTop="8dp"
         android:text="@string/_0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/level_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/level_tv"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/scoreLabel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/score"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
+        app:layout_constraintHorizontal_bias="0.556"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/level_tv"
+        app:layout_constraintTop_toBottomOf="@+id/progressbar"
+        android:gravity="start" />
+
+    <TextView
+        android:id="@+id/scoreValue_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/_0"
+        app:layout_constraintEnd_toStartOf="@+id/gridLayout"
+        app:layout_constraintHorizontal_bias="0.542"
+        app:layout_constraintStart_toEndOf="@+id/levelValue_tv"
+        app:layout_constraintTop_toBottomOf="@+id/scoreLabel_tv" />
 
     <TextView
         android:id="@+id/lifeRemainText_tv"
         android:layout_width="36dp"
         android:layout_height="19dp"
         android:layout_marginEnd="60dp"
-        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:text="@string/lifes"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/progressbar"
+        android:layout_marginRight="60dp" />
 
-    <TextView
-        android:id="@+id/levelValue_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/_0"
-        app:layout_constraintEnd_toStartOf="@+id/gridLayout"
-        app:layout_constraintStart_toEndOf="@+id/levelValue_tv"
-        app:layout_constraintTop_toBottomOf="@+id/scoreLabel_tv" />
+
 
     <GridLayout
         android:id="@+id/gridLayout"
@@ -112,6 +145,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/presence_online" />
     </GridLayout>
+
+
+    <!-- - - - - QUIZ SECTION - - - - - - - - - - - - - - - - - - -->
 
     <GridLayout
         android:layout_width="wrap_content"

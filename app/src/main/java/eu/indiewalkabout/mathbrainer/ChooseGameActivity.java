@@ -6,6 +6,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import eu.indiewalkabout.mathbrainer.aritmetic.DoubleNumberActivity;
+import eu.indiewalkabout.mathbrainer.aritmetic.MixedOp_Choose_Result_Activity;
+import eu.indiewalkabout.mathbrainer.aritmetic.MixedOp_Write_Result_Activity;
+import eu.indiewalkabout.mathbrainer.aritmetic.RandomOperationActivity;
+import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Diff_Choose_Result_Activity;
+import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Diff_Write_Result_Activity;
+import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Div_Choose_Result_Activity;
+import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Div_Write_Result_Activity;
+import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Mult_Choose_Result_Activity;
+import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Mult_Write_Result_Activity;
+import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Sum_Choose_Result_Activity;
+import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Sum_Write_Result_Activity;
+import eu.indiewalkabout.mathbrainer.othergames.CountObjectsActivity;
+import eu.indiewalkabout.mathbrainer.othergames.FallingOperationsActivity;
+import eu.indiewalkabout.mathbrainer.othergames.NumberOrderActivity;
+import eu.indiewalkabout.mathbrainer.othergames.SoundsSeqActivity;
+
 /**
  * -------------------------------------------------------------------------------------------------
  * Choose the type of game
@@ -19,22 +36,112 @@ public class ChooseGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_game);
 
 
-        // BEGIN Button management
+        // -----------------------------------------------------------------------------------------
+        // Aritmetic operation button
+        // -----------------------------------------------------------------------------------------
 
-        final Button ResultWriteBtn = findViewById(R.id.ResultWriteBtn);
-        ResultWriteBtn.setOnClickListener(new View.OnClickListener() {
+        // --------------------------------------------
+        // Basic op
+        // --------------------------------------------
+        final Button sumChooseBtn = findViewById(R.id.sumChoose_Btn);
+        sumChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this, MathRandomOp_Write_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, Sum_Choose_Result_Activity.class);
                 startActivity(intent);
             }
         });
 
-        final Button ResultChooseBtn = findViewById(R.id.ResultChooseBtn);
+        final Button diffChooseBtn = findViewById(R.id.diffChoose_Btn);
+        diffChooseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChooseGameActivity.this, Diff_Choose_Result_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        final Button multChooseBtn = findViewById(R.id.multChoose_Btn);
+        multChooseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChooseGameActivity.this, Mult_Choose_Result_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        final Button divChooseBtn = findViewById(R.id.divChoose_Btn);
+        divChooseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChooseGameActivity.this, Div_Choose_Result_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        // --------------------------------------------
+
+
+        final Button sumWriteBtn = findViewById(R.id.sumWrite_Btn);
+        sumWriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChooseGameActivity.this, Sum_Write_Result_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        final Button diffWriteBtn = findViewById(R.id.diffWrite_Btn);
+        diffWriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChooseGameActivity.this, Diff_Write_Result_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        final Button multWriteBtn = findViewById(R.id.multWrite_Btn);
+        multWriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChooseGameActivity.this, Mult_Write_Result_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        final Button divWriteBtn = findViewById(R.id.divWrite_Btn);
+        divWriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChooseGameActivity.this, Div_Write_Result_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        // --------------------------------------------
+        // Mixed op
+        // --------------------------------------------
+
+        final Button ResultWriteBtn = findViewById(R.id.MixedOps_WriteResultBtn);
+        ResultWriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChooseGameActivity.this, MixedOp_Write_Result_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        final Button ResultChooseBtn = findViewById(R.id.MixedOps_ChooseResultBtn);
         ResultChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this,MathRandomOp_Choose_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this,MixedOp_Choose_Result_Activity.class);
                 startActivity(intent);
             }
         });
@@ -98,6 +205,8 @@ public class ChooseGameActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
         // END Button management
     }

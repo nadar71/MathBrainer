@@ -1,7 +1,7 @@
-package eu.indiewalkabout.mathbrainer;
+package eu.indiewalkabout.mathbrainer.aritmetic.singleop;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -11,31 +11,40 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import eu.indiewalkabout.mathbrainer.util.*;
+import eu.indiewalkabout.mathbrainer.R;
+import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
+import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
+import eu.indiewalkabout.mathbrainer.util.myUtil;
+
 
 /**
  * -------------------------------------------------------------------------------------------------
- * Given a number, write its double
+ * Same game as MixedOp_Write_Result_Activity, apart that is only about summs
+ * Changed only the symbols array to have only : "+"
  * -------------------------------------------------------------------------------------------------
  */
-public class DoubleNumberActivity extends AppCompatActivity implements IGameFunctions {
+public class Sum_Write_Result_Activity extends AppCompatActivity implements IGameFunctions {
 
     // tag for log
-    private final static String TAG = DoubleNumberActivity.class.getSimpleName();
+    private final static String TAG = Sum_Write_Result_Activity.class.getSimpleName();
 
     // view ref
-    private TextView             numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
+    private TextView numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
+    private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv;
     private ArrayList<ImageView> lifesValue_iv ;
-    private EditText             playerInput_et;
+    private EditText playerInput_et;
 
 
-    // number to be doubled
-    private int numToBeDoubled;
+    // numbers to be processed
+    private int  firstOperand, secondOperand;
+    private char operation;
+
+    // correct answer
+    private int answerOK;
 
     // starting level
     private int level = 0;
@@ -43,12 +52,24 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     // lifes counter; 0 to gameover
     private int lifes = 3;
 
-    // random range of number to be doubled
-    private int min = 1;
-    private int max = 100;
+    // random range of number to be processed
+    private int min        = 1;
+    private int max        = 100;
 
-    // num of challenge to be in the test
-    private int numChallengeEachLevel =  10;
+
+    private int multMin    = 1;
+    private int multHMax   = 30;
+    private int multLMax   = 15;
+
+    private int divMin     = 1;
+    private int divHMax    = 15;
+    private int divLMax    = 11;
+
+    private char[] symbols = {'+'};
+
+    // num of challenge to pass to next level
+    // changing while level growing
+    private int numChallengeEachLevel =  25;
     private int countChallenge        =  1;
 
     // score var
@@ -59,20 +80,23 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     CountDownIndicator countDownIndicator;
 
     // max time, increased by level growing
-    private long timerLength            = CountDownIndicator.DEFAULT_MILLISINFUTURE;
+    private long timerLength            = 20000;
     private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_double_number);
+        setContentView(R.layout.activity_sum_write_result);
 
         // set views ref
-        numberToBeDoubled_tv   = (TextView)  findViewById(R.id.randomNum_tv);
-        scoreValue_tv          = (TextView)  findViewById(R.id.scoreValue_tv);
-        levelValue_tv          = (TextView)  findViewById(R.id.levelValue_tv);
-        playerInput_et         = (EditText)  findViewById(R.id.playerInput_et);
+        firstOperand_tv    = (TextView)  findViewById(R.id.firstOperand_tv);
+        secondOperand_tv   = (TextView)  findViewById(R.id.secondOperand_tv);
+        operationSymbol_tv = (TextView)  findViewById(R.id.operationSymbol_tv);
+
+        scoreValue_tv      = (TextView)  findViewById(R.id.scoreValue_tv);
+        levelValue_tv      = (TextView)  findViewById(R.id.levelValue_tv);
+        playerInput_et     = (EditText)  findViewById(R.id.playerInput_et);
 
         // init lifes led images
         lifesValue_iv = new ArrayList<ImageView>();
@@ -84,7 +108,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         countdownBar = (ProgressBar)findViewById(R.id.progressbar);
 
         // Create new count down indicator, without starting it
-        countDownIndicator = new CountDownIndicator(DoubleNumberActivity.this, (ProgressBar) countdownBar, DoubleNumberActivity.this);
+        countDownIndicator = new CountDownIndicator(Sum_Write_Result_Activity.this, (ProgressBar) countdownBar, Sum_Write_Result_Activity.this);
 
 
         // start with first challenge and countdown init
@@ -133,8 +157,8 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         Log.d(TAG, "checkPlayerInput: inputNum : " + inputNum);
 
         // check if result is ok...
-        if (inputNum != 0  && inputNum == 2*numToBeDoubled) {
-            Toast.makeText(DoubleNumberActivity.this, "OK!", Toast.LENGTH_SHORT).show();
+        if (inputNum != 0  && inputNum == answerOK) {
+            Toast.makeText(Sum_Write_Result_Activity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
 
@@ -151,9 +175,9 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
             // new number to double
             newChallenge();
 
-        // ...otherwise a life will be lost
+            // ...otherwise a life will be lost
         } else {
-            Toast.makeText(DoubleNumberActivity.this, "WRONG...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Sum_Write_Result_Activity.this, "WRONG...", Toast.LENGTH_SHORT).show();
 
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
@@ -234,9 +258,11 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
      * -------------------------------------------------------------------------------------------------
      */
     private void newChallenge() {
-        // set the number to be doubled
-        numToBeDoubled = myUtil.randRange_ApiCheck(min, max);
-        numberToBeDoubled_tv.setText(Integer.toString(numToBeDoubled));
+        // set operation to be processed
+        operation    = symbols[myUtil.randRange_ApiCheck(0, symbols.length-1)];
+
+        // calculate the quiz operation
+        calculateOperation();
 
         // clean edit text field
         playerInput_et.isFocused();
@@ -247,6 +273,71 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
 
     }
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Choose the right operands based on based on operation symbol,update UI, do calculation ,
+     *  and store the correct answer.
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void calculateOperation(){
+        switch(operation){
+            case '+':
+                //operationSymbol_tv.setText("+");
+                // set operands to be processed
+                firstOperand  = myUtil.randRange_ApiCheck(min, max);
+                secondOperand = myUtil.randRange_ApiCheck(min, max);
+
+                // store correct answer
+                answerOK = firstOperand + secondOperand;
+                break;
+
+            case '-':
+                //operationSymbol_tv.setText("-");
+                // set operands to be processed
+                firstOperand  = myUtil.randRange_ApiCheck(min, max);
+                secondOperand = myUtil.randRange_ApiCheck(min, firstOperand);
+
+                // store correct answer
+                answerOK = firstOperand - secondOperand;
+                break;
+
+            case '*':
+                //operationSymbol_tv.setText("*");
+                // set operands to be processed
+                int guess = myUtil.randRange_ApiCheck(1, 2);
+                if (guess == 1){
+                    firstOperand  = myUtil.randRange_ApiCheck(multMin, multHMax);
+                    secondOperand = myUtil.randRange_ApiCheck(multMin, multLMax);
+                }else{
+                    firstOperand  = myUtil.randRange_ApiCheck(multMin, multLMax);
+                    secondOperand = myUtil.randRange_ApiCheck(multMin, multHMax);
+                }
+
+                // store correct answer
+                answerOK = firstOperand * secondOperand;
+                break;
+
+            case '/':
+                //operationSymbol_tv.setText("/");
+                // set operands to be processed
+                secondOperand = myUtil.randRange_ApiCheck(divMin, divHMax);
+                // store correct answer
+                answerOK = myUtil.randRange_ApiCheck(divMin, divLMax);
+                firstOperand  = answerOK * secondOperand;
+
+                break;
+            default:
+                break;
+
+        }
+
+        operationSymbol_tv.setText(Character.toString(operation));
+        firstOperand_tv.setText(Integer.toString(firstOperand));
+        secondOperand_tv.setText(Integer.toString(secondOperand));
+
+    }
+
 
 
     /**
@@ -259,7 +350,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         countDownIndicator.countdownReset();
 
         // todo : game over screen
-        Toast.makeText(DoubleNumberActivity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
+        Toast.makeText(Sum_Write_Result_Activity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
 
     }
 
@@ -277,18 +368,23 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
         // increment level difficulty
         if (level > 1){
+            // for +, -
             min = max;
             max = 100 * level + 50 * (level - 1);
 
+            // for *,/
+            multHMax += 5;
+            multLMax += 1;
+
+            divHMax += 2;
+            divLMax += 1;
+
+            numChallengeEachLevel += 5;
+
             // increase time accordingly, but slightly
-            timerLength = timerLength + 1000 ;
+            timerLength = timerLength + 5000 ;
             Log.d(TAG, "updatingLevel: New Level! new min : "+min+" new max: "+max+" new level : "+level+" Timer now at : " + (timerLength/1000) + " sec.");
         }
 
     }
-
-
-
-
-
 }

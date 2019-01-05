@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer;
+package eu.indiewalkabout.mathbrainer.aritmetic.singleop;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,16 +12,22 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
+/**
+ * -------------------------------------------------------------------------------------------------
+ * Same game as MixedOp_Choose_Result_Activity, apart that is only about differences
+ * Changed only the symbols array to have only : "-"
+ * -------------------------------------------------------------------------------------------------
+ */
+public class Diff_Choose_Result_Activity extends AppCompatActivity implements IGameFunctions {
 
-
-public class MathRandomOp_Choose_Activity extends AppCompatActivity implements IGameFunctions {
 
     // tag for log
-    private final static String TAG = MathRandomOp_Write_Activity.class.getSimpleName();
+    private final static String TAG = Diff_Choose_Result_Activity.class.getSimpleName();
 
     // view ref
     private TextView numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
@@ -66,7 +72,7 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
     ArrayList<Integer> wrongAnswer;
 
     // operation symbols
-    private char[] symbols = {'+','-','*','/'};
+    private char[] symbols = {'-'};
 
     // num of challenge to pass to next level
     // changing while level growing
@@ -95,7 +101,7 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_math_random_op_choose);
+        setContentView(R.layout.activity_diff_choose_result);
 
         // set views ref
         firstOperand_tv    = (TextView)  findViewById(R.id.firstOperand_tv);
@@ -129,7 +135,7 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
         countdownBar = (ProgressBar)findViewById(R.id.progressbar);
 
         // Create new count down indicator, without starting it
-        countDownIndicator = new CountDownIndicator(MathRandomOp_Choose_Activity.this, (ProgressBar) countdownBar, MathRandomOp_Choose_Activity.this);
+        countDownIndicator = new CountDownIndicator(Diff_Choose_Result_Activity.this, (ProgressBar) countdownBar, Diff_Choose_Result_Activity.this);
 
         // start with first challenge and countdown init
         newChallenge();
@@ -144,9 +150,9 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Set up the button pressed listener and checking answers
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void setBtnPressedListener(){
         answer01Btn.setOnClickListener(new View.OnClickListener() {
@@ -250,7 +256,7 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
 
         // check if result is ok...
         if (pressedBtnValue != 0  && pressedBtnValue == answerOK) {
-            Toast.makeText(MathRandomOp_Choose_Activity.this, "OK!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Diff_Choose_Result_Activity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
 
@@ -269,7 +275,7 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
 
             // ...otherwise a life will be lost
         } else {
-            Toast.makeText(MathRandomOp_Choose_Activity.this, "WRONG...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Diff_Choose_Result_Activity.this, "WRONG...", Toast.LENGTH_SHORT).show();
 
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
@@ -612,7 +618,7 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
         countDownIndicator.countdownReset();
 
         // todo : game over screen
-        Toast.makeText(MathRandomOp_Choose_Activity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
+        Toast.makeText(Diff_Choose_Result_Activity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
 
     }
 
@@ -652,5 +658,4 @@ public class MathRandomOp_Choose_Activity extends AppCompatActivity implements I
         }
 
     }
-
 }

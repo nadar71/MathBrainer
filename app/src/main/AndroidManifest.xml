@@ -25,39 +25,47 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MathRandomOp_Write_Activity"
+            android:name=".aritmetic.MixedOp_Write_Result_Activity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".CountObjectsActivity"
+            android:name=".othergames.CountObjectsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DoubleNumberActivity"
+            android:name=".aritmetic.DoubleNumberActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".FallingOperationsActivity"
+            android:name=".othergames.FallingOperationsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NumberOrderActivity"
+            android:name=".othergames.NumberOrderActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RandomOperationActivity"
+            android:name=".aritmetic.RandomOperationActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SoundsSeqActivity"
+            android:name=".othergames.SoundsSeqActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainSettingsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-        <activity android:name=".MathRandomOp_Choose_Activity"></activity>
+        <activity android:name=".aritmetic.MixedOp_Choose_Result_Activity" />
+        <activity android:name=".aritmetic.singleop.Sum_Choose_Result_Activity" />
+        <activity android:name=".aritmetic.singleop.Diff_Choose_Result_Activity" />
+        <activity android:name=".aritmetic.singleop.Mult_Choose_Result_Activity" />
+        <activity android:name=".aritmetic.singleop.Div_Choose_Result_Activity" />
+        <activity android:name=".aritmetic.singleop.Sum_Write_Result_Activity" />
+        <activity android:name=".aritmetic.singleop.Diff_Write_Result_Activity" />
+        <activity android:name=".aritmetic.singleop.Mult_Write_Result_Activity" />
+        <activity android:name=".aritmetic.singleop.Div_Write_Result_Activity"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer;
+package eu.indiewalkabout.mathbrainer.aritmetic.singleop;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,16 +15,22 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
+/**
+ * -------------------------------------------------------------------------------------------------
+ * Same game as MixedOp_Write_Result_Activity, apart that is only about divisions
+ * Changed only the symbols array to have only : "/"
+ * -------------------------------------------------------------------------------------------------
+ */
+public class Div_Write_Result_Activity extends AppCompatActivity implements IGameFunctions {
 
-
-public class MathRandomOp_Write_Activity extends AppCompatActivity implements IGameFunctions {
 
     // tag for log
-    private final static String TAG = MathRandomOp_Write_Activity.class.getSimpleName();
+    private final static String TAG = Div_Write_Result_Activity.class.getSimpleName();
 
     // view ref
     private TextView numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
@@ -59,7 +65,7 @@ public class MathRandomOp_Write_Activity extends AppCompatActivity implements IG
     private int divHMax    = 15;
     private int divLMax    = 11;
 
-    private char[] symbols = {'+','-','*','/'};
+    private char[] symbols = {'/'};
 
     // num of challenge to pass to next level
     // changing while level growing
@@ -81,7 +87,7 @@ public class MathRandomOp_Write_Activity extends AppCompatActivity implements IG
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_math_randomop_write);
+        setContentView(R.layout.activity_div_write_result);
 
         // set views ref
         firstOperand_tv    = (TextView)  findViewById(R.id.firstOperand_tv);
@@ -102,7 +108,7 @@ public class MathRandomOp_Write_Activity extends AppCompatActivity implements IG
         countdownBar = (ProgressBar)findViewById(R.id.progressbar);
 
         // Create new count down indicator, without starting it
-        countDownIndicator = new CountDownIndicator(MathRandomOp_Write_Activity.this, (ProgressBar) countdownBar, MathRandomOp_Write_Activity.this);
+        countDownIndicator = new CountDownIndicator(Div_Write_Result_Activity.this, (ProgressBar) countdownBar, Div_Write_Result_Activity.this);
 
 
         // start with first challenge and countdown init
@@ -152,7 +158,7 @@ public class MathRandomOp_Write_Activity extends AppCompatActivity implements IG
 
         // check if result is ok...
         if (inputNum != 0  && inputNum == answerOK) {
-            Toast.makeText(MathRandomOp_Write_Activity.this, "OK!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Div_Write_Result_Activity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
 
@@ -171,7 +177,7 @@ public class MathRandomOp_Write_Activity extends AppCompatActivity implements IG
 
             // ...otherwise a life will be lost
         } else {
-            Toast.makeText(MathRandomOp_Write_Activity.this, "WRONG...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Div_Write_Result_Activity.this, "WRONG...", Toast.LENGTH_SHORT).show();
 
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
@@ -344,7 +350,7 @@ public class MathRandomOp_Write_Activity extends AppCompatActivity implements IG
         countDownIndicator.countdownReset();
 
         // todo : game over screen
-        Toast.makeText(MathRandomOp_Write_Activity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
+        Toast.makeText(Div_Write_Result_Activity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
 
     }
 

@@ -8,7 +8,59 @@
 
 
     <Button
-        android:id="@+id/ResultWriteBtn"
+        android:id="@+id/sumWrite_Btn"
+        android:layout_width="61dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="8dp"
+        android:text="+ __"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sumChoose_Btn" />
+
+    <Button
+        android:id="@+id/diffWrite_Btn"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="- __"
+        app:layout_constraintBottom_toTopOf="@+id/sumWrite_Btn"
+        app:layout_constraintStart_toEndOf="@+id/sumWrite_Btn"
+        app:layout_constraintTop_toBottomOf="@+id/sumWrite_Btn"
+        app:layout_constraintVertical_bias="0.538" />
+
+    <Button
+        android:id="@+id/multWrite_Btn"
+        android:layout_width="67dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="* __"
+        app:layout_constraintBottom_toTopOf="@+id/diffWrite_Btn"
+        app:layout_constraintStart_toEndOf="@+id/diffWrite_Btn"
+        app:layout_constraintTop_toBottomOf="@+id/diffWrite_Btn"
+        app:layout_constraintVertical_bias="0.538" />
+
+    <Button
+        android:id="@+id/divWrite_Btn"
+        android:layout_width="65dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="/ __"
+        app:layout_constraintBottom_toTopOf="@+id/multWrite_Btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/multChoose_Btn"
+        app:layout_constraintTop_toBottomOf="@+id/multWrite_Btn"
+        app:layout_constraintVertical_bias="0.538" />
+
+    <Button
+        android:id="@+id/MixedOps_WriteResultBtn"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginStart="32dp"
@@ -28,15 +80,15 @@
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:text="@string/resultwritestatsvalues"
-        app:layout_constraintBottom_toTopOf="@+id/ResultWriteBtn"
+        app:layout_constraintBottom_toTopOf="@+id/MixedOps_WriteResultBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/ResultWriteBtn"
-        app:layout_constraintTop_toBottomOf="@+id/ResultWriteBtn"
+        app:layout_constraintStart_toEndOf="@+id/MixedOps_WriteResultBtn"
+        app:layout_constraintTop_toBottomOf="@+id/MixedOps_WriteResultBtn"
         app:layout_constraintVertical_bias="0.339" />
 
     <Button
-        android:id="@+id/ResultChooseBtn"
+        android:id="@+id/MixedOps_ChooseResultBtn"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_marginStart="32dp"
@@ -44,7 +96,7 @@
         android:layout_marginTop="8dp"
         android:text="+-*/   _?_"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ResultWriteBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/MixedOps_WriteResultBtn" />
 
     <TextView
         android:id="@+id/resultChooseStatsText"
@@ -55,11 +107,11 @@
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:text="@string/resultchoosestatsvalues"
-        app:layout_constraintBottom_toTopOf="@+id/ResultChooseBtn"
+        app:layout_constraintBottom_toTopOf="@+id/MixedOps_ChooseResultBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/ResultChooseBtn"
-        app:layout_constraintTop_toBottomOf="@+id/ResultChooseBtn"
+        app:layout_constraintStart_toEndOf="@+id/MixedOps_ChooseResultBtn"
+        app:layout_constraintTop_toBottomOf="@+id/MixedOps_ChooseResultBtn"
         app:layout_constraintVertical_bias="0.49" />
 
     <Button
@@ -71,15 +123,18 @@
         android:layout_marginTop="8dp"
         android:text="@string/quick_count"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/sumWrite_Btn" />
 
     <TextView
         android:id="@+id/countStatsLabel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginLeft="76dp"
         android:text="@string/countstatsvalues"
-        tools:layout_editor_absoluteX="208dp"
-        tools:layout_editor_absoluteY="166dp" />
+        app:layout_constraintBottom_toTopOf="@+id/quickCountBtn"
+        app:layout_constraintStart_toEndOf="@+id/quickCountBtn"
+        app:layout_constraintTop_toBottomOf="@+id/quickCountBtn" />
 
     <Button
         android:id="@+id/doublingBtn"
@@ -89,7 +144,8 @@
         android:layout_marginTop="8dp"
         android:text="2*"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quickCountBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/quickCountBtn"
+        android:layout_marginLeft="32dp" />
 
     <TextView
         android:id="@+id/doublingStatsText"
@@ -111,7 +167,8 @@
         android:layout_marginTop="8dp"
         android:text="@string/falling_ops"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/doublingBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/doublingBtn"
+        android:layout_marginLeft="32dp" />
 
     <TextView
         android:id="@+id/fallingStatsText"
@@ -133,7 +190,8 @@
         android:layout_marginTop="8dp"
         android:text="@string/numbers_order"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fallingBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/fallingBtn"
+        android:layout_marginLeft="32dp" />
 
     <TextView
         android:id="@+id/numberOrderStatsLabel"
@@ -155,7 +213,8 @@
         android:layout_marginTop="8dp"
         android:text="@string/random_ops"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orderBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/orderBtn"
+        android:layout_marginLeft="32dp" />
 
     <TextView
         android:id="@+id/randomOpsStatsLabel"
@@ -177,7 +236,8 @@
         android:layout_marginTop="8dp"
         android:text="@string/sounds_sequence"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/randomOpsBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/randomOpsBtn"
+        android:layout_marginLeft="32dp" />
 
     <TextView
         android:id="@+id/soundSeqStatsLabel"
@@ -204,7 +264,7 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/sumChoose_Btn"
         android:layout_width="61dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -212,46 +272,46 @@
         android:layout_marginTop="8dp"
         android:text="+ _?_"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ResultChooseBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/MixedOps_ChooseResultBtn" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/diffChoose_Btn"
         android:layout_width="66dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="- _?_"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/sumChoose_Btn"
+        app:layout_constraintStart_toEndOf="@+id/sumChoose_Btn"
+        app:layout_constraintTop_toBottomOf="@+id/sumChoose_Btn"
         app:layout_constraintVertical_bias="0.538" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/multChoose_Btn"
         android:layout_width="67dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="* _?_"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/diffChoose_Btn"
+        app:layout_constraintStart_toEndOf="@+id/diffChoose_Btn"
+        app:layout_constraintTop_toBottomOf="@+id/diffChoose_Btn"
         app:layout_constraintVertical_bias="0.538" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/divChoose_Btn"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="/ _?_"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintBottom_toTopOf="@+id/multChoose_Btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/button3"
-        app:layout_constraintTop_toBottomOf="@+id/button3"
+        app:layout_constraintStart_toEndOf="@+id/multChoose_Btn"
+        app:layout_constraintTop_toBottomOf="@+id/multChoose_Btn"
         app:layout_constraintVertical_bias="0.538" />
 </android.support.constraint.ConstraintLayout>
