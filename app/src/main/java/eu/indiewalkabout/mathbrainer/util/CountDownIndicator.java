@@ -59,6 +59,16 @@ public class CountDownIndicator extends ProgressBar{
 
     /**
      * ---------------------------------------------------------------------------------------------
+     * Don't include countdown bar in the scene
+     * ---------------------------------------------------------------------------------------------
+     */
+    public void goneCountDownbar() {
+        // countdown bar gone
+        countdownBar.setVisibility(GONE);
+    }
+
+    /**
+     * ---------------------------------------------------------------------------------------------
      * Called by MathCountDownTimer onFinish
      * ---------------------------------------------------------------------------------------------
      */
