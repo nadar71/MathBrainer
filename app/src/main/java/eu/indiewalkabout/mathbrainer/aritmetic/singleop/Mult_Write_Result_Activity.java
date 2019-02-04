@@ -13,9 +13,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdView;
+
 import java.util.ArrayList;
 
+import eu.indiewalkabout.mathbrainer.MainActivity;
 import eu.indiewalkabout.mathbrainer.R;
+import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
@@ -27,6 +31,9 @@ import eu.indiewalkabout.mathbrainer.util.myUtil;
  * -------------------------------------------------------------------------------------------------
  */
 public class Mult_Write_Result_Activity extends AppCompatActivity implements IGameFunctions {
+
+    // admob banner ref
+    private AdView mAdView;
 
     // tag for log
     private final static String TAG = Mult_Write_Result_Activity.class.getSimpleName();
@@ -87,6 +94,11 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mult_write_result);
+
+        mAdView = findViewById(R.id.adView);
+
+        // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
+        mAdView.loadAd(ConsentSDK.getAdRequest(Mult_Write_Result_Activity.this));
 
         // set views ref
         firstOperand_tv    = (TextView)  findViewById(R.id.firstOperand_tv);

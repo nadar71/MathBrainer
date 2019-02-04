@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.ads.AdView;
+
 import eu.indiewalkabout.mathbrainer.aritmetic.DoubleNumberActivity;
 import eu.indiewalkabout.mathbrainer.aritmetic.MixedOp_Choose_Result_Activity;
 import eu.indiewalkabout.mathbrainer.aritmetic.MixedOp_Write_Result_Activity;
@@ -22,6 +24,7 @@ import eu.indiewalkabout.mathbrainer.othergames.CountObjectsActivity;
 import eu.indiewalkabout.mathbrainer.othergames.FallingOperationsActivity;
 import eu.indiewalkabout.mathbrainer.othergames.NumberOrderActivity;
 import eu.indiewalkabout.mathbrainer.othergames.SoundsSeqActivity;
+import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 
 /**
  * -------------------------------------------------------------------------------------------------
@@ -30,11 +33,18 @@ import eu.indiewalkabout.mathbrainer.othergames.SoundsSeqActivity;
  */
 public class ChooseGameActivity extends AppCompatActivity {
 
+    // admob banner ref
+    private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_game);
 
+        mAdView = findViewById(R.id.adView);
+
+        // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
+        mAdView.loadAd(ConsentSDK.getAdRequest(ChooseGameActivity.this));
 
         // -----------------------------------------------------------------------------------------
         // Aritmetic operation button

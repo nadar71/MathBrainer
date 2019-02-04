@@ -14,9 +14,12 @@ import android.widget.TextView;
 
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdView;
+
 import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.R;
+import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Sum_Write_Result_Activity;
 import eu.indiewalkabout.mathbrainer.util.*;
 
 /**
@@ -25,6 +28,9 @@ import eu.indiewalkabout.mathbrainer.util.*;
  * -------------------------------------------------------------------------------------------------
  */
 public class DoubleNumberActivity extends AppCompatActivity implements IGameFunctions {
+
+    // admob banner ref
+    private AdView mAdView;
 
     // tag for log
     private final static String TAG = DoubleNumberActivity.class.getSimpleName();
@@ -68,6 +74,12 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_double_number);
+
+
+        mAdView = findViewById(R.id.adView);
+
+        // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
+        mAdView.loadAd(ConsentSDK.getAdRequest(DoubleNumberActivity.this));
 
         // set views ref
         numberToBeDoubled_tv   = (TextView)  findViewById(R.id.randomNum_tv);

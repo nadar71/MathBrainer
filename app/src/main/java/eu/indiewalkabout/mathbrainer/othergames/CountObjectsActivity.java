@@ -1,5 +1,7 @@
 package eu.indiewalkabout.mathbrainer.othergames;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,12 +16,22 @@ import android.view.Display;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.ads.AdView;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 import eu.indiewalkabout.mathbrainer.R;
+import eu.indiewalkabout.mathbrainer.aritmetic.RandomOperationActivity;
+import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
 public class CountObjectsActivity extends AppCompatActivity  implements IGameFunctions {
+
+    // admob banner ref
+    private AdView mAdView;
 
     private static final String TAG =  CountObjectsActivity.class.getSimpleName();
 
@@ -30,6 +42,9 @@ public class CountObjectsActivity extends AppCompatActivity  implements IGameFun
     // countdown objects
     ProgressBar countdownBar;
     CountDownIndicator countDownIndicator;
+
+    // Context
+    Context context;
 
 
     // max time, increased by level growing
@@ -45,8 +60,16 @@ public class CountObjectsActivity extends AppCompatActivity  implements IGameFun
 
         setContentView(R.layout.activity_count_objects);
 
+        mAdView = findViewById(R.id.adView);
+
+        // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
+        mAdView.loadAd(ConsentSDK.getAdRequest(CountObjectsActivity.this));
+
         //Get a reference to our ImageView in the layout
         ourFrame = (ImageView) findViewById(R.id.imageView);
+
+        // setup context
+        context = this;
 
         // countdown ref
         countdownBar = (ProgressBar)findViewById(R.id.progressbar);
@@ -154,12 +177,8 @@ public class CountObjectsActivity extends AppCompatActivity  implements IGameFun
     }
 
 
-
-    // ---------------------------------------------------------------------------------------------
-    //                                          DEBUG
-    // ---------------------------------------------------------------------------------------------
     // -------------------------------------------
-    // Scratch method for testing drawing method
+    // Draw game items to count
     // -------------------------------------------
     private void drawGame() {
 
@@ -178,7 +197,7 @@ public class CountObjectsActivity extends AppCompatActivity  implements IGameFun
         int validDrawAreaItemsWidth  = (int) (getScreenWidth()  * 0.95);
         int validDrawAreaItemsHeight = (int) (getScreenHeight() * 0.72);
 
-        float imageScaleXY = 0.08f;
+        float imageScaleXY = 0.2f;
 
         //Create a bitmap object to use as our canvas
         Log.d(TAG, "onCreate: validDrawAreaItemsWidth : "+validDrawAreaItemsWidth + " validDrawAreaItemsHeight : " + validDrawAreaItemsHeight);
@@ -202,24 +221,40 @@ public class CountObjectsActivity extends AppCompatActivity  implements IGameFun
         paint.setColor(Color.argb(255, 1, 255, 255));
 
 
-        // draw numebr of images to remember
+        for(int i=0;i<20;i++) {
+            try {
+                AssetManager assetManager = context.getAssets();
+                InputStream inputStream = assetManager.open("memo" + (100+i) + ".png");
+                Bitmap item = BitmapFactory.decodeStream(inputStream);
+                inputStream.close();
+                // Log.d("BitmapText","memo" + (100+i) + ".png format: " + item.getConfig());
+                item = item.copy(Bitmap.Config.ARGB_8888, true);
+                int randX = myUtil.randRange_ApiCheck(15, validDrawAreaItemsWidth);
+                int randY = myUtil.randRange_ApiCheck(15, validDrawAreaItemsHeight);
+                ourCanvas.drawBitmap(myUtil.resizeBitmapByScale(item, imageScaleXY, false, 100, 100), randX, randY, paint);
+
+            } catch (IOException e) {
+                Log.d(TAG, "drawGame: "+e.getMessage());
+            } finally {
+                // we should really close our input streams here.
+            }
+        }
+
+
+        /*
+        // dummy check from drawable
         Bitmap a = BitmapFactory.decodeResource(getResources(), R.drawable.memo101);
         a = a.copy(Bitmap.Config.ARGB_8888, true);
         int randX = myUtil.randRange_ApiCheck(15, validDrawAreaItemsWidth);
         int randY = myUtil.randRange_ApiCheck(15, validDrawAreaItemsHeight);
-        ourCanvas.drawBitmap(myUtil.resizeBitmapByScale(a, imageScaleXY,false, 100, 100 ), randX, randY, paint);
-
-
-        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.memo102);
-        b = b.copy(Bitmap.Config.ARGB_8888, true);
-        randX = myUtil.randRange_ApiCheck(15, validDrawAreaItemsWidth);
-        randY = myUtil.randRange_ApiCheck(15, validDrawAreaItemsHeight);
-        ourCanvas.drawBitmap(myUtil.resizeBitmapByScale(b, imageScaleXY,false, 100, 100 ), randX, randY, paint);
-
+        ourCanvas.drawBitmap(myUtil.resizeBitmapByScale(a, imageScaleXY, false, 100, 100), randX, randY, paint);
+        */
 
         // invalidate view for redrawing
         ourFrame.invalidate();
     }
+
+
 
 
 
