@@ -14,10 +14,10 @@
 
         <!-- ADMOB -->
         <!-- Sample AdMob App ID:        ca-app-pub-3940256099942544~3347511713 -->
-        <!-- THIS APP REAL AdMob App ID: ca-app-pub-8846176967909254~2228049613 -->
+        <!-- THIS APP REAL AdMob App ID:  -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
+            android:value="@string/admob_key_app_id" />
 
 
         <activity
