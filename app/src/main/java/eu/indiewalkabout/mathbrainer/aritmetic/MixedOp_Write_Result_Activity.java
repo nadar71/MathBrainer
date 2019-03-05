@@ -125,7 +125,7 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
         // set first level
         updateLevel();
 
-        // set listner on DONE button on soft keyboard to get the player input
+        // set listener on DONE button on soft keyboard to get the player input
         playerInput_et.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

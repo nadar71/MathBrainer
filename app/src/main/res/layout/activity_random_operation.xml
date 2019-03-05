@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    tools:context="eu.indiewalkabout.mathbrainer.othergames.NumberOrderActivity">
-
+    tools:context="eu.indiewalkabout.mathbrainer.aritmetic.RandomOperationActivity">
 
     <ImageView
         android:id="@+id/backgroundImg"
@@ -22,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.126"
         app:srcCompat="@drawable/summer" />
+
 
     <ProgressBar
         android:id="@+id/progressbar"
@@ -41,28 +40,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:gravity="start"
         android:text="@string/level"
         android:textAlignment="viewStart"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar"
-        android:layout_marginLeft="8dp"
-        android:gravity="start" />
+        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
 
     <TextView
         android:id="@+id/levelValue_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/_0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/level_tv"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/level_tv" />
 
     <TextView
         android:id="@+id/scoreLabel_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="start"
         android:text="@string/score"
         android:textAlignment="viewStart"
         app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
@@ -70,8 +70,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toEndOf="@+id/level_tv"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar"
-        android:gravity="start" />
+        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
 
     <TextView
         android:id="@+id/scoreValue_tv"
@@ -91,22 +90,21 @@
         android:layout_width="36dp"
         android:layout_height="19dp"
         android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
         android:gravity="center_vertical"
         android:text="@string/lifes"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar"
-        android:layout_marginRight="60dp" />
-
+        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
 
 
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:columnCount="3"
         android:rowCount="1"
@@ -127,8 +125,8 @@
             android:id="@+id/life_02_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:contentDescription="@string/todo"
             app:layout_constraintEnd_toStartOf="@+id/life_03_iv"
             app:layout_constraintStart_toEndOf="@+id/life_01_iv"
@@ -150,187 +148,134 @@
 
 
     <!-- - - - - QUIZ SECTION - - - - - - - - - - - - - - - - - - -->
+    <TextView
+        android:id="@+id/firstOperand_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="92dp"
+        android:gravity="center_vertical"
+        android:text="@string/_1"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv" />
+
+    <TextView
+        android:id="@+id/secondOperand_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:text="@string/_2"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/operationSymbol_tv"
+        app:layout_constraintStart_toEndOf="@+id/operationSymbol_tv"
+        app:layout_constraintTop_toBottomOf="@+id/operationSymbol_tv"
+        app:layout_constraintVertical_bias="0.64" />
+
+    <TextView
+        android:id="@+id/operationSymbol_tv"
+        android:layout_width="44dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:gravity="center_vertical"
+        android:text="@string/question_mark"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/firstOperand_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/firstOperand_tv"
+        app:layout_constraintTop_toBottomOf="@+id/firstOperand_tv"
+        app:layout_constraintVertical_bias="0.41" />
+
+
+    <TextView
+        android:id="@+id/equalLabel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="@string/equalSign"
+        app:layout_constraintBottom_toTopOf="@+id/secondOperand_tv"
+        app:layout_constraintStart_toEndOf="@+id/secondOperand_tv"
+        app:layout_constraintTop_toBottomOf="@+id/secondOperand_tv"
+        app:layout_constraintVertical_bias="0.45" />
+
+    <TextView
+        android:id="@+id/result_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/_2"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/equalLabel_tv"
+        app:layout_constraintStart_toEndOf="@+id/equalLabel_tv"
+        app:layout_constraintTop_toBottomOf="@+id/equalLabel_tv"
+        app:layout_constraintVertical_bias="0.61" />
+
+    <TextView
+        android:id="@+id/instruction_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/random_op_instructions"
+        app:layout_constraintBottom_toTopOf="@+id/answerBtnGrid"
+        app:layout_constraintEnd_toStartOf="@+id/answerBtnGrid"
+        app:layout_constraintStart_toEndOf="@+id/answerBtnGrid" />
 
     <GridLayout
-        android:id="@+id/gridLayout2"
-        android:layout_width="432dp"
+        android:id="@+id/answerBtnGrid"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:columnCount="3"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:columnCount="4"
+        android:rowCount="1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/operand_01Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="0"
-            android:padding="40dp"
-            android:text="@string/operand_01value" />
-
-        <TextView
-            android:id="@+id/operand_02Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="1"
-            android:padding="40dp"
-            android:text="@string/operand_02value" />
-
-        <TextView
-            android:id="@+id/operand_03Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="2"
-            android:padding="40dp"
-            android:text="@string/operand_03value" />
-
-        <TextView
-            android:id="@+id/operand_04Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="3"
-            android:padding="40dp"
-            android:text="@string/operand_04value" />
-
-        <TextView
-            android:id="@+id/operand_05Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_row="0"
-            android:padding="40dp"
-            android:text="@string/operand_05value" />
-
-        <TextView
-            android:id="@+id/operand_06Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_row="1"
-            android:padding="40dp"
-            android:text="@string/operand_06value" />
-
-        <TextView
-            android:id="@+id/operand_07Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_row="2"
-            android:padding="40dp"
-            android:text="@string/operand_07value" />
-
-        <TextView
-            android:id="@+id/operand_08Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_row="3"
-            android:padding="40dp"
-            android:text="@string/operand_08value" />
-
-        <TextView
-            android:id="@+id/sumSymbol"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_row="0"
-            android:padding="20dp"
-            android:text="@string/plusSign" />
-
-        <TextView
-            android:id="@+id/differenceSymbol"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_row="1"
-            android:padding="20dp"
-            android:text="@string/differenceSign" />
-
-        <TextView
-            android:id="@+id/multSymbol"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_row="2"
-            android:padding="20dp"
-            android:text="@string/multSign" />
-
-        <TextView
-            android:id="@+id/divisionSymbol"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_row="3"
-            android:padding="20dp"
-            android:text="@string/divSign" />
-
-    </GridLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout2"
-        app:layout_constraintVertical_bias="0.059">
+        app:layout_constraintTop_toBottomOf="@+id/operationSymbol_tv"
+        app:layout_constraintVertical_bias="0.344">
 
         <Button
-            android:id="@+id/choice_02"
-            style="@style/Widget.AppCompat.Button"
+            android:id="@+id/answer_01Btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:text="@string/choice_02"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/plusSign"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/choice_01" />
+            tools:layout_editor_absoluteY="313dp" />
 
         <Button
-            android:id="@+id/choice_03"
-            style="@style/Widget.AppCompat.Button"
+            android:id="@+id/answer_02Btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:text="@string/choice_03"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.22"
-            app:layout_constraintStart_toEndOf="@+id/choice_02"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.03" />
+            android:text="@string/differenceSign"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_editor_absoluteY="240dp" />
 
         <Button
-            android:id="@+id/choice_01"
-            style="@style/Widget.AppCompat.Button"
+            android:id="@+id/answer_03Btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:text="@string/choice_01"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.01999998" />
-    </LinearLayout>
+            android:text="@string/multSign"
+            tools:layout_editor_absoluteX="36dp"
+            tools:layout_editor_absoluteY="240dp" />
+
+        <Button
+            android:id="@+id/answer_04Btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/divSign"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_editor_absoluteY="313dp" />
+
+    </GridLayout>
 
 
     <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->
@@ -349,7 +294,6 @@
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintHorizontal_bias="0.0"
         ads:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
-
 
 
 </android.support.constraint.ConstraintLayout>

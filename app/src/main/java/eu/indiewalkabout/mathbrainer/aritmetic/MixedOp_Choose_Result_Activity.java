@@ -142,7 +142,8 @@ public class MixedOp_Choose_Result_Activity extends AppCompatActivity implements
         countdownBar = (ProgressBar)findViewById(R.id.progressbar);
 
         // Create new count down indicator, without starting it
-        countDownIndicator = new CountDownIndicator(MixedOp_Choose_Result_Activity.this, (ProgressBar) countdownBar, MixedOp_Choose_Result_Activity.this);
+        countDownIndicator = new CountDownIndicator(MixedOp_Choose_Result_Activity.this,
+                (ProgressBar) countdownBar, MixedOp_Choose_Result_Activity.this);
 
         // start with first challenge and countdown init
         newChallenge();
