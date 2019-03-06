@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -22,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.aritmetic.RandomOperationActivity;
+import eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
@@ -36,12 +38,19 @@ public class CountObjectsActivity extends AppCompatActivity  implements IGameFun
     private static final String TAG =  CountObjectsActivity.class.getSimpleName();
 
 
-    // Our draw frame
+    // Our costumview img references (almost useless)
     ImageView ourFrame;
+
+    // Costum view drawing items to count
+    QuickCountItemDrawView drawquiz;
 
     // countdown objects
     ProgressBar countdownBar;
     CountDownIndicator countDownIndicator;
+
+
+    // todo: delete
+    private Button testbtn;
 
     // Context
     Context context;
@@ -50,6 +59,9 @@ public class CountObjectsActivity extends AppCompatActivity  implements IGameFun
     // max time, increased by level growing
     private long timerLength            = 1000;
     private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
+
+    // items to count for challenge
+    private int itemsToCount = 20;
 
 
 
@@ -66,7 +78,21 @@ public class CountObjectsActivity extends AppCompatActivity  implements IGameFun
         mAdView.loadAd(ConsentSDK.getAdRequest(CountObjectsActivity.this));
 
         //Get a reference to our ImageView in the layout
-        ourFrame = (ImageView) findViewById(R.id.imageView);
+        ourFrame = (ImageView) findViewById(R.id.canvas_image_ref_img);
+
+        // get the items to count view, set inviisible at the moment
+        drawquiz = findViewById(R.id.itemDrawing_v);
+        drawquiz.setVisibility(View.INVISIBLE);
+
+
+        //todo: delete
+        testbtn  = findViewById(R.id.test_btn);
+        testbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawquiz.redraw(itemsToCount);
+            }
+        });
 
         // setup context
         context = this;
@@ -82,8 +108,9 @@ public class CountObjectsActivity extends AppCompatActivity  implements IGameFun
 
         newChallenge();
 
-
     }
+
+
 
 
     // ---------------------------------------------------------------------------------------------
@@ -111,11 +138,14 @@ public class CountObjectsActivity extends AppCompatActivity  implements IGameFun
      */
     private void newChallenge() {
 
+
         // DEBUG
-        drawGame();
+        // drawGame();
+        drawquiz.redraw(itemsToCount);
+        drawquiz.setVisibility(View.VISIBLE);
 
         // reset countdown if any and restart if
-        countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
+        // countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
 
 
 
@@ -177,7 +207,14 @@ public class CountObjectsActivity extends AppCompatActivity  implements IGameFun
     }
 
 
+
+
+
+
+
+
     // -------------------------------------------
+    // UNUSED , just for debug
     // Draw game items to count
     // -------------------------------------------
     private void drawGame() {
@@ -221,17 +258,22 @@ public class CountObjectsActivity extends AppCompatActivity  implements IGameFun
         paint.setColor(Color.argb(255, 1, 255, 255));
 
 
+        // draw 20 images
         for(int i=0;i<20;i++) {
             try {
+                // get images
                 AssetManager assetManager = context.getAssets();
                 InputStream inputStream = assetManager.open("memo" + (100+i) + ".png");
                 Bitmap item = BitmapFactory.decodeStream(inputStream);
                 inputStream.close();
                 // Log.d("BitmapText","memo" + (100+i) + ".png format: " + item.getConfig());
+
+                // draw on canvas
                 item = item.copy(Bitmap.Config.ARGB_8888, true);
                 int randX = myUtil.randRange_ApiCheck(15, validDrawAreaItemsWidth);
                 int randY = myUtil.randRange_ApiCheck(15, validDrawAreaItemsHeight);
-                ourCanvas.drawBitmap(myUtil.resizeBitmapByScale(item, imageScaleXY, false, 100, 100), randX, randY, paint);
+                ourCanvas.drawBitmap(myUtil.resizeBitmapByScale(item, imageScaleXY),
+                        randX, randY, paint);
 
             } catch (IOException e) {
                 Log.d(TAG, "drawGame: "+e.getMessage());

@@ -151,7 +151,7 @@
     <!-- - - - - QUIZ SECTION - - - - - - - - - - - - - - - - - - -->
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/canvas_image_ref_img"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -164,6 +164,93 @@
 
     <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->
     <!-- THIS APP REAL AdMob banner ID: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+    <eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView
+        android:id="@+id/itemDrawing_v"
+        android:layout_width="0dp"
+        android:layout_height="480dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintEnd_toEndOf="@+id/backgroundImg"
+        app:layout_constraintStart_toStartOf="@+id/canvas_image_ref_img"
+        app:layout_constraintTop_toTopOf="@+id/canvas_image_ref_img" />
+
+    <Button
+        android:id="@+id/test_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="TEST"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/itemDrawing_v" />
+
+    <GridLayout
+        android:id="@+id/answerBtnGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="3"
+        app:layout_constraintBottom_toBottomOf="@+id/itemDrawing_v"
+        app:layout_constraintEnd_toEndOf="@+id/itemDrawing_v"
+        app:layout_constraintStart_toStartOf="@+id/itemDrawing_v"
+        app:layout_constraintTop_toTopOf="@+id/itemDrawing_v">
+
+        <Button
+            android:id="@+id/answer_plus_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/answer_01value"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_editor_absoluteY="313dp" />
+
+        <Button
+            android:id="@+id/answer_minus_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/answer_02value"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_editor_absoluteY="240dp" />
+
+        <Button
+            android:id="@+id/answer_mult_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/answer_03value"
+            tools:layout_editor_absoluteX="36dp"
+            tools:layout_editor_absoluteY="240dp" />
+
+        <Button
+            android:id="@+id/answer_div_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/answer_04value"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_editor_absoluteY="313dp" />
+
+        <Button
+            android:id="@+id/answer_05Btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/answer_05value"
+            tools:layout_editor_absoluteX="263dp"
+            tools:layout_editor_absoluteY="240dp" />
+
+        <Button
+            android:id="@+id/answer_06Btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/answer_06value"
+            tools:layout_editor_absoluteX="36dp"
+            tools:layout_editor_absoluteY="313dp" />
+
+    </GridLayout>
+
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
         android:layout_width="match_parent"
@@ -179,6 +266,17 @@
         ads:layout_constraintHorizontal_bias="0.0"
         ads:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/count_objects_question"
+        app:layout_constraintBottom_toTopOf="@+id/answerBtnGrid"
+        app:layout_constraintEnd_toStartOf="@+id/answerBtnGrid"
+        app:layout_constraintStart_toEndOf="@+id/answerBtnGrid" />
 
 
 </android.support.constraint.ConstraintLayout>

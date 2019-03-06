@@ -115,6 +115,7 @@
     <string name="question_mark">\?</string>
     <string name="random_op_instructions">Choose the right operation :</string>
     <string name="equalSign">=</string>
+    <string name="count_objects_question">How many objects ?</string>
 
 
 </resources>

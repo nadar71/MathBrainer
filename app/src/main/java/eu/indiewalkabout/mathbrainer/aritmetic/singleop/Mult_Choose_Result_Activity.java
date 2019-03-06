@@ -129,10 +129,10 @@ public class Mult_Choose_Result_Activity extends AppCompatActivity implements IG
         lifesValue_iv.add((ImageView) findViewById(R.id.life_03_iv));
 
         // btn references
-        answer01Btn =  findViewById(R.id.answer_01Btn);
-        answer02Btn =  findViewById(R.id.answer_02Btn);
-        answer03Btn =  findViewById(R.id.answer_03Btn);
-        answer04Btn =  findViewById(R.id.answer_04Btn);
+        answer01Btn =  findViewById(R.id.answer_plus_btn);
+        answer02Btn =  findViewById(R.id.answer_minus_btn);
+        answer03Btn =  findViewById(R.id.answer_mult_btn);
+        answer04Btn =  findViewById(R.id.answer_div_btn);
         answer05Btn =  findViewById(R.id.answer_05Btn);
         answer06Btn =  findViewById(R.id.answer_06Btn);
         answer07Btn =  findViewById(R.id.answer_07Btn);

@@ -52,11 +52,10 @@ public class myUtil {
 
     /**
      * ---------------------------------------------------------------------------------------------
-     * Return a scaled bitmap scaled by scale
+     * Return a scaled bitmap resized by scale
      * ---------------------------------------------------------------------------------------------
      */
-    public static Bitmap resizeBitmapByScale(Bitmap bitmap, float scale,
-                                             boolean recycle, int posX, int posY) {
+    public static Bitmap resizeBitmapByScale(Bitmap bitmap, float scale) {
 
 
         // dimensions scaled

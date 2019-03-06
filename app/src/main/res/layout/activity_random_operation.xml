@@ -242,7 +242,7 @@
         app:layout_constraintVertical_bias="0.344">
 
         <Button
-            android:id="@+id/answer_01Btn"
+            android:id="@+id/answer_plus_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/plusSign"
@@ -251,7 +251,7 @@
             tools:layout_editor_absoluteY="313dp" />
 
         <Button
-            android:id="@+id/answer_02Btn"
+            android:id="@+id/answer_minus_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/differenceSign"
@@ -260,7 +260,7 @@
             tools:layout_editor_absoluteY="240dp" />
 
         <Button
-            android:id="@+id/answer_03Btn"
+            android:id="@+id/answer_mult_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/multSign"
@@ -268,7 +268,7 @@
             tools:layout_editor_absoluteY="240dp" />
 
         <Button
-            android:id="@+id/answer_04Btn"
+            android:id="@+id/answer_div_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/divSign"

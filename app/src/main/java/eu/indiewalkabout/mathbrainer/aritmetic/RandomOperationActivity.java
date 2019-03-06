@@ -30,11 +30,11 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
     // view ref
     private TextView numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
-    private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv;
+    private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv, result_tv;
     private ArrayList<ImageView> lifesValue_iv ;
 
 
-    Button answer01Btn, answer02Btn, answer03Btn, answer04Btn;
+    Button answer_plus_Btn, answer_minus_Btn, answer_mult_Btn, answer_div_Btn;
 
 
     // numbers to be processed
@@ -42,10 +42,11 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
     private char operation;
 
     // answer and its stuff
-    private int answerOK;
-    private int correctBtnNumber = 1;
-    private int offset           = 10;
-    private int pressedBtnValue  = 0;
+    private int    answer;
+    private String operationOK;
+    private int correctBtnNumber    = 1;
+    private int offset              = 10;
+    private String pressedBtnValue  = "";
 
     // starting level
     private int level = 0;
@@ -78,13 +79,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
     private int numChallengeEachLevel =  25;
     private int countChallenge        =  1;
 
-    // random range for answer btn number
-    // changing while level growing
-    // todo :delete
-    private int minAnswerBtnNum              = 3;
-    private int maxAnswerBtnNum              = 9;
-    private int currentLevelAnswerBtnVisible = 3;
-    private int levelAnswerBtnTotalNum       = 3;
+
 
     // score var
     private int score = 0;
@@ -112,6 +107,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         firstOperand_tv    = (TextView)  findViewById(R.id.firstOperand_tv);
         secondOperand_tv   = (TextView)  findViewById(R.id.secondOperand_tv);
         operationSymbol_tv = (TextView)  findViewById(R.id.operationSymbol_tv);
+        result_tv          = (TextView)  findViewById(R.id.result_tv);
 
         scoreValue_tv      = (TextView)  findViewById(R.id.scoreValue_tv);
         levelValue_tv      = (TextView)  findViewById(R.id.levelValue_tv);
@@ -123,10 +119,10 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         lifesValue_iv.add((ImageView) findViewById(R.id.life_03_iv));
 
         // btn references
-        answer01Btn =  findViewById(R.id.answer_01Btn);
-        answer02Btn =  findViewById(R.id.answer_02Btn);
-        answer03Btn =  findViewById(R.id.answer_03Btn);
-        answer04Btn =  findViewById(R.id.answer_04Btn);
+        answer_plus_Btn =  findViewById(R.id.answer_plus_btn);
+        answer_minus_Btn =  findViewById(R.id.answer_minus_btn);
+        answer_mult_Btn =  findViewById(R.id.answer_mult_btn);
+        answer_div_Btn =  findViewById(R.id.answer_div_btn);
 
 
         // define wrong answers storage
@@ -157,41 +153,41 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
      * -------------------------------------------------------------------------------------------------
      */
     private void setBtnPressedListener(){
-        answer01Btn.setOnClickListener(new View.OnClickListener() {
+        answer_plus_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button b = (Button) view;
-                pressedBtnValue = Integer.parseInt((String)b.getText());
+                pressedBtnValue = "+";
                 checkPlayerInput();
             }
         });
 
 
-        answer02Btn.setOnClickListener(new View.OnClickListener() {
+        answer_minus_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button b = (Button) view;
-                pressedBtnValue = Integer.parseInt((String)b.getText());
+                pressedBtnValue = "-";
                 checkPlayerInput();
             }
         });
 
 
-        answer03Btn.setOnClickListener(new View.OnClickListener() {
+        answer_mult_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button b = (Button) view;
-                pressedBtnValue = Integer.parseInt((String)b.getText());
+                pressedBtnValue = "*";
                 checkPlayerInput();
             }
         });
 
 
-        answer04Btn.setOnClickListener(new View.OnClickListener() {
+        answer_div_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button b = (Button) view;
-                pressedBtnValue = Integer.parseInt((String)b.getText());
+                pressedBtnValue = "/";
                 checkPlayerInput();
             }
         });
@@ -208,12 +204,14 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         Log.d(TAG, "checkPlayerInput: pressedBtnValue : " + pressedBtnValue);
 
         // check if result is ok...
-        if (pressedBtnValue != 0  && pressedBtnValue == answerOK) {
+        if ( !pressedBtnValue.isEmpty()  && pressedBtnValue.equals(operationOK)) {
             Toast.makeText(RandomOperationActivity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
 
             countChallenge++;
+
+            operationSymbol_tv.setVisibility(View.VISIBLE);
 
             // rise level after numChallengeEachLevel reached
             if (countChallenge > numChallengeEachLevel){
@@ -307,7 +305,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
         // reset the number of visible button
         // todo :delete
-        currentLevelAnswerBtnVisible = levelAnswerBtnTotalNum;
+        // currentLevelAnswerBtnVisible = levelAnswerBtnTotalNum;
 
         // set operation to be processed
         operation    = symbols[myUtil.randRange_ApiCheck(0, symbols.length-1)];
@@ -336,7 +334,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
                 secondOperand = myUtil.randRange_ApiCheck(min, max);
 
                 // store correct answer
-                answerOK = firstOperand + secondOperand;
+                answer      = firstOperand + secondOperand;
                 break;
 
             case '-':
@@ -345,7 +343,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
                 secondOperand = myUtil.randRange_ApiCheck(min, firstOperand);
 
                 // store correct answer
-                answerOK = firstOperand - secondOperand;
+                answer = firstOperand - secondOperand;
                 break;
 
             case '*':
@@ -360,15 +358,15 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
                 }
 
                 // store correct answer
-                answerOK = firstOperand * secondOperand;
+                answer = firstOperand * secondOperand;
                 break;
 
             case '/':
                 // set operands to be processed
                 secondOperand = myUtil.randRange_ApiCheck(divMin, divHMax);
                 // store correct answer
-                answerOK = myUtil.randRange_ApiCheck(divMin, divLMax);
-                firstOperand  = answerOK * secondOperand;
+                answer = myUtil.randRange_ApiCheck(divMin, divLMax);
+                firstOperand  = answer * secondOperand;
 
                 break;
             default:
@@ -376,187 +374,23 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
         }
 
-        // set operations value in view
+        // right answer
+        operationOK = Character.toString(operation);
+
+        // set values in view
+        result_tv.setText(Integer.toString(answer));
+
+        // hide correct operation
         operationSymbol_tv.setText(Character.toString(operation));
         operationSymbol_tv.setVisibility(View.INVISIBLE);
 
         firstOperand_tv.setText(Integer.toString(firstOperand));
         secondOperand_tv.setText(Integer.toString(secondOperand));
 
-        // setup answers on button
-        setupAnswersBtn();
-
 
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Create setup correct answer and false answer on buttons
-     * ---------------------------------------------------------------------------------------------
-     */
-    private void setupAnswersBtn() {
-        // choose the button where put the correct answer
-        correctBtnNumber = myUtil.randRange_ApiCheck(minAnswerBtnNum, maxAnswerBtnNum);
-        Button tmpBtn    = getTheBtnNumber(correctBtnNumber);
-        tmpBtn.setText(Integer.toString(answerOK));
-
-        // visible answer button update
-        currentLevelAnswerBtnVisible--;
-
-        // set wrong answer on the others
-        for(int i = 1; i <= maxAnswerBtnNum; i++){
-            if (i != correctBtnNumber){
-                switch(operation){
-
-                    case '+':
-                    case '-': {
-                        tmpBtn = getTheBtnNumber(i);
-                        int result = 0;
-                        do {
-                            result = randomOffsetSum();
-                        } while (wrongAnswer.lastIndexOf(result) > 0);
-                        wrongAnswer.add(result);
-
-                        tmpBtn.setText(String.valueOf(result));
-
-                        // make btn visible based on num answer btn visible per level
-                        setAnswerBtnVisibility(tmpBtn);
-
-                        break;
-                    }
-
-                    case '*': {
-                        tmpBtn = getTheBtnNumber(i);
-                        int result = 0;
-                        do {
-                            result = randomOffsetMult();
-                        } while (wrongAnswer.lastIndexOf(result) > 0);
-                        wrongAnswer.add(result);
-
-                        tmpBtn.setText(String.valueOf(result));
-
-                        // make btn visible based on num answer btn visible per level
-                        setAnswerBtnVisibility(tmpBtn);
-
-                        break;
-                    }
-
-                    case '/': {
-                        tmpBtn = getTheBtnNumber(i);
-                        int result = 0;
-                        do {
-                            result = randomOffsetSum();
-                        } while (wrongAnswer.lastIndexOf(result) > 0);
-                        wrongAnswer.add(result);
-
-                        tmpBtn.setText(String.valueOf(result));
-
-                        // make btn visible based on num answer btn visible per level
-                        setAnswerBtnVisibility(tmpBtn);
-
-                        break;
-                    }
-                    default:
-                        break;
-
-                }
-            }else { // the btn with the right answer must be always visible
-                tmpBtn = getTheBtnNumber(correctBtnNumber);
-                tmpBtn.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set btn visible or not depending on current level button visible
-     * @param thisBtn
-     * ---------------------------------------------------------------------------------------------
-     */
-    private void setAnswerBtnVisibility(Button thisBtn) {
-
-        int guess = myUtil.randomSignChooser();
-        if ( (guess > 0 ) && (currentLevelAnswerBtnVisible > 0)  ) {
-            thisBtn.setVisibility(View.VISIBLE);
-            currentLevelAnswerBtnVisible--;
-        }else{
-            thisBtn.setVisibility(View.INVISIBLE);
-        }
-    }
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Random answer for sum generator
-     * ---------------------------------------------------------------------------------------------
-     */
-    private int randomOffsetSum(){
-        int result = myUtil.randRange_ApiCheck(1, (int)(offset * 1.5));
-        if ( (result >= 1) && (result <= 3) ) {
-            return answerOK + myUtil.randomSignChooser()* result;
-        }
-        return answerOK + result;
-    }
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Random answer for multiplication generator
-     * ---------------------------------------------------------------------------------------------
-     */
-    private int randomOffsetMult(){
-        int result = myUtil.randRange_ApiCheck(1, offset * 2);
-        int sign   = myUtil.randomSignChooser();
-
-        if ( (result >= 4) && (result <= 11) ){
-            if (sign > 0 ) {
-                return answerOK + myUtil.randomSignChooser() * result;
-            } else {
-                return (int) ( answerOK + ( myUtil.randomSignChooser() * (int) ( 10 + result) * 0.1));
-            }
-
-        } else if ((result > 11) && (result <= 16)) {
-            if (sign > 0 ) {
-                return answerOK + myUtil.randomSignChooser() * result;
-            } else {
-                return (int) answerOK * (int)(result * 0.1);
-            }
-
-        } else if (result > 16)  {
-            if (sign > 0 ) {
-                return answerOK + myUtil.randomSignChooser() * result;
-            } else {
-                return  (int) ( answerOK + ( myUtil.randomSignChooser() * (int) ( 3 + result) * 0.1));
-            }
-
-        } else
-            return answerOK + myUtil.randomSignChooser() * result;
-
-    }
-
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Return the answer button based on number
-     * @param num
-     * @return
-     * ---------------------------------------------------------------------------------------------
-     */
-    Button getTheBtnNumber(int num){
-        switch(num){
-            case 1 : return answer01Btn;
-            case 2 : return answer02Btn;
-            case 3 : return answer03Btn;
-            case 4 : return answer04Btn;
-            default: break;
-        }
-        return null;
-    }
 
 
     /**
@@ -601,7 +435,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
             numChallengeEachLevel += 5;
 
             // increase the number of visible answer button
-            if (level < 9 ) levelAnswerBtnTotalNum++;
+            // if (level < 9 ) levelAnswerBtnTotalNum++;
 
             // increase time accordingly, but slightly
             timerLength = timerLength + 5000 ;

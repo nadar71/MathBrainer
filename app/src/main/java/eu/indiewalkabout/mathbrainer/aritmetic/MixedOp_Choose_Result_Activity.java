@@ -15,7 +15,6 @@ import com.google.android.gms.ads.AdView;
 import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Mult_Write_Result_Activity;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
@@ -32,7 +31,7 @@ public class MixedOp_Choose_Result_Activity extends AppCompatActivity implements
     private final static String TAG = MixedOp_Choose_Result_Activity.class.getSimpleName();
 
     // view ref
-    private TextView numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
+    private TextView scoreValue_tv, levelValue_tv;
     private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv;
     private ArrayList<ImageView> lifesValue_iv ;
 
@@ -125,10 +124,10 @@ public class MixedOp_Choose_Result_Activity extends AppCompatActivity implements
         lifesValue_iv.add((ImageView) findViewById(R.id.life_03_iv));
 
         // btn references
-        answer01Btn =  findViewById(R.id.answer_01Btn);
-        answer02Btn =  findViewById(R.id.answer_02Btn);
-        answer03Btn =  findViewById(R.id.answer_03Btn);
-        answer04Btn =  findViewById(R.id.answer_04Btn);
+        answer01Btn =  findViewById(R.id.answer_plus_btn);
+        answer02Btn =  findViewById(R.id.answer_minus_btn);
+        answer03Btn =  findViewById(R.id.answer_mult_btn);
+        answer04Btn =  findViewById(R.id.answer_div_btn);
         answer05Btn =  findViewById(R.id.answer_05Btn);
         answer06Btn =  findViewById(R.id.answer_06Btn);
         answer07Btn =  findViewById(R.id.answer_07Btn);
