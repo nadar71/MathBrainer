@@ -55,6 +55,9 @@ public class QuickCountItemDrawView extends View {
     // list of the items
     List<Item> itemList;
 
+    // time length before returning
+    // int timerLength = 0;
+
 
 
 
@@ -94,8 +97,6 @@ public class QuickCountItemDrawView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-
 
 
         //A paint object that does our drawing, on our canvas
@@ -147,6 +148,7 @@ public class QuickCountItemDrawView extends View {
                 // we should really close our input streams here.
             }
         }
+
 
     }
 
@@ -205,6 +207,7 @@ public class QuickCountItemDrawView extends View {
      * ---------------------------------------------------------------------------------------------
      */
     public void redraw(int itemNumber){
+        // this.timerLength = timerLength;
         this.itemNumber = itemNumber;
         this.invalidate();
     }

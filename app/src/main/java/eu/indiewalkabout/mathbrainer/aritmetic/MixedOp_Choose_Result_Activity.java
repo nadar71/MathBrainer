@@ -36,7 +36,7 @@ public class MixedOp_Choose_Result_Activity extends AppCompatActivity implements
     private ArrayList<ImageView> lifesValue_iv ;
 
 
-    Button answer01Btn, answer02Btn, answer03Btn, answer04Btn, answer05Btn, answer06Btn, answer07Btn, answer08Btn, answer09Btn;
+    private Button answer01Btn, answer02Btn, answer03Btn, answer04Btn, answer05Btn, answer06Btn, answer07Btn, answer08Btn, answer09Btn;
 
 
     // numbers to be processed
@@ -374,6 +374,7 @@ public class MixedOp_Choose_Result_Activity extends AppCompatActivity implements
         countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
 
     }
+
 
     /**
      * ---------------------------------------------------------------------------------------------

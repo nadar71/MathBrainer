@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/background_dark"
     tools:context="eu.indiewalkabout.mathbrainer.othergames.NumberOrderActivity">
 
 
@@ -11,8 +12,11 @@
         android:id="@+id/backgroundImg"
         android:layout_width="0dp"
         android:layout_height="836dp"
+        android:alpha="0"
+        android:background="@android:color/background_dark"
         android:contentDescription="@string/backgroundimg"
         android:scaleType="centerCrop"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -23,16 +27,18 @@
         app:srcCompat="@drawable/summer" />
 
 
-    <ProgressBar
-        android:id="@+id/progressbar"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:max="30"
-        android:progress="100"
-        android:progressDrawable="@drawable/horizontal_progress_drawable_red"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView
+        android:id="@+id/itemDrawing_v"
+        android:layout_width="350dp"
+        android:layout_height="375dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintEnd_toEndOf="@+id/backgroundImg"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="@+id/canvas_image_ref_img"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -41,21 +47,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:gravity="start"
         android:text="@string/level"
         android:textAlignment="viewStart"
+        android:textColor="@android:color/background_light"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/levelValue_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/_0"
+        android:textColor="@android:color/background_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/level_tv" />
 
@@ -63,15 +70,17 @@
         android:id="@+id/scoreLabel_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:gravity="start"
         android:text="@string/score"
         android:textAlignment="viewStart"
+        android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
         app:layout_constraintHorizontal_bias="0.556"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toEndOf="@+id/level_tv"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/scoreValue_tv"
@@ -81,8 +90,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/_0"
+        android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toStartOf="@+id/gridLayout"
-        app:layout_constraintHorizontal_bias="0.542"
+        app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toEndOf="@+id/levelValue_tv"
         app:layout_constraintTop_toBottomOf="@+id/scoreLabel_tv" />
 
@@ -90,13 +100,14 @@
         android:id="@+id/lifeRemainText_tv"
         android:layout_width="36dp"
         android:layout_height="19dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="60dp"
-        android:layout_marginRight="60dp"
         android:gravity="center_vertical"
         android:text="@string/lifes"
         android:textAlignment="center"
+        android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <GridLayout
@@ -156,6 +167,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:alpha="0"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -165,42 +177,48 @@
     <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->
     <!-- THIS APP REAL AdMob banner ID: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
 
-    <eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView
-        android:id="@+id/itemDrawing_v"
-        android:layout_width="0dp"
-        android:layout_height="480dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/adView"
-        app:layout_constraintEnd_toEndOf="@+id/backgroundImg"
-        app:layout_constraintStart_toStartOf="@+id/canvas_image_ref_img"
-        app:layout_constraintTop_toTopOf="@+id/canvas_image_ref_img" />
-
     <Button
-        android:id="@+id/test_btn"
+        android:id="@+id/new_game_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="TEST"
+        android:text="@string/new_label"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/itemDrawing_v"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/itemDrawing_v" />
+
+    <TextView
+        android:id="@+id/countobj_instructions_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/count_objects_question"
+        android:textColor="@android:color/background_light"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/answerBtnGrid"
+        app:layout_constraintEnd_toStartOf="@+id/answerBtnGrid"
+        app:layout_constraintStart_toEndOf="@+id/answerBtnGrid" />
 
     <GridLayout
         android:id="@+id/answerBtnGrid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnCount="3"
-        android:rowCount="3"
+        android:columnCount="4"
+        android:rowCount="1"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/itemDrawing_v"
         app:layout_constraintEnd_toEndOf="@+id/itemDrawing_v"
         app:layout_constraintStart_toStartOf="@+id/itemDrawing_v"
         app:layout_constraintTop_toTopOf="@+id/itemDrawing_v">
 
         <Button
-            android:id="@+id/answer_plus_btn"
+            android:id="@+id/answer_01_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/answer_01value"
@@ -209,7 +227,7 @@
             tools:layout_editor_absoluteY="313dp" />
 
         <Button
-            android:id="@+id/answer_minus_btn"
+            android:id="@+id/answer_02_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/answer_02value"
@@ -218,7 +236,7 @@
             tools:layout_editor_absoluteY="240dp" />
 
         <Button
-            android:id="@+id/answer_mult_btn"
+            android:id="@+id/answer_03_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/answer_03value"
@@ -226,27 +244,11 @@
             tools:layout_editor_absoluteY="240dp" />
 
         <Button
-            android:id="@+id/answer_div_btn"
+            android:id="@+id/answer_04_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/answer_04value"
             app:layout_constraintRight_toRightOf="parent"
-            tools:layout_editor_absoluteY="313dp" />
-
-        <Button
-            android:id="@+id/answer_05Btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/answer_05value"
-            tools:layout_editor_absoluteX="263dp"
-            tools:layout_editor_absoluteY="240dp" />
-
-        <Button
-            android:id="@+id/answer_06Btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/answer_06value"
-            tools:layout_editor_absoluteX="36dp"
             tools:layout_editor_absoluteY="313dp" />
 
     </GridLayout>
@@ -265,18 +267,6 @@
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintHorizontal_bias="0.0"
         ads:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/count_objects_question"
-        app:layout_constraintBottom_toTopOf="@+id/answerBtnGrid"
-        app:layout_constraintEnd_toStartOf="@+id/answerBtnGrid"
-        app:layout_constraintStart_toEndOf="@+id/answerBtnGrid" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -4,7 +4,7 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.ProgressBar;
 
-public class MathCountDownTimer extends CountDownTimer {
+public class MathCountDownTimer extends CountDownTimer  {
 
 
     private final String TAG = MathCountDownTimer.class.getSimpleName();
