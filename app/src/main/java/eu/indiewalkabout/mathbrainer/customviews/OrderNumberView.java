@@ -2,18 +2,17 @@ package eu.indiewalkabout.mathbrainer.customviews;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -23,18 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.othergames.CountObjectsActivity;
-import eu.indiewalkabout.mathbrainer.util.myUtil;
 import eu.indiewalkabout.mathbrainer.model.Item;
+import eu.indiewalkabout.mathbrainer.util.myUtil;
 
 /**
- * ---------------------------------------------------------------------------------------------
- * Visualizing  x items distributed all around the view, to guess their number
- * after disappearing
- * ---------------------------------------------------------------------------------------------
+ * TODO: document your custom view class.
  */
-public class QuickCountItemDrawView extends View {
-
+public class OrderNumberView extends View {
     private static final String TAG =  QuickCountItemDrawView.class.getSimpleName();
 
     Context context;
@@ -61,18 +55,18 @@ public class QuickCountItemDrawView extends View {
 
 
 
-    public QuickCountItemDrawView(Context context) {
+    public OrderNumberView(Context context) {
         super(context);
         init(context);
     }
 
-    public QuickCountItemDrawView(Context context, AttributeSet attrs) {
+    public OrderNumberView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public QuickCountItemDrawView(Context context,
-                             AttributeSet attrs, int defStyleAttr) {
+    public OrderNumberView(Context context,
+                           AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
@@ -114,21 +108,24 @@ public class QuickCountItemDrawView extends View {
         // draw itemNumber images to count for
         for(int i=0;i<itemNumber;i++) {
 
-            try {
                 // get images
-                AssetManager assetManager = context.getAssets();
-                InputStream inputStream = assetManager.open("memo" + (100+i) + ".png");
-                Bitmap item = BitmapFactory.decodeStream(inputStream);
+                Resources res   = getResources();
+                Bitmap    item  = BitmapFactory.decodeResource(res, R.drawable.number_pointer);
+
+
 
                 // get the img size (it's square) with scale
                 int size = ( (int) ( (float)item.getWidth()*imageScaleXY ) );
                 int offsetFromBorder = 10+size;
 
-                inputStream.close();
 
 
                 // make bitmap mutable
                 item = item.copy(Bitmap.Config.ARGB_8888, true);
+
+                // draw text on bitmap
+                myUtil.drawTextToBitmap(context, item,Integer.toString(i));
+
                 boolean isOverlap = true;
 
                 while (isOverlap) {
@@ -144,11 +141,6 @@ public class QuickCountItemDrawView extends View {
                 canvas.drawBitmap(myUtil.resizeBitmapByScale(item, imageScaleXY),
                         randX, randY, paint);
 
-            } catch (IOException e) {
-                Log.d(TAG, "drawGame: "+e.getMessage());
-            } finally {
-                // we should really close our input streams here.
-            }
         }
 
 
@@ -169,11 +161,11 @@ public class QuickCountItemDrawView extends View {
 
         for(Item item:itemList){
             if (
-               ( ( (x < item.getX()) && (x > item.getX() - size) ) || ( (x > item.getX()) && (x < item.getX() + size) ) ) &&
-               ( ( (y < item.getY()) && (y > item.getY() - size) ) || ( (y > item.getY()) && (y < item.getY() + size) ) )
+                    ( ( (x < item.getX()) && (x > item.getX() - size) ) || ( (x > item.getX()) && (x < item.getX() + size) ) ) &&
+                            ( ( (y < item.getY()) && (y > item.getY() - size) ) || ( (y > item.getY()) && (y < item.getY() + size) ) )
             )
             {
-              return true;
+                return true;
             }
         }
         return false;
@@ -213,7 +205,5 @@ public class QuickCountItemDrawView extends View {
         this.itemNumber = itemNumber;
         this.invalidate();
     }
-
-
 
 }

@@ -1,5 +1,7 @@
 package eu.indiewalkabout.mathbrainer.model;
 
+import android.view.View;
+
 public class Item {
     int x, y;
     int size;
