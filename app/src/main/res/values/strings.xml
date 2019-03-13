@@ -117,6 +117,7 @@
     <string name="equalSign">=</string>
     <string name="count_objects_question">How many objects ?</string>
     <string name="new_label">New</string>
+    <string name="click_order_instructions">Click circles in order by number :</string>
 
 
 </resources>

@@ -10,9 +10,6 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +18,8 @@ import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.model.CircularImage;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
-/**
- * TODO: document your custom view class.
- */
-public class OrderNumberView extends View {
-    private static final String TAG = QuickCountItemDrawView.class.getSimpleName();
+public class MarkerWithNoNumberView extends View {
+    private static final String TAG = MarkerWithNoNumberView.class.getSimpleName();
 
     Context context;
 
@@ -49,25 +43,19 @@ public class OrderNumberView extends View {
     // number of items to be drawn
     private int itemNumber = 5;
 
-    // marker with number upon
-    // List<Bitmap> imgWithTextList;
 
-    // time length before returning
-    // int timerLength = 0;
-
-
-    public OrderNumberView(Context context) {
+    public MarkerWithNoNumberView(Context context) {
         super(context);
         init(context);
     }
 
-    public OrderNumberView(Context context, AttributeSet attrs) {
+    public MarkerWithNoNumberView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public OrderNumberView(Context context,
-                           AttributeSet attrs, int defStyleAttr) {
+    public MarkerWithNoNumberView(Context context,
+                                AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
@@ -86,7 +74,11 @@ public class OrderNumberView extends View {
 
         Log.d(TAG, "onCreate: mWidth : " + mWidth + " mHeigth : " + mHeight);
 
+    }
 
+
+    public void setImgNumberList(List<CircularImage> imgNumberList){
+        this.imgNumberList = imgNumberList;
     }
 
 
@@ -104,12 +96,9 @@ public class OrderNumberView extends View {
         //Change the color of the virtual paint brush
         paint.setColor(Color.argb(255, 1, 255, 255));
 
-        // clear from previous items
-        imgNumberList.clear();
-        imgNoNumberList.clear();
 
         // draw itemNumber images to count for
-        for (int i = 0; i < itemNumber; i++) {
+        for (CircularImage img : imgNumberList) {
 
             // ------------ collect first set of images, with number above ------------
             Resources res = getResources();
@@ -117,74 +106,25 @@ public class OrderNumberView extends View {
 
             // get the img size (it's square) with scale
             int size = ((int) ((float) marker.getWidth() * imageScaleXY));
-            int offsetFromBorder = 10 + size;
-
-            // make bitmap mutable for marker with number
-            Bitmap bitmapWithNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
-
-            // draw text on bitmap
-            myUtil.drawTextToBitmap(context, bitmapWithNumber, Integer.toString(i));
-
-            boolean isOverlap = true;
-
-            while (isOverlap) {
-                randX = myUtil.randRange_ApiCheck(offsetFromBorder, (int) (mWidth - offsetFromBorder));
-                randY = myUtil.randRange_ApiCheck(offsetFromBorder, (int) (mHeight - offsetFromBorder));
-                isOverlap = isOverlapping(randX, randY, size);
-            }
-
-            // create a the image view
-            CircularImage imgWithNumber = new CircularImage(context, randX, randY, size);
-            RelativeLayout relativeLayout = new RelativeLayout(context); // findViewById(R.id.image_container);
-            RelativeLayout.LayoutParams  rlp = new RelativeLayout.LayoutParams(size, size);
-            imgWithNumber.setLayoutParams(new RelativeLayout.LayoutParams(size, size));
-            if ( relativeLayout != null) {
-                relativeLayout.addView(imgWithNumber);
-            }
-            imgWithNumber.setImageBitmap(bitmapWithNumber);
-            // add to list of marker with number upon after overlapping is false
-            imgNumberList.add(imgWithNumber);
-
 
             // create bitmap with no number upon it, and add to list
+            int x = img.get_x();
+            int y = img.get_y();
             Bitmap bitmapWithNoNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
-            CircularImage imgWithNoNumber = new CircularImage(context, randX, randY, size);
-            imgWithNoNumber.setImageBitmap(bitmapWithNoNumber);
-            imgWithNoNumber.setLayoutParams(new RelativeLayout.LayoutParams(size, size));
+            CircularImage imgWithNoNumber = new CircularImage(context, x + 10, y + 10, size);
             imgNoNumberList.add(imgWithNoNumber);
-
 
             // draw on canvas marker with no number on them
             canvas.drawBitmap(myUtil.resizeBitmapByScale(bitmapWithNoNumber, imageScaleXY),
-                    randX, randY, paint);
-
-            // draw on canvas marker with  number on them
-            canvas.drawBitmap(myUtil.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
-                    randX+10, randY+10, paint);
-
-            imgWithNumber.setVisibility(View.INVISIBLE);
-
-            imgWithNumber.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "Marker pressed", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    x, y, paint);
 
         }
 
-
-        hideImgWithNumber();
 
     }
 
 
 
-    public void hideImgWithNumber(){
-        for(CircularImage img: imgNumberList){
-            img.setVisibility(INVISIBLE);
-        }
-    }
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -245,3 +185,4 @@ public class OrderNumberView extends View {
     }
 
 }
+

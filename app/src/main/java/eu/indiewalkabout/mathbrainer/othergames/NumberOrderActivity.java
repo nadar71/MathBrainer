@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,8 +17,8 @@ import com.google.android.gms.ads.AdView;
 import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.customviews.OrderNumberView;
-import eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView;
+import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView;
+import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
@@ -35,8 +34,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     // Our costumview img references (almost useless)
     private ImageView ourFrame;
 
-    // Costum view drawing items to count
-    private OrderNumberView drawquiz;
+    // Costum views drawing items to count
+    private MarkerWithNoNumberView drawquiz_challenge;
+    private MarkerWithNumberView   drawquiz;
 
 
     private TextView scoreValue_tv, levelValue_tv, instructions_tv ;
@@ -85,7 +85,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     private float timerLength  = 2000f;
 
     // max num range items to count for challenge
-    private int maxItemsToCount = 6;
+    private int maxItemsToCount = 4;
 
     // items to count in current level
     private int itemsToCount    = maxItemsToCount;
@@ -111,8 +111,11 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         ourFrame = (ImageView) findViewById(R.id.canvas_image_ref_img);
 
         // get the items to count view, set invisible at the moment
+        drawquiz_challenge = findViewById(R.id.itemDrawingNoNumber_v);
         drawquiz = findViewById(R.id.itemDrawing_v);
         drawquiz.setVisibility(View.INVISIBLE);
+        drawquiz_challenge.setVisibility(View.INVISIBLE);
+        drawquiz_challenge.setImgNumberList(drawquiz.getImgwithNUmberList());
 
         // other views
         instructions_tv = findViewById(R.id.countobj_instructions_tv);
@@ -297,13 +300,14 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         // show the items in number defined by level
         itemsToCount = myUtil.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),maxItemsToCount);
         drawquiz.redraw(itemsToCount);
+        drawquiz_challenge.redraw(itemsToCount);
 
         // show items to count
         showItems();
 
         // hide and show button for answer
         // TODO : commented for debug
-        // hideQuizAfterTimerLength((int) timerLength);
+        hideQuizAfterTimerLength((int) timerLength);
 
         Log.d(TAG, "newChallenge: " + countChallenge);
 
@@ -322,6 +326,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         btnNewGame.setVisibility(View.INVISIBLE);
         instructions_tv.setVisibility(View.INVISIBLE);
         drawquiz.setVisibility(View.VISIBLE);
+        //drawquiz_challenge.setVisibility(View.VISIBLE);
     }
 
 
@@ -333,6 +338,8 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     private void hideItems(){
         instructions_tv.setVisibility(View.VISIBLE);
         drawquiz.setVisibility(View.INVISIBLE);
+        drawquiz_challenge.setVisibility(View.VISIBLE);
+
     }
 
 
@@ -356,87 +363,6 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
 
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Create setup correct answer and false answer on buttons
-     * ---------------------------------------------------------------------------------------------
-     */
-    /*
-    private void setupAnswersBtn(int numItemsToCount) {
-
-        // set the correct answer
-        answerOK = itemsToCount;
-
-        // choose the button where put the correct answer
-        correctBtnNumber = myUtil.randRange_ApiCheck(minAnswerBtnNum, maxAnswerBtnNum);
-        Button tmpBtn    = getTheBtnNumber(correctBtnNumber);
-        tmpBtn.setText(Integer.toString(answerOK));
-
-
-        // set wrong answer on the others
-        for(int i = 1; i <= maxAnswerBtnNum; i++){
-            if (i != correctBtnNumber){
-
-                tmpBtn = getTheBtnNumber(i);
-                int result = 0;
-                do {
-                    result = randomOffsetSum();
-                } while (wrongAnswer.lastIndexOf(result) > 0);
-                wrongAnswer.add(result);
-
-                tmpBtn.setText(String.valueOf(result));
-
-            }else { // the btn with the right answer must be alwys visible
-                tmpBtn = getTheBtnNumber(correctBtnNumber);
-            }
-        }
-    }
-    */
-
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Random answer for sum generator
-     * ---------------------------------------------------------------------------------------------
-     */
-    /*
-    private int randomOffsetSum(){
-        int result = myUtil.randRange_ApiCheck(1, (int)(offset * 1.0));
-        if ( (result >= 1) && (result <= 3) ) {
-            int sign = myUtil.randomSignChooser();
-            if (sign<0) { Toast.makeText(context, "Negative number : "+sign, Toast.LENGTH_SHORT).show();}
-            return answerOK + sign * result;
-        }
-        return answerOK + result;
-    }
-    */
-
-
-
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Return the button based on number
-     * @param num
-     * @return
-     * ---------------------------------------------------------------------------------------------
-     */
-    /*
-    Button getTheBtnNumber(int num){
-        switch(num){
-            case 1 : return answer01Btn;
-            case 2 : return answer02Btn;
-            case 3 : return answer03Btn;
-            case 4 : return answer04Btn;
-            default: break;
-        }
-
-        return null;
-    }
-    */
 
 
     /**
@@ -470,7 +396,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         // increment level difficulty
         if ( (level > 1) && (level < 30)){
 
-            maxItemsToCount += 2;
+            maxItemsToCount += 1;
 
             timerLength  += 0.5f;
 
