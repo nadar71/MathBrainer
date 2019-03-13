@@ -302,7 +302,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         showItems();
 
         // hide and show button for answer
-        // TODO : commentd for debug
+        // TODO : commented for debug
         // hideQuizAfterTimerLength((int) timerLength);
 
         Log.d(TAG, "newChallenge: " + countChallenge);

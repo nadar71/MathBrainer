@@ -138,7 +138,7 @@ public class QuickCountItemDrawView extends View {
                 }
 
                 // add to list
-                itemList.add(new Item(randX, randY, size));
+                itemList.add(new Item(context, item, randX, randY, size));
 
                 // draw on canvas
                 canvas.drawBitmap(myUtil.resizeBitmapByScale(item, imageScaleXY),
@@ -169,8 +169,8 @@ public class QuickCountItemDrawView extends View {
 
         for(Item item:itemList){
             if (
-               ( ( (x < item.getX()) && (x > item.getX() - size) ) || ( (x > item.getX()) && (x < item.getX() + size) ) ) &&
-               ( ( (y < item.getY()) && (y > item.getY() - size) ) || ( (y > item.getY()) && (y < item.getY() + size) ) )
+               ( ( (x < item.get_x()) && (x > item.get_x() - size) ) || ( (x > item.get_x()) && (x < item.get_x() + size) ) ) &&
+               ( ( (y < item.get_y()) && (y > item.get_y() - size) ) || ( (y > item.get_y()) && (y < item.get_y() + size) ) )
             )
             {
               return true;

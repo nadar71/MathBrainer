@@ -1,30 +1,45 @@
 package eu.indiewalkabout.mathbrainer.model;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.ImageView;
 
-public class Item {
+public class Item extends View{
+    Context context;
     int x, y;
     int size;
+    Bitmap image;
 
-    public Item(int x, int y, int size) {
+
+
+    public Item(Context context, Bitmap bitmap, int x, int y, int size) {
+        super(context);
         this.x = x;
         this.y = y;
         this.size = size;
+        image     = bitmap;
     }
 
-    public int getX() {
+    private void init(Context context) {
+        this.context = context;
+
+    }
+
+
+    public int get_x() {
         return x;
     }
 
-    public void setX(int x) {
+    public void set_x(int x) {
         this.x = x;
     }
 
-    public int getY() {
+    public int get_y() {
         return y;
     }
 
-    public void setY(int y) {
+    public void set_y(int y) {
         this.y = y;
     }
 

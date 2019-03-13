@@ -46,8 +46,14 @@ public class OrderNumberView extends View {
     int randX;
     int randY;
 
-    // list of the items
+    // list of the items as pojo
     List<Item> itemList;
+
+    // marker with no number upon
+    List<Item> imgList;
+
+    // marker with number upon
+    // List<Bitmap> imgWithTextList;
 
     // time length before returning
     // int timerLength = 0;
@@ -78,6 +84,7 @@ public class OrderNumberView extends View {
         imageScaleXY = 0.2f;
 
         itemList = new ArrayList<>();
+        imgList  = new ArrayList<>();
 
         randX = (int)(mWidth*0.5);
         randY = (int)(mHeight*0.5);
@@ -108,23 +115,19 @@ public class OrderNumberView extends View {
         // draw itemNumber images to count for
         for(int i=0;i<itemNumber;i++) {
 
-                // get images
-                Resources res   = getResources();
-                Bitmap    item  = BitmapFactory.decodeResource(res, R.drawable.number_pointer);
-
-
+                // ------------ collect first set of images, with number above ------------
+                Resources res    = getResources();
+                Bitmap    marker = BitmapFactory.decodeResource(res, R.drawable.number_pointer);
 
                 // get the img size (it's square) with scale
-                int size = ( (int) ( (float)item.getWidth()*imageScaleXY ) );
+                int size = ( (int) ( (float)marker.getWidth()*imageScaleXY ) );
                 int offsetFromBorder = 10+size;
 
-
-
-                // make bitmap mutable
-                item = item.copy(Bitmap.Config.ARGB_8888, true);
+                // make bitmap mutable for marker with number
+                Bitmap imgWithNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
 
                 // draw text on bitmap
-                myUtil.drawTextToBitmap(context, item,Integer.toString(i));
+                myUtil.drawTextToBitmap(context, imgWithNumber,Integer.toString(i));
 
                 boolean isOverlap = true;
 
@@ -134,14 +137,26 @@ public class OrderNumberView extends View {
                     isOverlap = isOverlapping(randX,randY, size);
                 }
 
-                // add to list
-                itemList.add(new Item(randX, randY, size));
+                // add to list of marker with number upon after overlapping is false
+                Item tmp =  new Item(context,imgWithNumber,randX, randY, size);
+
+                itemList.add(tmp);
+
+                // create bitmap with no number upon it, and add to list
+                Bitmap imgWithNoNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
+                imgList.add(new Item(context,imgWithNoNumber,randX, randY, size));
+
 
                 // draw on canvas
-                canvas.drawBitmap(myUtil.resizeBitmapByScale(item, imageScaleXY),
+                canvas.drawBitmap(myUtil.resizeBitmapByScale(imgWithNumber, imageScaleXY),
+                        randX, randY, paint);
+
+                canvas.drawBitmap(myUtil.resizeBitmapByScale(imgWithNoNumber, imageScaleXY),
                         randX, randY, paint);
 
         }
+
+
 
 
     }
@@ -161,8 +176,8 @@ public class OrderNumberView extends View {
 
         for(Item item:itemList){
             if (
-                    ( ( (x < item.getX()) && (x > item.getX() - size) ) || ( (x > item.getX()) && (x < item.getX() + size) ) ) &&
-                            ( ( (y < item.getY()) && (y > item.getY() - size) ) || ( (y > item.getY()) && (y < item.getY() + size) ) )
+                    ( ( (x < item.get_x()) && (x > item.get_x() - size) ) || ( (x > item.get_x()) && (x < item.get_x() + size) ) ) &&
+                    ( ( (y < item.get_y()) && (y > item.get_y() - size) ) || ( (y > item.get_y()) && (y < item.get_y() + size) ) )
             )
             {
                 return true;
