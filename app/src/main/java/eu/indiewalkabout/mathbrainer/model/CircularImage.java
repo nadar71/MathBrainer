@@ -6,7 +6,7 @@ import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.widget.ImageView;
 
-public class Item extends AppCompatImageView {
+public class CircularImage extends AppCompatImageView {
     Context context;
     int x, y;
     int size;
@@ -14,12 +14,16 @@ public class Item extends AppCompatImageView {
 
 
 
-    public Item(Context context, Bitmap bitmap, int x, int y, int size) {
+    public CircularImage(Context context) {
+        super(context);
+
+    }
+
+    public CircularImage(Context context, int x, int y, int size) {
         super(context);
         this.x = x;
         this.y = y;
         this.size = size;
-        image     = bitmap;
     }
 
     private void init(Context context) {

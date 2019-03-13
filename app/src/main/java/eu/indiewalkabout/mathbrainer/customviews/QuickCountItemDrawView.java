@@ -2,30 +2,22 @@ package eu.indiewalkabout.mathbrainer.customviews;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.widget.ImageView;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.othergames.CountObjectsActivity;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
-import eu.indiewalkabout.mathbrainer.model.Item;
+import eu.indiewalkabout.mathbrainer.model.CircularImage;
 
 /**
  * ---------------------------------------------------------------------------------------------
@@ -53,7 +45,7 @@ public class QuickCountItemDrawView extends View {
     int randY;
 
     // list of the items
-    List<Item> itemList;
+    List<CircularImage> itemList;
 
     // time length before returning
     // int timerLength = 0;
@@ -138,7 +130,7 @@ public class QuickCountItemDrawView extends View {
                 }
 
                 // add to list
-                itemList.add(new Item(context, item, randX, randY, size));
+                itemList.add(new CircularImage(context, randX, randY, size));
 
                 // draw on canvas
                 canvas.drawBitmap(myUtil.resizeBitmapByScale(item, imageScaleXY),
@@ -167,10 +159,10 @@ public class QuickCountItemDrawView extends View {
      */
     public boolean isOverlapping(int x, int y, int size){
 
-        for(Item item:itemList){
+        for(CircularImage circularImage :itemList){
             if (
-               ( ( (x < item.get_x()) && (x > item.get_x() - size) ) || ( (x > item.get_x()) && (x < item.get_x() + size) ) ) &&
-               ( ( (y < item.get_y()) && (y > item.get_y() - size) ) || ( (y > item.get_y()) && (y < item.get_y() + size) ) )
+               ( ( (x < circularImage.get_x()) && (x > circularImage.get_x() - size) ) || ( (x > circularImage.get_x()) && (x < circularImage.get_x() + size) ) ) &&
+               ( ( (y < circularImage.get_y()) && (y > circularImage.get_y() - size) ) || ( (y > circularImage.get_y()) && (y < circularImage.get_y() + size) ) )
             )
             {
               return true;
