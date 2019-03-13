@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -111,6 +112,7 @@ public class OrderNumberView extends View {
 
         // clear from previous items
         itemList.clear();
+        imgList.clear();
 
         // draw itemNumber images to count for
         for(int i=0;i<itemNumber;i++) {
@@ -137,6 +139,8 @@ public class OrderNumberView extends View {
                     isOverlap = isOverlapping(randX,randY, size);
                 }
 
+                // create a the image views
+
                 // add to list of marker with number upon after overlapping is false
                 Item tmp =  new Item(context,imgWithNumber,randX, randY, size);
 
@@ -147,19 +151,20 @@ public class OrderNumberView extends View {
                 imgList.add(new Item(context,imgWithNoNumber,randX, randY, size));
 
 
-                // draw on canvas
-                canvas.drawBitmap(myUtil.resizeBitmapByScale(imgWithNumber, imageScaleXY),
+                // draw on canvas marker with no number on them
+                canvas.drawBitmap(myUtil.resizeBitmapByScale(imgWithNoNumber, imageScaleXY),
                         randX, randY, paint);
 
-                canvas.drawBitmap(myUtil.resizeBitmapByScale(imgWithNoNumber, imageScaleXY),
+                // draw on canvas marker with  number on them
+                canvas.drawBitmap(myUtil.resizeBitmapByScale(imgWithNumber, imageScaleXY),
                         randX, randY, paint);
 
         }
 
 
 
-
     }
+
 
 
     /**
