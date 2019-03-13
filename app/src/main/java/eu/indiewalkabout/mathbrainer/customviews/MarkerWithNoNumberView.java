@@ -9,7 +9,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,7 +122,37 @@ public class MarkerWithNoNumberView extends View {
 
         }
 
+    }
 
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        float x = event.getX();
+        float y = event.getY();
+        switch(event.getAction())
+        {
+            case MotionEvent.ACTION_DOWN:
+                for (CircularImage img : imgNoNumberList) {
+                    //Check if the x and y position of the touch is inside the bitmap
+                    if (x > img.get_x() && x < img.get_x() + img.getSize() &&
+                            y > img.get_y() && y < img.get_y() + img.getSize()) {
+
+                        int indx = imgNoNumberList.indexOf(img);
+                        CircularImage correspondingImgWithNUmber = imgNumberList.get(indx);
+                        int indx_imgWithNumber = correspondingImgWithNUmber.get_number();
+
+                        if ( indx_imgWithNumber == indx) {
+                            Toast.makeText(context, "OK! marker number : " + indx, Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(context, "WRONG! marker img with number : " + indx_imgWithNumber, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                return true;
+        }
+        return false;
     }
 
 

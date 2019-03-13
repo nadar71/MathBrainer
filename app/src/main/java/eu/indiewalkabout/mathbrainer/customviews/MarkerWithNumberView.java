@@ -41,9 +41,8 @@ public class MarkerWithNumberView extends View {
     private float mWidth;                    // Custom view width
     private float mHeight;                   // Custom view height
 
-    // number of items to be drawn
+    // number of items to be drawn, modificed in redrawn function
     private int itemNumber = 5;
-
 
 
     public MarkerWithNumberView(Context context) {
@@ -79,7 +78,6 @@ public class MarkerWithNumberView extends View {
         randY = (int) (mHeight * 0.5);
 
         Log.d(TAG, "onCreate: mWidth : " + mWidth + " mHeigth : " + mHeight);
-
 
     }
 
@@ -129,15 +127,15 @@ public class MarkerWithNumberView extends View {
             // create an image view
             CircularImage imgWithNumber = new CircularImage(context, randX, randY, size);
             imgWithNumber.setImageBitmap(bitmapWithNumber);
+            imgWithNumber.set_number(i);
             imgNumberList.add(imgWithNumber);
-
 
             // draw on canvas marker with  number on them
             canvas.drawBitmap(myUtil.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
                     randX, randY, paint);
 
         }
-
+        Log.d(TAG, "onDraw: ");
 
     }
 
