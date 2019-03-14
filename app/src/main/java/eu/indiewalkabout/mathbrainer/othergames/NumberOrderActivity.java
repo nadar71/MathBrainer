@@ -175,6 +175,10 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      * -------------------------------------------------------------------------------------------------
      */
     private void checkPlayerResult(int result) {
+
+        // disable touch for the markers
+        drawquiz_challenge.set_isTouchMarkersEnable(false);
+
         // hide markers with and without numbers
         hideAll();
 
@@ -301,6 +305,10 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         // clear wrong answers list
         wrongAnswer.clear();
 
+        // reset previous game
+        drawquiz_challenge.resetGame();
+
+
         // show the items in number defined by level
         itemsToCount = myUtil.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),maxItemsToCount);
         drawquiz.redraw(itemsToCount);
@@ -404,6 +412,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
         instructions_tv.setVisibility(View.INVISIBLE);
         drawquiz.setVisibility(View.INVISIBLE);
+        drawquiz_challenge.setVisibility(View.INVISIBLE);
     }
 
 

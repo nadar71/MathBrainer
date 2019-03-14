@@ -54,7 +54,11 @@ public class MarkerWithNoNumberView extends View {
     // number of items to be drawn
     private int itemNumber = 5;
 
+    // number of correct touch counter
     private int touchCounter = 0;
+
+    // touch marker enable/disable
+    private boolean isTouchMarkersEnable = true;
 
 
     public MarkerWithNoNumberView(Context context) {
@@ -73,6 +77,14 @@ public class MarkerWithNoNumberView extends View {
         init(context);
     }
 
+
+    public void set_isTouchMarkersEnable(boolean state){
+        isTouchMarkersEnable = state;
+    }
+
+    public boolean get_isTouchMarkersEnable(){
+        return isTouchMarkersEnable;
+    }
 
     private void init(Context context) {
         this.context = context;
@@ -93,6 +105,17 @@ public class MarkerWithNoNumberView extends View {
 
 
 
+    public void resetGame(){
+        // clear from previous items
+        imgNoNumberList.clear();
+        touchCounter = 0;
+        touchResult.setValue(-1);
+        set_isTouchMarkersEnable(true);
+
+    }
+
+
+
     public MutableLiveData<Integer> getTouchResult(){
         return touchResult;
     }
@@ -107,6 +130,8 @@ public class MarkerWithNoNumberView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        // start a game as new
+        resetGame();
 
         //A paint object that does our drawing, on our canvas
         Paint paint = new Paint();
@@ -117,8 +142,6 @@ public class MarkerWithNoNumberView extends View {
         //Change the color of the virtual paint brush
         paint.setColor(Color.argb(255, 1, 255, 255));
 
-        // clear from previous items
-        imgNoNumberList.clear();
 
         // draw itemNumber images to count for
         for (CircularImage img : imgNumberList) {
@@ -152,6 +175,10 @@ public class MarkerWithNoNumberView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
+        if (! isTouchMarkersEnable) {
+            return false;
+        }
+
         float x = event.getX();
         float y = event.getY();
         switch(event.getAction())
