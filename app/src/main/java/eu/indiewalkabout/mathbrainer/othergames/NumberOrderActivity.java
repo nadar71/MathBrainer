@@ -91,7 +91,10 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     private int itemsToCount    = maxItemsToCount;
 
 
-
+    // TODO : delete
+    public void somethingHappen(){
+        Toast.makeText(context, "somethingHappen()", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +119,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         drawquiz.setVisibility(View.INVISIBLE);
         drawquiz_challenge.setVisibility(View.INVISIBLE);
         drawquiz_challenge.setImgNumberList(drawquiz.getImgwithNUmberList());
+
+        // TODO : delete
+        drawquiz_challenge.setCallingActivity(this);
 
         // other views
         instructions_tv = findViewById(R.id.countobj_instructions_tv);
@@ -317,6 +323,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     }
 
 
+
+
+
     /**
      * ---------------------------------------------------------------------------------------------
      * Show items to count, hide anserws buttons
@@ -363,6 +372,87 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
 
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Create setup correct answer and false answer on buttons
+     * ---------------------------------------------------------------------------------------------
+     */
+    /*
+    private void setupAnswersBtn(int numItemsToCount) {
+
+        // set the correct answer
+        answerOK = itemsToCount;
+
+        // choose the button where put the correct answer
+        correctBtnNumber = myUtil.randRange_ApiCheck(minAnswerBtnNum, maxAnswerBtnNum);
+        Button tmpBtn    = getTheBtnNumber(correctBtnNumber);
+        tmpBtn.setText(Integer.toString(answerOK));
+
+
+        // set wrong answer on the others
+        for(int i = 1; i <= maxAnswerBtnNum; i++){
+            if (i != correctBtnNumber){
+
+                tmpBtn = getTheBtnNumber(i);
+                int result = 0;
+                do {
+                    result = randomOffsetSum();
+                } while (wrongAnswer.lastIndexOf(result) > 0);
+                wrongAnswer.add(result);
+
+                tmpBtn.setText(String.valueOf(result));
+
+            }else { // the btn with the right answer must be alwys visible
+                tmpBtn = getTheBtnNumber(correctBtnNumber);
+            }
+        }
+    }
+    */
+
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Random answer for sum generator
+     * ---------------------------------------------------------------------------------------------
+     */
+    /*
+    private int randomOffsetSum(){
+        int result = myUtil.randRange_ApiCheck(1, (int)(offset * 1.0));
+        if ( (result >= 1) && (result <= 3) ) {
+            int sign = myUtil.randomSignChooser();
+            if (sign<0) { Toast.makeText(context, "Negative number : "+sign, Toast.LENGTH_SHORT).show();}
+            return answerOK + sign * result;
+        }
+        return answerOK + result;
+    }
+    */
+
+
+
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Return the button based on number
+     * @param num
+     * @return
+     * ---------------------------------------------------------------------------------------------
+     */
+    /*
+    Button getTheBtnNumber(int num){
+        switch(num){
+            case 1 : return answer01Btn;
+            case 2 : return answer02Btn;
+            case 3 : return answer03Btn;
+            case 4 : return answer04Btn;
+            default: break;
+        }
+
+        return null;
+    }
+    */
 
 
     /**

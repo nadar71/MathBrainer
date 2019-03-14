@@ -1,5 +1,7 @@
 package eu.indiewalkabout.mathbrainer.customviews;
 
+import android.app.Activity;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -18,10 +20,13 @@ import java.util.List;
 
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.model.CircularImage;
+import eu.indiewalkabout.mathbrainer.othergames.NumberOrderActivity;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
 public class MarkerWithNoNumberView extends View {
     private static final String TAG = MarkerWithNoNumberView.class.getSimpleName();
+
+    NumberOrderActivity callingActivity;
 
     Context context;
 
@@ -37,6 +42,13 @@ public class MarkerWithNoNumberView extends View {
 
     // list of marker with no number upon
     List<CircularImage> imgNoNumberList;
+
+    // touch result :
+    // -1 : no touch
+    // 0  : wrong touch
+    // 1  : touch ok
+    // private MutableLiveData
+
 
 
     private float mWidth;                    // Custom view width
@@ -62,6 +74,10 @@ public class MarkerWithNoNumberView extends View {
         init(context);
     }
 
+
+    public void setCallingActivity(NumberOrderActivity activity){
+        callingActivity = activity;
+    }
 
     private void init(Context context) {
         this.context = context;
@@ -122,6 +138,8 @@ public class MarkerWithNoNumberView extends View {
 
         }
 
+
+
     }
 
 
@@ -145,8 +163,10 @@ public class MarkerWithNoNumberView extends View {
 
                         if ( indx_imgWithNumber == indx) {
                             Toast.makeText(context, "OK! marker number : " + indx, Toast.LENGTH_SHORT).show();
+                            callingActivity.somethingHappen();
                         }else{
                             Toast.makeText(context, "WRONG! marker img with number : " + indx_imgWithNumber, Toast.LENGTH_SHORT).show();
+                            callingActivity.somethingHappen();
                         }
                     }
                 }
