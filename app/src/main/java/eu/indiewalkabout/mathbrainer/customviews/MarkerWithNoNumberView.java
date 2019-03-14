@@ -115,6 +115,9 @@ public class MarkerWithNoNumberView extends View {
     }
 
 
+    public void setTouchResult(int value){
+        touchResult.setValue(value);
+    }
 
     public MutableLiveData<Integer> getTouchResult(){
         return touchResult;
@@ -268,7 +271,7 @@ public class MarkerWithNoNumberView extends View {
      * @param h    Current height of this view
      * @param oldw Initial width of this view
      * @param oldh Initial height of this view
-     *             ---------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -283,7 +286,8 @@ public class MarkerWithNoNumberView extends View {
      * ---------------------------------------------------------------------------------------------
      * Draw view on screen with a defined items number
      *
-     * @param itemNumber ---------------------------------------------------------------------------------------------
+     * @param itemNumber
+     * ---------------------------------------------------------------------------------------------
      */
     public void redraw(int itemNumber) {
         // this.timerLength = timerLength;

@@ -202,7 +202,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
             newchallengeAfterTimerLength(1000);
 
             // ...otherwise a life will be lost
-        } else {
+        } else if (result == 0 ){
             Toast.makeText(NumberOrderActivity.this, "Sorry, you touched the WRONG ORDER...", Toast.LENGTH_SHORT).show();
 
 
@@ -327,12 +327,11 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
             @Override
             public void onChanged(@Nullable Integer integer) {
                 int eventValue = touchEventResInCostumView.getValue();
-                // * this conditional unnecessary, but it's more clear
+                // conditional necessary to exclude changes to -1
                 if (eventValue == 1) {
-                    Toast.makeText(context, "YOU WIN " , Toast.LENGTH_SHORT).show();
                     checkPlayerResult(eventValue);
                 }else if (eventValue == 0){
-                    Toast.makeText(context, "WRONG! marker img with number, event value :  " + eventValue, Toast.LENGTH_SHORT).show();
+                    drawquiz_challenge.setTouchResult(-1);
                     checkPlayerResult(eventValue);
                 }
             }
@@ -361,7 +360,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      * ---------------------------------------------------------------------------------------------
      */
     private void hideQuiz(){
-        drawquiz.setVisibility(View.INVISIBLE);
+        // debug drawquiz.setVisibility(View.INVISIBLE);
         drawquiz_challenge.setVisibility(View.VISIBLE);
 
     }
@@ -441,5 +440,8 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         }
 
     }
+
+
+
 
 }
