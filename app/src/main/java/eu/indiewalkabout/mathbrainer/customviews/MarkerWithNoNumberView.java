@@ -77,6 +77,8 @@ public class MarkerWithNoNumberView extends View {
     private void init(Context context) {
         this.context = context;
 
+        touchCounter = 0;
+
         imageScaleXY = 0.2f;
 
         imgNumberList = new ArrayList<>();
@@ -162,48 +164,13 @@ public class MarkerWithNoNumberView extends View {
                        (! img.get_touched() )){
 
                         int indx = imgNoNumberList.indexOf(img);
-
-                        // check if the number touched is in the right order: comparing img with number
-                        // in imgNumberList with same index
-                        /*
-                        CircularImage correspondingImgWithNUmber = imgNumberList.get(indx);
-                        int indx_imgWithNumber = correspondingImgWithNUmber.get_number();
-                        */
-
+                        img.set_touched(true); // marked image as touched
 
                         if ( indx == touchCounter) {
                             Toast.makeText(context, "OK! marker number : " + indx, Toast.LENGTH_SHORT).show();
 
-                                /* Doesn't work : try to draw number on markers
-                                // show correct result drawing numebr on bitmap
-                                Bitmap bitmap = img.get_bitmap();
-
-                                // draw number on bitmap
-                                myUtil.drawTextToBitmap(context, bitmap, Integer.toString(indx));
-
-                                // store the bitmap modified with number
-                                img.set_bitmap(bitmap);
-
-                                //A paint object that does our drawing, on our canvas
-                                Paint paint = new Paint();
-
-                                //Canvas and Set the background color
-                                Canvas canvas = new Canvas();
-                                canvas.drawColor(Color.TRANSPARENT);
-
-                                //Change the color of the virtual paint brush
-                                paint.setColor(Color.argb(255, 1, 255, 255));
-
-                                // draw on canvas marker with  number on them
-                                canvas.drawBitmap(myUtil.resizeBitmapByScale(bitmap, imageScaleXY),
-                                        randX, randY, paint);
-
-                                this.invalidate();
-                                */
-
-                            img.set_touched(true); // marked image as touched
                             // win condition reached
-                            if ( (allMarkerTouched() == true) && (touchCounter == itemNumber) ) {
+                            if ( allMarkerTouched() && (touchCounter == itemNumber-1) ) {
                                 touchResult.setValue(1);
                             }
                             touchCounter++;

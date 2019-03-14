@@ -132,7 +132,7 @@ public class MarkerWithNumberView extends View {
 
             // draw on canvas marker with  number on them
             canvas.drawBitmap(myUtil.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
-                    randX+50, randY, paint);
+                    randX, randY, paint);
 
         }
         Log.d(TAG, "onDraw: ");

@@ -94,10 +94,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     private int itemsToCount    = maxItemsToCount;
 
 
-    // TODO : delete
-    public void somethingHappen(){
-        Toast.makeText(context, "somethingHappen()", Toast.LENGTH_SHORT).show();
-    }
+
 
     // get the touch event from costum class on markers touching
     private MutableLiveData<Integer> touchEventResInCostumView;
@@ -126,10 +123,6 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         drawquiz.setVisibility(View.INVISIBLE);
         drawquiz_challenge.setVisibility(View.INVISIBLE);
         drawquiz_challenge.setImgNumberList(drawquiz.getImgwithNUmberList());
-
-        // TODO : delete
-        // drawquiz_challenge.setCallingActivity(this);
-
 
         // other views
         instructions_tv = findViewById(R.id.countobj_instructions_tv);
@@ -181,12 +174,12 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      * Check if player input is right/wrong and update score
      * -------------------------------------------------------------------------------------------------
      */
-    private void checkPlayerInput() {
-
-        Log.d(TAG, "checkPlayerInput: pressedBtnValue : " + pressedBtnValue);
+    private void checkPlayerResult(int result) {
+        // hide markers with and without numbers
+        hideAll();
 
         // check if result is ok...
-        if (pressedBtnValue != 0  && pressedBtnValue == answerOK) {
+        if (result == 1 ) {
             Toast.makeText(NumberOrderActivity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
@@ -202,12 +195,11 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
             }
 
             // new number to double
-            // newChallenge();
             newchallengeAfterTimerLength(1000);
 
             // ...otherwise a life will be lost
         } else {
-            Toast.makeText(NumberOrderActivity.this, "WRONG...they are : "+answerOK, Toast.LENGTH_SHORT).show();
+            Toast.makeText(NumberOrderActivity.this, "Sorry, you touched the WRONG ORDER...", Toast.LENGTH_SHORT).show();
 
 
             // hideAnswerAfterTimerLength(1000);
@@ -236,9 +228,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                instructions_tv.setVisibility(View.INVISIBLE);
                 btnNewGame.setVisibility(View.VISIBLE);
-
             }
         };
         // execute runnable after a timerLength
@@ -317,10 +307,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         drawquiz_challenge.redraw(itemsToCount);
 
         // show items to count
-        showItems();
+        showQuiz();
 
         // hide and show button for answer
-        // TODO : commented for debug
         hideQuizAfterTimerLength((int) timerLength);
 
         Log.d(TAG, "newChallenge: " + countChallenge);
@@ -329,52 +318,57 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         touchEventResInCostumView.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer integer) {
-                // somethingHappen();
-                // Toast.makeText(context, "Touched marker, event value : " + touchEventResInCostumView.getValue(), Toast.LENGTH_SHORT).show();
                 int eventValue = touchEventResInCostumView.getValue();
+                // * this conditional unnecessary, but it's more clear
                 if (eventValue == 1) {
-                    // Toast.makeText(context, "OK! marker number, event value :  " + eventValue, Toast.LENGTH_SHORT).show();
                     Toast.makeText(context, "YOU WIN " , Toast.LENGTH_SHORT).show();
+                    checkPlayerResult(eventValue);
                 }else if (eventValue == 0){
                     Toast.makeText(context, "WRONG! marker img with number, event value :  " + eventValue, Toast.LENGTH_SHORT).show();
+                    checkPlayerResult(eventValue);
                 }
             }
         });
-        // set the answer buttons
-        // setupAnswersBtn(itemsToCount);
+
 
     }
 
 
 
 
-
     /**
      * ---------------------------------------------------------------------------------------------
-     * Show items to count, hide anserws buttons
+     * Show markers' order with number
      * ---------------------------------------------------------------------------------------------
      */
-    private void showItems(){
+    private void showQuiz(){
         btnNewGame.setVisibility(View.INVISIBLE);
-        instructions_tv.setVisibility(View.INVISIBLE);
         drawquiz.setVisibility(View.VISIBLE);
-        //drawquiz_challenge.setVisibility(View.VISIBLE);
     }
 
 
     /**
      * ---------------------------------------------------------------------------------------------
-     * Show items to count, hide anserws buttons
+     * Show markers to touch with no numbers
      * ---------------------------------------------------------------------------------------------
      */
-    private void hideItems(){
-        instructions_tv.setVisibility(View.VISIBLE);
-        // drawquiz.setVisibility(View.INVISIBLE);
-        drawquiz.setVisibility(View.VISIBLE);
+    private void hideQuiz(){
+        drawquiz.setVisibility(View.INVISIBLE);
         drawquiz_challenge.setVisibility(View.VISIBLE);
 
     }
 
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Hide all
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void hideAll(){
+        drawquiz.setVisibility(View.INVISIBLE);
+        drawquiz_challenge.setVisibility(View.INVISIBLE);
+
+    }
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -386,7 +380,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                hideItems();
+                hideQuiz();
             }
         };
         // execute runnable after a timerLength
@@ -394,89 +388,6 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     }
 
 
-
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Create setup correct answer and false answer on buttons
-     * ---------------------------------------------------------------------------------------------
-     */
-    /*
-    private void setupAnswersBtn(int numItemsToCount) {
-
-        // set the correct answer
-        answerOK = itemsToCount;
-
-        // choose the button where put the correct answer
-        correctBtnNumber = myUtil.randRange_ApiCheck(minAnswerBtnNum, maxAnswerBtnNum);
-        Button tmpBtn    = getTheBtnNumber(correctBtnNumber);
-        tmpBtn.setText(Integer.toString(answerOK));
-
-
-        // set wrong answer on the others
-        for(int i = 1; i <= maxAnswerBtnNum; i++){
-            if (i != correctBtnNumber){
-
-                tmpBtn = getTheBtnNumber(i);
-                int result = 0;
-                do {
-                    result = randomOffsetSum();
-                } while (wrongAnswer.lastIndexOf(result) > 0);
-                wrongAnswer.add(result);
-
-                tmpBtn.setText(String.valueOf(result));
-
-            }else { // the btn with the right answer must be alwys visible
-                tmpBtn = getTheBtnNumber(correctBtnNumber);
-            }
-        }
-    }
-    */
-
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Random answer for sum generator
-     * ---------------------------------------------------------------------------------------------
-     */
-    /*
-    private int randomOffsetSum(){
-        int result = myUtil.randRange_ApiCheck(1, (int)(offset * 1.0));
-        if ( (result >= 1) && (result <= 3) ) {
-            int sign = myUtil.randomSignChooser();
-            if (sign<0) { Toast.makeText(context, "Negative number : "+sign, Toast.LENGTH_SHORT).show();}
-            return answerOK + sign * result;
-        }
-        return answerOK + result;
-    }
-    */
-
-
-
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Return the button based on number
-     * @param num
-     * @return
-     * ---------------------------------------------------------------------------------------------
-     */
-    /*
-    Button getTheBtnNumber(int num){
-        switch(num){
-            case 1 : return answer01Btn;
-            case 2 : return answer02Btn;
-            case 3 : return answer03Btn;
-            case 4 : return answer04Btn;
-            default: break;
-        }
-
-        return null;
-    }
-    */
 
 
     /**
