@@ -47,7 +47,7 @@ public class MarkerWithNoNumberView extends View {
     // -1 : no touch
     // 0  : wrong touch
     // 1  : touch ok
-    // private MutableLiveData
+    private MutableLiveData<Integer> touchResult = new MutableLiveData<>();
 
 
 
@@ -92,6 +92,12 @@ public class MarkerWithNoNumberView extends View {
 
         Log.d(TAG, "onCreate: mWidth : " + mWidth + " mHeigth : " + mHeight);
 
+    }
+
+
+
+    public MutableLiveData<Integer> getTouchResult(){
+        return touchResult;
     }
 
 
@@ -163,10 +169,12 @@ public class MarkerWithNoNumberView extends View {
 
                         if ( indx_imgWithNumber == indx) {
                             Toast.makeText(context, "OK! marker number : " + indx, Toast.LENGTH_SHORT).show();
-                            callingActivity.somethingHappen();
+                            // callingActivity.somethingHappen();
+                            touchResult.setValue(1);
                         }else{
                             Toast.makeText(context, "WRONG! marker img with number : " + indx_imgWithNumber, Toast.LENGTH_SHORT).show();
-                            callingActivity.somethingHappen();
+                            // callingActivity.somethingHappen();
+                            touchResult.setValue(0);
                         }
                     }
                 }

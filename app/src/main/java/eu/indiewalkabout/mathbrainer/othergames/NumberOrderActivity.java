@@ -1,7 +1,10 @@
 package eu.indiewalkabout.mathbrainer.othergames;
 
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -96,6 +99,10 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         Toast.makeText(context, "somethingHappen()", Toast.LENGTH_SHORT).show();
     }
 
+    // get the touch event from costum class on markers touching
+    private MutableLiveData<Integer> touchEventResInCostumView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +128,8 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         drawquiz_challenge.setImgNumberList(drawquiz.getImgwithNUmberList());
 
         // TODO : delete
-        drawquiz_challenge.setCallingActivity(this);
+        // drawquiz_challenge.setCallingActivity(this);
+
 
         // other views
         instructions_tv = findViewById(R.id.countobj_instructions_tv);
@@ -317,6 +325,13 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
         Log.d(TAG, "newChallenge: " + countChallenge);
 
+        touchEventResInCostumView = drawquiz_challenge.getTouchResult();
+        touchEventResInCostumView.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                somethingHappen();
+            }
+        });
         // set the answer buttons
         // setupAnswersBtn(itemsToCount);
 
