@@ -329,7 +329,15 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         touchEventResInCostumView.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer integer) {
-                somethingHappen();
+                // somethingHappen();
+                // Toast.makeText(context, "Touched marker, event value : " + touchEventResInCostumView.getValue(), Toast.LENGTH_SHORT).show();
+                int eventValue = touchEventResInCostumView.getValue();
+                if (eventValue == 1) {
+                    // Toast.makeText(context, "OK! marker number, event value :  " + eventValue, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "YOU WIN " , Toast.LENGTH_SHORT).show();
+                }else if (eventValue == 0){
+                    Toast.makeText(context, "WRONG! marker img with number, event value :  " + eventValue, Toast.LENGTH_SHORT).show();
+                }
             }
         });
         // set the answer buttons
@@ -361,7 +369,8 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      */
     private void hideItems(){
         instructions_tv.setVisibility(View.VISIBLE);
-        drawquiz.setVisibility(View.INVISIBLE);
+        // drawquiz.setVisibility(View.INVISIBLE);
+        drawquiz.setVisibility(View.VISIBLE);
         drawquiz_challenge.setVisibility(View.VISIBLE);
 
     }

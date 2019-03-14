@@ -12,6 +12,7 @@ public class CircularImage extends AppCompatImageView {
     int size;
     Bitmap image;
     int number;
+    boolean touched = false;
 
 
 
@@ -64,4 +65,21 @@ public class CircularImage extends AppCompatImageView {
     public void set_number(int number) {
         this.number = number;
     }
+
+    public boolean get_touched() {
+        return touched;
+    }
+
+    public void set_touched(boolean touched) {
+        this.touched = touched;
+    }
+
+    public Bitmap get_bitmap() {
+        return image;
+    }
+
+    public void set_bitmap(Bitmap image) {
+        this.image = image;
+    }
+
 }
