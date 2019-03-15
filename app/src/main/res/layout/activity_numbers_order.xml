@@ -191,6 +191,23 @@
         app:layout_constraintStart_toStartOf="@+id/canvas_image_ref_img"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <eu.indiewalkabout.mathbrainer.customviews.SolutionsView
+        android:id="@+id/solutionsShowing_v"
+        android:layout_width="350dp"
+        android:layout_height="375dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintEnd_toEndOf="@+id/backgroundImg"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="@+id/canvas_image_ref_img"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <Button
         android:id="@+id/new_game_btn"
         android:layout_width="wrap_content"

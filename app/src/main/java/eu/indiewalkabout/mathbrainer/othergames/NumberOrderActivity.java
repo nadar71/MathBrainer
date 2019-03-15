@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView;
 import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView;
+import eu.indiewalkabout.mathbrainer.customviews.SolutionsView;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
@@ -40,6 +41,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     // Costum views drawing items to count
     private MarkerWithNoNumberView drawquiz_challenge;
     private MarkerWithNumberView   drawquiz;
+    private SolutionsView          solutionsView;
 
 
     private TextView scoreValue_tv, levelValue_tv, instructions_tv ;
@@ -70,7 +72,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
     // num of challenge to pass to next level
     // changing while level growing
-    private int numChallengeEachLevel =  1;
+    private int numChallengeEachLevel =  2;
     private int countChallenge        =  1;
 
     // random range for answer btn number
@@ -88,10 +90,10 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     private float timerLength  = 2000f;
 
     // max num range items to count for challenge
-    private int maxItemsToCount = 4;
+    private float maxItemsToCount = 4;
 
     // items to count in current level
-    private int itemsToCount    = maxItemsToCount;
+    private int itemsToCount    = (int)maxItemsToCount;
 
 
 
@@ -117,12 +119,24 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         //Get a reference to our ImageView in the layout
         ourFrame = (ImageView) findViewById(R.id.canvas_image_ref_img);
 
+
+
         // get the items to count view, set invisible at the moment
+        solutionsView      =  findViewById(R.id.solutionsShowing_v);
         drawquiz_challenge = findViewById(R.id.itemDrawingNoNumber_v);
-        drawquiz = findViewById(R.id.itemDrawing_v);
+        drawquiz           = findViewById(R.id.itemDrawing_v);
+
+        // set quiz with and without number invisible, not already in the game
         drawquiz.setVisibility(View.INVISIBLE);
         drawquiz_challenge.setVisibility(View.INVISIBLE);
+
+        // link list img with number with that with No number in the 2 separate view
         drawquiz_challenge.setImgNumberList(drawquiz.getImgwithNUmberList());
+
+        // put the SolutionView instance into drawquiz_challenge to draw solutions
+        drawquiz_challenge.setSolutionView(solutionsView);
+
+
 
         // other views
         instructions_tv = findViewById(R.id.countobj_instructions_tv);
@@ -310,7 +324,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
         // show the items in number defined by level
-        itemsToCount = myUtil.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),maxItemsToCount);
+        itemsToCount = myUtil.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),(int)maxItemsToCount);
         drawquiz.redraw(itemsToCount);
         drawquiz_challenge.redraw(itemsToCount);
 
@@ -349,6 +363,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      * ---------------------------------------------------------------------------------------------
      */
     private void showQuiz(){
+        solutionsView.setVisibility(View.INVISIBLE);
         btnNewGame.setVisibility(View.INVISIBLE);
         drawquiz.setVisibility(View.VISIBLE);
     }
@@ -361,6 +376,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      */
     private void hideQuiz(){
         // debug drawquiz.setVisibility(View.INVISIBLE);
+        solutionsView.setVisibility(View.VISIBLE);
         drawquiz_challenge.setVisibility(View.VISIBLE);
 
     }
@@ -429,11 +445,11 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         // increment level difficulty
         if ( (level > 1) && (level < 30)){
 
-            maxItemsToCount += 1;
+            maxItemsToCount += 0.5;
 
             timerLength  += 0.5f;
 
-            numChallengeEachLevel += 0;
+            numChallengeEachLevel += 1;
 
             Log.d(TAG, "updatingLevel: New Level! new min : "+min+" new max: "
                     +max+" new level : "+level+" Timer now at : " + (timerLength/1000) + " sec.");

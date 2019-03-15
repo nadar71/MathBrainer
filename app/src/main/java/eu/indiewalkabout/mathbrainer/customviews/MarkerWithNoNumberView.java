@@ -35,11 +35,20 @@ public class MarkerWithNoNumberView extends View {
     int randX;
     int randY;
 
+
+    SolutionsView show_solutions;
+
+
     // list of marker with number upon
     List<CircularImage> imgNumberList;
 
     // list of marker with no number upon
     List<CircularImage> imgNoNumberList;
+
+    // list of marker with solution upon, to be passed to SolutionsView
+    List<CircularImage> solutionsList;
+
+
 
     // touch result :
     // -1 : no touch
@@ -78,6 +87,7 @@ public class MarkerWithNoNumberView extends View {
     }
 
 
+    // Setters/ getters for touch enabling flag
     public void set_isTouchMarkersEnable(boolean state){
         isTouchMarkersEnable = state;
     }
@@ -86,6 +96,18 @@ public class MarkerWithNoNumberView extends View {
         return isTouchMarkersEnable;
     }
 
+
+    public List<CircularImage> get_solutionList(){
+        return solutionsList;
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Init view, used in constructors
+     * @param context
+     * ---------------------------------------------------------------------------------------------
+     */
     private void init(Context context) {
         this.context = context;
 
@@ -93,40 +115,86 @@ public class MarkerWithNoNumberView extends View {
 
         imageScaleXY = 0.2f;
 
-        imgNumberList = new ArrayList<>();
+        imgNumberList   = new ArrayList<>();
         imgNoNumberList = new ArrayList<>();
+        solutionsList   = new ArrayList<>();
 
         randX = (int) (mWidth * 0.5);
         randY = (int) (mHeight * 0.5);
 
-        Log.d(TAG, "onCreate: mWidth : " + mWidth + " mHeigth : " + mHeight);
-
     }
 
 
-
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Rest the view state
+     * ---------------------------------------------------------------------------------------------
+     */
     public void resetGame(){
-        // clear from previous items
+        // clear list from previous items
         imgNoNumberList.clear();
+
+        // clear list of discovered solutions
+        solutionsList.clear();
+
+        // reset touch counter
         touchCounter = 0;
+
+        // init touch result flag to neuter value, to avoid triggering action
         touchResult.setValue(-1);
+
+        // enable view to touch
         set_isTouchMarkersEnable(true);
 
+        // reset solutions data structure
+        // show_solutions.resetGame();
     }
 
 
+    /**
+     * ----------------------------------------------------------------------------------------------
+     * Touch result setter
+     * @param value
+     * ---------------------------------------------------------------------------------------------
+     */
     public void setTouchResult(int value){
         touchResult.setValue(value);
     }
 
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Touch result getter
+     * @return
+     * ---------------------------------------------------------------------------------------------
+     */
     public MutableLiveData<Integer> getTouchResult(){
         return touchResult;
     }
 
 
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Used to get the list of image from MarkerWithNUmber, to set same positions
+     * @param imgNumberList
+     * ---------------------------------------------------------------------------------------------
+     */
     public void setImgNumberList(List<CircularImage> imgNumberList){
         this.imgNumberList = imgNumberList;
     }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Get the SolutionsView instance
+     * @param show_solutions
+     * ---------------------------------------------------------------------------------------------
+     */
+    public void setSolutionView(SolutionsView show_solutions){
+        this.show_solutions = show_solutions;
+
+    }
+
+
 
 
     @Override
@@ -149,7 +217,6 @@ public class MarkerWithNoNumberView extends View {
         // draw itemNumber images to count for
         for (CircularImage img : imgNumberList) {
 
-            // ------------ collect first set of images, with number above ------------
             Resources res = getResources();
             Bitmap marker = BitmapFactory.decodeResource(res, R.drawable.number_pointer);
 
@@ -174,7 +241,13 @@ public class MarkerWithNoNumberView extends View {
     }
 
 
-
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Support positional touch event, i.e. : if touch is inside a bitmap, trigger action
+     * @param event
+     * @return
+     * ---------------------------------------------------------------------------------------------
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
@@ -199,6 +272,10 @@ public class MarkerWithNoNumberView extends View {
                         if ( indx == touchCounter) {
                             Toast.makeText(context, "OK! marker number : " + indx, Toast.LENGTH_SHORT).show();
 
+                            // mark as a correct result
+                            loadSolution(img, indx);
+                            show_solutions.redraw();
+
                             // win condition reached
                             if ( allMarkerTouched() && (touchCounter == itemNumber-1) ) {
                                 touchResult.setValue(1);
@@ -219,6 +296,39 @@ public class MarkerWithNoNumberView extends View {
     }
 
 
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Load the list  solutionsListof SolutionsView to keep update for showing correct solutions
+     * once they are discovered
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void loadSolution(CircularImage img, int number){
+
+        Resources res = getResources();
+        Bitmap marker = img.get_bitmap();
+
+        // get the img size (it's square) with scale
+        int size = ((int) ((float) marker.getWidth() * imageScaleXY));
+
+        // make bitmap mutable for marker with number
+        Bitmap bitmapWithNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
+
+        // draw text on bitmap
+        myUtil.drawTextToBitmap(context, bitmapWithNumber, Integer.toString(number));
+
+        // create an image view and store in solutions list
+        CircularImage solutionsImg = new CircularImage(context, randX, randY, size);
+        solutionsImg.setImageBitmap(bitmapWithNumber);
+        solutionsImg.set_number(number);
+        solutionsList.add(solutionsImg);
+
+        // make SolutionsView aware of solutions list images
+        show_solutions.setSolutionList(solutionsList);
+
+    }
+
+
+
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -236,29 +346,6 @@ public class MarkerWithNoNumberView extends View {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Avoid overlapping objects
-     * NB : item origin is in left-top vertex
-     *
-     * @param x
-     * @param y
-     * @param size
-     * @return ---------------------------------------------------------------------------------------------
-     */
-    public boolean isOverlapping(int x, int y, int size) {
-
-        for (CircularImage circularImage : imgNumberList) {
-            if (
-                    (((x < circularImage.get_x()) && (x > circularImage.get_x() - size)) || ((x > circularImage.get_x()) && (x < circularImage.get_x() + size))) &&
-                            (((y < circularImage.get_y()) && (y > circularImage.get_y() - size)) || ((y > circularImage.get_y()) && (y < circularImage.get_y() + size)))
-            ) {
-                return true;
-            }
-        }
-        return false;
-
-    }
 
 
     /**
@@ -276,7 +363,7 @@ public class MarkerWithNoNumberView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         // Calculate the radius from the width and height.
-        mWidth = w;
+        mWidth  = w;
         mHeight = h;
         Log.d(TAG, "onCreate: mWidth : " + mWidth + " mHeigth : " + mHeight);
     }

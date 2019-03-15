@@ -62,6 +62,12 @@ public class MarkerWithNumberView extends View {
     }
 
 
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Take the imgNumberList to pass to MarkerWithNoNumberView
+     * @return
+     * ---------------------------------------------------------------------------------------------
+     */
     public List<CircularImage> getImgwithNUmberList(){
         return  imgNumberList;
     }
@@ -102,7 +108,6 @@ public class MarkerWithNumberView extends View {
         // draw itemNumber images to count for
         for (int i = 0; i < itemNumber; i++) {
 
-            // ------------ collect first set of images, with number above ------------
             Resources res = getResources();
             Bitmap marker = BitmapFactory.decodeResource(res, R.drawable.number_pointer);
 
@@ -150,7 +155,8 @@ public class MarkerWithNumberView extends View {
      * @param x
      * @param y
      * @param size
-     * @return ---------------------------------------------------------------------------------------------
+     * @return
+     * ---------------------------------------------------------------------------------------------
      */
     public boolean isOverlapping(int x, int y, int size) {
 
@@ -177,12 +183,12 @@ public class MarkerWithNumberView extends View {
      * @param h    Current height of this view
      * @param oldw Initial width of this view
      * @param oldh Initial height of this view
-     *             ---------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         // Calculate the radius from the width and height.
-        mWidth = w;
+        mWidth  = w;
         mHeight = h;
         Log.d(TAG, "onCreate: mWidth : " + mWidth + " mHeigth : " + mHeight);
     }
