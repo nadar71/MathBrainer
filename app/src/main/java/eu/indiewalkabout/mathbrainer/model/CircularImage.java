@@ -11,7 +11,7 @@ public class CircularImage extends AppCompatImageView {
     int x, y;
     int size;
     Bitmap image;
-    int number;
+    int number;   //number associated with image/bitmap
     boolean touched = false;
 
 

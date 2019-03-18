@@ -147,7 +147,7 @@ public class MarkerWithNoNumberView extends View {
         set_isTouchMarkersEnable(true);
 
         // reset solutions data structure
-        // show_solutions.resetGame();
+        show_solutions.resetGame();
     }
 
 
@@ -227,7 +227,7 @@ public class MarkerWithNoNumberView extends View {
             int x = img.get_x();
             int y = img.get_y();
             Bitmap bitmapWithNoNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
-            CircularImage imgWithNoNumber = new CircularImage(context, x + 10, y + 10, size);
+            CircularImage imgWithNoNumber = new CircularImage(context, x , y , size);
             imgWithNoNumber.set_bitmap(bitmapWithNoNumber);
             imgNoNumberList.add(imgWithNoNumber);
 
@@ -304,11 +304,7 @@ public class MarkerWithNoNumberView extends View {
      */
     private void loadSolution(CircularImage img, int number){
 
-        Resources res = getResources();
         Bitmap marker = img.get_bitmap();
-
-        // get the img size (it's square) with scale
-        int size = ((int) ((float) marker.getWidth() * imageScaleXY));
 
         // make bitmap mutable for marker with number
         Bitmap bitmapWithNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
@@ -317,7 +313,7 @@ public class MarkerWithNoNumberView extends View {
         myUtil.drawTextToBitmap(context, bitmapWithNumber, Integer.toString(number));
 
         // create an image view and store in solutions list
-        CircularImage solutionsImg = new CircularImage(context, randX, randY, size);
+        CircularImage solutionsImg = new CircularImage(context, img.get_x(), img.get_y(), img.getSize());
         solutionsImg.setImageBitmap(bitmapWithNumber);
         solutionsImg.set_number(number);
         solutionsList.add(solutionsImg);

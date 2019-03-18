@@ -1,7 +1,9 @@
 package eu.indiewalkabout.mathbrainer.customviews;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,6 +13,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.model.CircularImage;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
@@ -91,7 +94,7 @@ public class SolutionsView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        resetGame();
+        // resetGame();
 
         //A paint object that does our drawing, on our canvas
         Paint paint = new Paint();
@@ -108,11 +111,21 @@ public class SolutionsView extends View {
 
                 CircularImage solutionImg = localSolutionsList.get(i);
 
-                Bitmap img = solutionImg.get_bitmap();
+                // draw new marker with corrispondent number on it
+                Resources res = getResources();
+                Bitmap marker = BitmapFactory.decodeResource(res, R.drawable.number_pointer);
+
+                // make bitmap mutable for marker with number
+                Bitmap bitmapWithNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
+
+                // draw text on bitmap
+                myUtil.drawTextToBitmap(context, bitmapWithNumber,
+                        Integer.toString(solutionImg.get_number()));
+
 
                 // draw on canvas marker with  number on them
-                canvas.drawBitmap(myUtil.resizeBitmapByScale(img, imageScaleXY),
-                        solutionImg.get_x(), solutionImg.get_y()+50, paint);
+                canvas.drawBitmap(myUtil.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
+                        solutionImg.get_x(), solutionImg.get_y(), paint);
             }
         }
 
