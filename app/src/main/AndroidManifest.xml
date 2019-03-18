@@ -24,6 +24,14 @@
             android:name=".MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
+
+        </activity>
+
+
+        <activity
+            android:name=".ChooseGameActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,44 +39,47 @@
             </intent-filter>
         </activity>
 
-
-        <activity
-            android:name=".ChooseGameActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".aritmetic.MixedOp_Write_Result_Activity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".othergames.CountObjectsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".aritmetic.DoubleNumberActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
+
         <activity
             android:name=".othergames.FallingOperationsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".othergames.NumberOrderActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".aritmetic.RandomOperationActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".othergames.SoundsSeqActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".MainSettingsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+
         <activity android:name=".aritmetic.MixedOp_Choose_Result_Activity" />
         <activity android:name=".aritmetic.singleop.Sum_Choose_Result_Activity" />
         <activity android:name=".aritmetic.singleop.Diff_Choose_Result_Activity" />
@@ -77,7 +88,7 @@
         <activity android:name=".aritmetic.singleop.Sum_Write_Result_Activity" />
         <activity android:name=".aritmetic.singleop.Diff_Write_Result_Activity" />
         <activity android:name=".aritmetic.singleop.Mult_Write_Result_Activity" />
-        <activity android:name=".aritmetic.singleop.Div_Write_Result_Activity"></activity>
+        <activity android:name=".aritmetic.singleop.Div_Write_Result_Activity" />
     </application>
 
 </manifest>

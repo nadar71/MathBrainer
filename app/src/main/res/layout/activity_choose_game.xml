@@ -7,6 +7,51 @@
     tools:context="eu.indiewalkabout.mathbrainer.ChooseGameActivity">
 
 
+    <TextView
+        android:id="@+id/appTitleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/math_brainer"
+        android:textSize="30sp"
+        app:layout_constraintHorizontal_bias="0.451"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/settingsBtn"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/settings"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_search" android:layout_marginEnd="16dp" />
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <Button
+        android:id="@+id/MixedOps_WriteResultBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="100dp"
+        android:text="+ - * /  ___"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scoreBtn" />
+
+    <Button
+        android:id="@+id/MixedOps_ChooseResultBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:text="+-*/   _?_"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MixedOps_WriteResultBtn" />
+
     <Button
         android:id="@+id/sumWrite_Btn"
         android:layout_width="61dp"
@@ -59,82 +104,18 @@
         app:layout_constraintTop_toBottomOf="@+id/multWrite_Btn"
         app:layout_constraintVertical_bias="0.538" />
 
-    <Button
-        android:id="@+id/MixedOps_WriteResultBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="16dp"
-        android:text="+ - * /  ___"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/resultWriteStatsText"
-        android:layout_width="146dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:text="@string/resultwritestatsvalues"
-        app:layout_constraintBottom_toTopOf="@+id/MixedOps_WriteResultBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/MixedOps_WriteResultBtn"
-        app:layout_constraintTop_toBottomOf="@+id/MixedOps_WriteResultBtn"
-        app:layout_constraintVertical_bias="0.339" />
-
-    <Button
-        android:id="@+id/MixedOps_ChooseResultBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="8dp"
-        android:text="+-*/   _?_"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MixedOps_WriteResultBtn" />
-
-    <TextView
-        android:id="@+id/resultChooseStatsText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:layout_marginLeft="72dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:text="@string/resultchoosestatsvalues"
-        app:layout_constraintBottom_toTopOf="@+id/MixedOps_ChooseResultBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/MixedOps_ChooseResultBtn"
-        app:layout_constraintTop_toBottomOf="@+id/MixedOps_ChooseResultBtn"
-        app:layout_constraintVertical_bias="0.49" />
 
     <Button
         android:id="@+id/quickCountBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="34dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
+        android:layout_width="119dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:text="@string/quick_count"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sumWrite_Btn" />
-
-    <TextView
-        android:id="@+id/countStatsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
-        android:layout_marginStart="76dp"
-        android:layout_marginLeft="76dp"
-        android:text="@string/countstatsvalues"
-        app:layout_constraintBottom_toTopOf="@+id/quickCountBtn"
-        app:layout_constraintStart_toEndOf="@+id/quickCountBtn"
-        app:layout_constraintTop_toBottomOf="@+id/quickCountBtn" />
+        app:layout_constraintBottom_toTopOf="@+id/orderBtn"
+        app:layout_constraintStart_toEndOf="@+id/orderBtn"
+        app:layout_constraintTop_toBottomOf="@+id/orderBtn"
+        app:layout_constraintVertical_bias="0.547" />
 
     <Button
         android:id="@+id/doublingBtn"
@@ -144,124 +125,50 @@
         android:layout_marginTop="8dp"
         android:text="2*"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quickCountBtn"
-        android:layout_marginLeft="32dp" />
-
-    <TextView
-        android:id="@+id/doublingStatsText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginLeft="136dp"
-        android:text="@string/doublingstatsvalues"
-        app:layout_constraintBottom_toTopOf="@+id/doublingBtn"
-        app:layout_constraintStart_toEndOf="@+id/doublingBtn"
-        app:layout_constraintTop_toBottomOf="@+id/doublingBtn"
-        app:layout_constraintVertical_bias="0.481" />
-
-    <Button
-        android:id="@+id/fallingBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/falling_ops"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/doublingBtn"
-        android:layout_marginLeft="32dp" />
-
-    <TextView
-        android:id="@+id/fallingStatsText"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginLeft="68dp"
-        android:text="@string/fallingstatsvalues"
-        app:layout_constraintBottom_toTopOf="@+id/fallingBtn"
-        app:layout_constraintStart_toEndOf="@+id/fallingBtn"
-        app:layout_constraintTop_toBottomOf="@+id/fallingBtn"
-        app:layout_constraintVertical_bias="0.48" />
+        app:layout_constraintTop_toBottomOf="@+id/sumWrite_Btn" />
 
     <Button
         android:id="@+id/orderBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="34dp"
+        android:layout_width="140dp"
+        android:layout_height="38dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="@string/numbers_order"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fallingBtn"
-        android:layout_marginLeft="32dp" />
-
-    <TextView
-        android:id="@+id/numberOrderStatsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:text="@string/numberorderstatsvalues"
-        app:layout_constraintBottom_toTopOf="@+id/orderBtn"
-        app:layout_constraintStart_toEndOf="@+id/orderBtn"
-        app:layout_constraintTop_toBottomOf="@+id/orderBtn"
-        app:layout_constraintVertical_bias="0.49" />
+        app:layout_constraintTop_toBottomOf="@+id/doublingBtn" />
 
     <Button
         android:id="@+id/randomOpsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginStart="32dp"
+        android:layout_width="121dp"
+        android:layout_height="35dp"
         android:layout_marginTop="8dp"
         android:text="@string/random_ops"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orderBtn"
-        android:layout_marginLeft="32dp" />
-
-    <TextView
-        android:id="@+id/randomOpsStatsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginLeft="68dp"
-        android:text="@string/randomopsstatsvalues"
-        app:layout_constraintBottom_toTopOf="@+id/randomOpsBtn"
-        app:layout_constraintStart_toEndOf="@+id/randomOpsBtn"
-        app:layout_constraintTop_toBottomOf="@+id/randomOpsBtn"
-        app:layout_constraintVertical_bias="0.49" />
+        app:layout_constraintBottom_toTopOf="@+id/doublingBtn"
+        app:layout_constraintStart_toEndOf="@+id/doublingBtn"
+        app:layout_constraintTop_toBottomOf="@+id/doublingBtn"
+        app:layout_constraintVertical_bias="0.556" />
 
     <Button
         android:id="@+id/soundsSeqBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="34dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="56dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
         android:text="@string/sounds_sequence"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/randomOpsBtn"
-        android:layout_marginLeft="32dp" />
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/fallingBtn"
+        app:layout_constraintStart_toEndOf="@+id/fallingBtn"
+        app:layout_constraintTop_toBottomOf="@+id/fallingBtn" />
 
-    <TextView
-        android:id="@+id/soundSeqStatsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
-        android:text="@string/soundseqstatsvalues"
-        app:layout_constraintBottom_toTopOf="@+id/soundsSeqBtn"
-        app:layout_constraintStart_toEndOf="@+id/soundsSeqBtn"
-        app:layout_constraintTop_toBottomOf="@+id/soundsSeqBtn"
-        app:layout_constraintVertical_bias="0.509" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <android.support.constraint.Group
-        android:id="@+id/group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/fallingBtn"
+        android:layout_width="45dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/falling_ops"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/sumChoose_Btn"
@@ -317,6 +224,42 @@
 
     <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->
     <!-- THIS APP REAL AdMob banner ID: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+    <Button
+        android:id="@+id/hintsBtn"
+        android:layout_width="78dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/hints"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/StatBtn"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/StatBtn"
+        app:layout_constraintTop_toBottomOf="@+id/StatBtn"
+        app:layout_constraintVertical_bias="0.538" />
+
+    <Button
+        android:id="@+id/StatBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/statistics"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/scoreBtn"
+        app:layout_constraintStart_toEndOf="@+id/scoreBtn"
+        app:layout_constraintTop_toBottomOf="@+id/scoreBtn"
+        app:layout_constraintVertical_bias="0.538" />
+
+    <Button
+        android:id="@+id/scoreBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/scoreMain"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appTitleLabel" />
+
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
         android:layout_width="match_parent"
