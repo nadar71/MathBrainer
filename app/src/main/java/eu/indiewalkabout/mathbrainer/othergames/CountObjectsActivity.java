@@ -556,10 +556,6 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
 
 
-
-
-
-
 // -------------------------------------------------------------------------------------------------
 //                                    UNUSED STUFF, just for debug
 // -------------------------------------------------------------------------------------------------
@@ -666,15 +662,6 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         // invalidate view for redrawing
         ourFrame.invalidate();
     }
-
-
-
-
-
-
-
-
-
 
 
 

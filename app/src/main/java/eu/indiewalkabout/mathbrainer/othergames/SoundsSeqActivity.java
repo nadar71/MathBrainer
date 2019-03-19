@@ -8,6 +8,8 @@ import com.google.android.gms.ads.AdView;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 
+
+// TODO
 public class SoundsSeqActivity extends AppCompatActivity {
 
     // admob banner ref

@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -399,4 +400,46 @@ public class Sum_Write_Result_Activity extends AppCompatActivity implements IGam
         }
 
     }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     *                                          MENU STUFF
+     * ---------------------------------------------------------------------------------------------
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        // When the home button is pressed, take the user back to Home
+        if (id == android.R.id.home) {
+
+            // TODO : decomment to activate interstitial ads
+            /*
+            // show interstitial ad on back home only 50% of times
+            int guess = GenericUtility.randRange_ApiCheck(1,10);
+            if (guess <=4) {
+                showInterstitialAd();
+            }
+            */
+
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    // ---------------------------------------------------------------------------------------------
+    //                                  REVEALING FAB BTN STUFF
+    // ---------------------------------------------------------------------------------------------
+    public void onBackPressed() {
+        super.onBackPressed();
+        // reset and destroy counter
+        countDownIndicator.countdownReset();
+
+    }
+
+
+
 }

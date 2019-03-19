@@ -3,6 +3,7 @@ package eu.indiewalkabout.mathbrainer.aritmetic;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -441,6 +442,45 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
             timerLength = timerLength + 5000 ;
             Log.d(TAG, "updatingLevel: New Level! new min : "+min+" new max: "+max+" new level : "+level+" Timer now at : " + (timerLength/1000) + " sec.");
         }
+
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     *                                          MENU STUFF
+     * ---------------------------------------------------------------------------------------------
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        // When the home button is pressed, take the user back to Home
+        if (id == android.R.id.home) {
+
+            // TODO : decomment to activate interstitial ads
+            /*
+            // show interstitial ad on back home only 50% of times
+            int guess = GenericUtility.randRange_ApiCheck(1,10);
+            if (guess <=4) {
+                showInterstitialAd();
+            }
+            */
+
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    // ---------------------------------------------------------------------------------------------
+    //                                  REVEALING FAB BTN STUFF
+    // ---------------------------------------------------------------------------------------------
+    public void onBackPressed() {
+        super.onBackPressed();
+        // reset and destroy counter
+        countDownIndicator.countdownReset();
 
     }
 }
