@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
+import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
@@ -103,6 +104,9 @@ public class Diff_Choose_Result_Activity extends AppCompatActivity implements IG
     // max time, increased by level growing
     private long timerLength            = 20000;
     private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
+
+    // game session end dialog
+    EndGameSessionDialog endSessiondialog;
 
 
     @Override
@@ -266,6 +270,9 @@ public class Diff_Choose_Result_Activity extends AppCompatActivity implements IG
 
         Log.d(TAG, "checkPlayerInput: pressedBtnValue : " + pressedBtnValue);
 
+        // stop timer
+        countDownIndicator.countdownReset();
+
         // check if result is ok...
         if (pressedBtnValue != 0  && pressedBtnValue == answerOK) {
             Toast.makeText(Diff_Choose_Result_Activity.this, "OK!", Toast.LENGTH_SHORT).show();
@@ -282,8 +289,11 @@ public class Diff_Choose_Result_Activity extends AppCompatActivity implements IG
                 updateLevel();
             }
 
-            // new number to double
-            newChallenge();
+            endSessiondialog = new EndGameSessionDialog(this,
+                    Diff_Choose_Result_Activity.this,
+                    EndGameSessionDialog.GAME_SESSION_RESULT.OK);
+
+            // newChallenge();
 
             // ...otherwise a life will be lost
         } else {
@@ -292,9 +302,11 @@ public class Diff_Choose_Result_Activity extends AppCompatActivity implements IG
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
 
-            // new number to double
             if (gameover == false) {
-                newChallenge();
+                // newChallenge();
+                endSessiondialog = new EndGameSessionDialog(this,
+                        Diff_Choose_Result_Activity.this,
+                        EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
             }
 
         }
@@ -336,7 +348,7 @@ public class Diff_Choose_Result_Activity extends AppCompatActivity implements IG
 
         }else {
             // lifes remaining >0, restart a new counter
-            countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
+            // countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
             return false;
         }
 
@@ -360,7 +372,8 @@ public class Diff_Choose_Result_Activity extends AppCompatActivity implements IG
      * Set new challenge in view
      * -------------------------------------------------------------------------------------------------
      */
-    private void newChallenge() {
+    @Override
+    public void newChallenge() {
         // clear wrong answers list
         wrongAnswer.clear();
 

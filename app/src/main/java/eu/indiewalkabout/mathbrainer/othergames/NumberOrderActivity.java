@@ -1,5 +1,6 @@
 package eu.indiewalkabout.mathbrainer.othergames;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,6 +26,7 @@ import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView;
 import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView;
 import eu.indiewalkabout.mathbrainer.customviews.SolutionsView;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
+import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
@@ -95,12 +98,11 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     // items to count in current level
     private int itemsToCount    = (int)maxItemsToCount;
 
-
-
-
     // get the touch event from costum class on markers touching
     private MutableLiveData<Integer> touchEventResInCostumView;
 
+    // game session end dialog
+    EndGameSessionDialog endSessiondialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,8 +214,10 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
                 updateLevel();
             }
 
-            // new number to double
-            newchallengeAfterTimerLength(1000);
+            // newchallengeAfterTimerLength_ok(1000);
+            showNewBtnAfterTimerLength(1000);
+            // createDialog(EndGameSessionDialog.GAME_SESSION_RESULT.OK);
+
 
             // ...otherwise a life will be lost
         } else if (result == 0 ){
@@ -226,8 +230,10 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
             // new number to double
             if (gameover == false) {
-                // newChallenge();
-                newchallengeAfterTimerLength(1000);
+                // newchallengeAfterTimerLength_wrong(1000);
+                showNewBtnAfterTimerLength(1000);
+                // createDialog(EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
+
             }
 
         }
@@ -235,13 +241,12 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
 
-
     /**
      * ---------------------------------------------------------------------------------------------
-     * Launch new challenge after timerLength
+     * Show button for new challenge after timerLength
      * ---------------------------------------------------------------------------------------------
      */
-    private void newchallengeAfterTimerLength(final int timerLength){
+    private void showNewBtnAfterTimerLength(final int timerLength){
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override
@@ -254,7 +259,122 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     }
 
 
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Launch new challenge after timerLength
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void newchallengeAfterTimerLength(final int timerLength){
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                newChallenge();
+            }
+        };
+        // execute runnable after a timerLength
+        handler.postDelayed(runnable, timerLength);
+    }
 
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Launch new challenge after timerLength if session game won
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void showNewBtnAfterTimerLength_ok(final int timerLength){
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                // btnNewGame.setVisibility(View.VISIBLE);
+                endSessiondialog = new EndGameSessionDialog(NumberOrderActivity.this,
+                        NumberOrderActivity.this,
+                        EndGameSessionDialog.GAME_SESSION_RESULT.OK);
+            }
+        };
+        // execute runnable after a timerLength
+        handler.postDelayed(runnable, timerLength);
+    }
+
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Launch new challenge after timerLength if session game wrong
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void showNewBtnAfterTimerLength_wrong(final int timerLength){
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                // btnNewGame.setVisibility(View.VISIBLE);
+                endSessiondialog = new EndGameSessionDialog(NumberOrderActivity.this,
+                        NumberOrderActivity.this,
+                        EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
+            }
+        };
+        // execute runnable after a timerLength
+        handler.postDelayed(runnable, timerLength);
+    }
+
+
+
+    private AlertDialog alertDialog;
+    private void createDialog(EndGameSessionDialog.GAME_SESSION_RESULT result){
+        if (result == EndGameSessionDialog.GAME_SESSION_RESULT.WRONG){
+            // user dialog confirm
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View dialogLayout = LayoutInflater.from(context)
+                    .inflate(R.layout.dialog_game_session_answer, null);
+
+            TextView msg = dialogLayout.findViewById(R.id.result_msg_tv);
+            msg.setText(R.string.wrong_str);
+
+            Button nextBtn = dialogLayout.findViewById(R.id.next_btn);
+
+            nextBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                    newChallenge();
+
+                }
+            });
+
+            builder.setView(dialogLayout);
+
+            alertDialog = builder.show();
+
+        } else if (result == EndGameSessionDialog.GAME_SESSION_RESULT.OK) {
+            // user dialog confirm
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View dialogLayout = LayoutInflater.from(context)
+                    .inflate(R.layout.dialog_game_session_answer, null);
+
+            TextView msg = dialogLayout.findViewById(R.id.result_msg_tv);
+            msg.setText(R.string.ok_str);
+
+            Button nextBtn = dialogLayout.findViewById(R.id.next_btn);
+
+
+            nextBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                    newChallenge();
+
+                }
+            });
+
+            builder.setView(dialogLayout);
+
+            alertDialog = builder.show();
+
+        }
+    }
 
 
     /**
@@ -315,13 +435,13 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      * Set new challenge in view
      * ---------------------------------------------------------------------------------------------
      */
-    private void newChallenge() {
+    @Override
+    public void newChallenge() {
         // clear wrong answers list
         wrongAnswer.clear();
 
         // reset previous game
         drawquiz_challenge.resetGame();
-
 
         // show the items in number defined by level
         itemsToCount = myUtil.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),(int)maxItemsToCount);

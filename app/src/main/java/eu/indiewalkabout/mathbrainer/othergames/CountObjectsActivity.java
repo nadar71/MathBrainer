@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
+import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
@@ -101,6 +102,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
     // items to count in current level
     private int itemsToCount    = maxItemsToCount;
+
+    // game session end dialog
+    EndGameSessionDialog endSessiondialog;
 
 
 
@@ -243,9 +247,13 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
                 updateLevel();
             }
 
-            // new number to double
-            // newChallenge();
-            newchallengeAfterTimerLength(1000);
+            // newchallengeAfterTimerLength(1000);
+            buttonGrid.setVisibility(View.INVISIBLE);
+            instructions_tv.setVisibility(View.INVISIBLE);
+            endSessiondialog = new EndGameSessionDialog(this,
+                    CountObjectsActivity.this,
+                    EndGameSessionDialog.GAME_SESSION_RESULT.OK);
+
 
             // ...otherwise a life will be lost
         } else {
@@ -256,10 +264,13 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
 
-            // new number to double
             if (gameover == false) {
-                // newChallenge();
-                newchallengeAfterTimerLength(1000);
+                // newchallengeAfterTimerLength(1000);
+                buttonGrid.setVisibility(View.INVISIBLE);
+                instructions_tv.setVisibility(View.INVISIBLE);
+                endSessiondialog = new EndGameSessionDialog(this,
+                        CountObjectsActivity.this,
+                        EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
             }
 
         }
@@ -366,7 +377,8 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
      * Set new challenge in view
      * ---------------------------------------------------------------------------------------------
      */
-    private void newChallenge() {
+    @Override
+    public void newChallenge() {
         // clear wrong answers list
         wrongAnswer.clear();
 

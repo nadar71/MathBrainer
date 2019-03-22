@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
+import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
@@ -92,6 +93,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
     // max time, increased by level growing
     private long timerLength            = 20000;
     private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
+
+    // game session end dialog
+    EndGameSessionDialog endSessiondialog;
 
 
     @Override
@@ -222,8 +226,11 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
                 updateLevel();
             }
 
-            // new number to double
-            newChallenge();
+            endSessiondialog = new EndGameSessionDialog(this,
+                    RandomOperationActivity.this,
+                    EndGameSessionDialog.GAME_SESSION_RESULT.OK);
+
+            // newChallenge();
 
             // ...otherwise a life will be lost
         } else {
@@ -232,9 +239,11 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
 
-            // new number to double
             if (gameover == false) {
-                newChallenge();
+                // newChallenge();
+                endSessiondialog = new EndGameSessionDialog(this,
+                        RandomOperationActivity.this,
+                        EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
             }
 
         }
@@ -276,7 +285,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
         }else {
             // lifes remaining >0, restart a new counter
-            countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
+            // countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
             return false;
         }
 
@@ -300,7 +309,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
      * Set new challenge in view
      * -------------------------------------------------------------------------------------------------
      */
-    private void newChallenge() {
+    @Override
+    public void newChallenge() {
         // clear wrong answers list
         wrongAnswer.clear();
 

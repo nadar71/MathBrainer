@@ -20,7 +20,6 @@ import com.google.android.gms.ads.AdView;
 import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Sum_Write_Result_Activity;
 import eu.indiewalkabout.mathbrainer.util.*;
 
 /**
@@ -69,6 +68,9 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     // max time, increased by level growing
     private long timerLength            = CountDownIndicator.DEFAULT_MILLISINFUTURE;
     private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
+
+    // game session end dialog
+    EndGameSessionDialog endSessiondialog;
 
 
     @Override
@@ -162,8 +164,11 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
                 updateLevel();
             }
 
-            // new number to double
-            newChallenge();
+            endSessiondialog = new EndGameSessionDialog(this,
+                    DoubleNumberActivity.this,
+                    EndGameSessionDialog.GAME_SESSION_RESULT.OK);
+
+            // newChallenge();
 
         // ...otherwise a life will be lost
         } else {
@@ -174,7 +179,10 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
             // new number to double
             if (gameover == false) {
-                newChallenge();
+                // newChallenge();
+                endSessiondialog = new EndGameSessionDialog(this,
+                        DoubleNumberActivity.this,
+                        EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
             }
 
         }
@@ -223,7 +231,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
         }else {
             // lifes remaining >0, restart a new counter
-            countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
+            // countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
             return false;
         }
 
@@ -232,9 +240,9 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Update progress bar
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public void updateProgressBar(int progress) {
@@ -243,11 +251,12 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Set new challenge in view
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
-    private void newChallenge() {
+    @Override
+    public void newChallenge() {
         // set the number to be doubled
         numToBeDoubled = myUtil.randRange_ApiCheck(min, max);
         numberToBeDoubled_tv.setText(Integer.toString(numToBeDoubled));
@@ -264,9 +273,9 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show end game message
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void endGame() {
         // reset counter
@@ -279,9 +288,9 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Updating level
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void updateLevel(){
         // increment level

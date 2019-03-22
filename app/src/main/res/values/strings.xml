@@ -75,6 +75,11 @@
     <string name="choose_your_game">Choose your Game</string>
     <string name="resultwritestatsvalues">resultWriteStatsValues</string>
 
+    <!-- - - - - - - - - - - - - - - - - Dialogs Strings - - - - - - - - - - - - - - - - - - - - -->
+    <string name="wrong_str">Wrong...</string>
+    <string name="ok_str">OK !</string>
+    <string name="next_str">Next</string>
+
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <!--                   String for Settings                       -->
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
