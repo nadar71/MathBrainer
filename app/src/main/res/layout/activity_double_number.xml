@@ -180,8 +180,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:inputType="number"
-        android:imeOptions="actionDone"
-        android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/answerDouble_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.185"
@@ -189,7 +187,25 @@
         app:layout_constraintStart_toEndOf="@+id/answerDouble_tv"
         app:layout_constraintTop_toBottomOf="@+id/answerDouble_tv"
         app:layout_constraintVertical_bias="0.492"
-        tools:text="12" />
+        tools:text="12"
+
+        android:imeOptions="actionDone"
+        android:singleLine="true"/>
+
+    <eu.indiewalkabout.mathbrainer.util.MyKeyboard
+        android:id="@+id/keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="253dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="3dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playerInput_et" />
 
 
 

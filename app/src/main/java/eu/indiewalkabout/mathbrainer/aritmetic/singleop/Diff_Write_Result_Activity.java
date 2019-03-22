@@ -2,11 +2,13 @@ package eu.indiewalkabout.mathbrainer.aritmetic.singleop;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,10 +21,12 @@ import com.google.android.gms.ads.AdView;
 import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.R;
+import eu.indiewalkabout.mathbrainer.aritmetic.MixedOp_Write_Result_Activity;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
+import eu.indiewalkabout.mathbrainer.util.MyKeyboard;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
 
@@ -94,6 +98,9 @@ public class Diff_Write_Result_Activity extends AppCompatActivity implements IGa
     // game session end dialog
     EndGameSessionDialog endSessiondialog;
 
+    // custom keyboard instance
+    MyKeyboard keyboard;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +127,9 @@ public class Diff_Write_Result_Activity extends AppCompatActivity implements IGa
         lifesValue_iv.add((ImageView) findViewById(R.id.life_02_iv));
         lifesValue_iv.add((ImageView) findViewById(R.id.life_03_iv));
 
+        // keyboard
+        setupCustomKeyboard();
+
         // countdown ref
         countdownBar = (ProgressBar)findViewById(R.id.progressbar);
 
@@ -133,7 +143,7 @@ public class Diff_Write_Result_Activity extends AppCompatActivity implements IGa
         // set first level
         updateLevel();
 
-        // set listner on DONE button on soft keyboard to get the player input
+        // set listener on DONE button on soft keyboard to get the player input
         playerInput_et.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -148,6 +158,26 @@ public class Diff_Write_Result_Activity extends AppCompatActivity implements IGa
         });
 
 
+    }
+
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Create  and setup customkeyboard
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void setupCustomKeyboard() {
+        // init custom keyboard
+        keyboard = (MyKeyboard) findViewById(R.id.keyboard);
+
+        // prevent system keyboard from appearing when EditText is tapped
+        playerInput_et.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        playerInput_et.setTextIsSelectable(true);
+
+        // pass the InputConnection from the EditText to the keyboard
+        InputConnection ic = playerInput_et.onCreateInputConnection(new EditorInfo());
+        keyboard.setInputConnection(ic, Diff_Write_Result_Activity.this);
     }
 
 

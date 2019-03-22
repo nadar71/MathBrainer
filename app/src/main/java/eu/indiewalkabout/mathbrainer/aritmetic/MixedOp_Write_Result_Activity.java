@@ -93,6 +93,7 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
     // game session end dialog
     EndGameSessionDialog endSessiondialog;
 
+    // custom keyboard instance
     MyKeyboard keyboard;
 
 
@@ -121,6 +122,8 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
         lifesValue_iv.add((ImageView) findViewById(R.id.life_01_iv));
         lifesValue_iv.add((ImageView) findViewById(R.id.life_02_iv));
         lifesValue_iv.add((ImageView) findViewById(R.id.life_03_iv));
+
+        // keyboard
         setupCustomKeyboard();
 
         // countdown ref
