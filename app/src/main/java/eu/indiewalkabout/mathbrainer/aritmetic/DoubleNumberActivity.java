@@ -133,7 +133,8 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
      * Check if player input is right/wrong and update score
      * -------------------------------------------------------------------------------------------------
      */
-    private void checkPlayerInput() {
+    @Override
+    public void checkPlayerInput() {
         int inputNum = 0;
 
         // get the player input

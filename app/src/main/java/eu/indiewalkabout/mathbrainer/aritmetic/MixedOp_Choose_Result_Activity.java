@@ -262,7 +262,8 @@ public class MixedOp_Choose_Result_Activity extends AppCompatActivity implements
      * Check if player input is right/wrong and update score
      * -------------------------------------------------------------------------------------------------
      */
-    private void checkPlayerInput() {
+    @Override
+    public void checkPlayerInput() {
 
         Log.d(TAG, "checkPlayerInput: pressedBtnValue : " + pressedBtnValue);
 

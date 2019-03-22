@@ -208,19 +208,40 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <TextView
+        android:id="@+id/result_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="160dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/wrong_str"
+        android:textColor="@android:color/background_light"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/new_game_btn"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toEndOf="@+id/new_game_btn"
+        app:layout_constraintTop_toBottomOf="@+id/countobj_instructions_tv" />
+
     <Button
         android:id="@+id/new_game_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/new_label"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/itemDrawing_v"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_rectangle"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/next_str"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/itemDrawing_v" />
+        app:layout_constraintTop_toBottomOf="@+id/result_tv"
+        app:layout_constraintVertical_bias="0.05" />
 
     <TextView
         android:id="@+id/countobj_instructions_tv"

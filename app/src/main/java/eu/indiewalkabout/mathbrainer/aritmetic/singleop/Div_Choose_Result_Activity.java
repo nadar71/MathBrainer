@@ -266,7 +266,8 @@ public class Div_Choose_Result_Activity extends AppCompatActivity implements IGa
      * Check if player input is right/wrong and update score
      * -------------------------------------------------------------------------------------------------
      */
-    private void checkPlayerInput() {
+    @Override
+    public void checkPlayerInput() {
 
         Log.d(TAG, "checkPlayerInput: pressedBtnValue : " + pressedBtnValue);
 

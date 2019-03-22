@@ -47,7 +47,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     private SolutionsView          solutionsView;
 
 
-    private TextView scoreValue_tv, levelValue_tv, instructions_tv ;
+    private TextView scoreValue_tv, levelValue_tv, instructions_tv, result_tv ;
     private ArrayList<ImageView> lifesValue_iv ;
 
 
@@ -101,8 +101,8 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     // get the touch event from costum class on markers touching
     private MutableLiveData<Integer> touchEventResInCostumView;
 
-    // game session end dialog
-    EndGameSessionDialog endSessiondialog;
+    @Override
+    public void checkPlayerInput() {}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +120,6 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
         //Get a reference to our ImageView in the layout
         ourFrame = (ImageView) findViewById(R.id.canvas_image_ref_img);
-
 
 
         // get the items to count view, set invisible at the moment
@@ -143,7 +142,11 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         // other views
         instructions_tv = findViewById(R.id.countobj_instructions_tv);
         btnNewGame      = findViewById(R.id.new_game_btn);
+        result_tv       = findViewById(R.id.result_tv);
+
         btnNewGame.setVisibility(View.INVISIBLE);
+        result_tv.setVisibility(View.INVISIBLE);
+
 
         scoreValue_tv      = (TextView)  findViewById(R.id.scoreValue_tv);
         levelValue_tv      = (TextView)  findViewById(R.id.levelValue_tv);
@@ -214,9 +217,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
                 updateLevel();
             }
 
-            // newchallengeAfterTimerLength_ok(1000);
-            showNewBtnAfterTimerLength(1000);
-            // createDialog(EndGameSessionDialog.GAME_SESSION_RESULT.OK);
+            showNewBtnAfterTimerLength(500, true);
 
 
             // ...otherwise a life will be lost
@@ -230,9 +231,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
             // new number to double
             if (gameover == false) {
-                // newchallengeAfterTimerLength_wrong(1000);
-                showNewBtnAfterTimerLength(1000);
-                // createDialog(EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
+                showNewBtnAfterTimerLength(500, false);
 
             }
 
@@ -246,135 +245,24 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      * Show button for new challenge after timerLength
      * ---------------------------------------------------------------------------------------------
      */
-    private void showNewBtnAfterTimerLength(final int timerLength){
+    private void showNewBtnAfterTimerLength(final int timerLength, final boolean win){
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 btnNewGame.setVisibility(View.VISIBLE);
-            }
-        };
-        // execute runnable after a timerLength
-        handler.postDelayed(runnable, timerLength);
-    }
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Launch new challenge after timerLength
-     * ---------------------------------------------------------------------------------------------
-     */
-    private void newchallengeAfterTimerLength(final int timerLength){
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                newChallenge();
-            }
-        };
-        // execute runnable after a timerLength
-        handler.postDelayed(runnable, timerLength);
-    }
-
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Launch new challenge after timerLength if session game won
-     * ---------------------------------------------------------------------------------------------
-     */
-    private void showNewBtnAfterTimerLength_ok(final int timerLength){
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                // btnNewGame.setVisibility(View.VISIBLE);
-                endSessiondialog = new EndGameSessionDialog(NumberOrderActivity.this,
-                        NumberOrderActivity.this,
-                        EndGameSessionDialog.GAME_SESSION_RESULT.OK);
-            }
-        };
-        // execute runnable after a timerLength
-        handler.postDelayed(runnable, timerLength);
-    }
-
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Launch new challenge after timerLength if session game wrong
-     * ---------------------------------------------------------------------------------------------
-     */
-    private void showNewBtnAfterTimerLength_wrong(final int timerLength){
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                // btnNewGame.setVisibility(View.VISIBLE);
-                endSessiondialog = new EndGameSessionDialog(NumberOrderActivity.this,
-                        NumberOrderActivity.this,
-                        EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
-            }
-        };
-        // execute runnable after a timerLength
-        handler.postDelayed(runnable, timerLength);
-    }
-
-
-
-    private AlertDialog alertDialog;
-    private void createDialog(EndGameSessionDialog.GAME_SESSION_RESULT result){
-        if (result == EndGameSessionDialog.GAME_SESSION_RESULT.WRONG){
-            // user dialog confirm
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            View dialogLayout = LayoutInflater.from(context)
-                    .inflate(R.layout.dialog_game_session_answer, null);
-
-            TextView msg = dialogLayout.findViewById(R.id.result_msg_tv);
-            msg.setText(R.string.wrong_str);
-
-            Button nextBtn = dialogLayout.findViewById(R.id.next_btn);
-
-            nextBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialog.dismiss();
-                    newChallenge();
-
+                if (win == false) {
+                    result_tv.setText(getResources().getString(R.string.wrong_str));
+                } else if (win == true){
+                    result_tv.setText(getResources().getString(R.string.ok_str));
                 }
-            });
-
-            builder.setView(dialogLayout);
-
-            alertDialog = builder.show();
-
-        } else if (result == EndGameSessionDialog.GAME_SESSION_RESULT.OK) {
-            // user dialog confirm
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            View dialogLayout = LayoutInflater.from(context)
-                    .inflate(R.layout.dialog_game_session_answer, null);
-
-            TextView msg = dialogLayout.findViewById(R.id.result_msg_tv);
-            msg.setText(R.string.ok_str);
-
-            Button nextBtn = dialogLayout.findViewById(R.id.next_btn);
-
-
-            nextBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialog.dismiss();
-                    newChallenge();
-
-                }
-            });
-
-            builder.setView(dialogLayout);
-
-            alertDialog = builder.show();
-
-        }
+                result_tv.setVisibility(View.VISIBLE);
+            }
+        };
+        // execute runnable after a timerLength
+        handler.postDelayed(runnable, timerLength);
     }
+
 
 
     /**
@@ -485,6 +373,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     private void showQuiz(){
         solutionsView.setVisibility(View.INVISIBLE);
         btnNewGame.setVisibility(View.INVISIBLE);
+        result_tv.setVisibility(View.INVISIBLE);
         drawquiz.setVisibility(View.VISIBLE);
     }
 

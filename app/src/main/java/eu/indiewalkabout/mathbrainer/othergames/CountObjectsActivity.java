@@ -227,7 +227,8 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
      * Check if player input is right/wrong and update score
      * -------------------------------------------------------------------------------------------------
      */
-    private void checkPlayerInput() {
+    @Override
+    public void checkPlayerInput() {
 
         Log.d(TAG, "checkPlayerInput: pressedBtnValue : " + pressedBtnValue);
 

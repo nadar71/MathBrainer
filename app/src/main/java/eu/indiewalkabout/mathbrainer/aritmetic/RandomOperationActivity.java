@@ -204,7 +204,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
      * Check if player input is right/wrong and update score
      * -------------------------------------------------------------------------------------------------
      */
-    private void checkPlayerInput() {
+    @Override
+    public void checkPlayerInput() {
 
         Log.d(TAG, "checkPlayerInput: pressedBtnValue : " + pressedBtnValue);
 

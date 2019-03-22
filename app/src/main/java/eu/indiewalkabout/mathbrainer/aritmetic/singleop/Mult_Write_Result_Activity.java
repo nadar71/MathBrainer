@@ -156,7 +156,8 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
      * Check if player input is right/wrong and update score
      * -------------------------------------------------------------------------------------------------
      */
-    private void checkPlayerInput() {
+    @Override
+    public void checkPlayerInput() {
         int inputNum = 0;
 
         // get the player input
