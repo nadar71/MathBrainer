@@ -28,7 +28,7 @@
         android:layout_height="40dp"
         android:max="30"
         android:progress="100"
-        android:progressDrawable="@drawable/horizontal_progress_drawable_red"
+        android:progressDrawable="@drawable/horizontal_progress_drawable_green"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

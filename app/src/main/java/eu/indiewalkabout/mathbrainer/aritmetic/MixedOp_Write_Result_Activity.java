@@ -10,6 +10,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -179,8 +180,22 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
         keyboard = (MyKeyboard) findViewById(R.id.keyboard);
 
         // prevent system keyboard from appearing when EditText is tapped
+        /*
         playerInput_et.setRawInputType(InputType.TYPE_CLASS_TEXT);
         playerInput_et.setTextIsSelectable(true);
+        */
+
+        // prevent system keyboard from appearing when EditText is tapped
+        playerInput_et.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int inType = playerInput_et.getInputType(); // backup the input type
+                playerInput_et.setInputType(InputType.TYPE_NULL); // disable soft input
+                playerInput_et.onTouchEvent(event); // call native handler
+                playerInput_et.setInputType(inType); // restore input type
+                return true; // consume touch even
+            }
+        });
 
         // pass the InputConnection from the EditText to the keyboard
         InputConnection ic = playerInput_et.onCreateInputConnection(new EditorInfo());

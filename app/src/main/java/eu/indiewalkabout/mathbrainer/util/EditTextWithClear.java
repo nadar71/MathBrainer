@@ -42,7 +42,7 @@ public class EditTextWithClear
         // Initialize Drawable member variable.
         mClearButtonImage =
                 ResourcesCompat.getDrawable(getResources(),
-                        R.drawable.ic_clear_opaque_24dp, null);
+                        R.drawable.ic_clear_white_24dp, null);
 
         // If the X (clear) button is tapped, clear the text.
         setOnTouchListener(new OnTouchListener() {
@@ -82,7 +82,7 @@ public class EditTextWithClear
                             // Switch to the black version of clear button.
                             mClearButtonImage =
                                     ResourcesCompat.getDrawable(getResources(),
-                                            R.drawable.ic_clear_black_24dp, null);
+                                            R.drawable.ic_clear_white_24dp, null);
                             showClearButton();
                         }
                         // Check for ACTION_UP.
@@ -90,7 +90,7 @@ public class EditTextWithClear
                             // Switch to the opaque version of clear button.
                             mClearButtonImage =
                                     ResourcesCompat.getDrawable(getResources(),
-                                            R.drawable.ic_clear_opaque_24dp, null);
+                                            R.drawable.ic_clear_white_24dp, null);
                             // Clear the text and hide the clear button.
                             getText().clear();
                             hideClearButton();

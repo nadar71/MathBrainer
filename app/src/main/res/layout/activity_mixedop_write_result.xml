@@ -27,10 +27,10 @@
         android:id="@+id/progressbar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="20dp"
         android:max="30"
         android:progress="100"
-        android:progressDrawable="@drawable/horizontal_progress_drawable_red"
+        android:progressDrawable="@drawable/horizontal_progress_drawable_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -162,98 +162,111 @@
 
     <!-- - - - - QUIZ SECTION - - - - - - - - - - - - - - - - - - -->
 
-    <TextView
-        android:id="@+id/firstOperand_tv"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="84dp"
-        android:fontFamily="@font/quicksand"
-        android:gravity="center_vertical"
-        android:text="@string/_1"
-        android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv" />
 
-    <TextView
-        android:id="@+id/secondOperand_tv"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/quicksand"
-        android:gravity="center_vertical"
-        android:text="@string/_2"
-        android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/operationSymbol_tv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operationSymbol_tv" />
-
-    <TextView
-        android:id="@+id/operationSymbol_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/quicksand"
-        android:gravity="center_vertical"
-        android:text="@string/op"
-        android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/firstOperand_tv"
-        app:layout_constraintEnd_toStartOf="@+id/secondOperand_tv"
-        app:layout_constraintHorizontal_bias="0.489"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/firstOperand_tv"
-        app:layout_constraintTop_toBottomOf="@+id/firstOperand_tv"
-        app:layout_constraintVertical_bias="0.569" />
-
-
-    <TextView
-        android:id="@+id/result_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/operationsSection_lo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
-        android:fontFamily="@font/quicksand"
-        android:text="TextView"
-        android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toStartOf="@+id/operationSymbol_tv"
-        app:layout_constraintStart_toEndOf="@+id/operationSymbol_tv"
-        app:layout_constraintTop_toBottomOf="@+id/operationSymbol_tv" />
-
-    <eu.indiewalkabout.mathbrainer.util.EditTextWithClear
-        android:id="@+id/playerInput_et"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:fontFamily="@font/quicksand"
-        android:gravity="center_vertical"
-        android:imeOptions="actionDone"
-        android:inputType="number"
-        android:singleLine="true"
-        android:text="@string/your_answer"
-        android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:textStyle="bold"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/ic_keyboard_background"
         app:layout_constraintBottom_toTopOf="@+id/keyboard"
-        app:layout_constraintEnd_toStartOf="@+id/result_tv"
-        app:layout_constraintStart_toEndOf="@+id/result_tv"
-        app:layout_constraintTop_toBottomOf="@+id/result_tv" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv">
+
+        <TextView
+            android:id="@+id/operationSymbol_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand"
+            android:gravity="center_vertical"
+            android:text="@string/op"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_light"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/firstOperand_tv"
+            app:layout_constraintEnd_toStartOf="@+id/secondOperand_tv"
+            app:layout_constraintHorizontal_bias="0.548"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/firstOperand_tv" />
+
+        <TextView
+            android:id="@+id/firstOperand_tv"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="68dp"
+            android:fontFamily="@font/quicksand"
+            android:gravity="center_vertical"
+            android:text="@string/_1"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_light"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/result_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/quicksand"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_light"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@+id/operationSymbol_tv"
+            app:layout_constraintStart_toEndOf="@+id/operationSymbol_tv"
+            app:layout_constraintTop_toBottomOf="@+id/operationSymbol_tv" />
+
+        <eu.indiewalkabout.mathbrainer.util.EditTextWithClear
+            android:id="@+id/playerInput_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:fontFamily="@font/quicksand"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:singleLine="true"
+            android:text="@string/your_answer"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/result_tv"
+            app:layout_constraintStart_toEndOf="@+id/result_tv"
+            app:layout_constraintTop_toBottomOf="@+id/result_tv" />
+
+        <TextView
+            android:id="@+id/secondOperand_tv"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:fontFamily="@font/quicksand"
+            android:gravity="center_vertical"
+            android:text="@string/_2"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_light"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/operationSymbol_tv"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
     <eu.indiewalkabout.mathbrainer.util.MyKeyboard
         android:id="@+id/keyboard"
@@ -261,14 +274,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playerInput_et" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->
