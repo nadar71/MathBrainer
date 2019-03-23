@@ -3,110 +3,183 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/background_gray_01"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/background_gray_01"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button_1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="1"/>
+                android:background="@drawable/ic_simplekeyboard_btn"
+                android:fontFamily="@font/quicksand"
+                android:text="1"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/button_2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="2"/>
+                android:background="@drawable/ic_simplekeyboard_btn"
+                android:fontFamily="@font/quicksand"
+                android:text="2"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/button_3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="3"/>
+                android:background="@drawable/ic_simplekeyboard_btn"
+                android:fontFamily="@font/quicksand"
+                android:text="3"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/button_4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="4"/>
+                android:background="@drawable/ic_simplekeyboard_btn"
+                android:fontFamily="@font/quicksand"
+                android:text="4"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/button_5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="5"/>
+                android:background="@drawable/ic_simplekeyboard_btn"
+                android:fontFamily="@font/quicksand"
+                android:text="5"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/background_gray_01"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button_6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="6"/>
+                android:background="@drawable/ic_simplekeyboard_btn"
+                android:fontFamily="@font/quicksand"
+                android:text="6"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/button_7"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="7"/>
+                android:background="@drawable/ic_simplekeyboard_btn"
+                android:fontFamily="@font/quicksand"
+                android:text="7"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/button_8"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="8"/>
+                android:background="@drawable/ic_simplekeyboard_btn"
+                android:fontFamily="@font/quicksand"
+                android:text="8"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/button_9"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="9"/>
+                android:background="@drawable/ic_simplekeyboard_btn"
+                android:fontFamily="@font/quicksand"
+                android:text="9"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/button_0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="0"/>
+                android:background="@drawable/ic_simplekeyboard_btn"
+                android:fontFamily="@font/quicksand"
+                android:text="0"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/background_gray_01"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button_delete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="2"
-                android:text="Delete"/>
+                android:background="@drawable/ic_enter_delete_keyboard_btn"
+                android:fontFamily="@font/quicksand"
+                android:text="Delete"
+                android:textColor="@android:color/background_light"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/button_enter"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="3"
-                android:text="Enter"/>
+                android:background="@drawable/ic_enter_delete_keyboard_btn"
+                android:fontFamily="@font/quicksand"
+                android:text="Enter"
+                android:textColor="@android:color/background_light"
+                android:textSize="20sp" />
 
         </LinearLayout>
     </LinearLayout>
