@@ -229,7 +229,7 @@
             app:layout_constraintStart_toEndOf="@+id/operationSymbol_tv"
             app:layout_constraintTop_toBottomOf="@+id/operationSymbol_tv" />
 
-        <eu.indiewalkabout.mathbrainer.util.EditTextWithClear
+        <EditText
             android:id="@+id/playerInput_et"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -250,7 +250,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/result_tv"
             app:layout_constraintStart_toEndOf="@+id/result_tv"
-            app:layout_constraintTop_toBottomOf="@+id/result_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/result_tv"
+
+            android:focusableInTouchMode="true"
+            android:cursorVisible="false"
+            android:focusable="false"/>
 
         <TextView
             android:id="@+id/secondOperand_tv"

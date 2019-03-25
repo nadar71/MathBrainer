@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import eu.indiewalkabout.mathbrainer.R;
 
@@ -48,6 +49,7 @@ public class EditTextWithClear
         setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
                 // Use the getCompoundDrawables()[2] expression to check
                 // if the drawable is on the "end" of text [2].
                 if ((getCompoundDrawablesRelative()[2] != null)) {

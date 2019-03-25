@@ -42,7 +42,8 @@
         <activity
             android:name=".aritmetic.MixedOp_Write_Result_Activity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
 
         <activity
             android:name=".othergames.CountObjectsActivity"
@@ -53,7 +54,8 @@
             android:name=".aritmetic.DoubleNumberActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
+            android:theme="@style/AppThemeNoActionBar"
+            android:windowSoftInputMode="stateHidden"/>
 
         <activity
             android:name=".othergames.FallingOperationsActivity"
@@ -85,10 +87,18 @@
         <activity android:name=".aritmetic.singleop.Diff_Choose_Result_Activity" />
         <activity android:name=".aritmetic.singleop.Mult_Choose_Result_Activity" />
         <activity android:name=".aritmetic.singleop.Div_Choose_Result_Activity" />
-        <activity android:name=".aritmetic.singleop.Sum_Write_Result_Activity" />
-        <activity android:name=".aritmetic.singleop.Diff_Write_Result_Activity" />
-        <activity android:name=".aritmetic.singleop.Mult_Write_Result_Activity" />
-        <activity android:name=".aritmetic.singleop.Div_Write_Result_Activity" />
+
+        <activity android:name=".aritmetic.singleop.Sum_Write_Result_Activity"
+            android:windowSoftInputMode="stateHidden"/>
+
+        <activity android:name=".aritmetic.singleop.Diff_Write_Result_Activity"
+            android:windowSoftInputMode="stateHidden"/>
+
+        <activity android:name=".aritmetic.singleop.Mult_Write_Result_Activity"
+            android:windowSoftInputMode="stateHidden"/>
+        
+        <activity android:name=".aritmetic.singleop.Div_Write_Result_Activity"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

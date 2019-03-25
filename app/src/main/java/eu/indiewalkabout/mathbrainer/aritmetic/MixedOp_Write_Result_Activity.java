@@ -179,11 +179,6 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
         // init custom keyboard
         keyboard = (MyKeyboard) findViewById(R.id.keyboard);
 
-        // prevent system keyboard from appearing when EditText is tapped
-        /*
-        playerInput_et.setRawInputType(InputType.TYPE_CLASS_TEXT);
-        playerInput_et.setTextIsSelectable(true);
-        */
 
         // prevent system keyboard from appearing when EditText is tapped
         playerInput_et.setOnTouchListener(new View.OnTouchListener(){
@@ -193,9 +188,11 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
                 playerInput_et.setInputType(InputType.TYPE_NULL); // disable soft input
                 playerInput_et.onTouchEvent(event); // call native handler
                 playerInput_et.setInputType(inType); // restore input type
+                playerInput_et.setTextIsSelectable(false);
                 return true; // consume touch even
             }
         });
+
 
         // pass the InputConnection from the EditText to the keyboard
         InputConnection ic = playerInput_et.onCreateInputConnection(new EditorInfo());
@@ -244,14 +241,7 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
                 updateLevel();
             }
 
-
-            /*
-            endSessiondialog = new EndGameSessionDialog(this,
-                    MixedOp_Write_Result_Activity.this,
-                    EndGameSessionDialog.GAME_SESSION_RESULT.OK);
-                    */
-
-            // newChallenge();
+            // show result and start a new game session if allowed
             showResult(true);
 
             // ...otherwise a life will be lost
@@ -262,12 +252,7 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
             boolean gameover = isGameOver();
 
             if (gameover == false) {
-                // newChallenge();
-                /*
-                endSessiondialog = new EndGameSessionDialog(this,
-                        MixedOp_Write_Result_Activity.this,
-                        EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
-                        */
+                // show result and start a new game session if allowed
                 showResult(false);
             }
 
@@ -289,6 +274,7 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
             firstOperand_tv.setTextColor(Color.GREEN);
             secondOperand_tv.setTextColor(Color.GREEN);
             operationSymbol_tv.setTextColor(Color.GREEN);
+            playerInput_et.setTextColor(Color.GREEN);
             newchallengeAfterTimerLength(1000);
 
 
@@ -298,6 +284,7 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
             firstOperand_tv.setTextColor(Color.RED);
             secondOperand_tv.setTextColor(Color.RED);
             operationSymbol_tv.setTextColor(Color.RED);
+            playerInput_et.setTextColor(Color.RED);
             newchallengeAfterTimerLength(1000);
 
         }
@@ -318,6 +305,7 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
                 firstOperand_tv.setTextColor(quizDefaultTextColor);
                 secondOperand_tv.setTextColor(quizDefaultTextColor);
                 operationSymbol_tv.setTextColor(quizDefaultTextColor);
+                playerInput_et.setTextColor(quizDefaultTextColor);
                 newChallenge();
             }
         };
