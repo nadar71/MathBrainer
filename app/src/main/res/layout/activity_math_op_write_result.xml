@@ -7,21 +7,6 @@
     android:background="@color/background_gray_01"
     tools:context="eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Write_Result_Activity">
 
-    <ImageView
-        android:id="@+id/backgroundImg"
-        android:layout_width="0dp"
-        android:layout_height="836dp"
-        android:contentDescription="@string/backgroundimg"
-        android:scaleType="centerCrop"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.126"
-        app:srcCompat="@drawable/summer" />
 
     <ProgressBar
         android:id="@+id/progressbar"
@@ -290,6 +275,10 @@
             app:layout_constraintEnd_toEndOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
+
+
+
+
     <eu.indiewalkabout.mathbrainer.util.MyKeyboard
         android:id="@+id/keyboard"
         android:layout_width="wrap_content"
@@ -319,7 +308,7 @@
         ads:layout_constraintBottom_toBottomOf="parent"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintHorizontal_bias="0.0"
-        ads:layout_constraintStart_toStartOf="parent"/>
+        ads:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

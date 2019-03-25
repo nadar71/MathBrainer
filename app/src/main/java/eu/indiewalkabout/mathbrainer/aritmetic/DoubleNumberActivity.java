@@ -22,7 +22,6 @@ import com.google.android.gms.ads.AdView;
 import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Div_Write_Result_Activity;
 import eu.indiewalkabout.mathbrainer.util.*;
 
 /**
