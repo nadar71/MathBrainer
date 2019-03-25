@@ -106,14 +106,18 @@ public class MyKeyboard extends LinearLayout implements View.OnClickListener {
         // Delete text or input key value
         // All communication goes through the InputConnection
         if (v.getId() == R.id.button_delete) {
+
             CharSequence selectedText = inputConnection.getSelectedText(0);
             if (TextUtils.isEmpty(selectedText)) {
                 // no selection, so delete previous character
-                inputConnection.deleteSurroundingText(1, 0);
+                inputConnection.deleteSurroundingText(1000, 0);
             } else {
                 // delete the selection
                 inputConnection.commitText("", 1);
             }
+
+            // delete all text
+            // inputConnection.commitText("", 1);
         } else if (v.getId() == R.id.button_enter){
             Toast.makeText(getContext(), "Enter pressed", Toast.LENGTH_SHORT).show();
             caller.checkPlayerInput();
