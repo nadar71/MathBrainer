@@ -1,11 +1,16 @@
-package eu.indiewalkabout.mathbrainer.aritmetic.singleop;
+package eu.indiewalkabout.mathbrainer.aritmetic;
 
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -20,33 +25,32 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
+import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
-import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.MyKeyboard;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
-/**
- * -------------------------------------------------------------------------------------------------
- * Same game as MixedOp_Write_Result_Activity, apart that is only about multiplications
- * Changed only the symbols array to have only : "*"
- * -------------------------------------------------------------------------------------------------
- */
-public class Mult_Write_Result_Activity extends AppCompatActivity implements IGameFunctions {
+
+
+public class Math_Op_Write_Result_Activity extends AppCompatActivity implements IGameFunctions {
 
     // admob banner ref
     private AdView mAdView;
 
     // tag for log
-    private final static String TAG = Mult_Write_Result_Activity.class.getSimpleName();
+    private final static String TAG = Math_Op_Write_Result_Activity.class.getSimpleName();
 
     // view ref
     private TextView numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
-    private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv;
+    private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv, result_tv;
     private ArrayList<ImageView> lifesValue_iv ;
     private EditText playerInput_et;
+
+    // store initial text color
+    private ColorStateList quizDefaultTextColor;
 
 
     // numbers to be processed
@@ -75,7 +79,7 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
     private int divHMax    = 15;
     private int divLMax    = 11;
 
-    private char[] symbols = {'*'};
+    private char[] symbols = null; // = {'+','-','*','/'};
 
     // num of challenge to pass to next level
     // changing while level growing
@@ -93,9 +97,6 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
     private long timerLength            = 20000;
     private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
 
-    // game session end dialog
-    EndGameSessionDialog endSessiondialog;
-
     // custom keyboard instance
     MyKeyboard keyboard;
 
@@ -103,17 +104,29 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mult_write_result);
+        setContentView(R.layout.activity_math_op_write_result);
+
+        // Check if it's mixed op or single specific operation
+        setOperationSymbol();
+
 
         mAdView = findViewById(R.id.adView);
 
-        // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(Mult_Write_Result_Activity.this));
+        // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle
+        // the right way to load the ad
+        mAdView.loadAd(ConsentSDK.getAdRequest(Math_Op_Write_Result_Activity.this));
+
 
         // set views ref
         firstOperand_tv    = (TextView)  findViewById(R.id.firstOperand_tv);
         secondOperand_tv   = (TextView)  findViewById(R.id.secondOperand_tv);
         operationSymbol_tv = (TextView)  findViewById(R.id.operationSymbol_tv);
+
+        // show result tv
+        result_tv = findViewById(R.id.result_tv);
+
+        // store quiz text color for later use
+        quizDefaultTextColor = firstOperand_tv.getTextColors();
 
         scoreValue_tv      = (TextView)  findViewById(R.id.scoreValue_tv);
         levelValue_tv      = (TextView)  findViewById(R.id.levelValue_tv);
@@ -125,6 +138,7 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
         lifesValue_iv.add((ImageView) findViewById(R.id.life_02_iv));
         lifesValue_iv.add((ImageView) findViewById(R.id.life_03_iv));
 
+
         // keyboard
         setupCustomKeyboard();
 
@@ -132,8 +146,8 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
         countdownBar = (ProgressBar)findViewById(R.id.progressbar);
 
         // Create new count down indicator, without starting it
-        countDownIndicator = new CountDownIndicator(Mult_Write_Result_Activity.this, (ProgressBar) countdownBar, Mult_Write_Result_Activity.this);
-
+        countDownIndicator = new CountDownIndicator(Math_Op_Write_Result_Activity.this,
+                (ProgressBar) countdownBar, Math_Op_Write_Result_Activity.this);
 
         // start with first challenge and countdown init
         newChallenge();
@@ -141,7 +155,7 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
         // set first level
         updateLevel();
 
-        // set listner on DONE button on soft keyboard to get the player input
+        // set listener on DONE button on soft keyboard to get the player input
         playerInput_et.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -150,14 +164,78 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
                     checkPlayerInput();
 
                     return true;
+
                 }
                 return false;
             }
         });
 
+        // make bottom navigation bar and status bar hide
+        hideStatusNavBars();
 
     }
 
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Check and set the symbol of the operation from the caller intent
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void setOperationSymbol() {
+        Intent intent = getIntent();
+        char[] operationSpec;
+        if (intent.hasExtra(ChooseGameActivity.OPERATION_KEY)) {
+            operationSpec =  intent.getStringExtra(ChooseGameActivity.OPERATION_KEY).toCharArray();
+            switch(operationSpec[0]){
+                case '+':
+                    symbols = new char[1];
+                    symbols[0] = '+';
+                    break;
+
+                case '-':
+                    symbols = new char[1];
+                    symbols[0] = '-';
+                    break;
+
+                case '*':
+                    symbols = new char[1];
+                    symbols[0] = '*';
+                    break;
+
+                case '/':
+                    symbols = new char[1];
+                    symbols[0] = '/';
+                    break;
+                default:
+                    break;
+
+            }
+        } else {
+            symbols = new char[4];
+            symbols[0] = '+';
+            symbols[1] = '-';
+            symbols[2] = '*';
+            symbols[3] = '/';
+        }
+    }
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Make bottom navigation bar and status bar hide, without resize when reappearing
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void hideStatusNavBars() {
+            // minsdk version is 19, no need code for lower api
+            View decorView = getWindow().getDecorView();
+            int uiOptions =
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+                    // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN; // // hide status bar
+            decorView.setSystemUiVisibility(uiOptions);
+    }
 
     /**
      * -------------------------------------------------------------------------------------------------
@@ -168,26 +246,42 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
         // init custom keyboard
         keyboard = (MyKeyboard) findViewById(R.id.keyboard);
 
+
         // prevent system keyboard from appearing when EditText is tapped
-        playerInput_et.setRawInputType(InputType.TYPE_CLASS_TEXT);
-        playerInput_et.setTextIsSelectable(true);
+        playerInput_et.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int inType = playerInput_et.getInputType(); // backup the input type
+                playerInput_et.setInputType(InputType.TYPE_NULL); // disable soft input
+                playerInput_et.onTouchEvent(event); // call native handler
+                playerInput_et.setInputType(inType); // restore input type
+                playerInput_et.setTextIsSelectable(false);
+                return true; // consume touch even
+            }
+        });
+
 
         // pass the InputConnection from the EditText to the keyboard
         InputConnection ic = playerInput_et.onCreateInputConnection(new EditorInfo());
-        keyboard.setInputConnection(ic, Mult_Write_Result_Activity.this);
+        keyboard.setInputConnection(ic, Math_Op_Write_Result_Activity.this);
     }
+
 
     /**
      * -------------------------------------------------------------------------------------------------
      * Check if player input is right/wrong and update score
      * -------------------------------------------------------------------------------------------------
      */
+
     @Override
     public void checkPlayerInput() {
         int inputNum = 0;
 
         // get the player input
         String tmp = playerInput_et.getText().toString();
+
+        // stop timer
+        countDownIndicator.countdownReset();
 
         // nothing inserted, ignore
         if (tmp.isEmpty()) {
@@ -200,7 +294,6 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
 
         // check if result is ok...
         if (inputNum != 0  && inputNum == answerOK) {
-            Toast.makeText(Mult_Write_Result_Activity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
 
@@ -214,27 +307,75 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
                 updateLevel();
             }
 
-            endSessiondialog = new EndGameSessionDialog(this,
-                    Mult_Write_Result_Activity.this,
-                    EndGameSessionDialog.GAME_SESSION_RESULT.OK);
-
-            // newChallenge();
+            // show result and start a new game session if allowed
+            showResult(true);
 
             // ...otherwise a life will be lost
         } else {
-            Toast.makeText(Mult_Write_Result_Activity.this, "WRONG...", Toast.LENGTH_SHORT).show();
 
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
 
             if (gameover == false) {
-                // newChallenge();
-                endSessiondialog = new EndGameSessionDialog(this,
-                        Mult_Write_Result_Activity.this,
-                        EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
+                // show result and start a new game session if allowed
+                showResult(false);
             }
 
         }
+    }
+
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show the result of the
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showResult(boolean win) {
+        result_tv.setVisibility(View.VISIBLE);
+        if (win == true) {
+            result_tv.setText(getResources().getString(R.string.ok_str));
+            result_tv.setTextColor(Color.GREEN);
+            firstOperand_tv.setTextColor(Color.GREEN);
+            secondOperand_tv.setTextColor(Color.GREEN);
+            operationSymbol_tv.setTextColor(Color.GREEN);
+            playerInput_et.setTextColor(Color.GREEN);
+            newchallengeAfterTimerLength(1000);
+
+
+        }else{
+            result_tv.setText(getResources().getString(R.string.wrong_str) + " : " + answerOK);
+            result_tv.setTextColor(Color.RED);
+            firstOperand_tv.setTextColor(Color.RED);
+            secondOperand_tv.setTextColor(Color.RED);
+            operationSymbol_tv.setTextColor(Color.RED);
+            playerInput_et.setTextColor(Color.RED);
+            newchallengeAfterTimerLength(1000);
+
+        }
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Launch new challenge after timerLength
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void newchallengeAfterTimerLength(final int timerLength){
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                result_tv.setVisibility(View.INVISIBLE);
+                firstOperand_tv.setTextColor(quizDefaultTextColor);
+                secondOperand_tv.setTextColor(quizDefaultTextColor);
+                operationSymbol_tv.setTextColor(quizDefaultTextColor);
+                playerInput_et.setTextColor(quizDefaultTextColor);
+                newChallenge();
+            }
+        };
+        // execute runnable after a timerLength
+        handler.postDelayed(runnable, timerLength);
     }
 
 
@@ -306,8 +447,9 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
      */
     @Override
     public void newChallenge() {
-        // set operation to be processed
-        operation    = symbols[myUtil.randRange_ApiCheck(0, symbols.length-1)];
+        // set operation to be processed; general case symbols.length-1 > 1
+        operation = symbols[myUtil.randRange_ApiCheck(0, symbols.length - 1)];
+
 
         // calculate the quiz operation
         calculateOperation();
@@ -398,7 +540,7 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
         countDownIndicator.countdownReset();
 
         // todo : game over screen
-        Toast.makeText(Mult_Write_Result_Activity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
+        Toast.makeText(Math_Op_Write_Result_Activity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
 
     }
 
@@ -435,6 +577,7 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
         }
 
     }
+
 
 
     /**
@@ -474,6 +617,5 @@ public class Mult_Write_Result_Activity extends AppCompatActivity implements IGa
         countDownIndicator.countdownReset();
 
     }
-
 
 }

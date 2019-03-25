@@ -9,17 +9,9 @@ import android.widget.Button;
 import com.google.android.gms.ads.AdView;
 
 import eu.indiewalkabout.mathbrainer.aritmetic.DoubleNumberActivity;
-import eu.indiewalkabout.mathbrainer.aritmetic.MixedOp_Choose_Result_Activity;
-import eu.indiewalkabout.mathbrainer.aritmetic.MixedOp_Write_Result_Activity;
+import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Choose_Result_Activity;
+import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Write_Result_Activity;
 import eu.indiewalkabout.mathbrainer.aritmetic.RandomOperationActivity;
-import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Diff_Choose_Result_Activity;
-import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Diff_Write_Result_Activity;
-import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Div_Choose_Result_Activity;
-import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Div_Write_Result_Activity;
-import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Mult_Choose_Result_Activity;
-import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Mult_Write_Result_Activity;
-import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Sum_Choose_Result_Activity;
-import eu.indiewalkabout.mathbrainer.aritmetic.singleop.Sum_Write_Result_Activity;
 import eu.indiewalkabout.mathbrainer.othergames.CountObjectsActivity;
 import eu.indiewalkabout.mathbrainer.othergames.FallingOperationsActivity;
 import eu.indiewalkabout.mathbrainer.othergames.NumberOrderActivity;
@@ -60,7 +52,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Intent intent = new Intent(ChooseGameActivity.this, Sum_Choose_Result_Activity.class);
-                Intent intent = new Intent(ChooseGameActivity.this,MixedOp_Choose_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Choose_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"+");
                 startActivity(intent);
             }
@@ -71,7 +63,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Intent intent = new Intent(ChooseGameActivity.this, Diff_Choose_Result_Activity.class);
-                Intent intent = new Intent(ChooseGameActivity.this,MixedOp_Choose_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Choose_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"-");
                 startActivity(intent);
             }
@@ -83,7 +75,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Intent intent = new Intent(ChooseGameActivity.this, Mult_Choose_Result_Activity.class);
-                Intent intent = new Intent(ChooseGameActivity.this,MixedOp_Choose_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Choose_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"*");
                 startActivity(intent);
             }
@@ -94,7 +86,8 @@ public class ChooseGameActivity extends AppCompatActivity {
         divChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this, Div_Choose_Result_Activity.class);
+                // Intent intent = new Intent(ChooseGameActivity.this, Div_Choose_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Choose_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"/");
                 startActivity(intent);
             }
@@ -109,7 +102,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Intent intent = new Intent(ChooseGameActivity.this, Sum_Write_Result_Activity.class);
-                Intent intent = new Intent(ChooseGameActivity.this, MixedOp_Write_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Write_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"+");
                 startActivity(intent);
             }
@@ -120,7 +113,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Intent intent = new Intent(ChooseGameActivity.this, Diff_Write_Result_Activity.class);
-                Intent intent = new Intent(ChooseGameActivity.this, MixedOp_Write_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Write_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"-");
                 startActivity(intent);
             }
@@ -132,7 +125,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Intent intent = new Intent(ChooseGameActivity.this, Mult_Write_Result_Activity.class);
-                Intent intent = new Intent(ChooseGameActivity.this, MixedOp_Write_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Write_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"*");
                 startActivity(intent);
             }
@@ -144,7 +137,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Intent intent = new Intent(ChooseGameActivity.this, Div_Write_Result_Activity.class);
-                Intent intent = new Intent(ChooseGameActivity.this, MixedOp_Write_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Write_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"/");
                 startActivity(intent);
             }
@@ -159,7 +152,7 @@ public class ChooseGameActivity extends AppCompatActivity {
         ResultWriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this, MixedOp_Write_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Write_Result_Activity.class);
                 startActivity(intent);
             }
         });
@@ -168,7 +161,7 @@ public class ChooseGameActivity extends AppCompatActivity {
         ResultChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this,MixedOp_Choose_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Choose_Result_Activity.class);
                 startActivity(intent);
             }
         });

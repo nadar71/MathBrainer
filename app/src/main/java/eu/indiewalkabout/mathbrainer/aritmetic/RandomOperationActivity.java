@@ -28,7 +28,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
     private AdView mAdView;
 
     // tag for log
-    private final static String TAG = MixedOp_Choose_Result_Activity.class.getSimpleName();
+    private final static String TAG = Math_Op_Choose_Result_Activity.class.getSimpleName();
 
     // view ref
     private TextView numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;

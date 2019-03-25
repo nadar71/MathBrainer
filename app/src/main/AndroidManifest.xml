@@ -40,7 +40,7 @@
         </activity>
 
         <activity
-            android:name=".aritmetic.MixedOp_Write_Result_Activity"
+            android:name=".aritmetic.Math_Op_Write_Result_Activity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
@@ -82,23 +82,8 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".aritmetic.MixedOp_Choose_Result_Activity" />
-        <activity android:name=".aritmetic.singleop.Sum_Choose_Result_Activity" />
-        <activity android:name=".aritmetic.singleop.Diff_Choose_Result_Activity" />
-        <activity android:name=".aritmetic.singleop.Mult_Choose_Result_Activity" />
-        <activity android:name=".aritmetic.singleop.Div_Choose_Result_Activity" />
+        <activity android:name=".aritmetic.Math_Op_Choose_Result_Activity" />
 
-        <activity android:name=".aritmetic.singleop.Sum_Write_Result_Activity"
-            android:windowSoftInputMode="stateHidden"/>
-
-        <activity android:name=".aritmetic.singleop.Diff_Write_Result_Activity"
-            android:windowSoftInputMode="stateHidden"/>
-
-        <activity android:name=".aritmetic.singleop.Mult_Write_Result_Activity"
-            android:windowSoftInputMode="stateHidden"/>
-        
-        <activity android:name=".aritmetic.singleop.Div_Write_Result_Activity"
-            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>
