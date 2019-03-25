@@ -1,6 +1,9 @@
 package eu.indiewalkabout.mathbrainer.aritmetic;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,8 +39,11 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
     // view ref
     private TextView scoreValue_tv, levelValue_tv;
-    private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv;
+    private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv, result_tv;
     private ArrayList<ImageView> lifesValue_iv ;
+
+    // store initial text color
+    private ColorStateList quizDefaultTextColor;
 
 
     private Button answer01Btn, answer02Btn, answer03Btn, answer04Btn, answer05Btn, answer06Btn, answer07Btn, answer08Btn, answer09Btn;
@@ -123,6 +129,12 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         firstOperand_tv    = (TextView)  findViewById(R.id.firstOperand_tv);
         secondOperand_tv   = (TextView)  findViewById(R.id.secondOperand_tv);
         operationSymbol_tv = (TextView)  findViewById(R.id.operationSymbol_tv);
+
+        // show result tv
+        result_tv = findViewById(R.id.result_tv);
+
+        // store quiz text color for later use
+        quizDefaultTextColor = firstOperand_tv.getTextColors();
 
         scoreValue_tv      = (TextView)  findViewById(R.id.scoreValue_tv);
         levelValue_tv      = (TextView)  findViewById(R.id.levelValue_tv);
@@ -339,7 +351,6 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
         // check if result is ok...
         if (pressedBtnValue != 0  && pressedBtnValue == answerOK) {
-            Toast.makeText(Math_Op_Choose_Result_Activity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
 
@@ -353,30 +364,73 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
                 updateLevel();
             }
 
-            endSessiondialog = new EndGameSessionDialog(this,
-                    Math_Op_Choose_Result_Activity.this,
-                    EndGameSessionDialog.GAME_SESSION_RESULT.OK);
-
-            // newChallenge();
+            // show result and start a new game session if allowed
+            showResult(true);
 
             // ...otherwise a life will be lost
         } else {
-            Toast.makeText(Math_Op_Choose_Result_Activity.this, "WRONG...", Toast.LENGTH_SHORT).show();
 
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
 
             // new number to double
             if (gameover == false) {
-                // newChallenge();
-                endSessiondialog = new EndGameSessionDialog(this,
-                        Math_Op_Choose_Result_Activity.this,
-                        EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
+                // show result and start a new game session if allowed
+                showResult(false);
             }
 
         }
     }
 
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show the result of the
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showResult(boolean win) {
+        result_tv.setVisibility(View.VISIBLE);
+        if (win == true) {
+            result_tv.setText(getResources().getString(R.string.ok_str));
+            result_tv.setTextColor(Color.GREEN);
+            firstOperand_tv.setTextColor(Color.GREEN);
+            secondOperand_tv.setTextColor(Color.GREEN);
+            operationSymbol_tv.setTextColor(Color.GREEN);
+            newchallengeAfterTimerLength(1000);
+
+
+        }else{
+            result_tv.setText(getResources().getString(R.string.wrong_str) + " : " + answerOK);
+            result_tv.setTextColor(Color.RED);
+            firstOperand_tv.setTextColor(Color.RED);
+            secondOperand_tv.setTextColor(Color.RED);
+            operationSymbol_tv.setTextColor(Color.RED);
+            newchallengeAfterTimerLength(1000);
+
+        }
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Launch new challenge after timerLength
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void newchallengeAfterTimerLength(final int timerLength){
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                result_tv.setVisibility(View.INVISIBLE);
+                firstOperand_tv.setTextColor(quizDefaultTextColor);
+                secondOperand_tv.setTextColor(quizDefaultTextColor);
+                operationSymbol_tv.setTextColor(quizDefaultTextColor);
+                newChallenge();
+            }
+        };
+        // execute runnable after a timerLength
+        handler.postDelayed(runnable, timerLength);
+    }
 
     /**
      * -------------------------------------------------------------------------------------------------
