@@ -458,6 +458,27 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
     /**
+     * -------------------------------------------------------------------------------------------------
+     * Check state at countdown expired
+     * -------------------------------------------------------------------------------------------------
+     */
+    @Override
+    public void checkCountdownExpired() {
+
+        // lose a life, check if it's game over
+        boolean gameover = isGameOver();
+
+        // new number to double
+        if (gameover == false) {
+            endSessiondialog = new EndGameSessionDialog(this,
+                    RandomOperationActivity.this,
+                    EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
+        }
+
+    }
+
+
+    /**
      * ---------------------------------------------------------------------------------------------
      *                                          MENU STUFF
      * ---------------------------------------------------------------------------------------------

@@ -467,6 +467,26 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     }
 
 
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Check state at countdown expired
+     * -------------------------------------------------------------------------------------------------
+     */
+    @Override
+    public void checkCountdownExpired() {
+
+        // lose a life, check if it's game over
+        boolean gameover = isGameOver();
+
+        // new number to double
+        if (gameover == false) {
+            // show result and start a new game session if allowed
+            showNewBtnAfterTimerLength(500, false);
+        }
+
+    }
+
+
 
 
 }

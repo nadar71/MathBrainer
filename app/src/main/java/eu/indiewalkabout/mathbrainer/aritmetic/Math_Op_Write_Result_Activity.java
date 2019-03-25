@@ -325,6 +325,26 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
     }
 
 
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Check state at countdown expired
+     * -------------------------------------------------------------------------------------------------
+     */
+    @Override
+    public void checkCountdownExpired() {
+
+        // lose a life, check if it's game over
+        boolean gameover = isGameOver();
+
+        // new number to double
+        if (gameover == false) {
+            // show result and start a new game session if allowed
+            showResult(false);
+        }
+
+    }
+
+
 
     /**
      * -------------------------------------------------------------------------------------------------
@@ -577,6 +597,9 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         }
 
     }
+
+
+
 
 
 

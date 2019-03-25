@@ -383,6 +383,27 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
     }
 
 
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Check state at countdown expired
+     * -------------------------------------------------------------------------------------------------
+     */
+    @Override
+    public void checkCountdownExpired() {
+
+        // lose a life, check if it's game over
+        boolean gameover = isGameOver();
+
+        // new number to double
+        if (gameover == false) {
+            // show result and start a new game session if allowed
+            showResult(false);
+        }
+
+    }
+
+
     /**
      * -------------------------------------------------------------------------------------------------
      * Show the result of the
@@ -763,7 +784,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         countDownIndicator.countdownReset();
 
         // todo : game over screen
-        Toast.makeText(Math_Op_Choose_Result_Activity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
+        Toast.makeText(Math_Op_Choose_Result_Activity.this,
+                "Congrats! Your score is : " + score + " on " + numChallengeEachLevel,
+                Toast.LENGTH_LONG).show();
 
     }
 

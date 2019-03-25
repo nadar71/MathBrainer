@@ -73,7 +73,8 @@ public class CountDownIndicator extends ProgressBar{
      * ---------------------------------------------------------------------------------------------
      */
     public void onTimeFinished(){
-        caller.isGameOver();
+        // caller.isGameOver();
+        caller.checkCountdownExpired();
     }
 
 

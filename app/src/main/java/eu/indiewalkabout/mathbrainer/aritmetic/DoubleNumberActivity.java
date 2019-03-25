@@ -338,6 +338,28 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     }
 
 
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Check state at countdown expired
+     * -------------------------------------------------------------------------------------------------
+     */
+    @Override
+    public void checkCountdownExpired() {
+
+        // lose a life, check if it's game over
+        boolean gameover = isGameOver();
+
+        // new number to double
+        if (gameover == false) {
+            // newChallenge();
+            endSessiondialog = new EndGameSessionDialog(this,
+                    DoubleNumberActivity.this,
+                    EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
+        }
+
+    }
+
+
 
     /**
      * ---------------------------------------------------------------------------------------------

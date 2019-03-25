@@ -6,4 +6,5 @@ public interface IGameFunctions {
     public void updateProgressBar(int progress);
     public void newChallenge();
     public void checkPlayerInput();
+    public void checkCountdownExpired();
 }
