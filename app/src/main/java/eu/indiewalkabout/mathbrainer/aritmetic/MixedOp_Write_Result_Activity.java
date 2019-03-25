@@ -3,6 +3,7 @@ package eu.indiewalkabout.mathbrainer.aritmetic;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
@@ -177,18 +179,19 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
 
     /**
      * -------------------------------------------------------------------------------------------------
-     * Make bottom navigation bar and status bar hide
+     * Make bottom navigation bar and status bar hide, without resize when reappearing
      * -------------------------------------------------------------------------------------------------
      */
     private void hideStatusNavBars() {
-        View decorView = getWindow().getDecorView();
-        // Hide both the navigation bar and the status bar.
-        // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-        // a general rule, you should design your app to hide the status bar whenever you
-        // hide the navigation bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
+            // minsdk version is 19, no need code for lower api
+            View decorView = getWindow().getDecorView();
+            int uiOptions =
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+                    // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN; // // hide status bar
+            decorView.setSystemUiVisibility(uiOptions);
     }
 
     /**
