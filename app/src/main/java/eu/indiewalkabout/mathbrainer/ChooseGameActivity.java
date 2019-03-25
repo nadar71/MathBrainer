@@ -36,6 +36,8 @@ public class ChooseGameActivity extends AppCompatActivity {
     // admob banner ref
     private AdView mAdView;
 
+    public static final String OPERATION_KEY = "operation";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +59,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         sumChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this, Sum_Choose_Result_Activity.class);
+                // Intent intent = new Intent(ChooseGameActivity.this, Sum_Choose_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this,MixedOp_Choose_Result_Activity.class);
+                intent.putExtra(OPERATION_KEY,"+");
                 startActivity(intent);
             }
         });
@@ -66,7 +70,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         diffChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this, Diff_Choose_Result_Activity.class);
+                // Intent intent = new Intent(ChooseGameActivity.this, Diff_Choose_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this,MixedOp_Choose_Result_Activity.class);
+                intent.putExtra(OPERATION_KEY,"-");
                 startActivity(intent);
             }
         });
@@ -76,7 +82,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         multChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this, Mult_Choose_Result_Activity.class);
+                // Intent intent = new Intent(ChooseGameActivity.this, Mult_Choose_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this,MixedOp_Choose_Result_Activity.class);
+                intent.putExtra(OPERATION_KEY,"*");
                 startActivity(intent);
             }
         });
@@ -87,6 +95,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseGameActivity.this, Div_Choose_Result_Activity.class);
+                intent.putExtra(OPERATION_KEY,"/");
                 startActivity(intent);
             }
         });
@@ -99,7 +108,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         sumWriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this, Sum_Write_Result_Activity.class);
+                // Intent intent = new Intent(ChooseGameActivity.this, Sum_Write_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, MixedOp_Write_Result_Activity.class);
+                intent.putExtra(OPERATION_KEY,"+");
                 startActivity(intent);
             }
         });
@@ -108,7 +119,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         diffWriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this, Diff_Write_Result_Activity.class);
+                // Intent intent = new Intent(ChooseGameActivity.this, Diff_Write_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, MixedOp_Write_Result_Activity.class);
+                intent.putExtra(OPERATION_KEY,"-");
                 startActivity(intent);
             }
         });
@@ -118,7 +131,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         multWriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this, Mult_Write_Result_Activity.class);
+                // Intent intent = new Intent(ChooseGameActivity.this, Mult_Write_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, MixedOp_Write_Result_Activity.class);
+                intent.putExtra(OPERATION_KEY,"*");
                 startActivity(intent);
             }
         });
@@ -128,7 +143,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         divWriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this, Div_Write_Result_Activity.class);
+                // Intent intent = new Intent(ChooseGameActivity.this, Div_Write_Result_Activity.class);
+                Intent intent = new Intent(ChooseGameActivity.this, MixedOp_Write_Result_Activity.class);
+                intent.putExtra(OPERATION_KEY,"/");
                 startActivity(intent);
             }
         });

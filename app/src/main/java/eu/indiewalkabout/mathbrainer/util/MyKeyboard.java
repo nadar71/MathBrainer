@@ -119,7 +119,6 @@ public class MyKeyboard extends LinearLayout implements View.OnClickListener {
             // delete all text
             // inputConnection.commitText("", 1);
         } else if (v.getId() == R.id.button_enter){
-            Toast.makeText(getContext(), "Enter pressed", Toast.LENGTH_SHORT).show();
             caller.checkPlayerInput();
         } else {
             String value = keyValues.get(v.getId());

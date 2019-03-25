@@ -1,5 +1,6 @@
 package eu.indiewalkabout.mathbrainer.aritmetic;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
+import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
@@ -109,6 +111,9 @@ public class MixedOp_Choose_Result_Activity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mixedop_choose_result);
 
+        // Check if it's mixed op or single specific operation
+        setOperationSymbol();
+
         mAdView = findViewById(R.id.adView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
@@ -158,6 +163,71 @@ public class MixedOp_Choose_Result_Activity extends AppCompatActivity implements
         // set first level
         updateLevel();
 
+        // make bottom navigation bar and status bar hide
+        hideStatusNavBars();
+
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Check and set the symbol of the operation from the caller intent
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void setOperationSymbol() {
+        Intent intent = getIntent();
+        char[] operationSpec;
+        if (intent.hasExtra(ChooseGameActivity.OPERATION_KEY)) {
+            operationSpec =  intent.getStringExtra(ChooseGameActivity.OPERATION_KEY).toCharArray();
+            switch(operationSpec[0]){
+                case '+':
+                    symbols = new char[1];
+                    symbols[0] = '+';
+                    break;
+
+                case '-':
+                    symbols = new char[1];
+                    symbols[0] = '-';
+                    break;
+
+                case '*':
+                    symbols = new char[1];
+                    symbols[0] = '*';
+                    break;
+
+                case '/':
+                    symbols = new char[1];
+                    symbols[0] = '/';
+                    break;
+                default:
+                    break;
+
+            }
+        } else {
+            symbols = new char[4];
+            symbols[0] = '+';
+            symbols[1] = '-';
+            symbols[2] = '*';
+            symbols[3] = '/';
+        }
+    }
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Make bottom navigation bar and status bar hide, without resize when reappearing
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void hideStatusNavBars() {
+        // minsdk version is 19, no need code for lower api
+        View decorView = getWindow().getDecorView();
+        int uiOptions =
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+                        // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN; // // hide status bar
+        decorView.setSystemUiVisibility(uiOptions);
     }
 
 

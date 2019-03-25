@@ -1,6 +1,7 @@
 package eu.indiewalkabout.mathbrainer.aritmetic;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
@@ -27,6 +28,7 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
+import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
@@ -51,6 +53,7 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
     private ArrayList<ImageView> lifesValue_iv ;
     private EditText playerInput_et;
 
+    // store initial text color
     private ColorStateList quizDefaultTextColor;
 
 
@@ -80,7 +83,7 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
     private int divHMax    = 15;
     private int divLMax    = 11;
 
-    private char[] symbols = {'+','-','*','/'};
+    private char[] symbols = null; // = {'+','-','*','/'};
 
     // num of challenge to pass to next level
     // changing while level growing
@@ -98,9 +101,6 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
     private long timerLength            = 20000;
     private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
 
-    // game session end dialog
-    EndGameSessionDialog endSessiondialog;
-
     // custom keyboard instance
     MyKeyboard keyboard;
 
@@ -110,9 +110,14 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mixedop_write_result);
 
+        // Check if it's mixed op or single specific operation
+        setOperationSymbol();
+
+
         mAdView = findViewById(R.id.adView);
 
-        // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
+        // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle
+        // the right way to load the ad
         mAdView.loadAd(ConsentSDK.getAdRequest(MixedOp_Write_Result_Activity.this));
 
 
@@ -127,7 +132,7 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
         // store quiz text color for later use
         quizDefaultTextColor = firstOperand_tv.getTextColors();
 
-                scoreValue_tv      = (TextView)  findViewById(R.id.scoreValue_tv);
+        scoreValue_tv      = (TextView)  findViewById(R.id.scoreValue_tv);
         levelValue_tv      = (TextView)  findViewById(R.id.levelValue_tv);
         playerInput_et     = (EditText)  findViewById(R.id.playerInput_et);
 
@@ -172,9 +177,51 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
         // make bottom navigation bar and status bar hide
         hideStatusNavBars();
 
-
     }
 
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Check and set the symbol of the operation from the caller intent
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void setOperationSymbol() {
+        Intent intent = getIntent();
+        char[] operationSpec;
+        if (intent.hasExtra(ChooseGameActivity.OPERATION_KEY)) {
+            operationSpec =  intent.getStringExtra(ChooseGameActivity.OPERATION_KEY).toCharArray();
+            switch(operationSpec[0]){
+                case '+':
+                    symbols = new char[1];
+                    symbols[0] = '+';
+                    break;
+
+                case '-':
+                    symbols = new char[1];
+                    symbols[0] = '-';
+                    break;
+
+                case '*':
+                    symbols = new char[1];
+                    symbols[0] = '*';
+                    break;
+
+                case '/':
+                    symbols = new char[1];
+                    symbols[0] = '/';
+                    break;
+                default:
+                    break;
+
+            }
+        } else {
+            symbols = new char[4];
+            symbols[0] = '+';
+            symbols[1] = '-';
+            symbols[2] = '*';
+            symbols[3] = '/';
+        }
+    }
 
 
     /**
@@ -251,7 +298,6 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
 
         // check if result is ok...
         if (inputNum != 0  && inputNum == answerOK) {
-            Toast.makeText(MixedOp_Write_Result_Activity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
 
@@ -270,7 +316,6 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
 
             // ...otherwise a life will be lost
         } else {
-            Toast.makeText(MixedOp_Write_Result_Activity.this, "WRONG...", Toast.LENGTH_SHORT).show();
 
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
@@ -406,8 +451,9 @@ public class MixedOp_Write_Result_Activity extends AppCompatActivity implements 
      */
     @Override
     public void newChallenge() {
-        // set operation to be processed
-        operation    = symbols[myUtil.randRange_ApiCheck(0, symbols.length-1)];
+        // set operation to be processed; general case symbols.length-1 > 1
+        operation = symbols[myUtil.randRange_ApiCheck(0, symbols.length - 1)];
+
 
         // calculate the quiz operation
         calculateOperation();

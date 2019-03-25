@@ -1,11 +1,15 @@
 package eu.indiewalkabout.mathbrainer.aritmetic.singleop;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -46,10 +50,12 @@ public class Diff_Write_Result_Activity extends AppCompatActivity implements IGa
 
     // view ref
     private TextView numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
-    private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv;
+    private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv, result_tv;
     private ArrayList<ImageView> lifesValue_iv ;
     private EditText playerInput_et;
 
+    // store initial text color
+    private ColorStateList quizDefaultTextColor;
 
     // numbers to be processed
     private int  firstOperand, secondOperand;
@@ -95,9 +101,6 @@ public class Diff_Write_Result_Activity extends AppCompatActivity implements IGa
     private long timerLength            = 20000;
     private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
 
-    // game session end dialog
-    EndGameSessionDialog endSessiondialog;
-
     // custom keyboard instance
     MyKeyboard keyboard;
 
@@ -116,6 +119,12 @@ public class Diff_Write_Result_Activity extends AppCompatActivity implements IGa
         firstOperand_tv    = (TextView)  findViewById(R.id.firstOperand_tv);
         secondOperand_tv   = (TextView)  findViewById(R.id.secondOperand_tv);
         operationSymbol_tv = (TextView)  findViewById(R.id.operationSymbol_tv);
+
+        // show result tv
+        result_tv = findViewById(R.id.result_tv);
+
+        // store quiz text color for later use
+        quizDefaultTextColor = firstOperand_tv.getTextColors();
 
         scoreValue_tv      = (TextView)  findViewById(R.id.scoreValue_tv);
         levelValue_tv      = (TextView)  findViewById(R.id.levelValue_tv);
@@ -158,9 +167,31 @@ public class Diff_Write_Result_Activity extends AppCompatActivity implements IGa
         });
 
 
+        // make bottom navigation bar and status bar hide
+        hideStatusNavBars();
+
     }
 
 
+
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Make bottom navigation bar and status bar hide, without resize when reappearing
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void hideStatusNavBars() {
+        // minsdk version is 19, no need code for lower api
+        View decorView = getWindow().getDecorView();
+        int uiOptions =
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+                        // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN; // // hide status bar
+        decorView.setSystemUiVisibility(uiOptions);
+    }
 
     /**
      * -------------------------------------------------------------------------------------------------
@@ -171,9 +202,20 @@ public class Diff_Write_Result_Activity extends AppCompatActivity implements IGa
         // init custom keyboard
         keyboard = (MyKeyboard) findViewById(R.id.keyboard);
 
+
         // prevent system keyboard from appearing when EditText is tapped
-        playerInput_et.setRawInputType(InputType.TYPE_CLASS_TEXT);
-        playerInput_et.setTextIsSelectable(true);
+        playerInput_et.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int inType = playerInput_et.getInputType(); // backup the input type
+                playerInput_et.setInputType(InputType.TYPE_NULL); // disable soft input
+                playerInput_et.onTouchEvent(event); // call native handler
+                playerInput_et.setInputType(inType); // restore input type
+                playerInput_et.setTextIsSelectable(false);
+                return true; // consume touch even
+            }
+        });
+
 
         // pass the InputConnection from the EditText to the keyboard
         InputConnection ic = playerInput_et.onCreateInputConnection(new EditorInfo());
@@ -208,7 +250,6 @@ public class Diff_Write_Result_Activity extends AppCompatActivity implements IGa
 
         // check if result is ok...
         if (inputNum != 0  && inputNum == answerOK) {
-            Toast.makeText(Diff_Write_Result_Activity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
 
@@ -222,27 +263,74 @@ public class Diff_Write_Result_Activity extends AppCompatActivity implements IGa
                 updateLevel();
             }
 
-            endSessiondialog = new EndGameSessionDialog(this,
-                    Diff_Write_Result_Activity.this,
-                    EndGameSessionDialog.GAME_SESSION_RESULT.OK);
-
-            // newChallenge();
+            // show result and start a new game session if allowed
+            showResult(true);
 
             // ...otherwise a life will be lost
         } else {
-            Toast.makeText(Diff_Write_Result_Activity.this, "WRONG...", Toast.LENGTH_SHORT).show();
 
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
 
             if (gameover == false) {
-                // newChallenge();
-                endSessiondialog = new EndGameSessionDialog(this,
-                        Diff_Write_Result_Activity.this,
-                        EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
+                // show result and start a new game session if allowed
+                showResult(false);
             }
 
         }
+    }
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show the result of the
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showResult(boolean win) {
+        result_tv.setVisibility(View.VISIBLE);
+        if (win == true) {
+            result_tv.setText(getResources().getString(R.string.ok_str));
+            result_tv.setTextColor(Color.GREEN);
+            firstOperand_tv.setTextColor(Color.GREEN);
+            secondOperand_tv.setTextColor(Color.GREEN);
+            operationSymbol_tv.setTextColor(Color.GREEN);
+            playerInput_et.setTextColor(Color.GREEN);
+            newchallengeAfterTimerLength(1000);
+
+
+        }else{
+            result_tv.setText(getResources().getString(R.string.wrong_str) + " : " + answerOK);
+            result_tv.setTextColor(Color.RED);
+            firstOperand_tv.setTextColor(Color.RED);
+            secondOperand_tv.setTextColor(Color.RED);
+            operationSymbol_tv.setTextColor(Color.RED);
+            playerInput_et.setTextColor(Color.RED);
+            newchallengeAfterTimerLength(1000);
+
+        }
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Launch new challenge after timerLength
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void newchallengeAfterTimerLength(final int timerLength){
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                result_tv.setVisibility(View.INVISIBLE);
+                firstOperand_tv.setTextColor(quizDefaultTextColor);
+                secondOperand_tv.setTextColor(quizDefaultTextColor);
+                operationSymbol_tv.setTextColor(quizDefaultTextColor);
+                playerInput_et.setTextColor(quizDefaultTextColor);
+                newChallenge();
+            }
+        };
+        // execute runnable after a timerLength
+        handler.postDelayed(runnable, timerLength);
     }
 
 
