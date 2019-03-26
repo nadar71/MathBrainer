@@ -300,9 +300,8 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         // update life counts
         lifes--;
 
-
         // Update UI
-        lifesValue_iv.get(lifes).setVisibility(View.INVISIBLE);
+        if ( lifes > -1) { lifesValue_iv.get(lifes).setVisibility(View.INVISIBLE);}
 
 
         // check game over condition

@@ -395,7 +395,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         Log.d(TAG, "isGameOver: " + lifes);
 
         // Update UI
-        lifesValue_iv.get(lifes).setVisibility(View.INVISIBLE);
+        if ( lifes > -1) { lifesValue_iv.get(lifes).setVisibility(View.INVISIBLE);}
 
         // check game over condition
         if ( lifes <= 0){
