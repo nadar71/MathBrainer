@@ -439,7 +439,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      */
     private void endGame() {
 
-        gameOverDialog = new GameOverDialog(NumberOrderActivity.this,
+        gameOverDialog = new GameOverDialog(this,
                 NumberOrderActivity.this, this);
 
         instructions_tv.setVisibility(View.INVISIBLE);

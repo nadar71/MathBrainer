@@ -418,7 +418,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         // reset counter
         countDownIndicator.countdownReset();
 
-        gameOverDialog = new GameOverDialog(RandomOperationActivity.this,
+        gameOverDialog = new GameOverDialog(this,
                 RandomOperationActivity.this, this);
     }
 

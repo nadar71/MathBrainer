@@ -16,7 +16,7 @@
     <string name="statistics">Statistics</string>
     <string name="scoreMain">Score</string>
     <string name="settings">settings</string>
-    <string name="the_double_is"> X 2 = </string>
+    <string name="the_double_is"> X   2 = </string>
     <string name="hints">Hints</string>
 
     <string name="backgroundimg">backgroundImg</string>

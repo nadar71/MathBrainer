@@ -105,6 +105,8 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
     GameOverDialog gameOverDialog;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -563,7 +565,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         // reset counter
         countDownIndicator.countdownReset();
 
-        gameOverDialog = new GameOverDialog(Math_Op_Write_Result_Activity.this,
+        gameOverDialog = new GameOverDialog(this,
                 Math_Op_Write_Result_Activity.this, this);
 
     }

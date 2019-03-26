@@ -280,7 +280,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/answer_plus_btn"
+                    android:id="@+id/answer_01Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -297,7 +297,7 @@
                     tools:layout_editor_absoluteY="313dp" />
 
                 <Button
-                    android:id="@+id/answer_minus_btn"
+                    android:id="@+id/answer_02Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -314,7 +314,7 @@
                     tools:layout_editor_absoluteY="240dp" />
 
                 <Button
-                    android:id="@+id/answer_mult_btn"
+                    android:id="@+id/answer_03Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -338,7 +338,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/answer_div_btn"
+                    android:id="@+id/answer_04Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"

@@ -1,11 +1,15 @@
 package eu.indiewalkabout.mathbrainer.aritmetic;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -38,9 +42,13 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     private final static String TAG = DoubleNumberActivity.class.getSimpleName();
 
     // view ref
-    private TextView             numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
+    private TextView             numberToBeDoubled_tv, scoreValue_tv, levelValue_tv,
+                                 result_tv,operationSymbol_tv;
     private ArrayList<ImageView> lifesValue_iv ;
     private EditText             playerInput_et;
+
+    // store initial text color
+    private ColorStateList quizDefaultTextColor;
 
 
     // number to be doubled
@@ -97,6 +105,14 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         scoreValue_tv          = (TextView)  findViewById(R.id.scoreValue_tv);
         levelValue_tv          = (TextView)  findViewById(R.id.levelValue_tv);
         playerInput_et         = (EditText)  findViewById(R.id.playerInput_et);
+        operationSymbol_tv     = (TextView)  findViewById(R.id.answerDouble_tv);
+
+
+        // show result tv
+        result_tv = findViewById(R.id.result_tv);
+
+        // store quiz text color for later use
+        quizDefaultTextColor = numberToBeDoubled_tv.getTextColors();
 
         // init lifes led images
         lifesValue_iv = new ArrayList<ImageView>();
@@ -134,9 +150,29 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
             }
         });
 
+        // make bottom navigation bar and status bar hide
+        hideStatusNavBars();
+
 
     }
 
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Make bottom navigation bar and status bar hide, without resize when reappearing
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void hideStatusNavBars() {
+        // minsdk version is 19, no need code for lower api
+        View decorView = getWindow().getDecorView();
+        int uiOptions =
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+                        // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN; // // hide status bar
+        decorView.setSystemUiVisibility(uiOptions);
+    }
 
     /**
      * -------------------------------------------------------------------------------------------------
@@ -147,9 +183,20 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         // init custom keyboard
         keyboard = (MyKeyboard) findViewById(R.id.keyboard);
 
+
         // prevent system keyboard from appearing when EditText is tapped
-        playerInput_et.setRawInputType(InputType.TYPE_CLASS_TEXT);
-        playerInput_et.setTextIsSelectable(true);
+        playerInput_et.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int inType = playerInput_et.getInputType(); // backup the input type
+                playerInput_et.setInputType(InputType.TYPE_NULL); // disable soft input
+                playerInput_et.onTouchEvent(event); // call native handler
+                playerInput_et.setInputType(inType); // restore input type
+                playerInput_et.setTextIsSelectable(false);
+                return true; // consume touch even
+            }
+        });
+
 
         // pass the InputConnection from the EditText to the keyboard
         InputConnection ic = playerInput_et.onCreateInputConnection(new EditorInfo());
@@ -180,7 +227,6 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
         // check if result is ok...
         if (inputNum != 0  && inputNum == 2*numToBeDoubled) {
-            Toast.makeText(DoubleNumberActivity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
 
@@ -194,30 +240,93 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
                 updateLevel();
             }
 
-            endSessiondialog = new EndGameSessionDialog(this,
-                    DoubleNumberActivity.this,
-                    EndGameSessionDialog.GAME_SESSION_RESULT.OK);
-
-            // newChallenge();
+            // show result and start a new game session if allowed
+            showResult(true);
 
         // ...otherwise a life will be lost
         } else {
-            Toast.makeText(DoubleNumberActivity.this, "WRONG...", Toast.LENGTH_SHORT).show();
 
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
 
             // new number to double
             if (gameover == false) {
-                // newChallenge();
-                endSessiondialog = new EndGameSessionDialog(this,
-                        DoubleNumberActivity.this,
-                        EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
+                // show result and start a new game session if allowed
+                showResult(false);
             }
 
         }
     }
 
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Check state at countdown expired
+     * -------------------------------------------------------------------------------------------------
+     */
+    @Override
+    public void checkCountdownExpired() {
+
+        // lose a life, check if it's game over
+        boolean gameover = isGameOver();
+
+        // new number to double
+        if (gameover == false) {
+            // show result and start a new game session if allowed
+            showResult(false);
+        }
+
+    }
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show the result of the
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showResult(boolean win) {
+        result_tv.setVisibility(View.VISIBLE);
+        if (win == true) {
+            result_tv.setText(getResources().getString(R.string.ok_str));
+            result_tv.setTextColor(Color.GREEN);
+            numberToBeDoubled_tv.setTextColor(Color.GREEN);
+            operationSymbol_tv.setTextColor(Color.GREEN);
+            playerInput_et.setTextColor(Color.GREEN);
+            newchallengeAfterTimerLength(1000);
+
+
+        }else{
+            result_tv.setText(getResources().getString(R.string.wrong_str) + " : " + 2*numToBeDoubled);
+            result_tv.setTextColor(Color.RED);
+            numberToBeDoubled_tv.setTextColor(Color.RED);
+            operationSymbol_tv.setTextColor(Color.RED);
+            playerInput_et.setTextColor(Color.RED);
+            newchallengeAfterTimerLength(1000);
+
+        }
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Launch new challenge after timerLength
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void newchallengeAfterTimerLength(final int timerLength){
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                result_tv.setVisibility(View.INVISIBLE);
+                numberToBeDoubled_tv.setTextColor(quizDefaultTextColor);
+                operationSymbol_tv.setTextColor(quizDefaultTextColor);
+                playerInput_et.setTextColor(quizDefaultTextColor);
+                newChallenge();
+            }
+        };
+        // execute runnable after a timerLength
+        handler.postDelayed(runnable, timerLength);
+    }
 
     /**
      * -------------------------------------------------------------------------------------------------
@@ -311,7 +420,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         // reset counter
         countDownIndicator.countdownReset();
 
-        gameOverDialog = new GameOverDialog(DoubleNumberActivity.this,
+        gameOverDialog = new GameOverDialog(this,
                 DoubleNumberActivity.this, this);
     }
 
@@ -339,27 +448,6 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
     }
 
-
-    /**
-     * -------------------------------------------------------------------------------------------------
-     * Check state at countdown expired
-     * -------------------------------------------------------------------------------------------------
-     */
-    @Override
-    public void checkCountdownExpired() {
-
-        // lose a life, check if it's game over
-        boolean gameover = isGameOver();
-
-        // new number to double
-        if (gameover == false) {
-            // newChallenge();
-            endSessiondialog = new EndGameSessionDialog(this,
-                    DoubleNumberActivity.this,
-                    EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
-        }
-
-    }
 
 
 

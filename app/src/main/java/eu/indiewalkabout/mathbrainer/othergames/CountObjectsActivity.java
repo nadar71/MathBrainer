@@ -535,7 +535,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
     private void endGame() {
 
 
-        gameOverDialog = new GameOverDialog(CountObjectsActivity.this,
+        gameOverDialog = new GameOverDialog(this,
                 CountObjectsActivity.this, this);
 
         buttonGrid.setVisibility(View.INVISIBLE);
