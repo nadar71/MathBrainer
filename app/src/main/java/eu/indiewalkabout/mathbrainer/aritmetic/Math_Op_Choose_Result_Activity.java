@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -47,7 +48,10 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
     private ColorStateList quizDefaultTextColor;
 
 
-    private Button answer01Btn, answer02Btn, answer03Btn, answer04Btn, answer05Btn, answer06Btn, answer07Btn, answer08Btn, answer09Btn;
+    private Button answer01Btn, answer02Btn, answer03Btn, answer04Btn,
+            answer05Btn, answer06Btn, answer07Btn, answer08Btn, answer09Btn;
+
+    private GridLayout gridLayout;
 
 
     // numbers to be processed
@@ -127,9 +131,11 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         mAdView.loadAd(ConsentSDK.getAdRequest(Math_Op_Choose_Result_Activity.this));
 
         // set views ref
-        firstOperand_tv    = (TextView)  findViewById(R.id.firstOperand_tv);
-        secondOperand_tv   = (TextView)  findViewById(R.id.secondOperand_tv);
-        operationSymbol_tv = (TextView)  findViewById(R.id.operationSymbol_tv);
+        firstOperand_tv    = (TextView)   findViewById(R.id.firstOperand_tv);
+        secondOperand_tv   = (TextView)   findViewById(R.id.secondOperand_tv);
+        operationSymbol_tv = (TextView)   findViewById(R.id.operationSymbol_tv);
+        gridLayout         = (GridLayout) findViewById(R.id.answerBtnGrid);
+
 
         // show result tv
         result_tv = findViewById(R.id.result_tv);
@@ -418,6 +424,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
             firstOperand_tv.setTextColor(Color.GREEN);
             secondOperand_tv.setTextColor(Color.GREEN);
             operationSymbol_tv.setTextColor(Color.GREEN);
+            gridLayout.setVisibility(View.INVISIBLE);
             newchallengeAfterTimerLength(1000);
 
 
@@ -427,6 +434,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
             firstOperand_tv.setTextColor(Color.RED);
             secondOperand_tv.setTextColor(Color.RED);
             operationSymbol_tv.setTextColor(Color.RED);
+            gridLayout.setVisibility(View.INVISIBLE);
             newchallengeAfterTimerLength(1000);
 
         }
@@ -447,6 +455,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
                 firstOperand_tv.setTextColor(quizDefaultTextColor);
                 secondOperand_tv.setTextColor(quizDefaultTextColor);
                 operationSymbol_tv.setTextColor(quizDefaultTextColor);
+                gridLayout.setVisibility(View.VISIBLE);
                 newChallenge();
             }
         };
@@ -484,6 +493,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
         // check game over condition
         if ( lifes <= 0){
+            gridLayout.setVisibility(View.INVISIBLE);
             endGame();
             return true;
 

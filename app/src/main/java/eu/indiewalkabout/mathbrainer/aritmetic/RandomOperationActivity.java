@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -36,9 +37,13 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
     // view ref
     private TextView numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
+
     private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv,
             operation_result_tv,result_tv, equals_sign_tv;
+
     private ArrayList<ImageView> lifesValue_iv ;
+
+    private GridLayout gridLayout;
 
     // store initial text color
     private ColorStateList quizDefaultTextColor;
@@ -118,12 +123,12 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         mAdView.loadAd(ConsentSDK.getAdRequest(RandomOperationActivity.this));
 
         // set views ref
-        firstOperand_tv     = (TextView)  findViewById(R.id.firstOperand_tv);
-        secondOperand_tv    = (TextView)  findViewById(R.id.secondOperand_tv);
-        operationSymbol_tv  = (TextView)  findViewById(R.id.operationSymbol_tv);
-        operation_result_tv = (TextView)  findViewById(R.id.operation_result_tv);
-        equals_sign_tv      = (TextView)  findViewById(R.id.equalLabel_tv);
-
+        firstOperand_tv     = (TextView)   findViewById(R.id.firstOperand_tv);
+        secondOperand_tv    = (TextView)   findViewById(R.id.secondOperand_tv);
+        operationSymbol_tv  = (TextView)   findViewById(R.id.operationSymbol_tv);
+        operation_result_tv = (TextView)   findViewById(R.id.operation_result_tv);
+        equals_sign_tv      = (TextView)   findViewById(R.id.equalLabel_tv);
+        gridLayout          = (GridLayout) findViewById(R.id.answerBtnGrid);
 
         // show result tv
         result_tv = findViewById(R.id.result_tv);
@@ -320,6 +325,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
             operationSymbol_tv.setTextColor(Color.GREEN);
             operation_result_tv.setTextColor(Color.GREEN);
             equals_sign_tv.setTextColor(Color.GREEN);
+            gridLayout.setVisibility(View.INVISIBLE);
             newchallengeAfterTimerLength(1000);
 
 
@@ -333,6 +339,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
             operationSymbol_tv.setTextColor(Color.RED);
             operation_result_tv.setTextColor(Color.RED);
             equals_sign_tv.setTextColor(Color.RED);
+            gridLayout.setVisibility(View.INVISIBLE);
             newchallengeAfterTimerLength(1000);
 
         }
@@ -355,6 +362,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
                 operationSymbol_tv.setTextColor(quizDefaultTextColor);
                 operation_result_tv.setTextColor(quizDefaultTextColor);
                 equals_sign_tv.setTextColor(quizDefaultTextColor);
+                gridLayout.setVisibility(View.VISIBLE);
                 newChallenge();
             }
         };
@@ -391,6 +399,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
         // check game over condition
         if ( lifes <= 0){
+
+            gridLayout.setVisibility(View.INVISIBLE);
             endGame();
             return true;
 

@@ -366,6 +366,8 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             secondOperand_tv.setTextColor(Color.GREEN);
             operationSymbol_tv.setTextColor(Color.GREEN);
             playerInput_et.setTextColor(Color.GREEN);
+            // hide keyboard
+            keyboard.setVisibility(View.INVISIBLE);
             newchallengeAfterTimerLength(1000);
 
 
@@ -376,6 +378,8 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             secondOperand_tv.setTextColor(Color.RED);
             operationSymbol_tv.setTextColor(Color.RED);
             playerInput_et.setTextColor(Color.RED);
+            // hide keyboard
+            keyboard.setVisibility(View.INVISIBLE);
             newchallengeAfterTimerLength(1000);
 
         }
@@ -397,6 +401,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
                 secondOperand_tv.setTextColor(quizDefaultTextColor);
                 operationSymbol_tv.setTextColor(quizDefaultTextColor);
                 playerInput_et.setTextColor(quizDefaultTextColor);
+                keyboard.setVisibility(View.VISIBLE);
                 newChallenge();
             }
         };
@@ -439,8 +444,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             playerInput_et.setVisibility(View.INVISIBLE);
 
             // hide keyboard
-            InputMethodManager inpMng = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            inpMng.hideSoftInputFromWindow(playerInput_et.getWindowToken(), 0);
+            keyboard.setVisibility(View.INVISIBLE);
 
             endGame();
             return true;
@@ -475,7 +479,6 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
     public void newChallenge() {
         // set operation to be processed; general case symbols.length-1 > 1
         operation = symbols[myUtil.randRange_ApiCheck(0, symbols.length - 1)];
-
 
         // calculate the quiz operation
         calculateOperation();
