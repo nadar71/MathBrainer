@@ -179,6 +179,22 @@
         app:layout_constraintVertical_bias="1.0">
 
         <TextView
+            android:id="@+id/firstOperand_tv"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="64dp"
+            android:fontFamily="@font/quicksand"
+            android:gravity="center_vertical"
+            android:text="@string/_1"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_light"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/operationSymbol_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -196,20 +212,19 @@
             app:layout_constraintStart_toEndOf="@+id/firstOperand_tv" />
 
         <TextView
-            android:id="@+id/firstOperand_tv"
+            android:id="@+id/secondOperand_tv"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="64dp"
+            android:layout_marginEnd="32dp"
             android:fontFamily="@font/quicksand"
             android:gravity="center_vertical"
-            android:text="@string/_1"
+            android:text="@string/_2"
             android:textAlignment="center"
             android:textColor="@android:color/background_light"
             android:textSize="40sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/operationSymbol_tv"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/result_tv"
@@ -233,20 +248,6 @@
             app:layout_constraintTop_toBottomOf="@+id/operationSymbol_tv" />
 
 
-        <TextView
-            android:id="@+id/secondOperand_tv"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:fontFamily="@font/quicksand"
-            android:gravity="center_vertical"
-            android:text="@string/_2"
-            android:textAlignment="center"
-            android:textColor="@android:color/background_light"
-            android:textSize="40sp"
-            android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/operationSymbol_tv"
-            app:layout_constraintEnd_toEndOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
 

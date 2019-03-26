@@ -1,6 +1,9 @@
 package eu.indiewalkabout.mathbrainer.aritmetic;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -33,12 +36,14 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
     // view ref
     private TextView numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
-    private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv, result_tv;
+    private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv,
+            operation_result_tv,result_tv, equals_sign_tv;
     private ArrayList<ImageView> lifesValue_iv ;
 
+    // store initial text color
+    private ColorStateList quizDefaultTextColor;
 
     Button answer_plus_Btn, answer_minus_Btn, answer_mult_Btn, answer_div_Btn;
-
 
     // numbers to be processed
     private int  firstOperand, secondOperand;
@@ -113,10 +118,18 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         mAdView.loadAd(ConsentSDK.getAdRequest(RandomOperationActivity.this));
 
         // set views ref
-        firstOperand_tv    = (TextView)  findViewById(R.id.firstOperand_tv);
-        secondOperand_tv   = (TextView)  findViewById(R.id.secondOperand_tv);
-        operationSymbol_tv = (TextView)  findViewById(R.id.operationSymbol_tv);
-        result_tv          = (TextView)  findViewById(R.id.result_tv);
+        firstOperand_tv     = (TextView)  findViewById(R.id.firstOperand_tv);
+        secondOperand_tv    = (TextView)  findViewById(R.id.secondOperand_tv);
+        operationSymbol_tv  = (TextView)  findViewById(R.id.operationSymbol_tv);
+        operation_result_tv = (TextView)  findViewById(R.id.operation_result_tv);
+        equals_sign_tv      = (TextView)  findViewById(R.id.equalLabel_tv);
+
+
+        // show result tv
+        result_tv = findViewById(R.id.result_tv);
+
+        // store quiz text color for later use
+        quizDefaultTextColor = firstOperand_tv.getTextColors();
 
         scoreValue_tv      = (TextView)  findViewById(R.id.scoreValue_tv);
         levelValue_tv      = (TextView)  findViewById(R.id.levelValue_tv);
@@ -153,6 +166,28 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         // set first level
         updateLevel();
 
+        // make bottom navigation bar and status bar hide
+        hideStatusNavBars();
+
+    }
+
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Make bottom navigation bar and status bar hide, without resize when reappearing
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void hideStatusNavBars() {
+        // minsdk version is 19, no need code for lower api
+        View decorView = getWindow().getDecorView();
+        int uiOptions =
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+                        // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN; // // hide status bar
+        decorView.setSystemUiVisibility(uiOptions);
     }
 
 
@@ -215,7 +250,6 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
         // check if result is ok...
         if ( !pressedBtnValue.isEmpty()  && pressedBtnValue.equals(operationOK)) {
-            Toast.makeText(RandomOperationActivity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
 
@@ -231,30 +265,102 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
                 updateLevel();
             }
 
-            endSessiondialog = new EndGameSessionDialog(this,
-                    RandomOperationActivity.this,
-                    EndGameSessionDialog.GAME_SESSION_RESULT.OK);
-
-            // newChallenge();
+            // show result and start a new game session if allowed
+            showResult(true);
 
             // ...otherwise a life will be lost
         } else {
-            Toast.makeText(RandomOperationActivity.this, "WRONG...", Toast.LENGTH_SHORT).show();
 
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
 
             if (gameover == false) {
-                // newChallenge();
-                endSessiondialog = new EndGameSessionDialog(this,
-                        RandomOperationActivity.this,
-                        EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
+                // show result and start a new game session if allowed
+                showResult(false);
             }
 
         }
     }
 
 
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Check state at countdown expired
+     * -------------------------------------------------------------------------------------------------
+     */
+    @Override
+    public void checkCountdownExpired() {
+
+        // lose a life, check if it's game over
+        boolean gameover = isGameOver();
+
+        // new number to double
+        if (gameover == false) {
+            // show result and start a new game session if allowed
+            showResult(false);
+        }
+
+    }
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show the result of the
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showResult(boolean win) {
+        result_tv.setVisibility(View.VISIBLE);
+        if (win == true) {
+            result_tv.setText(getResources().getString(R.string.ok_str));
+            result_tv.setTextColor(Color.GREEN);
+            firstOperand_tv.setTextColor(Color.GREEN);
+            secondOperand_tv.setTextColor(Color.GREEN);
+
+            operationSymbol_tv.setText(operationOK);
+            operationSymbol_tv.setTextColor(Color.GREEN);
+            operation_result_tv.setTextColor(Color.GREEN);
+            equals_sign_tv.setTextColor(Color.GREEN);
+            newchallengeAfterTimerLength(1000);
+
+
+        }else{
+            result_tv.setText(getResources().getString(R.string.wrong_str) + " : " + operationOK);
+            result_tv.setTextColor(Color.RED);
+            firstOperand_tv.setTextColor(Color.RED);
+            secondOperand_tv.setTextColor(Color.RED);
+
+            operationSymbol_tv.setText(operationOK);
+            operationSymbol_tv.setTextColor(Color.RED);
+            operation_result_tv.setTextColor(Color.RED);
+            equals_sign_tv.setTextColor(Color.RED);
+            newchallengeAfterTimerLength(1000);
+
+        }
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Launch new challenge after timerLength
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void newchallengeAfterTimerLength(final int timerLength){
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                result_tv.setVisibility(View.INVISIBLE);
+                firstOperand_tv.setTextColor(quizDefaultTextColor);
+                secondOperand_tv.setTextColor(quizDefaultTextColor);
+                operationSymbol_tv.setTextColor(quizDefaultTextColor);
+                operation_result_tv.setTextColor(quizDefaultTextColor);
+                equals_sign_tv.setTextColor(quizDefaultTextColor);
+                newChallenge();
+            }
+        };
+        // execute runnable after a timerLength
+        handler.postDelayed(runnable, timerLength);
+    }
     /**
      * -------------------------------------------------------------------------------------------------
      * Update score view
@@ -394,11 +500,12 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         operationOK = Character.toString(operation);
 
         // set values in view
-        result_tv.setText(Integer.toString(answer));
+        operation_result_tv.setText(Integer.toString(answer));
 
         // hide correct operation
-        operationSymbol_tv.setText(Character.toString(operation));
-        operationSymbol_tv.setVisibility(View.INVISIBLE);
+        // operationSymbol_tv.setText(operationOK);
+        // operationSymbol_tv.setVisibility(View.INVISIBLE);
+        operationSymbol_tv.setText(getResources().getString(R.string.question_mark));
 
         firstOperand_tv.setText(Integer.toString(firstOperand));
         secondOperand_tv.setText(Integer.toString(secondOperand));
@@ -460,25 +567,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
     }
 
 
-    /**
-     * -------------------------------------------------------------------------------------------------
-     * Check state at countdown expired
-     * -------------------------------------------------------------------------------------------------
-     */
-    @Override
-    public void checkCountdownExpired() {
 
-        // lose a life, check if it's game over
-        boolean gameover = isGameOver();
-
-        // new number to double
-        if (gameover == false) {
-            endSessiondialog = new EndGameSessionDialog(this,
-                    RandomOperationActivity.this,
-                    EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
-        }
-
-    }
 
 
     /**
