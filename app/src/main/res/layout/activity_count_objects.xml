@@ -194,12 +194,16 @@
     <TextView
         android:id="@+id/countobj_instructions_tv"
         android:layout_width="wrap_content"
-        android:layout_height="16dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
+        android:fontFamily="@font/quicksand"
         android:text="@string/count_objects_question"
+        android:textAlignment="center"
         android:textColor="@android:color/background_light"
+        android:textSize="30sp"
+        android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/answerBtnGrid"
         app:layout_constraintEnd_toStartOf="@+id/answerBtnGrid"
@@ -267,6 +271,25 @@
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintHorizontal_bias="0.0"
         ads:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
+
+    <TextView
+        android:id="@+id/count_obj_instructions_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/quick_count_instructions"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/itemDrawing_v"
+        app:layout_constraintEnd_toStartOf="@+id/countobj_instructions_tv"
+        app:layout_constraintStart_toEndOf="@+id/countobj_instructions_tv"
+        app:layout_constraintTop_toTopOf="@+id/canvas_image_ref_img" />
 
 
 </android.support.constraint.ConstraintLayout>

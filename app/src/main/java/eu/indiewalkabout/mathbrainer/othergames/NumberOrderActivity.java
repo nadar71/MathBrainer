@@ -380,6 +380,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      * ---------------------------------------------------------------------------------------------
      */
     private void showQuiz(){
+        instructions_tv.setText(getResources().getString(R.string.click_order_instructions));
         solutionsView.setVisibility(View.INVISIBLE);
         btnNewGame.setVisibility(View.INVISIBLE);
         result_tv.setVisibility(View.INVISIBLE);
@@ -394,6 +395,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      */
     private void hideQuiz(){
         // debug drawquiz.setVisibility(View.INVISIBLE);
+        instructions_tv.setText(getResources().getString(R.string.click_order_start));
         solutionsView.setVisibility(View.VISIBLE);
         drawquiz_challenge.setVisibility(View.VISIBLE);
 

@@ -169,14 +169,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="23dp"
         android:background="@drawable/rounded_rect_keyboard_background"
-        app:layout_constraintBottom_toTopOf="@+id/answerBtnGrid"
+        app:layout_constraintBottom_toTopOf="@+id/instructions_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv">
 
         <TextView
             android:id="@+id/firstOperand_tv"
@@ -251,10 +250,26 @@
     </android.support.constraint.ConstraintLayout>
 
 
+    <TextView
+        android:id="@+id/instructions_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/choose_op_instructions"
+        android:textColor="@color/colorAccent"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/answerBtnGrid"
+        app:layout_constraintEnd_toStartOf="@+id/answerBtnGrid"
+        app:layout_constraintStart_toEndOf="@+id/answerBtnGrid"
+        app:layout_constraintTop_toBottomOf="@+id/operationsSection_lo" />
+
     <GridLayout
         android:id="@+id/answerBtnGrid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="64dp"
         android:background="@drawable/rounded_rect_keyboard_background"
         android:columnCount="3"
@@ -266,7 +281,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operationsSection_lo">
+        app:layout_constraintTop_toBottomOf="@+id/instructions_tv">
 
         <LinearLayout
             android:layout_width="match_parent"

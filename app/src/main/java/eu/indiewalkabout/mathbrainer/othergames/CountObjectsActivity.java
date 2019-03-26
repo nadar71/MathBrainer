@@ -52,7 +52,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
     private QuickCountItemDrawView drawquiz;
 
 
-    private TextView scoreValue_tv, levelValue_tv, instructions_tv ;
+    private TextView scoreValue_tv, levelValue_tv, instructions_tv, count_obj_instructions_tv ;
     private GridLayout buttonGrid;
     private ArrayList<ImageView> lifesValue_iv ;
 
@@ -141,8 +141,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         btnNewGame      = findViewById(R.id.new_game_btn);
         btnNewGame.setVisibility(View.INVISIBLE);
 
-        scoreValue_tv      = (TextView)  findViewById(R.id.scoreValue_tv);
-        levelValue_tv      = (TextView)  findViewById(R.id.levelValue_tv);
+        scoreValue_tv             = (TextView)  findViewById(R.id.scoreValue_tv);
+        levelValue_tv             = (TextView)  findViewById(R.id.levelValue_tv);
+        count_obj_instructions_tv = (TextView)  findViewById(R.id.count_obj_instructions_tv);
 
         // init lifes led images
         lifesValue_iv = new ArrayList<ImageView>();
@@ -416,6 +417,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         buttonGrid.setVisibility(View.INVISIBLE);
         instructions_tv.setVisibility(View.INVISIBLE);
         drawquiz.setVisibility(View.VISIBLE);
+        count_obj_instructions_tv.setVisibility(View.VISIBLE);
     }
 
 
@@ -428,6 +430,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         buttonGrid.setVisibility(View.VISIBLE);
         instructions_tv.setVisibility(View.VISIBLE);
         drawquiz.setVisibility(View.INVISIBLE);
+        count_obj_instructions_tv.setVisibility(View.INVISIBLE);
     }
 
 
