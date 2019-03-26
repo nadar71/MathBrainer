@@ -29,6 +29,7 @@ import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
+import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.MyKeyboard;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
@@ -99,6 +100,9 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
 
     // custom keyboard instance
     MyKeyboard keyboard;
+
+    // game over dialog
+    GameOverDialog gameOverDialog;
 
 
     @Override
@@ -559,8 +563,8 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         // reset counter
         countDownIndicator.countdownReset();
 
-        // todo : game over screen
-        Toast.makeText(Math_Op_Write_Result_Activity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
+        gameOverDialog = new GameOverDialog(Math_Op_Write_Result_Activity.this,
+                Math_Op_Write_Result_Activity.this, this);
 
     }
 

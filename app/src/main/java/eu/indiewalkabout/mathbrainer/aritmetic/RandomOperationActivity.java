@@ -19,6 +19,7 @@ import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
+import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
@@ -96,6 +97,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
     // game session end dialog
     EndGameSessionDialog endSessiondialog;
+
+    // game over dialog
+    GameOverDialog gameOverDialog;
 
 
     @Override
@@ -414,9 +418,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         // reset counter
         countDownIndicator.countdownReset();
 
-        // todo : game over screen
-        Toast.makeText(RandomOperationActivity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
-
+        gameOverDialog = new GameOverDialog(RandomOperationActivity.this,
+                RandomOperationActivity.this, this);
     }
 
 

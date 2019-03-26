@@ -22,11 +22,13 @@ import com.google.android.gms.ads.AdView;
 import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.R;
+import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Choose_Result_Activity;
 import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView;
 import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView;
 import eu.indiewalkabout.mathbrainer.customviews.SolutionsView;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
+import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
@@ -101,8 +103,16 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     // get the touch event from costum class on markers touching
     private MutableLiveData<Integer> touchEventResInCostumView;
 
+    // game over dialog
+    GameOverDialog gameOverDialog;
+
+
+
+
     @Override
     public void checkPlayerInput() {}
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -429,10 +439,8 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      */
     private void endGame() {
 
-
-        // todo : game over screen
-        Toast.makeText(NumberOrderActivity.this, "Congrats! Your score is : " + score
-                + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
+        gameOverDialog = new GameOverDialog(NumberOrderActivity.this,
+                NumberOrderActivity.this, this);
 
         instructions_tv.setVisibility(View.INVISIBLE);
         drawquiz.setVisibility(View.INVISIBLE);

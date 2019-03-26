@@ -29,9 +29,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.R;
+import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Choose_Result_Activity;
 import eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
+import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
@@ -105,6 +107,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
     // game session end dialog
     EndGameSessionDialog endSessiondialog;
+
+    // game over dialog
+    GameOverDialog gameOverDialog;
 
 
 
@@ -530,9 +535,8 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
     private void endGame() {
 
 
-        // todo : game over screen
-        Toast.makeText(CountObjectsActivity.this, "Congrats! Your score is : " + score
-                + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
+        gameOverDialog = new GameOverDialog(CountObjectsActivity.this,
+                CountObjectsActivity.this, this);
 
         buttonGrid.setVisibility(View.INVISIBLE);
         instructions_tv.setVisibility(View.INVISIBLE);

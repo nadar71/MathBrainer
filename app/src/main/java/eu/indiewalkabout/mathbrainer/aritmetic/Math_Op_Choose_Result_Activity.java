@@ -24,6 +24,7 @@ import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
+import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
@@ -108,8 +109,8 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
     private long timerLength            = 20000;
     private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
 
-    // game session end dialog
-    EndGameSessionDialog endSessiondialog;
+    // game over dialog
+    GameOverDialog gameOverDialog;
 
 
     @Override
@@ -783,10 +784,8 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         // reset counter
         countDownIndicator.countdownReset();
 
-        // todo : game over screen
-        Toast.makeText(Math_Op_Choose_Result_Activity.this,
-                "Congrats! Your score is : " + score + " on " + numChallengeEachLevel,
-                Toast.LENGTH_LONG).show();
+        gameOverDialog = new GameOverDialog(Math_Op_Choose_Result_Activity.this,
+                Math_Op_Choose_Result_Activity.this, this);
 
     }
 

@@ -77,6 +77,9 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     // custom keyboard instance
     MyKeyboard keyboard;
 
+    // game over dialog
+    GameOverDialog gameOverDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -308,9 +311,8 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         // reset counter
         countDownIndicator.countdownReset();
 
-        // todo : game over screen
-        Toast.makeText(DoubleNumberActivity.this, "Congrats! Your score is : " + score + " on " + numChallengeEachLevel, Toast.LENGTH_LONG).show();
-
+        gameOverDialog = new GameOverDialog(DoubleNumberActivity.this,
+                DoubleNumberActivity.this, this);
     }
 
 
