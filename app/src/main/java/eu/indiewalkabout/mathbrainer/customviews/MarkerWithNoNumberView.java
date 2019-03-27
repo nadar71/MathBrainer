@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -277,12 +278,12 @@ public class MarkerWithNoNumberView extends View {
 
                             // win condition reached
                             if ( allMarkerTouched() && (touchCounter == itemNumber-1) ) {
-                                touchResult.setValue(1);
+                                sendLevelCompleted(); // set level completed correctly with delay
                             }
                             touchCounter++;
 
                         }else {
-                            // marked image as NOT touched: unnecessary, but make win condition check more robust
+                            // marked image has NOT touched: unnecessary, but make win condition check more robust
                             img.set_touched(false);
                             touchResult.setValue(0);
                         }
@@ -293,6 +294,23 @@ public class MarkerWithNoNumberView extends View {
         return false;
     }
 
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Send level completed correctly with a bit of delay
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void sendLevelCompleted(){
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                touchResult.setValue(1);
+            }
+        };
+        // execute runnable after a timerLength
+        handler.postDelayed(runnable, 500);
+    }
 
     /**
      * ---------------------------------------------------------------------------------------------

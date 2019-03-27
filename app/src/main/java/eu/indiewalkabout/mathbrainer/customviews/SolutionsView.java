@@ -113,7 +113,7 @@ public class SolutionsView extends View {
 
                 // draw new marker with corrispondent number on it
                 Resources res = getResources();
-                Bitmap marker = BitmapFactory.decodeResource(res, R.drawable.number_pointer);
+                Bitmap marker = BitmapFactory.decodeResource(res, R.drawable.number_pointer_green);
 
                 // make bitmap mutable for marker with number
                 Bitmap bitmapWithNumber = marker.copy(Bitmap.Config.ARGB_8888, true);

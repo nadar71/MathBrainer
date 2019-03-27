@@ -519,7 +519,6 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         int result = myUtil.randRange_ApiCheck(1, (int)(offset * 1.0));
         if ( (result >= 1) && (result <= 3) ) {
             int sign = myUtil.randomSignChooser();
-            if (sign<0) { Toast.makeText(context, "Negative number : "+sign, Toast.LENGTH_SHORT).show();}
             return answerOK + sign * result;
         }
         return answerOK + result;

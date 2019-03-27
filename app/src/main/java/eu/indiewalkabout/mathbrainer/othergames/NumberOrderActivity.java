@@ -267,6 +267,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
             public void run() {
                 btnNewGame.setVisibility(View.VISIBLE);
                 instructions_tv.setText("   ");
+                result_tv.setVisibility(View.VISIBLE);
                 if (win == false) {
                     result_tv.setText(getResources().getString(R.string.wrong_str));
                     result_tv.setTextColor(Color.RED);
@@ -274,7 +275,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
                     result_tv.setText(getResources().getString(R.string.ok_str));
                     result_tv.setTextColor(Color.GREEN);
                 }
-                result_tv.setVisibility(View.VISIBLE);
+
             }
         };
         // execute runnable after a timerLength
@@ -314,6 +315,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
         // check game over condition
         if ( lifes <= 0){
+            result_tv.setVisibility(View.VISIBLE);
+            result_tv.setText(getResources().getString(R.string.wrong_str));
+            result_tv.setTextColor(Color.RED);
             endGame();
             return true;
 
@@ -444,19 +448,39 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
     /**
      * -------------------------------------------------------------------------------------------------
-     * Show end game message
+     * Show game over with delay
      * -------------------------------------------------------------------------------------------------
      */
     private void endGame() {
 
+        btnNewGame.setVisibility(View.INVISIBLE);
+
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                showGameOverDialog();
+            }
+        };
+        handler.postDelayed(runnable, 500);
+
+    }
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show gameover dialog
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showGameOverDialog() {
         gameOverDialog = new GameOverDialog(this,
                 NumberOrderActivity.this, this);
 
+        result_tv.setVisibility(View.INVISIBLE);
         instructions_tv.setVisibility(View.INVISIBLE);
         drawquiz.setVisibility(View.INVISIBLE);
         drawquiz_challenge.setVisibility(View.INVISIBLE);
     }
-
 
     /**
      * -------------------------------------------------------------------------------------------------
