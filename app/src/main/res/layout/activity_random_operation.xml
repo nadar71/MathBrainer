@@ -334,6 +334,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 android:textSize="30sp"
+                android:textStyle="bold"
                 tools:layout_editor_absoluteX="36dp"
                 tools:layout_editor_absoluteY="240dp" />
 
@@ -349,6 +350,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 android:textSize="30sp"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:layout_editor_absoluteY="240dp" />
@@ -365,6 +367,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 android:textSize="30sp"
+                android:textStyle="bold"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:layout_editor_absoluteY="313dp" />
 
@@ -380,6 +383,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 android:textSize="30sp"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:layout_editor_absoluteY="313dp" />

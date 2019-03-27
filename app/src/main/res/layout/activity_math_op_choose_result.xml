@@ -306,8 +306,10 @@
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
                     android:text="@string/answer_01value"
+                    android:textAlignment="center"
                     android:textColor="@android:color/background_light"
                     android:textSize="24sp"
+                    android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     tools:layout_editor_absoluteY="313dp" />
@@ -323,8 +325,10 @@
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
                     android:text="@string/answer_02value"
+                    android:textAlignment="center"
                     android:textColor="@android:color/background_light"
                     android:textSize="24sp"
+                    android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     tools:layout_editor_absoluteY="240dp" />
@@ -340,8 +344,10 @@
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
                     android:text="@string/answer_03value"
+                    android:textAlignment="center"
                     android:textColor="@android:color/background_light"
                     android:textSize="24sp"
+                    android:textStyle="bold"
                     tools:layout_editor_absoluteX="36dp"
                     tools:layout_editor_absoluteY="240dp" />
 
@@ -364,8 +370,10 @@
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
                     android:text="@string/answer_04value"
+                    android:textAlignment="center"
                     android:textColor="@android:color/background_light"
                     android:textSize="24sp"
+                    android:textStyle="bold"
                     app:layout_constraintRight_toRightOf="parent"
                     tools:layout_editor_absoluteY="313dp" />
 
@@ -380,8 +388,10 @@
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
                     android:text="@string/answer_05value"
+                    android:textAlignment="center"
                     android:textColor="@android:color/background_light"
                     android:textSize="24sp"
+                    android:textStyle="bold"
                     tools:layout_editor_absoluteX="263dp"
                     tools:layout_editor_absoluteY="240dp" />
 
@@ -396,8 +406,10 @@
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
                     android:text="@string/answer_06value"
+                    android:textAlignment="center"
                     android:textColor="@android:color/background_light"
                     android:textSize="24sp"
+                    android:textStyle="bold"
                     tools:layout_editor_absoluteX="36dp"
                     tools:layout_editor_absoluteY="313dp" />
             </LinearLayout>
@@ -419,8 +431,10 @@
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
                     android:text="@string/answer_07value"
+                    android:textAlignment="center"
                     android:textColor="@android:color/background_light"
                     android:textSize="24sp"
+                    android:textStyle="bold"
                     app:layout_constraintRight_toRightOf="parent"
                     tools:layout_editor_absoluteY="313dp" />
 
@@ -435,8 +449,10 @@
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
                     android:text="@string/answer_08value"
+                    android:textAlignment="center"
                     android:textColor="@android:color/background_light"
                     android:textSize="24sp"
+                    android:textStyle="bold"
                     tools:layout_editor_absoluteX="263dp"
                     tools:layout_editor_absoluteY="240dp" />
 
@@ -451,8 +467,10 @@
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
                     android:text="@string/answer_09value"
+                    android:textAlignment="center"
                     android:textColor="@android:color/background_light"
                     android:textSize="24sp"
+                    android:textStyle="bold"
                     tools:layout_editor_absoluteX="36dp"
                     tools:layout_editor_absoluteY="313dp" />
             </LinearLayout>

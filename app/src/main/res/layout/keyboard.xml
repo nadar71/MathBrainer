@@ -25,8 +25,10 @@
                 android:background="@drawable/rounded_rect_simplekeyboard_btn"
                 android:fontFamily="@font/quicksand"
                 android:text="1"
+                android:textAlignment="center"
                 android:textColor="@android:color/background_light"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button_2"
@@ -37,8 +39,10 @@
                 android:background="@drawable/rounded_rect_simplekeyboard_btn"
                 android:fontFamily="@font/quicksand"
                 android:text="2"
+                android:textAlignment="center"
                 android:textColor="@android:color/background_light"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button_3"
@@ -49,8 +53,10 @@
                 android:background="@drawable/rounded_rect_simplekeyboard_btn"
                 android:fontFamily="@font/quicksand"
                 android:text="3"
+                android:textAlignment="center"
                 android:textColor="@android:color/background_light"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button_4"
@@ -61,8 +67,10 @@
                 android:background="@drawable/rounded_rect_simplekeyboard_btn"
                 android:fontFamily="@font/quicksand"
                 android:text="4"
+                android:textAlignment="center"
                 android:textColor="@android:color/background_light"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button_5"
@@ -73,8 +81,10 @@
                 android:background="@drawable/rounded_rect_simplekeyboard_btn"
                 android:fontFamily="@font/quicksand"
                 android:text="5"
+                android:textAlignment="center"
                 android:textColor="@android:color/background_light"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -96,8 +106,10 @@
                 android:background="@drawable/rounded_rect_simplekeyboard_btn"
                 android:fontFamily="@font/quicksand"
                 android:text="6"
+                android:textAlignment="center"
                 android:textColor="@android:color/background_light"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button_7"
@@ -108,8 +120,10 @@
                 android:background="@drawable/rounded_rect_simplekeyboard_btn"
                 android:fontFamily="@font/quicksand"
                 android:text="7"
+                android:textAlignment="center"
                 android:textColor="@android:color/background_light"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button_8"
@@ -120,8 +134,10 @@
                 android:background="@drawable/rounded_rect_simplekeyboard_btn"
                 android:fontFamily="@font/quicksand"
                 android:text="8"
+                android:textAlignment="center"
                 android:textColor="@android:color/background_light"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button_9"
@@ -132,8 +148,10 @@
                 android:background="@drawable/rounded_rect_simplekeyboard_btn"
                 android:fontFamily="@font/quicksand"
                 android:text="9"
+                android:textAlignment="center"
                 android:textColor="@android:color/background_light"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button_0"
@@ -144,8 +162,10 @@
                 android:background="@drawable/rounded_rect_simplekeyboard_btn"
                 android:fontFamily="@font/quicksand"
                 android:text="0"
+                android:textAlignment="center"
                 android:textColor="@android:color/background_light"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -167,8 +187,10 @@
                 android:background="@drawable/ic_enter_delete_keyboard_btn"
                 android:fontFamily="@font/quicksand"
                 android:text="Delete"
+                android:textAlignment="center"
                 android:textColor="@android:color/background_light"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button_enter"
@@ -179,8 +201,10 @@
                 android:background="@drawable/ic_enter_delete_keyboard_btn"
                 android:fontFamily="@font/quicksand"
                 android:text="Enter"
+                android:textAlignment="center"
                 android:textColor="@android:color/background_light"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </LinearLayout>

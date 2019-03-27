@@ -79,9 +79,9 @@
     <string name="new_label">New</string>
 
     <string name="count_objects_question">How many objects ?</string>
-    <string name="click_order_instructions">Memorize order, then click circles in order by number :</string>
+    <string name="click_order_instructions">Memorize order, then click circles in order by number.</string>
     <string name="click_order_start">GO !</string>
-    <string name="quick_count_instructions">Count objects : </string>
+    <string name="quick_count_instructions">Count objects. </string>
     <string name="choose_op_instructions">Choose the correct answer :</string>
     <string name="random_op_instructions">Choose the correct operation :</string>
 
