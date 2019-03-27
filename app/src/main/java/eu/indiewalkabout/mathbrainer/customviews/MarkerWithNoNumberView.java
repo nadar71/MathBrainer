@@ -270,7 +270,6 @@ public class MarkerWithNoNumberView extends View {
                         img.set_touched(true); // marked image as touched
 
                         if ( indx == touchCounter) {
-                            Toast.makeText(context, "OK! marker number : " + indx, Toast.LENGTH_SHORT).show();
 
                             // mark as a correct result
                             loadSolution(img, indx);
@@ -285,7 +284,6 @@ public class MarkerWithNoNumberView extends View {
                         }else {
                             // marked image as NOT touched: unnecessary, but make win condition check more robust
                             img.set_touched(false);
-                            // Toast.makeText(context, "WRONG! marker img with number : " + indx_imgWithNumber, Toast.LENGTH_SHORT).show();
                             touchResult.setValue(0);
                         }
                     }

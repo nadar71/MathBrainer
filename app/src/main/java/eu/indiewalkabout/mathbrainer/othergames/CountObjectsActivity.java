@@ -29,7 +29,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Choose_Result_Activity;
 import eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
@@ -136,7 +135,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         drawquiz.setVisibility(View.INVISIBLE);
 
         // other views
-        instructions_tv = findViewById(R.id.countobj_instructions_tv);
+        instructions_tv = findViewById(R.id.quiz_instructions_tv);
         buttonGrid      = findViewById(R.id.answerBtnGrid);
         btnNewGame      = findViewById(R.id.new_game_btn);
         btnNewGame.setVisibility(View.INVISIBLE);

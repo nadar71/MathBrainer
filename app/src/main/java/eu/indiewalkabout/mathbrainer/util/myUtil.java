@@ -2,6 +2,7 @@ package eu.indiewalkabout.mathbrainer.util;
 
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.util.Log;
 
@@ -111,15 +113,23 @@ public class myUtil {
         */
 
         Canvas canvas = new Canvas(bitmap);
+
+        // set specific font
+        AssetManager assetManager = gContext.getAssets();
+        Typeface plain = Typeface.createFromAsset(assetManager, "font/quicksand.otf");
+        Typeface bold = Typeface.create(plain, Typeface.BOLD);
+
         // new antialised Paint
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         // text color
         paint.setColor(Color.rgb(255, 255, 255));
 
+        // text font
+        paint.setTypeface(bold);
+
         // text size in pixels
         paint.setTextSize((int) (80 * scale));
-
 
         // text shadow
         paint.setShadowLayer(1f, 0f, 1f, Color.BLACK);

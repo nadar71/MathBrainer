@@ -1,33 +1,29 @@
 package eu.indiewalkabout.mathbrainer.othergames;
 
-import android.app.AlertDialog;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Choose_Result_Activity;
 import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView;
 import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView;
 import eu.indiewalkabout.mathbrainer.customviews.SolutionsView;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
-import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
 import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
@@ -55,11 +51,6 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
     private Button btnNewGame;
 
-    // answer and its stuff
-    private int answerOK;
-    private int correctBtnNumber = 1;
-    private int offset           = 10;
-    private int pressedBtnValue  = 0;
 
     // starting level
     private int level = 0;
@@ -80,10 +71,6 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     private int numChallengeEachLevel =  2;
     private int countChallenge        =  1;
 
-    // random range for answer btn number
-    // changing while level growing
-    private int minAnswerBtnNum   = 1;
-    private int maxAnswerBtnNum   = 4;
 
     // score var
     private int score = 0;
@@ -150,7 +137,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
         // other views
-        instructions_tv = findViewById(R.id.countobj_instructions_tv);
+        instructions_tv = findViewById(R.id.quiz_instructions_tv);
         btnNewGame      = findViewById(R.id.new_game_btn);
         result_tv       = findViewById(R.id.result_tv);
 
@@ -233,7 +220,6 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
         // check if result is ok...
         if (result == 1 ) {
-            Toast.makeText(NumberOrderActivity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
 
@@ -252,7 +238,6 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
             // ...otherwise a life will be lost
         } else if (result == 0 ){
-            Toast.makeText(NumberOrderActivity.this, "Sorry, you touched the WRONG ORDER...", Toast.LENGTH_SHORT).show();
 
 
             // hideAnswerAfterTimerLength(1000);
@@ -281,10 +266,13 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
             @Override
             public void run() {
                 btnNewGame.setVisibility(View.VISIBLE);
+                instructions_tv.setText("   ");
                 if (win == false) {
                     result_tv.setText(getResources().getString(R.string.wrong_str));
+                    result_tv.setTextColor(Color.RED);
                 } else if (win == true){
                     result_tv.setText(getResources().getString(R.string.ok_str));
+                    result_tv.setTextColor(Color.GREEN);
                 }
                 result_tv.setVisibility(View.VISIBLE);
             }
@@ -430,6 +418,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     private void hideAll(){
         drawquiz.setVisibility(View.INVISIBLE);
         drawquiz_challenge.setVisibility(View.INVISIBLE);
+        solutionsView.setVisibility(View.INVISIBLE);
 
     }
 
