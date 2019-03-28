@@ -41,7 +41,8 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
     // view ref
     private TextView scoreValue_tv, levelValue_tv;
-    private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv, result_tv;
+    private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv,
+            result_tv,instructions_tv;
     private ArrayList<ImageView> lifesValue_iv ;
 
     // store initial text color
@@ -134,6 +135,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         firstOperand_tv    = (TextView)   findViewById(R.id.firstOperand_tv);
         secondOperand_tv   = (TextView)   findViewById(R.id.secondOperand_tv);
         operationSymbol_tv = (TextView)   findViewById(R.id.operationSymbol_tv);
+        instructions_tv    = (TextView)   findViewById(R.id.instructions_tv);
         gridLayout         = (GridLayout) findViewById(R.id.answerBtnGrid);
 
 
@@ -417,27 +419,49 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
      * -------------------------------------------------------------------------------------------------
      */
     private void showResult(boolean win) {
-        result_tv.setVisibility(View.VISIBLE);
+
         if (win == true) {
-            result_tv.setText(getResources().getString(R.string.ok_str));
-            result_tv.setTextColor(Color.GREEN);
-            firstOperand_tv.setTextColor(Color.GREEN);
-            secondOperand_tv.setTextColor(Color.GREEN);
-            operationSymbol_tv.setTextColor(Color.GREEN);
-            gridLayout.setVisibility(View.INVISIBLE);
+            showOkResult();
             newchallengeAfterTimerLength(1000);
 
-
         }else{
-            result_tv.setText(getResources().getString(R.string.wrong_str) + " : " + answerOK);
-            result_tv.setTextColor(Color.RED);
-            firstOperand_tv.setTextColor(Color.RED);
-            secondOperand_tv.setTextColor(Color.RED);
-            operationSymbol_tv.setTextColor(Color.RED);
-            gridLayout.setVisibility(View.INVISIBLE);
+            showWrongResult();
             newchallengeAfterTimerLength(1000);
 
         }
+    }
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show ok in case of game win
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showOkResult() {
+        instructions_tv.setVisibility(View.INVISIBLE);
+        result_tv.setVisibility(View.VISIBLE);
+        result_tv.setText(getResources().getString(R.string.ok_str));
+        result_tv.setTextColor(Color.GREEN);
+        firstOperand_tv.setTextColor(Color.GREEN);
+        secondOperand_tv.setTextColor(Color.GREEN);
+        operationSymbol_tv.setTextColor(Color.GREEN);
+        gridLayout.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show wrong in case of game lose
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showWrongResult() {
+        instructions_tv.setVisibility(View.INVISIBLE);
+        result_tv.setVisibility(View.VISIBLE);
+        result_tv.setText(getResources().getString(R.string.wrong_str) + " : " + answerOK);
+        result_tv.setTextColor(Color.RED);
+        firstOperand_tv.setTextColor(Color.RED);
+        secondOperand_tv.setTextColor(Color.RED);
+        operationSymbol_tv.setTextColor(Color.RED);
+        gridLayout.setVisibility(View.INVISIBLE);
     }
 
 
@@ -451,16 +475,27 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                result_tv.setVisibility(View.INVISIBLE);
-                firstOperand_tv.setTextColor(quizDefaultTextColor);
-                secondOperand_tv.setTextColor(quizDefaultTextColor);
-                operationSymbol_tv.setTextColor(quizDefaultTextColor);
-                gridLayout.setVisibility(View.VISIBLE);
+                setupBeforeNewGame();
                 newChallenge();
             }
         };
         // execute runnable after a timerLength
         handler.postDelayed(runnable, timerLength);
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Setup before new game session
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void setupBeforeNewGame() {
+        result_tv.setVisibility(View.INVISIBLE);
+        firstOperand_tv.setTextColor(quizDefaultTextColor);
+        secondOperand_tv.setTextColor(quizDefaultTextColor);
+        operationSymbol_tv.setTextColor(quizDefaultTextColor);
+        instructions_tv.setVisibility(View.VISIBLE);
+        gridLayout.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -493,7 +528,6 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
         // check game over condition
         if ( lifes <= 0){
-            gridLayout.setVisibility(View.INVISIBLE);
             endGame();
             return true;
 
@@ -791,13 +825,53 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
      * -------------------------------------------------------------------------------------------------
      */
     private void endGame() {
+        final Handler handler = new Handler();
+
         // reset counter
         countDownIndicator.countdownReset();
 
+        // gridLayout.setVisibility(View.INVISIBLE);
+        showWrongResult();
+
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                showGameOverDialog();
+            }
+        };
+        handler.postDelayed(runnable, 500);
+
+    }
+
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show gameover dialog
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showGameOverDialog() {
         gameOverDialog = new GameOverDialog(this,
                 Math_Op_Choose_Result_Activity.this, this);
 
+        hideLastQuiz();
+
     }
+
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Hide quiz
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void hideLastQuiz() {
+        firstOperand_tv.setVisibility(View.INVISIBLE);
+        secondOperand_tv.setVisibility(View.INVISIBLE);
+        operationSymbol_tv.setVisibility(View.INVISIBLE);
+        result_tv.setVisibility(View.INVISIBLE);
+    }
+
 
 
     /**

@@ -315,9 +315,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
         // check game over condition
         if ( lifes <= 0){
-            result_tv.setVisibility(View.VISIBLE);
-            result_tv.setText(getResources().getString(R.string.wrong_str));
-            result_tv.setTextColor(Color.RED);
+
             endGame();
             return true;
 
@@ -454,6 +452,10 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     private void endGame() {
 
         btnNewGame.setVisibility(View.INVISIBLE);
+
+        result_tv.setVisibility(View.VISIBLE);
+        result_tv.setText(getResources().getString(R.string.wrong_str));
+        result_tv.setTextColor(Color.RED);
 
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
+import eu.indiewalkabout.mathbrainer.othergames.CountObjectsActivity;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
@@ -354,35 +355,59 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
 
     /**
      * -------------------------------------------------------------------------------------------------
-     * Show the result of the
+     * Show the result of the game session
      * -------------------------------------------------------------------------------------------------
      */
     private void showResult(boolean win) {
-        result_tv.setVisibility(View.VISIBLE);
+
         if (win == true) {
-            result_tv.setText(getResources().getString(R.string.ok_str));
-            result_tv.setTextColor(Color.GREEN);
-            firstOperand_tv.setTextColor(Color.GREEN);
-            secondOperand_tv.setTextColor(Color.GREEN);
-            operationSymbol_tv.setTextColor(Color.GREEN);
-            playerInput_et.setTextColor(Color.GREEN);
-            // hide keyboard
-            keyboard.setVisibility(View.INVISIBLE);
+            showOkResult();
             newchallengeAfterTimerLength(1000);
 
 
         }else{
-            result_tv.setText(getResources().getString(R.string.wrong_str) + " : " + answerOK);
-            result_tv.setTextColor(Color.RED);
-            firstOperand_tv.setTextColor(Color.RED);
-            secondOperand_tv.setTextColor(Color.RED);
-            operationSymbol_tv.setTextColor(Color.RED);
-            playerInput_et.setTextColor(Color.RED);
-            // hide keyboard
-            keyboard.setVisibility(View.INVISIBLE);
+            showWrongResult();
             newchallengeAfterTimerLength(1000);
 
         }
+    }
+
+
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show ok in case of game win
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showOkResult() {
+        result_tv.setVisibility(View.VISIBLE);
+        result_tv.setText(getResources().getString(R.string.ok_str));
+        result_tv.setTextColor(Color.GREEN);
+        firstOperand_tv.setTextColor(Color.GREEN);
+        secondOperand_tv.setTextColor(Color.GREEN);
+        operationSymbol_tv.setTextColor(Color.GREEN);
+        playerInput_et.setTextColor(Color.GREEN);
+        // hide keyboard
+        keyboard.setVisibility(View.INVISIBLE);
+    }
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show wrong in case of game lose
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showWrongResult() {
+        result_tv.setVisibility(View.VISIBLE);
+        result_tv.setText(getResources().getString(R.string.wrong_str) + " : " + answerOK);
+        result_tv.setTextColor(Color.RED);
+        firstOperand_tv.setTextColor(Color.RED);
+        secondOperand_tv.setTextColor(Color.RED);
+        operationSymbol_tv.setTextColor(Color.RED);
+        playerInput_et.setTextColor(Color.RED);
+        // hide keyboard
+        keyboard.setVisibility(View.INVISIBLE);
     }
 
 
@@ -396,17 +421,28 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                result_tv.setVisibility(View.INVISIBLE);
-                firstOperand_tv.setTextColor(quizDefaultTextColor);
-                secondOperand_tv.setTextColor(quizDefaultTextColor);
-                operationSymbol_tv.setTextColor(quizDefaultTextColor);
-                playerInput_et.setTextColor(quizDefaultTextColor);
-                keyboard.setVisibility(View.VISIBLE);
+                setupBeforeNewGame();
                 newChallenge();
             }
         };
         // execute runnable after a timerLength
         handler.postDelayed(runnable, timerLength);
+    }
+
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Setup before new game session
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void setupBeforeNewGame() {
+        result_tv.setVisibility(View.INVISIBLE);
+        firstOperand_tv.setTextColor(quizDefaultTextColor);
+        secondOperand_tv.setTextColor(quizDefaultTextColor);
+        operationSymbol_tv.setTextColor(quizDefaultTextColor);
+        playerInput_et.setTextColor(quizDefaultTextColor);
+        keyboard.setVisibility(View.VISIBLE);
     }
 
 
@@ -440,12 +476,6 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
 
         // check game over condition
         if ( lifes <= 0){
-            // hide input field
-            playerInput_et.setVisibility(View.INVISIBLE);
-
-            // hide keyboard
-            keyboard.setVisibility(View.INVISIBLE);
-
             endGame();
             return true;
 
@@ -565,12 +595,55 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
      * -------------------------------------------------------------------------------------------------
      */
     private void endGame() {
+        final Handler handler = new Handler();
+
+        showWrongResult();
+
         // reset counter
         countDownIndicator.countdownReset();
 
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                showGameOverDialog();
+            }
+        };
+        handler.postDelayed(runnable, 500);
+
+    }
+
+
+
+
+
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show gameover dialog
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showGameOverDialog() {
         gameOverDialog = new GameOverDialog(this,
                 Math_Op_Write_Result_Activity.this, this);
 
+        hideLastQuiz();
+
+    }
+
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Hide quiz
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void hideLastQuiz() {
+        playerInput_et.setVisibility(View.INVISIBLE);
+        firstOperand_tv.setVisibility(View.INVISIBLE);
+        secondOperand_tv.setVisibility(View.INVISIBLE);
+        operationSymbol_tv.setVisibility(View.INVISIBLE);
+        result_tv.setVisibility(View.INVISIBLE);
     }
 
 

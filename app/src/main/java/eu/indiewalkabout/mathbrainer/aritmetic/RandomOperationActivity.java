@@ -39,7 +39,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
     private TextView numberToBeDoubled_tv, scoreValue_tv, levelValue_tv;
 
     private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv,
-            operation_result_tv,result_tv, equals_sign_tv;
+            operation_result_tv,result_tv, equals_sign_tv, instruction_tv;
 
     private ArrayList<ImageView> lifesValue_iv ;
 
@@ -128,6 +128,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         operationSymbol_tv  = (TextView)   findViewById(R.id.operationSymbol_tv);
         operation_result_tv = (TextView)   findViewById(R.id.operation_result_tv);
         equals_sign_tv      = (TextView)   findViewById(R.id.equalLabel_tv);
+        instruction_tv      = (TextView)   findViewById(R.id.instruction_tv);
         gridLayout          = (GridLayout) findViewById(R.id.answerBtnGrid);
 
         // show result tv
@@ -314,35 +315,62 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
      * -------------------------------------------------------------------------------------------------
      */
     private void showResult(boolean win) {
-        result_tv.setVisibility(View.VISIBLE);
-        if (win == true) {
-            result_tv.setText(getResources().getString(R.string.ok_str));
-            result_tv.setTextColor(Color.GREEN);
-            firstOperand_tv.setTextColor(Color.GREEN);
-            secondOperand_tv.setTextColor(Color.GREEN);
 
-            operationSymbol_tv.setText(operationOK);
-            operationSymbol_tv.setTextColor(Color.GREEN);
-            operation_result_tv.setTextColor(Color.GREEN);
-            equals_sign_tv.setTextColor(Color.GREEN);
-            gridLayout.setVisibility(View.INVISIBLE);
+        if (win == true) {
+            showOkResult();
             newchallengeAfterTimerLength(1000);
 
 
         }else{
-            result_tv.setText(getResources().getString(R.string.wrong_str) + " : " + operationOK);
-            result_tv.setTextColor(Color.RED);
-            firstOperand_tv.setTextColor(Color.RED);
-            secondOperand_tv.setTextColor(Color.RED);
-
-            operationSymbol_tv.setText(operationOK);
-            operationSymbol_tv.setTextColor(Color.RED);
-            operation_result_tv.setTextColor(Color.RED);
-            equals_sign_tv.setTextColor(Color.RED);
-            gridLayout.setVisibility(View.INVISIBLE);
+            showWrongResult();
             newchallengeAfterTimerLength(1000);
 
         }
+    }
+
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show ok in case of game win
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showOkResult() {
+        instruction_tv.setVisibility(View.INVISIBLE);
+
+        result_tv.setVisibility(View.VISIBLE);
+        result_tv.setText(getResources().getString(R.string.ok_str));
+        result_tv.setTextColor(Color.GREEN);
+        firstOperand_tv.setTextColor(Color.GREEN);
+        secondOperand_tv.setTextColor(Color.GREEN);
+
+        operationSymbol_tv.setText(operationOK);
+        operationSymbol_tv.setTextColor(Color.GREEN);
+        operation_result_tv.setTextColor(Color.GREEN);
+        equals_sign_tv.setTextColor(Color.GREEN);
+        gridLayout.setVisibility(View.INVISIBLE);
+    }
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show wrong in case of game lose
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showWrongResult() {
+        instruction_tv.setVisibility(View.INVISIBLE);
+
+        result_tv.setVisibility(View.VISIBLE);
+        result_tv.setText(getResources().getString(R.string.wrong_str) + " : " + operationOK);
+        result_tv.setTextColor(Color.RED);
+        firstOperand_tv.setTextColor(Color.RED);
+        secondOperand_tv.setTextColor(Color.RED);
+
+        operationSymbol_tv.setText(operationOK);
+        operationSymbol_tv.setTextColor(Color.RED);
+        operation_result_tv.setTextColor(Color.RED);
+        equals_sign_tv.setTextColor(Color.RED);
+        gridLayout.setVisibility(View.INVISIBLE);
     }
 
 
@@ -356,19 +384,30 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                result_tv.setVisibility(View.INVISIBLE);
-                firstOperand_tv.setTextColor(quizDefaultTextColor);
-                secondOperand_tv.setTextColor(quizDefaultTextColor);
-                operationSymbol_tv.setTextColor(quizDefaultTextColor);
-                operation_result_tv.setTextColor(quizDefaultTextColor);
-                equals_sign_tv.setTextColor(quizDefaultTextColor);
-                gridLayout.setVisibility(View.VISIBLE);
+                setupBeforeNewGame();
                 newChallenge();
             }
         };
         // execute runnable after a timerLength
         handler.postDelayed(runnable, timerLength);
     }
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Setup before new game session
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void setupBeforeNewGame() {
+        result_tv.setVisibility(View.INVISIBLE);
+        instruction_tv.setVisibility(View.VISIBLE);
+        firstOperand_tv.setTextColor(quizDefaultTextColor);
+        secondOperand_tv.setTextColor(quizDefaultTextColor);
+        operationSymbol_tv.setTextColor(quizDefaultTextColor);
+        operation_result_tv.setTextColor(quizDefaultTextColor);
+        equals_sign_tv.setTextColor(quizDefaultTextColor);
+        gridLayout.setVisibility(View.VISIBLE);
+    }
+
     /**
      * -------------------------------------------------------------------------------------------------
      * Update score view
@@ -399,8 +438,6 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
         // check game over condition
         if ( lifes <= 0){
-
-            gridLayout.setVisibility(View.INVISIBLE);
             endGame();
             return true;
 
@@ -532,11 +569,43 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
      * -------------------------------------------------------------------------------------------------
      */
     private void endGame() {
+        final Handler handler = new Handler();
+
         // reset counter
         countDownIndicator.countdownReset();
 
+        showWrongResult();
+
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                showGameOverDialog();
+            }
+        };
+        handler.postDelayed(runnable, 500);
+
+
+    }
+
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show gameover dialog
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showGameOverDialog() {
         gameOverDialog = new GameOverDialog(this,
                 RandomOperationActivity.this, this);
+
+
+        // hide input field
+        firstOperand_tv.setVisibility(View.INVISIBLE);
+        secondOperand_tv.setVisibility(View.INVISIBLE);
+        operationSymbol_tv.setVisibility(View.INVISIBLE);
+        operation_result_tv.setVisibility(View.INVISIBLE);
+        equals_sign_tv.setVisibility(View.INVISIBLE);
+        result_tv.setVisibility(View.INVISIBLE);
     }
 
 

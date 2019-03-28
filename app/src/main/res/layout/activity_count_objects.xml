@@ -178,34 +178,53 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv" />
 
+    <TextView
+        android:id="@+id/result_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/wrong_str"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/new_game_btn"
+        app:layout_constraintHorizontal_bias="0.519"
+        app:layout_constraintStart_toEndOf="@+id/new_game_btn"
+        app:layout_constraintTop_toTopOf="@+id/quiz_instructions_tv" />
+
     <Button
         android:id="@+id/new_game_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_rect_light_gray"
         android:fontFamily="@font/quicksand"
-        android:text="@string/new_label"
+        android:text="@string/next_str"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
-        android:textSize="24sp"
         android:textStyle="bold"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/itemDrawing_v"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/itemDrawing_v"
-        app:layout_constraintVertical_bias="0.807" />
+        app:layout_constraintTop_toBottomOf="@+id/result_tv" />
 
     <TextView
         android:id="@+id/quiz_instructions_tv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         android:fontFamily="@font/quicksand"
         android:text="@string/count_objects_question"
         android:textAlignment="center"
@@ -215,7 +234,9 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/answerBtnGrid"
         app:layout_constraintEnd_toStartOf="@+id/answerBtnGrid"
-        app:layout_constraintStart_toEndOf="@+id/answerBtnGrid" />
+        app:layout_constraintStart_toEndOf="@+id/answerBtnGrid"
+        app:layout_constraintTop_toTopOf="@+id/itemDrawing_v"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/count_obj_instructions_tv"
@@ -250,7 +271,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/itemDrawing_v"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/itemDrawing_v">
+        app:layout_constraintTop_toTopOf="@+id/itemDrawing_v"
+        app:layout_constraintVertical_bias="0.87">
 
         <LinearLayout
             android:layout_width="match_parent"

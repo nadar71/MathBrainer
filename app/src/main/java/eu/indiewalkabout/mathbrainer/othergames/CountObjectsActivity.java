@@ -51,7 +51,8 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
     private QuickCountItemDrawView drawquiz;
 
 
-    private TextView scoreValue_tv, levelValue_tv, instructions_tv, count_obj_instructions_tv ;
+    private TextView scoreValue_tv, levelValue_tv, instructions_tv, count_obj_instructions_tv,
+                     result_tv;
     private GridLayout buttonGrid;
     private ArrayList<ImageView> lifesValue_iv ;
 
@@ -138,7 +139,10 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         instructions_tv = findViewById(R.id.quiz_instructions_tv);
         buttonGrid      = findViewById(R.id.answerBtnGrid);
         btnNewGame      = findViewById(R.id.new_game_btn);
+        result_tv       = findViewById(R.id.result_tv);
+
         btnNewGame.setVisibility(View.INVISIBLE);
+        result_tv.setVisibility(View.INVISIBLE);
 
         scoreValue_tv             = (TextView)  findViewById(R.id.scoreValue_tv);
         levelValue_tv             = (TextView)  findViewById(R.id.levelValue_tv);
@@ -258,7 +262,6 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
         // check if result is ok...
         if (pressedBtnValue != 0  && pressedBtnValue == answerOK) {
-            Toast.makeText(CountObjectsActivity.this, "OK!", Toast.LENGTH_SHORT).show();
 
             updateScore();
 
@@ -272,33 +275,53 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
                 updateLevel();
             }
 
-            // newchallengeAfterTimerLength(1000);
-            buttonGrid.setVisibility(View.INVISIBLE);
-            instructions_tv.setVisibility(View.INVISIBLE);
-            endSessiondialog = new EndGameSessionDialog(this,
-                    CountObjectsActivity.this,
-                    EndGameSessionDialog.GAME_SESSION_RESULT.OK);
-
+            showNewBtnAfterTimerLength(100, true);
 
             // ...otherwise a life will be lost
-        } else {
-            Toast.makeText(CountObjectsActivity.this, "WRONG...they are : "+answerOK, Toast.LENGTH_SHORT).show();
 
+        } else {
 
             // hideAnswerAfterTimerLength(1000);
             // lose a life, check if it's game over
             boolean gameover = isGameOver();
 
             if (gameover == false) {
-                // newchallengeAfterTimerLength(1000);
-                buttonGrid.setVisibility(View.INVISIBLE);
-                instructions_tv.setVisibility(View.INVISIBLE);
-                endSessiondialog = new EndGameSessionDialog(this,
-                        CountObjectsActivity.this,
-                        EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
+                showNewBtnAfterTimerLength(100, false);
             }
 
         }
+    }
+
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Show button for new challenge after timerLength
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void showNewBtnAfterTimerLength(final int timerLength, final boolean win){
+        buttonGrid.setVisibility(View.INVISIBLE);
+        instructions_tv.setVisibility(View.INVISIBLE);
+
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                btnNewGame.setVisibility(View.VISIBLE);
+                instructions_tv.setText("   ");
+                result_tv.setVisibility(View.VISIBLE);
+                if (win == false) {
+                    result_tv.setText(getResources().getString(R.string.wrong_str));
+                    result_tv.setTextColor(Color.RED);
+                } else if (win == true){
+                    result_tv.setText(getResources().getString(R.string.ok_str));
+                    result_tv.setTextColor(Color.GREEN);
+                }
+
+            }
+        };
+        // execute runnable after a timerLength
+        handler.postDelayed(runnable, timerLength);
     }
 
 
@@ -376,6 +399,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
         // check game over condition
         if ( lifes <= 0){
+
             endGame();
             return true;
 
@@ -406,6 +430,8 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
     public void newChallenge() {
         // clear wrong answers list
         wrongAnswer.clear();
+
+        result_tv.setVisibility(View.INVISIBLE);
 
         // show the items in number defined by level
         itemsToCount = myUtil.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),maxItemsToCount);
@@ -447,6 +473,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
     private void hideItems(){
         buttonGrid.setVisibility(View.VISIBLE);
         instructions_tv.setVisibility(View.VISIBLE);
+        instructions_tv.setText(getResources().getString(R.string.count_objects_question));
         drawquiz.setVisibility(View.INVISIBLE);
         count_obj_instructions_tv.setVisibility(View.INVISIBLE);
     }
@@ -553,16 +580,44 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
      * -------------------------------------------------------------------------------------------------
      */
     private void endGame() {
+        final Handler handler = new Handler();
 
-
-        gameOverDialog = new GameOverDialog(this,
-                CountObjectsActivity.this, this);
+        result_tv.setVisibility(View.VISIBLE);
+        result_tv.setText(getResources().getString(R.string.wrong_str));
+        result_tv.setTextColor(Color.RED);
 
         buttonGrid.setVisibility(View.INVISIBLE);
         instructions_tv.setVisibility(View.INVISIBLE);
         drawquiz.setVisibility(View.INVISIBLE);
+
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                showGameOverDialog();
+            }
+        };
+        handler.postDelayed(runnable, 500);
+
     }
 
+
+
+
+
+
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show gameover dialog
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showGameOverDialog() {
+        gameOverDialog = new GameOverDialog(this,
+                CountObjectsActivity.this, this);
+
+        result_tv.setVisibility(View.INVISIBLE);
+    }
 
     /**
      * -------------------------------------------------------------------------------------------------

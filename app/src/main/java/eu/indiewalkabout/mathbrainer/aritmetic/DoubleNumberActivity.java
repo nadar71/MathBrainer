@@ -285,30 +285,53 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
      * -------------------------------------------------------------------------------------------------
      */
     private void showResult(boolean win) {
-        result_tv.setVisibility(View.VISIBLE);
+
         if (win == true) {
-            result_tv.setText(getResources().getString(R.string.ok_str));
-            result_tv.setTextColor(Color.GREEN);
-            numberToBeDoubled_tv.setTextColor(Color.GREEN);
-            operationSymbol_tv.setTextColor(Color.GREEN);
-            playerInput_et.setTextColor(Color.GREEN);
-            // hide keyboard
-            keyboard.setVisibility(View.INVISIBLE);
+            showOkResult();
             newchallengeAfterTimerLength(1000);
 
 
         }else{
-            result_tv.setText(getResources().getString(R.string.wrong_str) + " : " + 2*numToBeDoubled);
-            result_tv.setTextColor(Color.RED);
-            numberToBeDoubled_tv.setTextColor(Color.RED);
-            operationSymbol_tv.setTextColor(Color.RED);
-            playerInput_et.setTextColor(Color.RED);
-            // hide keyboard
-            keyboard.setVisibility(View.INVISIBLE);
+            showWrongResult();
             newchallengeAfterTimerLength(1000);
 
         }
     }
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show ok in case of game win
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showOkResult() {
+        result_tv.setVisibility(View.VISIBLE);
+        result_tv.setText(getResources().getString(R.string.ok_str));
+        result_tv.setTextColor(Color.GREEN);
+        numberToBeDoubled_tv.setTextColor(Color.GREEN);
+        operationSymbol_tv.setTextColor(Color.GREEN);
+        playerInput_et.setTextColor(Color.GREEN);
+        // hide keyboard
+        keyboard.setVisibility(View.INVISIBLE);
+    }
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show wrong in case of game lose
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showWrongResult() {
+        result_tv.setVisibility(View.VISIBLE);
+        result_tv.setText(getResources().getString(R.string.wrong_str) + " : " + 2*numToBeDoubled);
+        result_tv.setTextColor(Color.RED);
+        numberToBeDoubled_tv.setTextColor(Color.RED);
+        operationSymbol_tv.setTextColor(Color.RED);
+        playerInput_et.setTextColor(Color.RED);
+        // hide keyboard
+        keyboard.setVisibility(View.INVISIBLE);
+    }
+
+
 
 
     /**
@@ -321,16 +344,27 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                result_tv.setVisibility(View.INVISIBLE);
-                numberToBeDoubled_tv.setTextColor(quizDefaultTextColor);
-                operationSymbol_tv.setTextColor(quizDefaultTextColor);
-                playerInput_et.setTextColor(quizDefaultTextColor);
-                keyboard.setVisibility(View.VISIBLE);
+                setupBeforeNewGame();
                 newChallenge();
             }
         };
         // execute runnable after a timerLength
         handler.postDelayed(runnable, timerLength);
+    }
+
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Setup before new game session
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void setupBeforeNewGame() {
+        result_tv.setVisibility(View.INVISIBLE);
+        numberToBeDoubled_tv.setTextColor(quizDefaultTextColor);
+        operationSymbol_tv.setTextColor(quizDefaultTextColor);
+        playerInput_et.setTextColor(quizDefaultTextColor);
+        keyboard.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -363,12 +397,6 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
         // check game over condition
         if ( lifes <= 0){
-            // hide input field
-            playerInput_et.setVisibility(View.INVISIBLE);
-
-            // hide keyboard
-            keyboard.setVisibility(View.INVISIBLE);
-
             endGame();
             return true;
 
@@ -415,17 +443,58 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     }
 
 
+
     /**
-     * ---------------------------------------------------------------------------------------------
+     * -------------------------------------------------------------------------------------------------
      * Show end game message
-     * ---------------------------------------------------------------------------------------------
+     * -------------------------------------------------------------------------------------------------
      */
     private void endGame() {
+        final Handler handler = new Handler();
+
+        showWrongResult();
+
         // reset counter
         countDownIndicator.countdownReset();
 
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                showGameOverDialog();
+            }
+        };
+        handler.postDelayed(runnable, 500);
+    }
+
+
+
+
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Show gameover dialog
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void showGameOverDialog() {
         gameOverDialog = new GameOverDialog(this,
                 DoubleNumberActivity.this, this);
+
+        hideLastQuiz();
+    }
+
+
+    /**
+     * -------------------------------------------------------------------------------------------------
+     * Hide quiz
+     * -------------------------------------------------------------------------------------------------
+     */
+    private void hideLastQuiz() {
+        playerInput_et.setVisibility(View.INVISIBLE);
+        numberToBeDoubled_tv.setVisibility(View.INVISIBLE);
+        operationSymbol_tv.setVisibility(View.INVISIBLE);
+        operationSymbol_tv.setVisibility(View.INVISIBLE);
+        result_tv.setVisibility(View.INVISIBLE);
     }
 
 
