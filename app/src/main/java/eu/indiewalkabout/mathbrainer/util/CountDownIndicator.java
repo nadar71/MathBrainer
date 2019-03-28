@@ -4,7 +4,10 @@ package eu.indiewalkabout.mathbrainer.util;
 // import eu.indiewalkabout.mathbrainer.MathCountDownTimer;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.widget.ProgressBar;
+
+import eu.indiewalkabout.mathbrainer.R;
 
 public class CountDownIndicator extends ProgressBar{
 
@@ -14,6 +17,7 @@ public class CountDownIndicator extends ProgressBar{
     private MathCountDownTimer mathCountDownTimer;
     private ProgressBar        countdownBar;
     private IGameFunctions     caller;
+    private int                thirtyPercentToGo;
 
 
     public CountDownIndicator(Context context, ProgressBar countdownBar, IGameFunctions caller) {
@@ -28,6 +32,8 @@ public class CountDownIndicator extends ProgressBar{
     /**
      * ---------------------------------------------------------------------------------------------
      * Instantiate, Init and Start the countdown bar
+     * @param timerLength               : total timer duration
+     * @param timerCountDownInterval    : step update of timer
      * ---------------------------------------------------------------------------------------------
      */
     public void countdownBarStart(long timerLength, long timerCountDownInterval) {
@@ -37,6 +43,7 @@ public class CountDownIndicator extends ProgressBar{
 
         // countdown bar counter
         countdownBar.setMax((int)timerLength/1000);
+        thirtyPercentToGo = (int) ((timerLength/1000) * 0.30);
         countdownBar.setProgress((int)timerLength/1000);
         mathCountDownTimer = new MathCountDownTimer(timerLength, timerCountDownInterval,this);
         mathCountDownTimer.start();
@@ -54,6 +61,8 @@ public class CountDownIndicator extends ProgressBar{
             mathCountDownTimer.cancel();
             mathCountDownTimer = null;
         }
+
+        countdownBar.setProgressDrawable(getResources().getDrawable(R.drawable.horizontal_progress_drawable_green));
     }
 
 
@@ -84,6 +93,10 @@ public class CountDownIndicator extends ProgressBar{
      * ---------------------------------------------------------------------------------------------
      */
     public void updateCountDownIndicator(int progress){
+        int currentProgress = countdownBar.getProgress();
+        if (currentProgress <= thirtyPercentToGo) {
+            countdownBar.setProgressDrawable(getResources().getDrawable(R.drawable.horizontal_progress_drawable_red));
+        }
         caller.updateProgressBar(progress);
 
     }

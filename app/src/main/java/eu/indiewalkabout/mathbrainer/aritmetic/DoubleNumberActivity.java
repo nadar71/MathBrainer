@@ -132,7 +132,8 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         countdownBar = (ProgressBar)findViewById(R.id.progressbar);
 
         // Create new count down indicator, without starting it
-        countDownIndicator = new CountDownIndicator(DoubleNumberActivity.this, (ProgressBar) countdownBar, DoubleNumberActivity.this);
+        countDownIndicator = new CountDownIndicator(DoubleNumberActivity.this,
+                (ProgressBar) countdownBar, DoubleNumberActivity.this);
 
 
         // start with first challenge and countdown init
@@ -146,9 +147,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-
                     checkPlayerInput();
-
                     return true;
                 }
                 return false;
@@ -196,7 +195,6 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         // init custom keyboard
         keyboard = (MyKeyboard) findViewById(R.id.keyboard);
 
-
         // prevent system keyboard from appearing when EditText is tapped
         playerInput_et.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -209,7 +207,6 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
                 return true; // consume touch even
             }
         });
-
 
         // pass the InputConnection from the EditText to the keyboard
         InputConnection ic = playerInput_et.onCreateInputConnection(new EditorInfo());

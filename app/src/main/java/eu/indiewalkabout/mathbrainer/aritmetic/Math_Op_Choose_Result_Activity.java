@@ -193,6 +193,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
     }
 
 
+
+
+
     /**
      * ---------------------------------------------------------------------------------------------
      * Check and set the symbol of the operation from the caller intent
@@ -578,7 +581,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         currentLevelAnswerBtnVisible = levelAnswerBtnTotalNum;
 
         // set operation to be processed
-        operation    = symbols[myUtil.randRange_ApiCheck(0, symbols.length-1)];
+        operation = symbols[myUtil.randRange_ApiCheck(0, symbols.length-1)];
 
         // calculate the quiz operation
         calculateOperation();

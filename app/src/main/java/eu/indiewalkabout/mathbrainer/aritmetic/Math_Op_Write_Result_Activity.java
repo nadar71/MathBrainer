@@ -191,6 +191,14 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
     }
 
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // start with first challenge and countdown init
+        newChallenge();
+    }
+
     /**
      * ---------------------------------------------------------------------------------------------
      * Check and set the symbol of the operation from the caller intent
