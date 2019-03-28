@@ -153,6 +153,24 @@
     <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->
     <!-- THIS APP REAL AdMob banner ID: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
 
+    <ImageView
+        android:id="@+id/backhome_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_rect_dark_gray_btn"
+        android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/itemDrawing_v"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.991"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/canvas_image_ref_img"
+        app:srcCompat="@drawable/ic_home_white_24dp" />
+
+
     <eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView
         android:id="@+id/itemDrawing_v"
         android:layout_width="350dp"

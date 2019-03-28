@@ -3,6 +3,7 @@ package eu.indiewalkabout.mathbrainer.aritmetic;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
     private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv,
             result_tv,instructions_tv;
     private ArrayList<ImageView> lifesValue_iv ;
+    private ImageView backhome_img;
 
     // store initial text color
     private ColorStateList quizDefaultTextColor;
@@ -137,6 +139,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         operationSymbol_tv = (TextView)   findViewById(R.id.operationSymbol_tv);
         instructions_tv    = (TextView)   findViewById(R.id.instructions_tv);
         gridLayout         = (GridLayout) findViewById(R.id.answerBtnGrid);
+        backhome_img       = (ImageView)  findViewById(R.id.backhome_img);
 
 
         // show result tv
@@ -344,6 +347,15 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
                 Button b = (Button) view;
                 pressedBtnValue = Integer.parseInt((String)b.getText());
                 checkPlayerInput();
+            }
+        });
+
+
+        backhome_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Math_Op_Choose_Result_Activity.this, ChooseGameActivity.class);
+                startActivity(intent);
             }
         });
     }

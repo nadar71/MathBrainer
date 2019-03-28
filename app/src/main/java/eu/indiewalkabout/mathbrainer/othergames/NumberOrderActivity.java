@@ -3,6 +3,7 @@ package eu.indiewalkabout.mathbrainer.othergames;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -19,7 +20,9 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
+import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
+import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Choose_Result_Activity;
 import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView;
 import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView;
 import eu.indiewalkabout.mathbrainer.customviews.SolutionsView;
@@ -47,6 +50,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
     private TextView scoreValue_tv, levelValue_tv, instructions_tv, result_tv ;
     private ArrayList<ImageView> lifesValue_iv ;
+    private ImageView backhome_img;
 
 
     private Button btnNewGame;
@@ -118,11 +122,11 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         //Get a reference to our ImageView in the layout
         ourFrame = (ImageView) findViewById(R.id.canvas_image_ref_img);
 
-
         // get the items to count view, set invisible at the moment
-        solutionsView      =  findViewById(R.id.solutionsShowing_v);
+        solutionsView      = findViewById(R.id.solutionsShowing_v);
         drawquiz_challenge = findViewById(R.id.itemDrawingNoNumber_v);
         drawquiz           = findViewById(R.id.itemDrawing_v);
+        backhome_img       = (ImageView)  findViewById(R.id.backhome_img);
 
         // set quiz with and without number invisible, not already in the game
         drawquiz.setVisibility(View.INVISIBLE);
@@ -200,6 +204,14 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
             @Override
             public void onClick(View v) {
                 newChallenge();
+            }
+        });
+
+        backhome_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NumberOrderActivity.this, ChooseGameActivity.class);
+                startActivity(intent);
             }
         });
 

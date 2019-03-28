@@ -1,6 +1,7 @@
 package eu.indiewalkabout.mathbrainer.othergames;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -28,7 +29,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
+import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Choose_Result_Activity;
 import eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
@@ -55,6 +58,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
                      result_tv;
     private GridLayout buttonGrid;
     private ArrayList<ImageView> lifesValue_iv ;
+    private ImageView backhome_img;
 
 
     private Button answer01Btn, answer02Btn, answer03Btn, answer04Btn;
@@ -140,6 +144,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         buttonGrid      = findViewById(R.id.answerBtnGrid);
         btnNewGame      = findViewById(R.id.new_game_btn);
         result_tv       = findViewById(R.id.result_tv);
+        backhome_img    = (ImageView)  findViewById(R.id.backhome_img);
 
         btnNewGame.setVisibility(View.INVISIBLE);
         result_tv.setVisibility(View.INVISIBLE);
@@ -245,6 +250,14 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
             @Override
             public void onClick(View v) {
                 newChallenge();
+            }
+        });
+
+        backhome_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CountObjectsActivity.this, ChooseGameActivity.class);
+                startActivity(intent);
             }
         });
 

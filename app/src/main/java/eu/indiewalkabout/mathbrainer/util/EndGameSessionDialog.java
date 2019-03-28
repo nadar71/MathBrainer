@@ -60,6 +60,9 @@ public class EndGameSessionDialog{
 
             alertDialog = builder.show();
 
+            // Prevent dialog from closing on outside touch
+            alertDialog.setCancelable(false);
+
         } else if (result == GAME_SESSION_RESULT.OK) {
             // user dialog confirm
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -84,6 +87,9 @@ public class EndGameSessionDialog{
             builder.setView(dialogLayout);
 
             alertDialog = builder.show();
+
+            // Prevent dialog from closing on outside touch
+            alertDialog.setCancelable(false);
 
         }
     }

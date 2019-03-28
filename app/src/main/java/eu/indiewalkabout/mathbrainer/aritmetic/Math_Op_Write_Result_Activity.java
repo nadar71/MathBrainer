@@ -14,12 +14,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdView;
 
@@ -27,7 +25,6 @@ import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.othergames.CountObjectsActivity;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
@@ -50,6 +47,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
     private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv, result_tv;
     private ArrayList<ImageView> lifesValue_iv ;
     private EditText playerInput_et;
+    private ImageView backhome_img;
 
     // store initial text color
     private ColorStateList quizDefaultTextColor;
@@ -128,6 +126,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         firstOperand_tv    = (TextView)  findViewById(R.id.firstOperand_tv);
         secondOperand_tv   = (TextView)  findViewById(R.id.secondOperand_tv);
         operationSymbol_tv = (TextView)  findViewById(R.id.operationSymbol_tv);
+        backhome_img       = (ImageView)  findViewById(R.id.backhome_img);
 
         // show result tv
         result_tv = findViewById(R.id.result_tv);
@@ -176,6 +175,15 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
                 return false;
             }
         });
+
+        backhome_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Math_Op_Write_Result_Activity.this, ChooseGameActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         // make bottom navigation bar and status bar hide
         hideStatusNavBars();

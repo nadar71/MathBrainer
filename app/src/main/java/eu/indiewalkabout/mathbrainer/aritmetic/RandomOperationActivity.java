@@ -1,5 +1,6 @@
 package eu.indiewalkabout.mathbrainer.aritmetic;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
+import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
@@ -40,6 +42,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
     private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv,
             operation_result_tv,result_tv, equals_sign_tv, instruction_tv;
+
+    private ImageView backhome_img;
 
     private ArrayList<ImageView> lifesValue_iv ;
 
@@ -130,6 +134,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         equals_sign_tv      = (TextView)   findViewById(R.id.equalLabel_tv);
         instruction_tv      = (TextView)   findViewById(R.id.instruction_tv);
         gridLayout          = (GridLayout) findViewById(R.id.answerBtnGrid);
+        backhome_img       = (ImageView)  findViewById(R.id.backhome_img);
 
         // show result tv
         result_tv = findViewById(R.id.result_tv);
@@ -239,6 +244,14 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
                 Button b = (Button) view;
                 pressedBtnValue = "/";
                 checkPlayerInput();
+            }
+        });
+
+        backhome_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RandomOperationActivity.this, ChooseGameActivity.class);
+                startActivity(intent);
             }
         });
 

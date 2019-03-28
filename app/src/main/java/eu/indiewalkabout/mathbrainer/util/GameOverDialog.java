@@ -67,6 +67,9 @@ public class GameOverDialog {
 
         alertDialog = builder.show();
 
+        // Prevent dialog from closing on outside touch
+        alertDialog.setCancelable(false);
+
         // make bottom navigation bar and status bar hide
         // hideStatusNavBars();
     }

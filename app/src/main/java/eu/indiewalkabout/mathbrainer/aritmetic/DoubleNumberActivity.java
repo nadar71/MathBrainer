@@ -1,5 +1,6 @@
 package eu.indiewalkabout.mathbrainer.aritmetic;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,18 +14,17 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
+import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.*;
 
@@ -44,8 +44,12 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     // view ref
     private TextView             numberToBeDoubled_tv, scoreValue_tv, levelValue_tv,
                                  result_tv,operationSymbol_tv;
+
     private ArrayList<ImageView> lifesValue_iv ;
+
     private EditText             playerInput_et;
+
+    private ImageView backhome_img;
 
     // store initial text color
     private ColorStateList quizDefaultTextColor;
@@ -106,6 +110,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         levelValue_tv          = (TextView)  findViewById(R.id.levelValue_tv);
         playerInput_et         = (EditText)  findViewById(R.id.playerInput_et);
         operationSymbol_tv     = (TextView)  findViewById(R.id.answerDouble_tv);
+        backhome_img           = (ImageView)  findViewById(R.id.backhome_img);
 
 
         // show result tv
@@ -147,6 +152,14 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
                     return true;
                 }
                 return false;
+            }
+        });
+
+        backhome_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DoubleNumberActivity.this, ChooseGameActivity.class);
+                startActivity(intent);
             }
         });
 
