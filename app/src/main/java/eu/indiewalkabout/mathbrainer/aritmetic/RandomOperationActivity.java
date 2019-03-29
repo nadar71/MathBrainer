@@ -14,7 +14,6 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdView;
 
@@ -29,7 +28,12 @@ import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
+import com.unity3d.ads.IUnityAdsListener;
+import com.unity3d.ads.UnityAds;
+
 public class RandomOperationActivity extends AppCompatActivity implements IGameFunctions {
+
+    final private UnityAdsListener unityAdsListener = new UnityAdsListener();
 
     // admob banner ref
     private AdView mAdView;
@@ -121,6 +125,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_random_operation);
 
+        // Unity ads init
+        UnityAds.initialize(this,getResources().getString(R.string.unityads_key),unityAdsListener);
+
         mAdView = findViewById(R.id.adView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
@@ -185,9 +192,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Make bottom navigation bar and status bar hide, without resize when reappearing
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
@@ -203,9 +210,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Set up the button pressed listener and checking answers
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void setBtnPressedListener(){
         answer_plus_Btn.setOnClickListener(new View.OnClickListener() {
@@ -250,6 +257,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         backhome_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // show unityads randomic
+                myUtil.showUnityAdsRandom(RandomOperationActivity.this);
+
                 Intent intent = new Intent(RandomOperationActivity.this, ChooseGameActivity.class);
                 startActivity(intent);
             }
@@ -258,9 +268,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
     }
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Check if player input is right/wrong and update score
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public void checkPlayerInput() {
@@ -303,9 +313,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Check state at countdown expired
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public void checkCountdownExpired() {
@@ -323,9 +333,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show the result of the
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void showResult(boolean win) {
 
@@ -344,9 +354,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show ok in case of game win
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void showOkResult() {
         instruction_tv.setVisibility(View.INVISIBLE);
@@ -366,9 +376,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show wrong in case of game lose
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void showWrongResult() {
         instruction_tv.setVisibility(View.INVISIBLE);
@@ -422,9 +432,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
     }
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Update score view
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void updateScore() {
         score += 25;
@@ -433,11 +443,11 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Update lifes view and check if it's game over or not
      * @override of IGameFunctions isGameOver()
      * @return boolean  : return true/false in case of gameover/gamecontinuing
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public boolean isGameOver() {
@@ -465,9 +475,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Update progress bar
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public void updateProgressBar(int progress) {
@@ -476,9 +486,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Set new challenge in view
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public void newChallenge() {
@@ -577,9 +587,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show end game message
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void endGame() {
         final Handler handler = new Handler();
@@ -603,9 +613,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show gameover dialog
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void showGameOverDialog() {
         gameOverDialog = new GameOverDialog(this,
@@ -623,9 +633,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Updating level
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void updateLevel(){
         // increment level
@@ -660,6 +670,33 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
 
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Unity ads listener
+     * ---------------------------------------------------------------------------------------------
+     */
+    private class UnityAdsListener implements IUnityAdsListener{
+
+        @Override
+        public void onUnityAdsReady(String s) {
+
+        }
+
+        @Override
+        public void onUnityAdsStart(String s) {
+
+        }
+
+        @Override
+        public void onUnityAdsFinish(String s, UnityAds.FinishState finishState) {
+
+        }
+
+        @Override
+        public void onUnityAdsError(UnityAds.UnityAdsError unityAdsError, String s) {
+
+        }
+    }
 
 
     /**
@@ -674,14 +711,6 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         // When the home button is pressed, take the user back to Home
         if (id == android.R.id.home) {
 
-            // TODO : decomment to activate interstitial ads
-            /*
-            // show interstitial ad on back home only 50% of times
-            int guess = GenericUtility.randRange_ApiCheck(1,10);
-            if (guess <=4) {
-                showInterstitialAd();
-            }
-            */
 
             onBackPressed();
         }
@@ -697,6 +726,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         super.onBackPressed();
         // reset and destroy counter
         countDownIndicator.countdownReset();
+
+        // show unityads randomic
+        myUtil.showUnityAdsRandom(this);
 
     }
 }

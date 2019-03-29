@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,7 +32,12 @@ import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
+import com.unity3d.ads.IUnityAdsListener;
+import com.unity3d.ads.UnityAds;
+
 public class NumberOrderActivity extends AppCompatActivity implements IGameFunctions {
+
+    final private UnityAdsListener unityAdsListener = new UnityAdsListener();
 
     // admob banner ref
     private AdView mAdView;
@@ -111,6 +117,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
         setContentView(R.layout.activity_numbers_order);
 
+        // Unity ads init
+        UnityAds.initialize(this,getResources().getString(R.string.unityads_key),unityAdsListener);
+
         mAdView = findViewById(R.id.adView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
@@ -177,9 +186,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Make bottom navigation bar and status bar hide, without resize when reappearing
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
@@ -195,9 +204,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Set up the button pressed listener and checking answers
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void setBtnPressedListener(){
         btnNewGame.setOnClickListener(new View.OnClickListener() {
@@ -210,6 +219,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         backhome_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // show unityads randomic
+                myUtil.showUnityAdsRandom(NumberOrderActivity.this);
+
                 Intent intent = new Intent(NumberOrderActivity.this, ChooseGameActivity.class);
                 startActivity(intent);
             }
@@ -218,9 +230,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     }
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Check if player input is right/wrong and update score
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void checkPlayerResult(int result) {
 
@@ -297,9 +309,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Update score view
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void updateScore() {
         score += 25;
@@ -308,11 +320,11 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Update lifes view and check if it's game over or not
      * @override of IGameFunctions isGameOver()
      * @return boolean  : return true/false in case of gameover/gamecontinuing
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public boolean isGameOver() {
@@ -457,9 +469,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show game over with delay
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void endGame() {
 
@@ -482,9 +494,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show gameover dialog
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void showGameOverDialog() {
         gameOverDialog = new GameOverDialog(this,
@@ -497,9 +509,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     }
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Updating level
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void updateLevel(){
         // increment level
@@ -524,9 +536,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Check state at countdown expired
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public void checkCountdownExpired() {
@@ -544,5 +556,66 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
 
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Unity ads listener
+     * ---------------------------------------------------------------------------------------------
+     */
+    private class UnityAdsListener implements IUnityAdsListener{
+
+        @Override
+        public void onUnityAdsReady(String s) {
+
+        }
+
+        @Override
+        public void onUnityAdsStart(String s) {
+
+        }
+
+        @Override
+        public void onUnityAdsFinish(String s, UnityAds.FinishState finishState) {
+
+        }
+
+        @Override
+        public void onUnityAdsError(UnityAds.UnityAdsError unityAdsError, String s) {
+
+        }
+    }
+
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     *                                          MENU STUFF
+     * ---------------------------------------------------------------------------------------------
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        // When the home button is pressed, take the user back to Home
+        if (id == android.R.id.home) {
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    // ---------------------------------------------------------------------------------------------
+    //                                  REVEALING FAB BTN STUFF
+    // ---------------------------------------------------------------------------------------------
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // show unityads randomic
+        myUtil.showUnityAdsRandom(this);
+
+    }
+
+
 
 }
+

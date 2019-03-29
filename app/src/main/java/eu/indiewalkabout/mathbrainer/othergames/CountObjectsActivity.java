@@ -15,13 +15,13 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdView;
 
@@ -39,7 +39,13 @@ import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
+
+import com.unity3d.ads.IUnityAdsListener;
+import com.unity3d.ads.UnityAds;
+
 public class CountObjectsActivity extends AppCompatActivity implements  IGameFunctions {
+
+    final private UnityAdsListener unityAdsListener = new UnityAdsListener();
 
     // admob banner ref
     private AdView mAdView;
@@ -124,6 +130,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
         setContentView(R.layout.activity_count_objects);
 
+        // Unity ads init
+        UnityAds.initialize(this,getResources().getString(R.string.unityads_key),unityAdsListener);
+
         mAdView = findViewById(R.id.adView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
@@ -184,9 +193,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Make bottom navigation bar and status bar hide, without resize when reappearing
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
@@ -202,9 +211,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Set up the button pressed listener and checking answers
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void setBtnPressedListener(){
         answer01Btn.setOnClickListener(new View.OnClickListener() {
@@ -256,6 +265,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         backhome_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // show unityads randomic
+                myUtil.showUnityAdsRandom(CountObjectsActivity.this);
+
                 Intent intent = new Intent(CountObjectsActivity.this, ChooseGameActivity.class);
                 startActivity(intent);
             }
@@ -264,9 +276,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
     }
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Check if player input is right/wrong and update score
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public void checkPlayerInput() {
@@ -381,9 +393,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Update score view
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void updateScore() {
         score += 25;
@@ -392,11 +404,11 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Update lifes view and check if it's game over or not
      * @override of IGameFunctions isGameOver()
      * @return boolean  : return true/false in case of gameover/gamecontinuing
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public boolean isGameOver() {
@@ -588,9 +600,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show end game message
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void endGame() {
         final Handler handler = new Handler();
@@ -621,9 +633,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show gameover dialog
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void showGameOverDialog() {
         gameOverDialog = new GameOverDialog(this,
@@ -633,9 +645,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
     }
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Updating level
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void updateLevel(){
         // increment level
@@ -660,9 +672,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Check state at countdown expired
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public void checkCountdownExpired() {
@@ -685,9 +697,75 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
 
 
-// -------------------------------------------------------------------------------------------------
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Unity ads listener
+     * ---------------------------------------------------------------------------------------------
+     */
+    private class UnityAdsListener implements IUnityAdsListener{
+
+        @Override
+        public void onUnityAdsReady(String s) {
+
+        }
+
+        @Override
+        public void onUnityAdsStart(String s) {
+
+        }
+
+        @Override
+        public void onUnityAdsFinish(String s, UnityAds.FinishState finishState) {
+
+        }
+
+        @Override
+        public void onUnityAdsError(UnityAds.UnityAdsError unityAdsError, String s) {
+
+        }
+    }
+
+
+
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     *                                          MENU STUFF
+     * ---------------------------------------------------------------------------------------------
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        // When the home button is pressed, take the user back to Home
+        if (id == android.R.id.home) {
+
+
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    // ---------------------------------------------------------------------------------------------
+    //                                  REVEALING FAB BTN STUFF
+    // ---------------------------------------------------------------------------------------------
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // show unityads randomic
+        myUtil.showUnityAdsRandom(this);
+
+    }
+
+
+
+
+// ---------------------------------------------------------------------------------------------
 //                                    UNUSED STUFF, just for debug
-// -------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------
 
     // ---------------------------------------------------------------------------------------------
     // UNUSED , just for debug

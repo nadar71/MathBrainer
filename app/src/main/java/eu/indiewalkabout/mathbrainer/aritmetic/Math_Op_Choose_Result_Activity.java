@@ -3,7 +3,6 @@ package eu.indiewalkabout.mathbrainer.aritmetic;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdView;
 
@@ -25,14 +23,18 @@ import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
-import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
 import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
+import com.unity3d.ads.IUnityAdsListener;
+import com.unity3d.ads.UnityAds;
+
 
 
 public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements IGameFunctions {
+
+    final private UnityAdsListener unityAdsListener = new UnityAdsListener();
 
     // admob banner ref
     private AdView mAdView;
@@ -125,6 +127,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_math_op_choose_result);
 
+        // Unity ads init
+        UnityAds.initialize(this,getResources().getString(R.string.unityads_key),unityAdsListener);
+
         // Check if it's mixed op or single specific operation
         setOperationSymbol();
 
@@ -132,6 +137,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
         mAdView.loadAd(ConsentSDK.getAdRequest(Math_Op_Choose_Result_Activity.this));
+
+        // Unity ads init
+        UnityAds.initialize(this,getResources().getString(R.string.unityads_key),unityAdsListener);
 
         // set views ref
         firstOperand_tv    = (TextView)   findViewById(R.id.firstOperand_tv);
@@ -241,9 +249,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Make bottom navigation bar and status bar hide, without resize when reappearing
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
@@ -259,9 +267,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Set up the button pressed listener and checking answers
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void setBtnPressedListener(){
         answer01Btn.setOnClickListener(new View.OnClickListener() {
@@ -357,6 +365,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         backhome_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // show unityads randomic
+                myUtil.showUnityAdsRandom(Math_Op_Choose_Result_Activity.this);
+
                 Intent intent = new Intent(Math_Op_Choose_Result_Activity.this, ChooseGameActivity.class);
                 startActivity(intent);
             }
@@ -364,9 +375,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
     }
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Check if player input is right/wrong and update score
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public void checkPlayerInput() {
@@ -409,9 +420,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Check state at countdown expired
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public void checkCountdownExpired() {
@@ -429,9 +440,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show the result of the
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void showResult(boolean win) {
 
@@ -448,9 +459,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show ok in case of game win
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void showOkResult() {
         instructions_tv.setVisibility(View.INVISIBLE);
@@ -464,9 +475,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
     }
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show wrong in case of game lose
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void showWrongResult() {
         instructions_tv.setVisibility(View.INVISIBLE);
@@ -514,9 +525,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
     }
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Update score view
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void updateScore() {
         score += 25;
@@ -525,11 +536,11 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Update lifes view and check if it's game over or not
      * @override of IGameFunctions isGameOver()
      * @return boolean  : return true/false in case of gameover/gamecontinuing
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public boolean isGameOver() {
@@ -557,9 +568,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Update progress bar
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public void updateProgressBar(int progress) {
@@ -568,9 +579,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Set new challenge in view
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     @Override
     public void newChallenge() {
@@ -835,9 +846,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show end game message
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void endGame() {
         final Handler handler = new Handler();
@@ -861,9 +872,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Show gameover dialog
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void showGameOverDialog() {
         gameOverDialog = new GameOverDialog(this,
@@ -876,9 +887,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Hide quiz
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void hideLastQuiz() {
         firstOperand_tv.setVisibility(View.INVISIBLE);
@@ -890,9 +901,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
 
     /**
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      * Updating level
-     * -------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------
      */
     private void updateLevel(){
         // increment level
@@ -925,6 +936,40 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
     }
 
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Unity ads listener
+     * ---------------------------------------------------------------------------------------------
+     */
+    private class UnityAdsListener implements IUnityAdsListener{
+
+        @Override
+        public void onUnityAdsReady(String s) {
+
+        }
+
+        @Override
+        public void onUnityAdsStart(String s) {
+
+        }
+
+        @Override
+        public void onUnityAdsFinish(String s, UnityAds.FinishState finishState) {
+
+        }
+
+        @Override
+        public void onUnityAdsError(UnityAds.UnityAdsError unityAdsError, String s) {
+
+        }
+    }
+
+
+
+
+
+
     /**
      * ---------------------------------------------------------------------------------------------
      *                                          MENU STUFF
@@ -937,14 +982,6 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         // When the home button is pressed, take the user back to Home
         if (id == android.R.id.home) {
 
-            // TODO : decomment to activate interstitial ads
-            /*
-            // show interstitial ad on back home only 50% of times
-            int guess = GenericUtility.randRange_ApiCheck(1,10);
-            if (guess <=4) {
-                showInterstitialAd();
-            }
-            */
 
             onBackPressed();
         }
@@ -961,6 +998,13 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         // reset and destroy counter
         countDownIndicator.countdownReset();
 
+        // show unityads randomic
+        myUtil.showUnityAdsRandom(this);
+
     }
+
+
+
+
 
 }

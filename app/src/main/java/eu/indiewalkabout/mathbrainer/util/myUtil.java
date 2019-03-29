@@ -1,6 +1,7 @@
 package eu.indiewalkabout.mathbrainer.util;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
@@ -14,13 +15,15 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.util.Log;
 
+import com.unity3d.ads.UnityAds;
+
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * -------------------------------------------------------------------------------------------------
+ * ---------------------------------------------------------------------------------------------
  * Helper class for utilities
- * -------------------------------------------------------------------------------------------------
+ * ---------------------------------------------------------------------------------------------
  */
 public class myUtil {
 
@@ -37,7 +40,7 @@ public class myUtil {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             return ThreadLocalRandom.current().nextInt(min, max + 1);
         else {
-            Random rand = new Random();
+            Random rand = new Random(System.currentTimeMillis());
             return rand.nextInt((max - min +1 ) + min);
         }
     }
@@ -85,11 +88,13 @@ public class myUtil {
 
 
     /**
+     * ---------------------------------------------------------------------------------------------
      * Draw text on a bitmap
      * @param gContext
      * @param bitmap
      * @param gText
      * @return
+     * ---------------------------------------------------------------------------------------------
      */
     public static Bitmap drawTextToBitmap(Context gContext,
                                    Bitmap bitmap,
@@ -143,6 +148,23 @@ public class myUtil {
         canvas.drawText(gText, x, y, paint);
 
         return bitmap;
+    }
+
+
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Show unity ads with a defined random frequency
+     * ---------------------------------------------------------------------------------------------
+     */
+    public static void showUnityAdsRandom(Activity activity){
+        int guess = myUtil.randRange_ApiCheck(1,10);
+        if (guess <= 4) {
+            if (UnityAds.isReady()){
+                UnityAds.show(activity);
+            }
+        }
     }
 
 

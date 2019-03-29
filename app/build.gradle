@@ -33,7 +33,12 @@ dependencies {
     // LiveData dependencies
     implementation 'android.arch.lifecycle:runtime:1.1.1'
     implementation 'android.arch.lifecycle:livedata:1.1.1'
-    implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+
+
+    // unity ads
+    // compile (name:'unity-ads', ext: 'aar')
+    implementation project(':unity-ads')
 
     // test
     testImplementation 'junit:junit:4.12'

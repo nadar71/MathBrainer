@@ -18,4 +18,9 @@
         ca-app-pub-3940256099942544/6300978111</string>
 
 
+
+    <!-- UNITY ADS APP ID -->
+    <string name="unityads_key" templateMergeStrategy="preserve" translatable="false">xxxxxx</string>
+
+
 </resources>
