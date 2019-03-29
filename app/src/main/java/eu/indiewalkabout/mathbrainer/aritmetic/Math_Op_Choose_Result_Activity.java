@@ -706,8 +706,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
                     case '-': {
                         tmpBtn = getTheBtnNumber(i);
                         int result = 0;
+                        // repeat until find a result not already choosen
                         do {
-                            result = randomOffsetSum();
+                            result = Math.abs(randomOffsetSum());
                         } while (wrongAnswer.lastIndexOf(result) > 0);
                         wrongAnswer.add(result);
 
@@ -723,7 +724,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
                         tmpBtn = getTheBtnNumber(i);
                         int result = 0;
                         do {
-                            result = randomOffsetMult();
+                            result = Math.abs(randomOffsetMult());
                         } while (wrongAnswer.lastIndexOf(result) > 0);
                         wrongAnswer.add(result);
 
@@ -739,7 +740,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
                         tmpBtn = getTheBtnNumber(i);
                         int result = 0;
                         do {
-                            result = randomOffsetSum();
+                            result = Math.abs(randomOffsetSum());
                         } while (wrongAnswer.lastIndexOf(result) > 0);
                         wrongAnswer.add(result);
 
