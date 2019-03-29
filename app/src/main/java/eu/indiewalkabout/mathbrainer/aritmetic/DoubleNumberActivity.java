@@ -179,6 +179,22 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        newChallenge();
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        countDownIndicator.countdownReset();
+
+    }
+
+
     /**
      * ---------------------------------------------------------------------------------------------
      * Make bottom navigation bar and status bar hide, without resize when reappearing

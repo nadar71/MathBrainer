@@ -190,6 +190,20 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        newChallenge();
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        countDownIndicator.countdownReset();
+
+    }
 
     /**
      * ---------------------------------------------------------------------------------------------

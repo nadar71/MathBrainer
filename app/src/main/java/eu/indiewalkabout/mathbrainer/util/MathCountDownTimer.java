@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 
 public class MathCountDownTimer extends CountDownTimer  {
 
+    CountDownTimer timer;
 
     private final String TAG = MathCountDownTimer.class.getSimpleName();
     private CountDownIndicator  countdownBar;
