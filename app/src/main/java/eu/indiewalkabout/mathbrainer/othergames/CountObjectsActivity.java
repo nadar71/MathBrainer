@@ -192,6 +192,18 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
     }
 
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // make bottom navigation bar and status bar hide
+        hideStatusNavBars();
+    }
+
+
+
+
     /**
      * ---------------------------------------------------------------------------------------------
      * Make bottom navigation bar and status bar hide, without resize when reappearing

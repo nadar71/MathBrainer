@@ -204,6 +204,10 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+
+        // make bottom navigation bar and status bar hide
+        hideStatusNavBars();
+
         newChallenge();
     }
 

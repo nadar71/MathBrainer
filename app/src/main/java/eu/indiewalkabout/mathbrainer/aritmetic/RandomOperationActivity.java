@@ -193,6 +193,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
     @Override
     protected void onResume() {
         super.onResume();
+        // make bottom navigation bar and status bar hide
+        hideStatusNavBars();
         newChallenge();
     }
 

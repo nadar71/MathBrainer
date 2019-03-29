@@ -84,6 +84,7 @@
     <string name="quick_count_instructions">Count objects. </string>
     <string name="choose_op_instructions">Choose the correct answer :</string>
     <string name="random_op_instructions">Choose the correct operation :</string>
+    <string name="quick_count_relaunch">Show again</string>
 
 
     <!-- - - - - - - - - - - - - - - - - Dialogs Strings - - - - - - - - - - - - - - - - - - - - -->

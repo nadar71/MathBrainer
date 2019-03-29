@@ -170,7 +170,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         // define wrong answers storage
         wrongAnswer = new ArrayList<>();
 
-        newChallenge();
+        // newChallenge();
 
         // activate clicks on answer buttons
         setBtnPressedListener();
@@ -184,6 +184,31 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     }
 
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // make bottom navigation bar and status bar hide
+        hideStatusNavBars();
+
+        /*
+        // reset previous game
+        drawquiz_challenge.resetGame();
+
+        newChallenge();
+        */
+
+        // newChallenge();
+
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // showNewBtnAfterPause(1);
+        // newChallenge();
+    }
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -281,6 +306,26 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
     /**
      * ---------------------------------------------------------------------------------------------
+     * Show button when exiting pause state
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void showNewBtnAfterPause(final int timerLength){
+        final Handler handler = new Handler();
+        hideAll();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                    result_tv.setText(getResources().getString(R.string.quick_count_relaunch));
+                    result_tv.setTextColor(Color.GREEN);
+                }
+        };
+        // execute runnable after a timerLength
+        handler.postDelayed(runnable, timerLength);
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
      * Show button for new challenge after timerLength
      * ---------------------------------------------------------------------------------------------
      */
@@ -298,6 +343,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
                 } else if (win == true){
                     result_tv.setText(getResources().getString(R.string.ok_str));
                     result_tv.setTextColor(Color.GREEN);
+                } else if (!win){
+                    result_tv.setText(getResources().getString(R.string.quick_count_relaunch));
+                    result_tv.setTextColor(Color.GREEN);
                 }
 
             }
@@ -305,7 +353,6 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         // execute runnable after a timerLength
         handler.postDelayed(runnable, timerLength);
     }
-
 
 
     /**
