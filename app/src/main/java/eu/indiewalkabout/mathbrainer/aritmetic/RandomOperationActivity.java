@@ -284,6 +284,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
             countChallenge++;
 
+            setOperationText();
+
             operationSymbol_tv.setVisibility(View.VISIBLE);
 
             // rise level after numChallengeEachLevel reached
@@ -311,6 +313,21 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         }
     }
 
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Set the currect symbol operation for multiplication: X for *
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void setOperationText(){
+        if (operationOK.equals("*")) {
+            operationSymbol_tv.setText("X");
+        } else {
+            operationSymbol_tv.setText(operationOK);
+        }
+
+    }
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -367,7 +384,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         firstOperand_tv.setTextColor(Color.GREEN);
         secondOperand_tv.setTextColor(Color.GREEN);
 
-        operationSymbol_tv.setText(operationOK);
+        setOperationText();
+        // operationSymbol_tv.setText(operationOK);
         operationSymbol_tv.setTextColor(Color.GREEN);
         operation_result_tv.setTextColor(Color.GREEN);
         equals_sign_tv.setTextColor(Color.GREEN);
@@ -389,7 +407,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         firstOperand_tv.setTextColor(Color.RED);
         secondOperand_tv.setTextColor(Color.RED);
 
-        operationSymbol_tv.setText(operationOK);
+        setOperationText();
+        // operationSymbol_tv.setText(operationOK);
         operationSymbol_tv.setTextColor(Color.RED);
         operation_result_tv.setTextColor(Color.RED);
         equals_sign_tv.setTextColor(Color.RED);

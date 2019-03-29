@@ -385,7 +385,8 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         Log.d(TAG, "checkPlayerInput: pressedBtnValue : " + pressedBtnValue);
 
         // check if result is ok...
-        if (pressedBtnValue != 0  && pressedBtnValue == answerOK) {
+        // if (pressedBtnValue != 0  && pressedBtnValue == answerOK) {
+        if (pressedBtnValue == answerOK) {
 
             updateScore();
 
@@ -620,6 +621,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
                 // store correct answer
                 answerOK = firstOperand + secondOperand;
+
+                // set operations value in view
+                operationSymbol_tv.setText(Character.toString(operation));
                 break;
 
             case '-':
@@ -629,6 +633,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
                 // store correct answer
                 answerOK = firstOperand - secondOperand;
+
+                // set operations value in view
+                operationSymbol_tv.setText(Character.toString(operation));
                 break;
 
             case '*':
@@ -644,6 +651,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
                 // store correct answer
                 answerOK = firstOperand * secondOperand;
+
+                // set operations value in view
+                operationSymbol_tv.setText("X");
                 break;
 
             case '/':
@@ -653,14 +663,16 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
                 answerOK = myUtil.randRange_ApiCheck(divMin, divLMax);
                 firstOperand  = answerOK * secondOperand;
 
+                // set operations value in view
+                operationSymbol_tv.setText(Character.toString(operation));
+
                 break;
             default:
                 break;
 
         }
 
-        // set operations value in view
-        operationSymbol_tv.setText(Character.toString(operation));
+
         firstOperand_tv.setText(Integer.toString(firstOperand));
         secondOperand_tv.setText(Integer.toString(secondOperand));
 

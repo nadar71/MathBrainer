@@ -327,8 +327,8 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         Log.d(TAG, "checkPlayerInput: inputNum : " + inputNum);
 
         // check if result is ok...
-        if (inputNum != 0  && inputNum == answerOK) {
-
+        // if (inputNum != 0  && inputNum == answerOK) {
+        if (inputNum == answerOK) {
             updateScore();
 
             countChallenge++;
@@ -566,6 +566,9 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
 
                 // store correct answer
                 answerOK = firstOperand + secondOperand;
+
+                operationSymbol_tv.setText(Character.toString(operation));
+
                 break;
 
             case '-':
@@ -576,6 +579,9 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
 
                 // store correct answer
                 answerOK = firstOperand - secondOperand;
+
+                operationSymbol_tv.setText(Character.toString(operation));
+
                 break;
 
             case '*':
@@ -592,6 +598,9 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
 
                 // store correct answer
                 answerOK = firstOperand * secondOperand;
+
+                operationSymbol_tv.setText("X");
+
                 break;
 
             case '/':
@@ -602,13 +611,15 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
                 answerOK = myUtil.randRange_ApiCheck(divMin, divLMax);
                 firstOperand  = answerOK * secondOperand;
 
+                operationSymbol_tv.setText(Character.toString(operation));
+
                 break;
             default:
                 break;
 
         }
 
-        operationSymbol_tv.setText(Character.toString(operation));
+
         firstOperand_tv.setText(Integer.toString(firstOperand));
         secondOperand_tv.setText(Integer.toString(secondOperand));
 

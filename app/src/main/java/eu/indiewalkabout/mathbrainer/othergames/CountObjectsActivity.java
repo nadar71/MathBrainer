@@ -679,19 +679,6 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
     @Override
     public void checkCountdownExpired() {
 
-        // lose a life, check if it's game over
-        boolean gameover = isGameOver();
-
-        // new number to double
-        if (gameover == false) {
-            // newchallengeAfterTimerLength(1000);
-            buttonGrid.setVisibility(View.INVISIBLE);
-            instructions_tv.setVisibility(View.INVISIBLE);
-            endSessiondialog = new EndGameSessionDialog(this,
-                    CountObjectsActivity.this,
-                    EndGameSessionDialog.GAME_SESSION_RESULT.WRONG);
-        }
-
     }
 
 
