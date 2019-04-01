@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Choose_Result_Activity;
 import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView;
 import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView;
 import eu.indiewalkabout.mathbrainer.customviews.SolutionsView;
@@ -191,14 +190,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         // make bottom navigation bar and status bar hide
         hideStatusNavBars();
 
-        /*
-        // reset previous game
-        drawquiz_challenge.resetGame();
-
         newChallenge();
-        */
-
-        // newChallenge();
 
     }
 
@@ -206,8 +198,8 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     @Override
     protected void onPause() {
         super.onPause();
-        // showNewBtnAfterPause(1);
-        // newChallenge();
+        // essential to show another quiz without loosing lifes in case of onPause
+        restartAfterPause(1);
     }
 
     /**
@@ -309,14 +301,16 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      * Show button when exiting pause state
      * ---------------------------------------------------------------------------------------------
      */
-    private void showNewBtnAfterPause(final int timerLength){
+    private void restartAfterPause(final int timerLength){
         final Handler handler = new Handler();
         hideAll();
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                    result_tv.setText(getResources().getString(R.string.quick_count_relaunch));
-                    result_tv.setTextColor(Color.GREEN);
+                // it isn't show, but is essential for onPause/onResume sequence,
+                // to show another quiz without loosing life
+                result_tv.setText(getResources().getString(R.string.quick_count_relaunch));
+                result_tv.setTextColor(Color.GREEN);
                 }
         };
         // execute runnable after a timerLength
