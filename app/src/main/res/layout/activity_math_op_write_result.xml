@@ -252,6 +252,7 @@
             android:textColor="@android:color/background_light"
             android:textSize="30sp"
             android:textStyle="bold"
+            android:maxLength="10"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/result_tv"

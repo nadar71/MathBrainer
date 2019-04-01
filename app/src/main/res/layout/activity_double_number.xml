@@ -228,6 +228,7 @@
             android:focusable="false"
             android:focusableInTouchMode="true"
             android:fontFamily="@font/quicksand"
+            android:maxLength="10"
 
             android:gravity="center_vertical"
             android:imeOptions="actionDone"

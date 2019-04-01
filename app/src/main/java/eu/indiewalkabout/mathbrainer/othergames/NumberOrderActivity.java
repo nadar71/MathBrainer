@@ -189,7 +189,6 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         super.onResume();
         // make bottom navigation bar and status bar hide
         hideStatusNavBars();
-
         newChallenge();
 
     }
