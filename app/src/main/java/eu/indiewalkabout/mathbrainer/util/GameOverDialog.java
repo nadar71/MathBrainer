@@ -71,8 +71,9 @@ public class GameOverDialog {
         alertDialog.setCancelable(false);
 
         // make bottom navigation bar and status bar hide
-        // hideStatusNavBars();
+        hideStatusNavBars();
     }
+
 
 
 
@@ -83,12 +84,10 @@ public class GameOverDialog {
      */
     private void hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
-        View decorView = activity.getWindow().getDecorView();
+        View decorView = alertDialog.getWindow().getDecorView();
         int uiOptions =
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
-                        // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_FULLSCREEN; // // hide status bar
         decorView.setSystemUiVisibility(uiOptions);
     }
