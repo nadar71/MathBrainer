@@ -86,6 +86,17 @@
     <string name="random_op_instructions">Choose the correct operation :</string>
     <string name="quick_count_relaunch">Show again</string>
 
+    <!-- - - - - - - - - - - - - - - - - Choose game btn - - - - - - - - - - - - - - - - - - - - -->
+    <string name="choose_result_allop_text"> + - x / \n_ _ _ _</string>
+    <string name="choose_ops_allop_text"> A ? B \n_ _ _ _</string>
+    <string name="choose_result_sum_text">   +   \n_ _ _ _ </string>
+    <string name="choose_result_diff_text">   -   \n_ _ _ _ </string>
+    <string name="choose_result_mult_text">   x   \n_ _ _ _ </string>
+    <string name="choose_result_div_text">   /   \n_ _ _ _ </string>
+
+
+    <string name="write_result_allop_text">+ - x / </string>
+
 
     <!-- - - - - - - - - - - - - - - - - Dialogs Strings - - - - - - - - - - - - - - - - - - - - -->
     <string name="wrong_str">Wrong...</string>
