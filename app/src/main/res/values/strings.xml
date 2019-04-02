@@ -93,9 +93,22 @@
     <string name="choose_result_diff_text">   -   \n_ _ _ _ </string>
     <string name="choose_result_mult_text">   x   \n_ _ _ _ </string>
     <string name="choose_result_div_text">   /   \n_ _ _ _ </string>
-
-
     <string name="write_result_allop_text">+ - x / </string>
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - Credits - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="credits_title">Credits &amp; GDPR </string>
+    <string name="credits_text" translatable="false">
+        <b>CREDITS</b>\n\n
+        <b>Idea, Development and Design</b>\n\n Simone Mapelli\n
+        <a href='http://www.indie-walkabout.eu/'>www.indie-walkabout.eu </a>\n\n
+
+    </string>
+
+    <string name="gdpr_text" translatable="false">
+        <b>GDPR</b>\n\n Touch here for GDPR Consent Withdraw.
+    </string>
+
 
 
     <!-- - - - - - - - - - - - - - - - - Dialogs Strings - - - - - - - - - - - - - - - - - - - - -->
@@ -143,7 +156,6 @@
     <string name="gdpr_btn_title">GDPR</string>
     <string name="gdpr_btn_summary">GDPR Consent Withdraw.</string>
     <string name="question_mark">\?</string>
-
 
 
 </resources>

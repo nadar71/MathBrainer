@@ -196,7 +196,6 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
     }
 
-
     /**
      * ---------------------------------------------------------------------------------------------
      * Make bottom navigation bar and status bar hide, without resize when reappearing
@@ -213,6 +212,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
                         | View.SYSTEM_UI_FLAG_FULLSCREEN; // // hide status bar
         decorView.setSystemUiVisibility(uiOptions);
     }
+
 
     /**
      * ---------------------------------------------------------------------------------------------

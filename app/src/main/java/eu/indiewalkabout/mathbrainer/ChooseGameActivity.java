@@ -43,14 +43,17 @@ public class ChooseGameActivity extends AppCompatActivity {
     Button multWriteBtn;
     Button divWriteBtn;
 
-    Button ResultWriteBtn;
-    Button ResultChooseBtn;
-    ImageView quickCountBtn;
+    Button resultWriteBtn;
+    Button resultChooseBtn;
     Button doublingBtn;
+
     Button fallingBtn;
-    ImageView orderBtn;
     Button randomOpsBtn;
     Button soundsSeqBtn;
+
+    ImageView quickCountBtn;
+    ImageView orderBtn;
+    ImageView info_img;
 
 
 
@@ -105,8 +108,8 @@ public class ChooseGameActivity extends AppCompatActivity {
         // --------------------------------------------
         // Mixed op
         // --------------------------------------------
-        ResultWriteBtn  = findViewById(R.id.MixedOps_WriteResultBtn);
-        ResultChooseBtn = findViewById(R.id.MixedOps_ChooseResultBtn);
+        resultWriteBtn = findViewById(R.id.MixedOps_WriteResultBtn);
+        resultChooseBtn = findViewById(R.id.MixedOps_ChooseResultBtn);
         quickCountBtn   = findViewById(R.id.quickCountBtn);
         doublingBtn     = findViewById(R.id.doublingBtn);
         fallingBtn      = findViewById(R.id.fallingBtn);
@@ -114,8 +117,7 @@ public class ChooseGameActivity extends AppCompatActivity {
         randomOpsBtn    = findViewById(R.id.randomOpsBtn);
         soundsSeqBtn    = findViewById(R.id.soundsSeqBtn);
 
-
-        // END Button management
+        info_img        = findViewById(R.id.info_img);
 
         // activate clicks on answer buttons
         setBtnPressedListener();
@@ -220,7 +222,7 @@ public class ChooseGameActivity extends AppCompatActivity {
         });
 
 
-        ResultWriteBtn.setOnClickListener(new View.OnClickListener() {
+        resultWriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Write_Result_Activity.class);
@@ -228,7 +230,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             }
         });
 
-        ResultChooseBtn.setOnClickListener(new View.OnClickListener() {
+        resultChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Choose_Result_Activity.class);
@@ -282,6 +284,15 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseGameActivity.this, SoundsSeqActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        info_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChooseGameActivity.this, Activity_Credits.class);
                 startActivity(intent);
             }
         });
