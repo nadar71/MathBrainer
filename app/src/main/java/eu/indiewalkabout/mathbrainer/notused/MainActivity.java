@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer;
+package eu.indiewalkabout.mathbrainer.notused;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +11,9 @@ import android.widget.Button;
 
 import com.google.android.gms.ads.AdView;
 
+import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
+import eu.indiewalkabout.mathbrainer.MainSettingsActivity;
+import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 
 public class MainActivity extends AppCompatActivity {

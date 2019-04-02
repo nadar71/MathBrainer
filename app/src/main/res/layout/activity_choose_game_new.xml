@@ -332,7 +332,7 @@
                 android:scaleType="centerInside"
                 android:scaleX="0.55"
                 android:scaleY="0.55"
-                app:srcCompat="@drawable/Quick_Count_btn" />
+                app:srcCompat="@drawable/quick_count_btn" />
 
             <ImageView
                 android:id="@+id/orderBtn"
@@ -343,7 +343,7 @@
                 android:scaleType="centerInside"
                 android:scaleX="0.55"
                 android:scaleY="0.55"
-                app:srcCompat="@drawable/OrderCount_btn" />
+                app:srcCompat="@drawable/ordercount_btn" />
 
         </TableRow>
     </TableLayout>

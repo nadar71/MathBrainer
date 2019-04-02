@@ -3,6 +3,7 @@ package eu.indiewalkabout.mathbrainer;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -57,6 +58,26 @@ public class ChooseGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_game_new);
+
+        // Initialize ConsentSDK
+        ConsentSDK consentSDK = new ConsentSDK.Builder(this)
+                .addTestDeviceId("7DC1A1E8AEAD7908E42271D4B68FB270") // redminote 5 // Add your test device id "Remove addTestDeviceId on production!"
+                // .addTestDeviceId("9978A5F791A259430A0156313ED9C6A2")
+                .addCustomLogTag("gdpr_TAG") // Add custom tag default: ID_LOG
+                .addPrivacyPolicy("http://www.indie-walkabout.eu/privacy-policy-app") // Add your privacy policy url
+                .addPublisherId("pub-8846176967909254") // Add your admob publisher id
+                .build();
+
+
+        // To check the consent and load ads
+        consentSDK.checkConsent(new ConsentSDK.ConsentCallback() {
+            @Override
+            public void onResult(boolean isRequestLocationInEeaOrUnknown) {
+                Log.i("gdpr_TAG", "onResult: isRequestLocationInEeaOrUnknown : "+isRequestLocationInEeaOrUnknown);
+                // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
+                mAdView.loadAd(ConsentSDK.getAdRequest(ChooseGameActivity.this));
+            }
+        });
 
         mAdView = findViewById(R.id.adView);
 
