@@ -97,7 +97,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
     // num of challenge to pass to next level
     // changing while level growing
-    private int numChallengeEachLevel =  25;
+    private int numChallengeEachLevel =  12;
     private int countChallenge        =  1;
 
     // random range for answer btn number
@@ -956,7 +956,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
             numChallengeEachLevel += 5;
 
             // increase the number of visible answer button
-            if (level < 9 ) levelAnswerBtnTotalNum++;
+            if (level < 9 && levelAnswerBtnTotalNum < 9) {
+                levelAnswerBtnTotalNum++;
+            }
 
             // increase time accordingly, but slightly
             timerLength = timerLength + 5000 ;

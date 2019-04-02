@@ -88,7 +88,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
 
     // num of challenge to pass to next level
     // changing while level growing
-    private int numChallengeEachLevel =  25;
+    private int numChallengeEachLevel =  12;
     private int countChallenge        =  1;
 
     // score var

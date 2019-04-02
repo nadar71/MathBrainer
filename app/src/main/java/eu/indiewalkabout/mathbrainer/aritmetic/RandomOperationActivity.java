@@ -97,7 +97,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
     // num of challenge to pass to next level
     // changing while level growing
-    private int numChallengeEachLevel =  25;
+    private int numChallengeEachLevel =  12;
     private int countChallenge        =  1;
 
 
