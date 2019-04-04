@@ -178,7 +178,7 @@
 
         <TextView
             android:id="@+id/randomNum_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="88dp"
@@ -201,7 +201,6 @@
             android:id="@+id/answerDouble_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/quicksand"
             android:gravity="center_vertical"

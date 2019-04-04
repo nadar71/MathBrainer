@@ -12,7 +12,7 @@
         android:id="@+id/progressbar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="17dp"
         android:max="30"
         android:progress="100"
         android:progressDrawable="@drawable/horizontal_progress_drawable_gray"
@@ -24,14 +24,14 @@
         android:id="@+id/level_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/quicksand"
         android:gravity="start"
         android:text="@string/level"
         android:textAlignment="viewStart"
         android:textColor="@android:color/background_light"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressbar" />
@@ -45,10 +45,12 @@
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/quicksand"
         android:text="@string/_0"
+        android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/level_tv"
+        app:layout_constraintHorizontal_bias="0.554"
         app:layout_constraintStart_toEndOf="@+id/level_tv"
         app:layout_constraintTop_toBottomOf="@+id/level_tv" />
 
@@ -56,7 +58,7 @@
         android:id="@+id/scoreLabel_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/quicksand"
@@ -64,15 +66,15 @@
         android:text="@string/score"
         android:textAlignment="viewStart"
         android:textColor="@android:color/background_light"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/level_tv"
         app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
-        app:layout_constraintHorizontal_bias="0.162"
+        app:layout_constraintHorizontal_bias="0.449"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toEndOf="@+id/level_tv"
         app:layout_constraintTop_toBottomOf="@+id/level_tv"
-        app:layout_constraintVertical_bias="0.571" />
+        app:layout_constraintVertical_bias="0.583" />
 
     <TextView
         android:id="@+id/scoreValue_tv"
@@ -85,16 +87,17 @@
         android:text="@string/_0"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/scoreLabel_tv"
+        app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toEndOf="@+id/scoreLabel_tv"
         app:layout_constraintTop_toBottomOf="@+id/scoreLabel_tv" />
 
     <TextView
         android:id="@+id/lifeRemainText_tv"
         android:layout_width="wrap_content"
-        android:layout_height="19dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="36dp"
         android:fontFamily="@font/quicksand"
@@ -102,25 +105,25 @@
         android:text="@string/lifes"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/scoreLabel_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreLabel_tv"
-        app:layout_constraintVertical_bias="0.627" />
+        app:layout_constraintVertical_bias="0.583" />
 
 
     <GridLayout
         android:id="@+id/gridLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="77dp"
+        android:layout_height="14dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:columnCount="3"
         android:rowCount="1"
         app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
-        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toEndOf="@+id/lifeRemainText_tv"
         app:layout_constraintTop_toBottomOf="@+id/lifeRemainText_tv">
 
@@ -162,16 +165,16 @@
     <!-- - - - - QUIZ SECTION - - - - - - - - - - - - - - - - - - -->
     <android.support.constraint.ConstraintLayout
         android:id="@+id/operationsSection_lo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="296dp"
+        android:layout_height="176dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/rounded_rect_keyboard_background"
         app:layout_constraintBottom_toTopOf="@+id/keyboard"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv"
         app:layout_constraintVertical_bias="0.0">
@@ -180,20 +183,21 @@
             android:id="@+id/randomNum_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="88dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
             android:fontFamily="@font/quicksand"
             android:gravity="center_vertical"
             android:text="@string/_1"
             android:textAlignment="center"
             android:textColor="@android:color/background_light"
-            android:textSize="40sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/result_tv"
             app:layout_constraintEnd_toStartOf="@+id/answerDouble_tv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.428"
+            app:layout_constraintVertical_bias="0.219"
             tools:text="6" />
 
 
@@ -209,7 +213,7 @@
             android:text="@string/the_double_is"
             android:textAlignment="center"
             android:textColor="@android:color/background_light"
-            android:textSize="40sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/randomNum_tv"
             app:layout_constraintEnd_toStartOf="@+id/secondOperand_tv"
@@ -220,28 +224,29 @@
 
         <EditText
             android:id="@+id/playerInput_et"
-            android:layout_width="146dp"
+            android:layout_width="109dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="24dp"
             android:cursorVisible="false"
             android:ems="10"
             android:focusable="false"
             android:focusableInTouchMode="true"
             android:fontFamily="@font/quicksand"
-            android:maxLength="9"
-
             android:gravity="center_vertical"
+
             android:imeOptions="actionDone"
             android:inputType="number"
+            android:maxLength="9"
             android:paddingLeft="8dp"
             android:singleLine="true"
             android:textAlignment="viewStart"
             android:textColor="@android:color/background_light"
-            android:textSize="40sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/randomNum_tv"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.166"
             app:layout_constraintStart_toEndOf="@+id/answerDouble_tv"
             tools:text="1000" />
 
@@ -250,7 +255,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="48dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/quicksand"
             android:text="TextView"
@@ -260,17 +265,15 @@
             android:textStyle="bold"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/answerDouble_tv"
-            app:layout_constraintHorizontal_bias="0.368"
-            app:layout_constraintStart_toStartOf="@+id/playerInput_et"
+            app:layout_constraintEnd_toStartOf="@+id/backhome_img"
             app:layout_constraintTop_toBottomOf="@+id/answerDouble_tv"
-            app:layout_constraintVertical_bias="0.504" />
+            app:layout_constraintVertical_bias="1.0" />
 
 
         <ImageView
             android:id="@+id/backhome_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
@@ -285,8 +288,8 @@
     </android.support.constraint.ConstraintLayout>
 
     <eu.indiewalkabout.mathbrainer.util.MyKeyboard
-        android:id="@+id/keyboard"
-        android:layout_width="match_parent"
+        android:id="@+id/keyboard-small"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="32dp"
@@ -297,8 +300,8 @@
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operationsSection_lo" />
-
+        app:layout_constraintTop_toBottomOf="@+id/operationsSection_lo"
+        app:layout_constraintVertical_bias="0.92" />
 
 
     <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->
@@ -316,9 +319,7 @@
         ads:layout_constraintBottom_toBottomOf="parent"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintHorizontal_bias="0.0"
-        ads:layout_constraintStart_toStartOf="parent"/>
-
-
+        ads:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

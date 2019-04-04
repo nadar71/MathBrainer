@@ -12,7 +12,7 @@
         android:id="@+id/progressbar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="41dp"
         android:max="30"
         android:progress="100"
         android:progressDrawable="@drawable/horizontal_progress_drawable_gray"
@@ -29,9 +29,9 @@
         android:fontFamily="@font/quicksand"
         android:gravity="start"
         android:text="@string/level"
-        android:textAlignment="viewStart"
+        android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="18sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressbar" />
@@ -45,8 +45,9 @@
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/quicksand"
         android:text="@string/_0"
+        android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="18sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/level_tv"
         app:layout_constraintStart_toEndOf="@+id/level_tv"
@@ -62,13 +63,13 @@
         android:fontFamily="@font/quicksand"
         android:gravity="start"
         android:text="@string/score"
-        android:textAlignment="viewStart"
+        android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="18sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/level_tv"
         app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
-        app:layout_constraintHorizontal_bias="0.162"
+        app:layout_constraintHorizontal_bias="0.312"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toEndOf="@+id/level_tv"
         app:layout_constraintTop_toBottomOf="@+id/level_tv"
@@ -85,7 +86,7 @@
         android:text="@string/_0"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="18sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/scoreLabel_tv"
         app:layout_constraintStart_toEndOf="@+id/scoreLabel_tv"
@@ -94,7 +95,7 @@
     <TextView
         android:id="@+id/lifeRemainText_tv"
         android:layout_width="wrap_content"
-        android:layout_height="19dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="36dp"
         android:fontFamily="@font/quicksand"
@@ -102,12 +103,12 @@
         android:text="@string/lifes"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="18sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/scoreLabel_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreLabel_tv"
-        app:layout_constraintVertical_bias="0.627" />
+        app:layout_constraintVertical_bias="0.522" />
 
 
     <GridLayout
@@ -115,19 +116,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:layout_weight="1"
         android:columnCount="3"
         android:rowCount="1"
         app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
-        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintHorizontal_bias="0.532"
         app:layout_constraintStart_toEndOf="@+id/lifeRemainText_tv"
         app:layout_constraintTop_toBottomOf="@+id/lifeRemainText_tv">
 
         <ImageView
             android:id="@+id/life_01_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:contentDescription="@string/todo"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/presence_online"
@@ -135,8 +136,8 @@
 
         <ImageView
             android:id="@+id/life_02_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/todo"
@@ -147,8 +148,8 @@
 
         <ImageView
             android:id="@+id/life_03_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:contentDescription="@string/todo"
@@ -163,37 +164,38 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/operationsSection_lo"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="559dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/rounded_rect_keyboard_background"
         app:layout_constraintBottom_toTopOf="@+id/keyboard"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="spread">
 
         <TextView
             android:id="@+id/randomNum_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="88dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="106dp"
             android:fontFamily="@font/quicksand"
             android:gravity="center_vertical"
             android:text="@string/_1"
             android:textAlignment="center"
             android:textColor="@android:color/background_light"
-            android:textSize="40sp"
+            android:textSize="55sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/result_tv"
             app:layout_constraintEnd_toStartOf="@+id/answerDouble_tv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.428"
+            app:layout_constraintVertical_bias="0.59000003"
             tools:text="6" />
 
 
@@ -201,7 +203,7 @@
             android:id="@+id/answerDouble_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="52dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/quicksand"
             android:gravity="center_vertical"
@@ -209,7 +211,7 @@
             android:text="@string/the_double_is"
             android:textAlignment="center"
             android:textColor="@android:color/background_light"
-            android:textSize="40sp"
+            android:textSize="55sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/randomNum_tv"
             app:layout_constraintEnd_toStartOf="@+id/secondOperand_tv"
@@ -229,19 +231,20 @@
             android:focusable="false"
             android:focusableInTouchMode="true"
             android:fontFamily="@font/quicksand"
-            android:maxLength="9"
-
             android:gravity="center_vertical"
+
             android:imeOptions="actionDone"
             android:inputType="number"
+            android:maxLength="9"
             android:paddingLeft="8dp"
             android:singleLine="true"
             android:textAlignment="viewStart"
             android:textColor="@android:color/background_light"
-            android:textSize="40sp"
+            android:textSize="55sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/randomNum_tv"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.211"
             app:layout_constraintStart_toEndOf="@+id/answerDouble_tv"
             tools:text="1000" />
 
@@ -249,6 +252,7 @@
             android:id="@+id/result_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
@@ -256,29 +260,28 @@
             android:text="TextView"
             android:textAlignment="center"
             android:textColor="@android:color/background_light"
-            android:textSize="22sp"
+            android:textSize="55sp"
             android:textStyle="bold"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/answerDouble_tv"
-            app:layout_constraintHorizontal_bias="0.368"
-            app:layout_constraintStart_toStartOf="@+id/playerInput_et"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/answerDouble_tv"
             app:layout_constraintVertical_bias="0.504" />
 
 
         <ImageView
             android:id="@+id/backhome_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="49dp"
+            android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/rounded_rect_dark_gray_btn"
             android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.973"
+            app:layout_constraintHorizontal_bias="0.984"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_home_white_24dp" />
 
@@ -286,19 +289,18 @@
 
     <eu.indiewalkabout.mathbrainer.util.MyKeyboard
         android:id="@+id/keyboard"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/operationsSection_lo" />
-
 
 
     <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->
@@ -316,9 +318,7 @@
         ads:layout_constraintBottom_toBottomOf="parent"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintHorizontal_bias="0.0"
-        ads:layout_constraintStart_toStartOf="parent"/>
-
-
+        ads:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

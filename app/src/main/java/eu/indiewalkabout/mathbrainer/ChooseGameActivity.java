@@ -47,9 +47,7 @@ public class ChooseGameActivity extends AppCompatActivity {
     Button resultChooseBtn;
     Button doublingBtn;
 
-    Button fallingBtn;
     Button randomOpsBtn;
-    Button soundsSeqBtn;
 
     ImageView quickCountBtn;
     ImageView orderBtn;
@@ -112,10 +110,8 @@ public class ChooseGameActivity extends AppCompatActivity {
         resultChooseBtn = findViewById(R.id.MixedOps_ChooseResultBtn);
         quickCountBtn   = findViewById(R.id.quickCountBtn);
         doublingBtn     = findViewById(R.id.doublingBtn);
-        fallingBtn      = findViewById(R.id.fallingBtn);
         orderBtn        = findViewById(R.id.orderBtn);
         randomOpsBtn    = findViewById(R.id.randomOpsBtn);
-        soundsSeqBtn    = findViewById(R.id.soundsSeqBtn);
 
         info_img        = findViewById(R.id.info_img);
 
@@ -255,13 +251,6 @@ public class ChooseGameActivity extends AppCompatActivity {
             }
         });
 
-        fallingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this,FallingOperationsActivity.class);
-                startActivity(intent);
-            }
-        });
 
         orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,15 +264,6 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseGameActivity.this,RandomOperationActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-        soundsSeqBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this, SoundsSeqActivity.class);
                 startActivity(intent);
             }
         });

@@ -63,10 +63,6 @@
             android:name=".othergames.SoundsSeqActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".MainSettingsActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
         <activity android:name=".aritmetic.Math_Op_Choose_Result_Activity" />
     </application>
 
