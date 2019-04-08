@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/quicksand"
         android:gravity="start"
         android:text="@string/level"
@@ -68,11 +68,11 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/level_tv"
         app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
-        app:layout_constraintHorizontal_bias="0.162"
+        app:layout_constraintHorizontal_bias="0.16"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toEndOf="@+id/level_tv"
         app:layout_constraintTop_toBottomOf="@+id/level_tv"
-        app:layout_constraintVertical_bias="0.571" />
+        app:layout_constraintVertical_bias="0.537" />
 
     <TextView
         android:id="@+id/scoreValue_tv"
@@ -96,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="60dp"
         android:fontFamily="@font/quicksand"
         android:gravity="center_vertical"
         android:text="@string/lifes"
@@ -107,7 +107,7 @@
         app:layout_constraintBottom_toTopOf="@+id/scoreLabel_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreLabel_tv"
-        app:layout_constraintVertical_bias="0.627" />
+        app:layout_constraintVertical_bias="0.537" />
 
 
     <GridLayout
@@ -167,9 +167,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_rect_keyboard_background"
         app:layout_constraintBottom_toTopOf="@+id/instructions_tv"
         app:layout_constraintEnd_toEndOf="parent"
