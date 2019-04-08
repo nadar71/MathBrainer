@@ -257,11 +257,15 @@
         android:id="@+id/backhome_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/rounded_rect_dark_gray_btn"
         android:padding="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/quiz_instructions_tv"
-        app:layout_constraintEnd_toEndOf="@+id/quiz_instructions_tv"
-        app:layout_constraintTop_toBottomOf="@+id/solutionsShowing_v"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.948"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout"
         app:srcCompat="@drawable/ic_home_white_24dp" />
 
     <TextView
@@ -269,6 +273,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="14dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="4dp"
         android:fontFamily="@font/quicksand"
@@ -281,8 +286,10 @@
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/backhome_img" />
+        app:layout_constraintTop_toBottomOf="@+id/canvas_image_ref_img"
+        app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
