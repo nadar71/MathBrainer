@@ -56,11 +56,11 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/level_tv"
         app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
-        app:layout_constraintHorizontal_bias="0.462"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toEndOf="@+id/level_tv"
         app:layout_constraintTop_toBottomOf="@+id/level_tv"
-        app:layout_constraintVertical_bias="0.571" />
+        app:layout_constraintVertical_bias="0.568" />
 
     <TextView
         android:id="@+id/scoreValue_tv"
