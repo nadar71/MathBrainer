@@ -5,13 +5,13 @@
     <string name="_2">2</string>
     <string name="_1">1</string>
     <string name="op">op</string>
-    <string name="score">Score : </string>
+    <string name="score">Score</string>
     <string name="button">Button</string>
     <string name="nan">nan</string>
     <string name="todo">TODO</string>
-    <string name="level">Level :</string>
+    <string name="level">Level</string>
     <string name="_0">0</string>
-    <string name="lifes">Lifes :</string>
+    <string name="lifes">Lifes</string>
     <string name="your_answer">Your Answer</string>
     <string name="statistics">Statistics</string>
     <string name="scoreMain">Score</string>

@@ -12,7 +12,6 @@ import android.widget.Button;
 import com.google.android.gms.ads.AdView;
 
 import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
-import eu.indiewalkabout.mathbrainer.MainSettingsActivity;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 
@@ -114,8 +113,6 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
 
-            Intent settingsIntent = new Intent(this, MainSettingsActivity.class);
-            startActivity(settingsIntent);
             return true;
         }
         return super.onOptionsItemSelected(item);
