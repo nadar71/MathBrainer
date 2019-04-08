@@ -13,13 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/quicksand"
         android:gravity="start"
         android:text="@string/level"
         android:textAlignment="viewStart"
         android:textColor="@android:color/background_light"
-        android:textSize="24sp"
+        android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +34,7 @@
         android:fontFamily="@font/quicksand"
         android:text="@string/_0"
         android:textColor="@android:color/background_light"
-        android:textSize="24sp"
+        android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/level_tv"
         app:layout_constraintStart_toEndOf="@+id/level_tv"
@@ -44,7 +44,7 @@
         android:id="@+id/scoreLabel_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/quicksand"
@@ -52,15 +52,15 @@
         android:text="@string/score"
         android:textAlignment="viewStart"
         android:textColor="@android:color/background_light"
-        android:textSize="24sp"
+        android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/level_tv"
         app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
-        app:layout_constraintHorizontal_bias="0.162"
+        app:layout_constraintHorizontal_bias="0.019"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toEndOf="@+id/level_tv"
         app:layout_constraintTop_toBottomOf="@+id/level_tv"
-        app:layout_constraintVertical_bias="0.571" />
+        app:layout_constraintVertical_bias="0.537" />
 
     <TextView
         android:id="@+id/scoreValue_tv"
@@ -73,7 +73,7 @@
         android:text="@string/_0"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="24sp"
+        android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/scoreLabel_tv"
         app:layout_constraintStart_toEndOf="@+id/scoreLabel_tv"
@@ -84,18 +84,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="24dp"
         android:fontFamily="@font/quicksand"
         android:gravity="center_vertical"
         android:text="@string/lifes"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="24sp"
+        android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/scoreLabel_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreLabel_tv"
-        app:layout_constraintVertical_bias="0.555" />
+        app:layout_constraintVertical_bias="0.537" />
 
 
     <GridLayout
@@ -103,12 +103,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:layout_weight="1"
         android:columnCount="3"
         android:rowCount="1"
         app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
-        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintHorizontal_bias="0.465"
         app:layout_constraintStart_toEndOf="@+id/lifeRemainText_tv"
         app:layout_constraintTop_toBottomOf="@+id/lifeRemainText_tv">
 
@@ -149,84 +149,83 @@
 
     <!-- - - - - QUIZ SECTION - - - - - - - - - - - - - - - - - - -->
 
-    <ImageView
-        android:id="@+id/canvas_image_ref_img"
-        android:layout_width="549dp"
-        android:layout_height="521dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:alpha="0"
-        app:layout_constraintBottom_toTopOf="@+id/quiz_instructions_tv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.636"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv" />
-
 
     <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->
     <!-- THIS APP REAL AdMob banner ID: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
 
-    <eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView
-        android:id="@+id/itemDrawing_v"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/drawing_container"
         android:layout_width="0dp"
-        android:layout_height="494dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:visibility="invisible"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/quiz_instructions_tv"
-        app:layout_constraintEnd_toEndOf="@+id/solutionsShowing_v"
-        app:layout_constraintStart_toStartOf="@+id/canvas_image_ref_img"
-        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv"
-        app:layout_constraintVertical_bias="0.506" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scoreValue_tv">
 
-    <eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView
-        android:id="@+id/itemDrawingNoNumber_v"
-        android:layout_width="0dp"
-        android:layout_height="494dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintBottom_toTopOf="@+id/quiz_instructions_tv"
-        app:layout_constraintEnd_toEndOf="@+id/canvas_image_ref_img"
-        app:layout_constraintStart_toStartOf="@+id/canvas_image_ref_img"
-        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv" />
+        <eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView
+            android:id="@+id/itemDrawing_v"
+            android:layout_width="357dp"
+            android:layout_height="603dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
 
 
-    <eu.indiewalkabout.mathbrainer.customviews.SolutionsView
-        android:id="@+id/solutionsShowing_v"
-        android:layout_width="0dp"
-        android:layout_height="494dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintBottom_toTopOf="@+id/quiz_instructions_tv"
-        app:layout_constraintEnd_toEndOf="@+id/canvas_image_ref_img"
-        app:layout_constraintStart_toStartOf="@+id/canvas_image_ref_img"
-        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/drawing_container"
+            app:layout_constraintEnd_toEndOf="@+id/drawing_container"
+            app:layout_constraintStart_toStartOf="@+id/drawing_container"
+            app:layout_constraintTop_toTopOf="@+id/drawing_container"
+            app:layout_constraintVertical_bias="0.506" />
+
+        <eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView
+            android:id="@+id/itemDrawingNoNumber_v"
+            android:layout_width="357dp"
+            android:layout_height="603dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/drawing_container"
+            app:layout_constraintEnd_toEndOf="@+id/drawing_container"
+            app:layout_constraintStart_toStartOf="@+id/drawing_container"
+            app:layout_constraintTop_toTopOf="@+id/drawing_container" />
+
+        <eu.indiewalkabout.mathbrainer.customviews.SolutionsView
+            android:id="@+id/solutionsShowing_v"
+            android:layout_width="357dp"
+            android:layout_height="603dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/drawing_container"
+            app:layout_constraintEnd_toEndOf="@+id/drawing_container"
+            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintStart_toStartOf="@+id/drawing_container"
+            app:layout_constraintTop_toTopOf="@+id/drawing_container" />
+    </android.support.constraint.ConstraintLayout>
+
 
     <TextView
         android:id="@+id/result_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="160dp"
         android:fontFamily="@font/quicksand"
         android:text="@string/wrong_str"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/drawing_container"
         app:layout_constraintEnd_toStartOf="@+id/new_game_btn"
-        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintHorizontal_bias="0.519"
         app:layout_constraintStart_toEndOf="@+id/new_game_btn"
-        app:layout_constraintTop_toTopOf="@+id/solutionsShowing_v" />
+        app:layout_constraintTop_toTopOf="@+id/drawing_container" />
 
     <Button
         android:id="@+id/new_game_btn"
@@ -238,9 +237,11 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_rect_light_gray"
         android:fontFamily="@font/quicksand"
+        android:padding="10dp"
         android:text="@string/next_str"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/adView"
@@ -255,12 +256,15 @@
         android:id="@+id/backhome_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/rounded_rect_dark_gray_btn"
         android:padding="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/solutionsShowing_v"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.97"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout"
         app:srcCompat="@drawable/ic_home_white_24dp" />
 
     <TextView
@@ -268,26 +272,25 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:fontFamily="@font/quicksand"
         android:padding="5dp"
         android:text="@string/click_order_instructions"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/solutionsShowing_v" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
         android:layout_width="match_parent"
-        android:layout_height="49dp"
+        android:layout_height="43dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
@@ -297,7 +300,7 @@
         ads:layout_constraintBottom_toBottomOf="parent"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintHorizontal_bias="0.0"
-        ads:layout_constraintStart_toStartOf="parent"/>
+        ads:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

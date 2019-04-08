@@ -45,7 +45,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
 
 
     // Our costumview img references (almost useless)
-    private ImageView ourFrame;
+    // private ImageView ourFrame;
 
     // Costum views drawing items to count
     private MarkerWithNoNumberView drawquiz_challenge;
@@ -128,7 +128,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         context = this;
 
         //Get a reference to our ImageView in the layout
-        ourFrame = (ImageView) findViewById(R.id.canvas_image_ref_img);
+        // ourFrame = (ImageView) findViewById(R.id.canvas_image_ref_img);
 
         // get the items to count view, set invisible at the moment
         solutionsView      = findViewById(R.id.solutionsShowing_v);

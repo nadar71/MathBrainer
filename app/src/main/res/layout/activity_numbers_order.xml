@@ -149,75 +149,71 @@
 
     <!-- - - - - QUIZ SECTION - - - - - - - - - - - - - - - - - - -->
 
-    <ImageView
-        android:id="@+id/canvas_image_ref_img"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="8dp"
-        android:alpha="0"
-        app:layout_constraintBottom_toTopOf="@+id/backhome_img"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv"
-        app:layout_constraintVertical_bias="0.25" />
-
 
     <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->
     <!-- THIS APP REAL AdMob banner ID: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
 
-    <eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView
-        android:id="@+id/itemDrawing_v"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/drawing_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/canvas_image_ref_img"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/quiz_instructions_tv"
-        app:layout_constraintEnd_toEndOf="@+id/canvas_image_ref_img"
-        app:layout_constraintStart_toStartOf="@+id/canvas_image_ref_img"
-        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv"
-        app:layout_constraintTop_toTopOf="@+id/canvas_image_ref_img" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scoreValue_tv">
 
-    <eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView
-        android:id="@+id/itemDrawingNoNumber_v"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="@+id/canvas_image_ref_img"
-        app:layout_constraintBottom_toTopOf="@+id/quiz_instructions_tv"
-        app:layout_constraintEnd_toEndOf="@+id/canvas_image_ref_img"
-        app:layout_constraintStart_toStartOf="@+id/canvas_image_ref_img"
-        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv"
-        app:layout_constraintTop_toTopOf="@+id/canvas_image_ref_img" />
+        <eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView
+            android:id="@+id/itemDrawingNoNumber_v"
+            android:layout_width="357dp"
+            android:layout_height="603dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/drawing_container"
+            app:layout_constraintEnd_toEndOf="@+id/drawing_container"
+            app:layout_constraintStart_toStartOf="@+id/drawing_container"
+            app:layout_constraintTop_toTopOf="@+id/drawing_container" />
+
+        <eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView
+            android:id="@+id/itemDrawing_v"
+            android:layout_width="357dp"
+            android:layout_height="603dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
 
 
-    <eu.indiewalkabout.mathbrainer.customviews.SolutionsView
-        android:id="@+id/solutionsShowing_v"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="@+id/canvas_image_ref_img"
-        app:layout_constraintBottom_toTopOf="@+id/quiz_instructions_tv"
-        app:layout_constraintEnd_toEndOf="@+id/canvas_image_ref_img"
-        app:layout_constraintStart_toStartOf="@+id/canvas_image_ref_img"
-        app:layout_constraintTop_toBottomOf="@+id/scoreValue_tv"
-        app:layout_constraintTop_toTopOf="@+id/canvas_image_ref_img" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/drawing_container"
+            app:layout_constraintEnd_toEndOf="@+id/drawing_container"
+            app:layout_constraintStart_toStartOf="@+id/drawing_container"
+            app:layout_constraintTop_toTopOf="@+id/drawing_container"
+            app:layout_constraintVertical_bias="0.506" />
+
+        <eu.indiewalkabout.mathbrainer.customviews.SolutionsView
+            android:id="@+id/solutionsShowing_v"
+            android:layout_width="357dp"
+            android:layout_height="603dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/drawing_container"
+            app:layout_constraintEnd_toEndOf="@+id/drawing_container"
+            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintStart_toStartOf="@+id/drawing_container"
+            app:layout_constraintTop_toTopOf="@+id/drawing_container" />
+    </android.support.constraint.ConstraintLayout>
+
 
     <TextView
         android:id="@+id/result_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="160dp"
         android:fontFamily="@font/quicksand"
         android:text="@string/wrong_str"
         android:textAlignment="center"
@@ -225,10 +221,11 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/drawing_container"
         app:layout_constraintEnd_toStartOf="@+id/new_game_btn"
-        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintHorizontal_bias="0.519"
         app:layout_constraintStart_toEndOf="@+id/new_game_btn"
-        app:layout_constraintTop_toTopOf="@+id/solutionsShowing_v" />
+        app:layout_constraintTop_toTopOf="@+id/drawing_container" />
 
     <Button
         android:id="@+id/new_game_btn"
@@ -263,7 +260,7 @@
         android:background="@drawable/rounded_rect_dark_gray_btn"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.948"
+        app:layout_constraintHorizontal_bias="0.97"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridLayout"
         app:srcCompat="@drawable/ic_home_white_24dp" />
@@ -273,7 +270,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="14dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="4dp"
         android:fontFamily="@font/quicksand"
@@ -287,9 +283,7 @@
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/canvas_image_ref_img"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
