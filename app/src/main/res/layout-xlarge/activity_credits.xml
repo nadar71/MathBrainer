@@ -36,7 +36,7 @@
         android:fontFamily="@font/quicksand"
         android:text="@string/credits_text"
         android:textColor="@color/colorAccent"
-        android:textSize="45sp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/credits_title_tv" />
@@ -52,7 +52,7 @@
         android:fontFamily="@font/quicksand"
         android:text="@string/gdpr_text"
         android:textColor="@color/colorAccent"
-        android:textSize="45sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
