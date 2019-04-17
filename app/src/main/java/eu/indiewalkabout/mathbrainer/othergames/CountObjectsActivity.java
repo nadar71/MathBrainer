@@ -31,8 +31,8 @@ import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Choose_Result_Activity;
 import eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView;
+import eu.indiewalkabout.mathbrainer.statistics.Results;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
 import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
@@ -350,9 +350,19 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
                 if (win == false) {
                     result_tv.setText(getResources().getString(R.string.wrong_str));
                     result_tv.setTextColor(Color.RED);
+
+                    // statistics
+                    Results.incrementGameResultsThread("operations_executed");
+                    Results.incrementGameResultsThread("operations_ko");
+
                 } else if (win == true){
                     result_tv.setText(getResources().getString(R.string.ok_str));
                     result_tv.setTextColor(Color.GREEN);
+
+                    // statistics
+                    Results.incrementGameResultsThread("operations_executed");
+                    Results.incrementGameResultsThread("operations_ok");
+                    Results.incrementGameResultByDeltaThread("objects_counted", itemsToCount);
                 }
 
             }
@@ -429,6 +439,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         // update life counts
         lifes--;
 
+        // statistics
+        Results.incrementGameResultsThread("lifes_missed");
+
 
         // Update UI
         if ( lifes > -1) { lifesValue_iv.get(lifes).setVisibility(View.INVISIBLE);}
@@ -438,6 +451,13 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         if ( lifes <= 0){
 
             endGame();
+
+            // statistics
+            Results.incrementGameResultsThread("games_played");
+            Results.incrementGameResultsThread("games_lose");
+            Results.incrementGameResultByDeltaThread("count_objects_game_score", score);
+            Results.incrementGameResultByDeltaThread("global_score", score);
+
             return true;
 
         }
@@ -680,6 +700,8 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
                     +max+" new level : "+level+" Timer now at : " + (timerLength/1000) + " sec.");
         }
 
+        // statistics
+        Results.incrementGameResultsThread("level_upgrades");
     }
 
 

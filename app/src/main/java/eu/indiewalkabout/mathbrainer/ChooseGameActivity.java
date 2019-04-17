@@ -15,10 +15,9 @@ import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Choose_Result_Activity;
 import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Write_Result_Activity;
 import eu.indiewalkabout.mathbrainer.aritmetic.RandomOperationActivity;
 import eu.indiewalkabout.mathbrainer.othergames.CountObjectsActivity;
-import eu.indiewalkabout.mathbrainer.othergames.FallingOperationsActivity;
 import eu.indiewalkabout.mathbrainer.othergames.NumberOrderActivity;
-import eu.indiewalkabout.mathbrainer.othergames.SoundsSeqActivity;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
+import eu.indiewalkabout.mathbrainer.statistics.Results;
 
 /**
  * ---------------------------------------------------------------------------------------------
@@ -59,6 +58,9 @@ public class ChooseGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_game_new);
+
+        // init db with results to 0 where needed
+        Results.initResultsThread();
 
         // Initialize ConsentSDK
         ConsentSDK consentSDK = new ConsentSDK.Builder(this)
@@ -106,7 +108,7 @@ public class ChooseGameActivity extends AppCompatActivity {
         // --------------------------------------------
         // Mixed op
         // --------------------------------------------
-        resultWriteBtn = findViewById(R.id.MixedOps_WriteResultBtn);
+        resultWriteBtn  = findViewById(R.id.MixedOps_WriteResultBtn);
         resultChooseBtn = findViewById(R.id.MixedOps_ChooseResultBtn);
         quickCountBtn   = findViewById(R.id.quickCountBtn);
         doublingBtn     = findViewById(R.id.doublingBtn);

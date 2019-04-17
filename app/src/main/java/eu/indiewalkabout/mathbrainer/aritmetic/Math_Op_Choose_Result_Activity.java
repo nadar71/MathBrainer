@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
+import eu.indiewalkabout.mathbrainer.statistics.Results;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
@@ -489,6 +490,10 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         secondOperand_tv.setTextColor(Color.GREEN);
         operationSymbol_tv.setTextColor(Color.GREEN);
         gridLayout.setVisibility(View.INVISIBLE);
+
+        // statistics
+        Results.incrementGameResultsThread("operations_executed");
+        Results.incrementGameResultsThread("operations_ok");
     }
 
     /**
@@ -505,6 +510,10 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         secondOperand_tv.setTextColor(Color.RED);
         operationSymbol_tv.setTextColor(Color.RED);
         gridLayout.setVisibility(View.INVISIBLE);
+
+        // statistics
+        Results.incrementGameResultsThread("operations_executed");
+        Results.incrementGameResultsThread("operations_ko");
     }
 
 
@@ -564,6 +573,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         // update life counts
         lifes--;
 
+        // statistics
+        Results.incrementGameResultsThread("lifes_missed");
+
         Log.d(TAG, "isGameOver: " + lifes);
 
         // Update UI
@@ -572,6 +584,14 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         // check game over condition
         if ( lifes <= 0){
             endGame();
+
+            // statistics
+            Results.incrementGameResultsThread("games_played");
+            Results.incrementGameResultsThread("games_lose");
+            Results.incrementGameResultByDeltaThread("choose_result_game_score", score);
+            Results.incrementGameResultByDeltaThread("global_score", score);
+
+
             return true;
 
         }else {
@@ -640,6 +660,10 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
                 // set operations value in view
                 operationSymbol_tv.setText(Character.toString(operation));
+
+                // statistics
+                Results.incrementGameResultsThread("sums");
+
                 break;
 
             case '-':
@@ -652,6 +676,10 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
                 // set operations value in view
                 operationSymbol_tv.setText(Character.toString(operation));
+
+                // statistics
+                Results.incrementGameResultsThread("differences");
+
                 break;
 
             case '*':
@@ -670,6 +698,10 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
                 // set operations value in view
                 operationSymbol_tv.setText("X");
+
+                // statistics
+                Results.incrementGameResultsThread("multiplications");
+
                 break;
 
             case '/':
@@ -681,6 +713,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
                 // set operations value in view
                 operationSymbol_tv.setText(Character.toString(operation));
+
+                // statistics
+                Results.incrementGameResultsThread("divisions");
 
                 break;
             default:
@@ -964,6 +999,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
             timerLength = timerLength + 5000 ;
             Log.d(TAG, "updatingLevel: New Level! new min : "+min+" new max: "+max+" new level : "+level+" Timer now at : " + (timerLength/1000) + " sec.");
         }
+
+        // statistics
+        Results.incrementGameResultsThread("level_upgrades");
 
     }
 

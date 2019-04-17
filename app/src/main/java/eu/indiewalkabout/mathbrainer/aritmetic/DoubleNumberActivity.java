@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
+import eu.indiewalkabout.mathbrainer.statistics.Results;
 import eu.indiewalkabout.mathbrainer.util.*;
 
 import com.unity3d.ads.IUnityAdsListener;
@@ -350,6 +351,14 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         playerInput_et.setTextColor(Color.GREEN);
         // hide keyboard
         keyboard.setVisibility(View.INVISIBLE);
+
+        // statistics
+        Results.incrementGameResultsThread("operations_executed");
+        Results.incrementGameResultsThread("operations_ok");
+
+        Results.incrementGameResultsThread("doublings");
+        Results.incrementGameResultsThread("multiplications");
+
     }
 
 
@@ -367,6 +376,13 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         playerInput_et.setTextColor(Color.RED);
         // hide keyboard
         keyboard.setVisibility(View.INVISIBLE);
+
+        // statistics
+        Results.incrementGameResultsThread("operations_executed");
+        Results.incrementGameResultsThread("operations_ko");
+
+        Results.incrementGameResultsThread("doublings");
+        Results.incrementGameResultsThread("multiplications");
     }
 
 
@@ -428,6 +444,9 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         // update life counts
         lifes--;
 
+        // statistics
+        Results.incrementGameResultsThread("lifes_missed");
+
         Log.d(TAG, "isGameOver: " + lifes);
 
         // Update UI
@@ -436,6 +455,13 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         // check game over condition
         if ( lifes <= 0){
             endGame();
+
+            // statistics
+            Results.incrementGameResultsThread("games_played");
+            Results.incrementGameResultsThread("games_lose");
+            Results.incrementGameResultByDeltaThread("doublenumber_game_score", score);
+            Results.incrementGameResultByDeltaThread("global_score", score);
+
             return true;
 
         }else {
@@ -556,6 +582,9 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
             timerLength = timerLength + 1000 ;
             Log.d(TAG, "updatingLevel: New Level! new min : "+min+" new max: "+max+" new level : "+level+" Timer now at : " + (timerLength/1000) + " sec.");
         }
+
+        // statistics
+        Results.incrementGameResultsThread("level_upgrades");
 
     }
 

@@ -26,6 +26,7 @@ import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView;
 import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView;
 import eu.indiewalkabout.mathbrainer.customviews.SolutionsView;
+import eu.indiewalkabout.mathbrainer.statistics.Results;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
@@ -333,9 +334,18 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
                 if (win == false) {
                     result_tv.setText(getResources().getString(R.string.wrong_str));
                     result_tv.setTextColor(Color.RED);
+
+                    // statistics
+                    Results.incrementGameResultsThread("operations_executed");
+                    Results.incrementGameResultsThread("operations_ko");
+
                 } else if (win == true){
                     result_tv.setText(getResources().getString(R.string.ok_str));
                     result_tv.setTextColor(Color.GREEN);
+                    // statistics
+                    Results.incrementGameResultsThread("operations_executed");
+                    Results.incrementGameResultsThread("operations_ok");
+                    Results.incrementGameResultByDeltaThread("numbers_in_order", itemsToCount);
                 } else if (!win){
                     result_tv.setText(getResources().getString(R.string.quick_count_relaunch));
                     result_tv.setTextColor(Color.GREEN);
@@ -373,6 +383,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         // update life counts
         lifes--;
 
+        // statistics
+        Results.incrementGameResultsThread("lifes_missed");
+
         // Update UI
         if ( lifes > -1) { lifesValue_iv.get(lifes).setVisibility(View.INVISIBLE);}
 
@@ -381,6 +394,13 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         if ( lifes <= 0){
 
             endGame();
+
+            // statistics
+            Results.incrementGameResultsThread("games_played");
+            Results.incrementGameResultsThread("games_lose");
+            Results.incrementGameResultByDeltaThread("number_order_game_score", score);
+            Results.incrementGameResultByDeltaThread("global_score", score);
+
             return true;
 
         }
@@ -571,6 +591,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
             Log.d(TAG, "updatingLevel: New Level! new min : "+min+" new max: "
                     +max+" new level : "+level+" Timer now at : " + (timerLength/1000) + " sec.");
         }
+
+        // statistics
+        Results.incrementGameResultsThread("level_upgrades");
 
     }
 

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
+import eu.indiewalkabout.mathbrainer.statistics.Results;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
@@ -406,6 +407,11 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         operation_result_tv.setTextColor(Color.GREEN);
         equals_sign_tv.setTextColor(Color.GREEN);
         gridLayout.setVisibility(View.INVISIBLE);
+
+
+        // statistics
+        Results.incrementGameResultsThread("operations_executed");
+        Results.incrementGameResultsThread("operations_ok");
     }
 
 
@@ -429,6 +435,10 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         operation_result_tv.setTextColor(Color.RED);
         equals_sign_tv.setTextColor(Color.RED);
         gridLayout.setVisibility(View.INVISIBLE);
+
+        // statistics
+        Results.incrementGameResultsThread("operations_executed");
+        Results.incrementGameResultsThread("operations_ko");
     }
 
 
@@ -489,6 +499,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         // update life counts
         lifes--;
 
+        // statistics
+        Results.incrementGameResultsThread("lifes_missed");
+
         Log.d(TAG, "isGameOver: " + lifes);
 
         // Update UI
@@ -497,6 +510,13 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         // check game over condition
         if ( lifes <= 0){
             endGame();
+
+            // statistics
+            Results.incrementGameResultsThread("games_played");
+            Results.incrementGameResultsThread("games_lose");
+            Results.incrementGameResultByDeltaThread("random_op_game_score", score);
+            Results.incrementGameResultByDeltaThread("global_score", score);
+
             return true;
 
         }else {
@@ -562,6 +582,10 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
                 // store correct answer
                 answer      = firstOperand + secondOperand;
+
+                // statistics
+                Results.incrementGameResultsThread("sums");
+
                 break;
 
             case '-':
@@ -571,6 +595,10 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
                 // store correct answer
                 answer = firstOperand - secondOperand;
+
+                // statistics
+                Results.incrementGameResultsThread("differences");
+
                 break;
 
             case '*':
@@ -586,6 +614,10 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
                 // store correct answer
                 answer = firstOperand * secondOperand;
+
+                // statistics
+                Results.incrementGameResultsThread("multiplications");
+
                 break;
 
             case '/':
@@ -594,6 +626,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
                 // store correct answer
                 answer = myUtil.randRange_ApiCheck(divMin, divLMax);
                 firstOperand  = answer * secondOperand;
+
+                // statistics
+                Results.incrementGameResultsThread("divisions");
 
                 break;
             default:
@@ -700,6 +735,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
             timerLength = timerLength + 5000 ;
             Log.d(TAG, "updatingLevel: New Level! new min : "+min+" new max: "+max+" new level : "+level+" Timer now at : " + (timerLength/1000) + " sec.");
         }
+
+        // statistics
+        Results.incrementGameResultsThread("level_upgrades");
 
     }
 
