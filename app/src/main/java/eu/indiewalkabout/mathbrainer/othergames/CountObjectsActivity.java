@@ -61,7 +61,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
 
     private TextView scoreValue_tv, levelValue_tv, instructions_tv, count_obj_instructions_tv,
-                     result_tv;
+                     result_tv,scoreLabel_tv,highscore_label_tv,highscore_value_tv;
     private GridLayout buttonGrid;
     private ArrayList<ImageView> lifesValue_iv ;
     private ImageView backhome_img;
@@ -161,6 +161,10 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         scoreValue_tv             = (TextView)  findViewById(R.id.scoreValue_tv);
         levelValue_tv             = (TextView)  findViewById(R.id.levelValue_tv);
         count_obj_instructions_tv = (TextView)  findViewById(R.id.count_obj_instructions_tv);
+
+        scoreLabel_tv          = (TextView) findViewById(R.id.scoreLabel_tv);
+        highscore_label_tv     = (TextView) findViewById(R.id.high_scoreLabel_tv);
+        highscore_value_tv     = (TextView) findViewById(R.id.high_scoreValue_tv);
 
         // init lifes led images
         lifesValue_iv = new ArrayList<ImageView>();
@@ -420,6 +424,11 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
      * ---------------------------------------------------------------------------------------------
      */
     private void updateScore() {
+        highscore_label_tv.setVisibility(View.INVISIBLE);
+        highscore_value_tv.setVisibility(View.INVISIBLE);
+        scoreLabel_tv.setVisibility(View.VISIBLE);
+        scoreValue_tv.setVisibility(View.VISIBLE);
+
         score += 25;
         scoreValue_tv.setText(Integer.toString(score));
     }

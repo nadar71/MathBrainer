@@ -49,7 +49,10 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
     // view ref
     private TextView             numberToBeDoubled_tv, scoreValue_tv, levelValue_tv,
-                                 result_tv,operationSymbol_tv;
+                                 result_tv,operationSymbol_tv,
+                                 scoreLabel_tv,
+                                 highscore_label_tv,highscore_value_tv;
+
 
     private ArrayList<ImageView> lifesValue_iv ;
 
@@ -118,7 +121,11 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         levelValue_tv          = (TextView)  findViewById(R.id.levelValue_tv);
         playerInput_et         = (EditText)  findViewById(R.id.playerInput_et);
         operationSymbol_tv     = (TextView)  findViewById(R.id.answerDouble_tv);
-        backhome_img           = (ImageView)  findViewById(R.id.backhome_img);
+        backhome_img           = (ImageView) findViewById(R.id.backhome_img);
+
+        scoreLabel_tv          = (TextView) findViewById(R.id.scoreLabel_tv);
+        highscore_label_tv     = (TextView) findViewById(R.id.high_scoreLabel_tv);
+        highscore_value_tv     = (TextView) findViewById(R.id.high_scoreValue_tv);
 
 
         // show result tv
@@ -427,6 +434,11 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
      * ---------------------------------------------------------------------------------------------
      */
     private void updateScore() {
+        highscore_label_tv.setVisibility(View.INVISIBLE);
+        highscore_value_tv.setVisibility(View.INVISIBLE);
+        scoreLabel_tv.setVisibility(View.VISIBLE);
+        scoreValue_tv.setVisibility(View.VISIBLE);
+
         score += 25;
         scoreValue_tv.setText(Integer.toString(score));
     }

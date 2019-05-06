@@ -46,7 +46,8 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
     // view ref
     private TextView scoreValue_tv, levelValue_tv;
     private TextView firstOperand_tv, secondOperand_tv, operationSymbol_tv,
-            result_tv,instructions_tv;
+            result_tv,instructions_tv,scoreLabel_tv,
+            highscore_label_tv,highscore_value_tv;
     private ArrayList<ImageView> lifesValue_iv ;
     private ImageView backhome_img;
 
@@ -150,6 +151,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         gridLayout         = (GridLayout) findViewById(R.id.answerBtnGrid);
         backhome_img       = (ImageView)  findViewById(R.id.backhome_img);
 
+        scoreLabel_tv          = (TextView) findViewById(R.id.scoreLabel_tv);
+        highscore_label_tv     = (TextView) findViewById(R.id.high_scoreLabel_tv);
+        highscore_value_tv     = (TextView) findViewById(R.id.high_scoreValue_tv);
 
         // show result tv
         result_tv = findViewById(R.id.result_tv);
@@ -556,6 +560,10 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
      * ---------------------------------------------------------------------------------------------
      */
     private void updateScore() {
+        highscore_label_tv.setVisibility(View.INVISIBLE);
+        highscore_value_tv.setVisibility(View.INVISIBLE);
+        scoreLabel_tv.setVisibility(View.VISIBLE);
+        scoreValue_tv.setVisibility(View.VISIBLE);
         score += 25;
         scoreValue_tv.setText(Integer.toString(score));
     }
