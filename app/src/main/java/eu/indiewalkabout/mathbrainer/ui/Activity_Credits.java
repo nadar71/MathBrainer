@@ -1,8 +1,7 @@
-package eu.indiewalkabout.mathbrainer;
+package eu.indiewalkabout.mathbrainer.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.preference.Preference;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +14,7 @@ import com.google.android.gms.ads.AdView;
 import com.unity3d.ads.IUnityAdsListener;
 import com.unity3d.ads.UnityAds;
 
-import eu.indiewalkabout.mathbrainer.aritmetic.DoubleNumberActivity;
+import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 

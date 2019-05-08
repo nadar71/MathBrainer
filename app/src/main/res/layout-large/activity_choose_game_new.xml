@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_gray_01"
-    tools:context="eu.indiewalkabout.mathbrainer.ChooseGameActivity">
+    tools:context="eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity">
 
 
     <TextView
@@ -44,8 +44,8 @@
         android:id="@+id/highscores_img"
         android:layout_width="45dp"
         android:layout_height="45dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_insert_chart_white_24dp" />

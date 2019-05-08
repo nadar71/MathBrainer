@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer;
+package eu.indiewalkabout.mathbrainer.ui;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.google.android.gms.ads.AdView;
 
+import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.aritmetic.DoubleNumberActivity;
 import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Choose_Result_Activity;
 import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Write_Result_Activity;

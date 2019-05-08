@@ -11,7 +11,7 @@ import android.widget.Button;
 
 import com.google.android.gms.ads.AdView;
 
-import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
+import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 

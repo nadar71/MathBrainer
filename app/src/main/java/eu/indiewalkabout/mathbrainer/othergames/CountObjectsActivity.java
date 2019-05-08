@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
+import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView;
 import eu.indiewalkabout.mathbrainer.statistics.Results;

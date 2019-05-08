@@ -19,7 +19,7 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
-import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
+import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.statistics.Results;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;

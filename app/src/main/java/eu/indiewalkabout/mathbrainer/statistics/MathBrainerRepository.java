@@ -1,6 +1,8 @@
 package eu.indiewalkabout.mathbrainer.statistics;
 
 
+import android.arch.lifecycle.LiveData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +47,21 @@ public class MathBrainerRepository {
 
         game_results_list.add("global_score");
         game_results_list.add("doublenumber_game_score");
-        game_results_list.add("choose_result_game_score");
-        game_results_list.add("write_result_game_score");
+
+        game_results_list.add("sum_choose_result_game_score");
+        game_results_list.add("diff_choose_result_game_score");
+        game_results_list.add("mult_choose_result_game_score");
+        game_results_list.add("div_choose_result_game_score");
+        game_results_list.add("mix_choose_result_game_score");
+
+
+        game_results_list.add("sum_write_result_game_score");
+        game_results_list.add("diff_write_result_game_score");
+        game_results_list.add("mult_write_result_game_score");
+        game_results_list.add("div_write_result_game_score");
+        game_results_list.add("mix_write_result_game_score");
+
+
         game_results_list.add("random_op_game_score");
         game_results_list.add("count_objects_game_score");
         game_results_list.add("number_order_game_score");
@@ -91,6 +106,12 @@ public class MathBrainerRepository {
     //----------------------------------------------------------------------------------------------
     //  QUERY
     //----------------------------------------------------------------------------------------------
+    // retrieve all games results
+    public LiveData<List<GameResult>> getAllGamesResults(){
+        return mathBrainerDB.MathBrainerDbDao().loadAllGamesResults();
+    }
+
+    // retrieve a specific game result
     public int getGameResult(String gameResult){
         if ( mathBrainerDB.MathBrainerDbDao().isGameResultExists(gameResult) != null ) {
             return mathBrainerDB.MathBrainerDbDao().getGameResult(gameResult);

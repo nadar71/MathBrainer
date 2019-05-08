@@ -11,10 +11,10 @@ import eu.indiewalkabout.mathbrainer.statistics.MathBrainerRepository;
  * -------------------------------------------------------------------------------------------------
  * Class used for access singletons and application context wherever in the app.
  * Just like repository is an interface for all data operations.
- * NB : register in manifest in <Application  android:name=".ApplicationProvider" >... </Application>
+ * NB : register in manifest in <Application  android:name=".SingletonProvider" >... </Application>
  * -------------------------------------------------------------------------------------------------
  */
-public class ApplicationProvider  extends Application {
+public class SingletonProvider extends Application {
 
     private AppExecutors mAppExecutors;
 

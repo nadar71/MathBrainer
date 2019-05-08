@@ -19,7 +19,7 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
-import eu.indiewalkabout.mathbrainer.ChooseGameActivity;
+import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.statistics.Results;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
@@ -96,6 +96,12 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
     // operation symbols
     private char[] symbols = {'+','-','*','/'};
+    private String scoreType;
+    private String[] scoreTypeList = {"sum_choose_result_game_score",
+                                      "diff_choose_result_game_score",
+                                      "mult_choose_result_game_score",
+                                      "div_choose_result_game_score",
+                                      "mix_choose_result_game_score"};
 
     // num of challenge to pass to next level
     // changing while level growing
@@ -239,21 +245,25 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
                 case '+':
                     symbols = new char[1];
                     symbols[0] = '+';
+                    scoreType = scoreTypeList[0];
                     break;
 
                 case '-':
                     symbols = new char[1];
                     symbols[0] = '-';
+                    scoreType = scoreTypeList[1];
                     break;
 
                 case '*':
                     symbols = new char[1];
                     symbols[0] = '*';
+                    scoreType = scoreTypeList[2];
                     break;
 
                 case '/':
                     symbols = new char[1];
                     symbols[0] = '/';
+                    scoreType = scoreTypeList[3];
                     break;
                 default:
                     break;
@@ -265,6 +275,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
             symbols[1] = '-';
             symbols[2] = '*';
             symbols[3] = '/';
+            scoreType  = scoreTypeList[4];
         }
     }
 
@@ -596,7 +607,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
             // statistics
             Results.incrementGameResultsThread("games_played");
             Results.incrementGameResultsThread("games_lose");
-            Results.incrementGameResultByDeltaThread("choose_result_game_score", score);
+            Results.incrementGameResultByDeltaThread(scoreType, score);
             Results.incrementGameResultByDeltaThread("global_score", score);
 
 
