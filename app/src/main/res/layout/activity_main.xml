@@ -7,7 +7,7 @@
     tools:context="eu.indiewalkabout.mathbrainer.notused.MainActivity">
 
     <TextView
-        android:id="@+id/appTitleLabel"
+        android:id="@+id/highscore_title_label_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -28,7 +28,7 @@
         android:text="@string/play"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appTitleLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/highscore_title_label_tv" />
 
     <Button
         android:id="@+id/scoreBtn"

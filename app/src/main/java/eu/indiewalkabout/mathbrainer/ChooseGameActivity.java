@@ -51,6 +51,7 @@ public class ChooseGameActivity extends AppCompatActivity {
     ImageView quickCountBtn;
     ImageView orderBtn;
     ImageView info_img;
+    ImageView highscore_img;
 
 
 
@@ -116,6 +117,7 @@ public class ChooseGameActivity extends AppCompatActivity {
         randomOpsBtn    = findViewById(R.id.randomOpsBtn);
 
         info_img        = findViewById(R.id.info_img);
+        highscore_img   = findViewById(R.id.highscores_img);
 
         // activate clicks on answer buttons
         setBtnPressedListener();
@@ -275,6 +277,15 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseGameActivity.this, Activity_Credits.class);
+                startActivity(intent);
+            }
+        });
+
+
+        highscore_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChooseGameActivity.this, HighscoresActivity.class);
                 startActivity(intent);
             }
         });

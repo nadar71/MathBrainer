@@ -12,12 +12,12 @@
         android:id="@+id/highscore_title_label_tv"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/quicksand"
-        android:text="@string/math_brainer"
+        android:text="@string/highscore_plural_label"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
-        android:textSize="30sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -27,24 +27,14 @@
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
     <ImageView
-        android:id="@+id/info_img"
+        android:id="@+id/home_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_info_black_24dp" />
-
-    <ImageView
-        android:id="@+id/highscores_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_insert_chart_white_24dp" />
+        app:srcCompat="@drawable/ic_home_white_24dp" />
 
 
     <ScrollView
@@ -52,15 +42,14 @@
         android:layout_width="match_parent"
         android:layout_height="301dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/highscore_title_label_tv"
-        app:layout_constraintVertical_bias="0.184">
+        app:layout_constraintTop_toBottomOf="@+id/totalHighScoreLabel_tv">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,7 +69,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
@@ -100,7 +89,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
@@ -122,7 +111,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
@@ -144,7 +133,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
@@ -160,6 +149,61 @@
                     app:layout_constraintVertical_bias="0.538" />
             </TableRow>
 
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/sumWriteScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
+
+                <TextView
+                    android:id="@+id/diffWriteScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
+
+                <TextView
+                    android:id="@+id/multWriteScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
+
+                <TextView
+                    android:id="@+id/divWriteScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
+            </TableRow>
+
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -173,7 +217,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
@@ -193,7 +237,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
@@ -215,7 +259,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
@@ -237,7 +281,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
@@ -253,6 +297,65 @@
                     app:layout_constraintVertical_bias="0.538" />
             </TableRow>
 
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/sumChooseScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
+
+                <TextView
+                    android:id="@+id/diffChooseScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
+
+                <TextView
+                    android:id="@+id/multChooseScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
+
+                <TextView
+                    android:id="@+id/divChooseScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
+            </TableRow>
+
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -266,7 +369,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
@@ -286,7 +389,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
@@ -310,7 +413,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
@@ -334,7 +437,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_rect_simplekeyboard_btn"
                     android:fontFamily="@font/quicksand"
@@ -345,6 +448,63 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/doublingBtn" />
 
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/doublingScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
+
+                <TextView
+                    android:id="@+id/MixedOps_ChooseScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
+
+                <TextView
+                    android:id="@+id/MixedOps_WriteScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
+
+                <TextView
+                    android:id="@+id/randomOpsScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
             </TableRow>
 
             <TableRow
@@ -374,11 +534,82 @@
                     app:srcCompat="@drawable/ordercount_btn" />
 
             </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="71dp">
+
+                <TextView
+                    android:id="@+id/quickCountScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
+
+                <TextView
+                    android:id="@+id/orderScore_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/quicksand"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/_0" />
+
+
+            </TableRow>
+
         </LinearLayout>
     </ScrollView>
 
     <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->
     <!-- THIS APP REAL AdMob banner ID: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+    <TextView
+        android:id="@+id/totalHighScoreLabel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/total_highscore_label"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_green_light"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/highscore_title_label_tv" />
+
+
+    <TextView
+        android:id="@+id/totalHighScore_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/quicksand"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/holo_green_light"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/totalHighScoreLabel_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.141"
+        app:layout_constraintStart_toEndOf="@+id/totalHighScoreLabel_tv"
+        app:layout_constraintTop_toBottomOf="@+id/totalHighScoreLabel_tv"
+        app:layout_constraintVertical_bias="0.562"
+        tools:text="0" />
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
@@ -393,7 +624,7 @@
         ads:layout_constraintBottom_toBottomOf="parent"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintHorizontal_bias="0.0"
-        ads:layout_constraintStart_toStartOf="parent"/>
+        ads:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

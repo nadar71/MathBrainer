@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/appTitleLabel"
+        android:id="@+id/highscore_title_label_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
@@ -251,7 +251,7 @@
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appTitleLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/highscore_title_label_tv" />
 
     <Button
         android:id="@+id/diffChoose_Btn"

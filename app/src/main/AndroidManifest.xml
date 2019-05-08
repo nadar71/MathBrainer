@@ -33,6 +33,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".HighscoresActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"></activity>
+
         <activity
             android:name=".aritmetic.Math_Op_Write_Result_Activity"
             android:configChanges="orientation"

@@ -88,6 +88,7 @@
 
     <string name="total_highscore_label">Total Highscore</string>
     <string name="highscore_label">Highscore</string>
+    <string name="highscore_plural_label">Highscores</string>
 
     <!-- - - - - - - - - - - - - - - - - Choose game btn - - - - - - - - - - - - - - - - - - - - -->
     <string name="choose_result_allop_text"> + - x / \n_ _ _ _</string>
