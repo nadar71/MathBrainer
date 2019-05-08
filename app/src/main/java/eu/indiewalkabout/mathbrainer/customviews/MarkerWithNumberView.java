@@ -10,15 +10,12 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.model.CircularImage;
+import eu.indiewalkabout.mathbrainer.customviews.model.CircularImage;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
 

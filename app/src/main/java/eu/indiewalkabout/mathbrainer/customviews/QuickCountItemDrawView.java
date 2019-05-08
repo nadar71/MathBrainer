@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.indiewalkabout.mathbrainer.util.myUtil;
-import eu.indiewalkabout.mathbrainer.model.CircularImage;
+import eu.indiewalkabout.mathbrainer.customviews.model.CircularImage;
 
 /**
  * ---------------------------------------------------------------------------------------------

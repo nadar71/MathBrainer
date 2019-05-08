@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer.model;
+package eu.indiewalkabout.mathbrainer.customviews.model;
 
 import android.content.Context;
 import android.graphics.Bitmap;

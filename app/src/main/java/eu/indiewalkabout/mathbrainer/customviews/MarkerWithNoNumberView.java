@@ -1,6 +1,5 @@
 package eu.indiewalkabout.mathbrainer.customviews;
 
-import android.app.Activity;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.res.Resources;
@@ -14,14 +13,12 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import eu.indiewalkabout.mathbrainer.R;
-import eu.indiewalkabout.mathbrainer.model.CircularImage;
-import eu.indiewalkabout.mathbrainer.othergames.NumberOrderActivity;
+import eu.indiewalkabout.mathbrainer.customviews.model.CircularImage;
 import eu.indiewalkabout.mathbrainer.util.myUtil;
 
 public class MarkerWithNoNumberView extends View {
