@@ -27,7 +27,7 @@ import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
 import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
-import eu.indiewalkabout.mathbrainer.util.myUtil;
+import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility;
 
 import com.unity3d.ads.IUnityAdsListener;
 import com.unity3d.ads.UnityAds;
@@ -190,8 +190,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         // set first level
         updateLevel();
 
-        // make bottom navigation bar and status bar hide
         hideStatusNavBars();
+
+        showHighscore();
 
     }
 
@@ -211,6 +212,21 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         super.onPause();
         countDownIndicator.countdownReset();
 
+    }
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Set the highscore passed from main
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void showHighscore() {
+        Intent intent = getIntent();
+        if (intent.hasExtra(ChooseGameActivity.HIGHSCORE)) {
+            int value = intent.getIntExtra(ChooseGameActivity.HIGHSCORE,-1);
+            highscore_value_tv.setText(Integer.toString(value));
+        } else {
+            highscore_value_tv.setText("0");
+        }
     }
 
     /**
@@ -280,7 +296,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
             @Override
             public void onClick(View v) {
                 // show unityads randomic
-                myUtil.showUnityAdsRandom(RandomOperationActivity.this);
+                MathBrainerUtility.showUnityAdsRandom(RandomOperationActivity.this);
 
                 Intent intent = new Intent(RandomOperationActivity.this, ChooseGameActivity.class);
                 startActivity(intent);
@@ -524,7 +540,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
             // statistics
             Results.incrementGameResultsThread("games_played");
             Results.incrementGameResultsThread("games_lose");
-            Results.incrementGameResultByDeltaThread("random_op_game_score", score);
+            Results.updateGameResultHighscoreThread("random_op_game_score", score);
             Results.incrementGameResultByDeltaThread("global_score", score);
 
             return true;
@@ -565,7 +581,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         // currentLevelAnswerBtnVisible = levelAnswerBtnTotalNum;
 
         // set operation to be processed
-        operation    = symbols[myUtil.randRange_ApiCheck(0, symbols.length-1)];
+        operation    = symbols[MathBrainerUtility.randRange_ApiCheck(0, symbols.length-1)];
 
         // calculate the quiz operation
         calculateOperation();
@@ -587,8 +603,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         switch(operation){
             case '+':
                 // set operands to be processed
-                firstOperand  = myUtil.randRange_ApiCheck(min, max);
-                secondOperand = myUtil.randRange_ApiCheck(min, max);
+                firstOperand  = MathBrainerUtility.randRange_ApiCheck(min, max);
+                secondOperand = MathBrainerUtility.randRange_ApiCheck(min, max);
 
                 // store correct answer
                 answer      = firstOperand + secondOperand;
@@ -600,8 +616,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
             case '-':
                 // set operands to be processed
-                firstOperand  = myUtil.randRange_ApiCheck(min, max);
-                secondOperand = myUtil.randRange_ApiCheck(min, firstOperand);
+                firstOperand  = MathBrainerUtility.randRange_ApiCheck(min, max);
+                secondOperand = MathBrainerUtility.randRange_ApiCheck(min, firstOperand);
 
                 // store correct answer
                 answer = firstOperand - secondOperand;
@@ -613,13 +629,13 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
             case '*':
                 // set operands to be processed
-                int guess = myUtil.randRange_ApiCheck(1, 2);
+                int guess = MathBrainerUtility.randRange_ApiCheck(1, 2);
                 if (guess == 1){
-                    firstOperand  = myUtil.randRange_ApiCheck(multMin, multHMax);
-                    secondOperand = myUtil.randRange_ApiCheck(multMin, multLMax);
+                    firstOperand  = MathBrainerUtility.randRange_ApiCheck(multMin, multHMax);
+                    secondOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multLMax);
                 }else{
-                    firstOperand  = myUtil.randRange_ApiCheck(multMin, multLMax);
-                    secondOperand = myUtil.randRange_ApiCheck(multMin, multHMax);
+                    firstOperand  = MathBrainerUtility.randRange_ApiCheck(multMin, multLMax);
+                    secondOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multHMax);
                 }
 
                 // store correct answer
@@ -632,9 +648,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
             case '/':
                 // set operands to be processed
-                secondOperand = myUtil.randRange_ApiCheck(divMin, divHMax);
+                secondOperand = MathBrainerUtility.randRange_ApiCheck(divMin, divHMax);
                 // store correct answer
-                answer = myUtil.randRange_ApiCheck(divMin, divLMax);
+                answer = MathBrainerUtility.randRange_ApiCheck(divMin, divLMax);
                 firstOperand  = answer * secondOperand;
 
                 // statistics
@@ -811,7 +827,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         countDownIndicator.countdownReset();
 
         // show unityads randomic
-        myUtil.showUnityAdsRandom(this);
+        MathBrainerUtility.showUnityAdsRandom(this);
 
     }
 }

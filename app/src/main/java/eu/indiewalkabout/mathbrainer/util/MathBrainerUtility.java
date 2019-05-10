@@ -6,26 +6,27 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.util.Log;
 
 import com.unity3d.ads.UnityAds;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+
+import eu.indiewalkabout.mathbrainer.statistics.GameResult;
 
 /**
  * ---------------------------------------------------------------------------------------------
  * Helper class for utilities
  * ---------------------------------------------------------------------------------------------
  */
-public class myUtil {
+public class MathBrainerUtility {
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -53,7 +54,7 @@ public class myUtil {
      * ---------------------------------------------------------------------------------------------
      */
     public static int randomSignChooser(){
-        int result = myUtil.randRange_ApiCheck(1, 2);
+        int result = MathBrainerUtility.randRange_ApiCheck(1, 2);
         if (result == 1)
             return -1;
         else
@@ -159,7 +160,7 @@ public class myUtil {
      * ---------------------------------------------------------------------------------------------
      */
     public static void showUnityAdsRandom(Activity activity){
-        int guess = myUtil.randRange_ApiCheck(1,10);
+        int guess = MathBrainerUtility.randRange_ApiCheck(1,10);
         if (guess <= 4) {
             if (UnityAds.isReady()){
                 UnityAds.show(activity);
@@ -168,4 +169,18 @@ public class myUtil {
     }
 
 
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Return game result value for a given game result in list
+     * ---------------------------------------------------------------------------------------------
+     */
+    public static int getGameResultsFromList(String gameResultKey, List<GameResult> resultsList){
+        for(GameResult g : resultsList){
+            if (g.getResult_name().equals(gameResultKey)) {
+                return g.getResult_value();
+            }
+        }
+        return -1;
+    }
 }

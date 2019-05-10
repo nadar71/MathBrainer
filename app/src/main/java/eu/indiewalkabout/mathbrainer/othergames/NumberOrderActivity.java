@@ -30,7 +30,7 @@ import eu.indiewalkabout.mathbrainer.statistics.Results;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
-import eu.indiewalkabout.mathbrainer.util.myUtil;
+import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility;
 
 import com.unity3d.ads.IUnityAdsListener;
 import com.unity3d.ads.UnityAds;
@@ -183,8 +183,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         // set first level
         updateLevel();
 
-        // make bottom navigation bar and status bar hide
         hideStatusNavBars();
+
+        showHighscore();
 
     }
 
@@ -206,6 +207,23 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         // essential to show another quiz without loosing lifes in case of onPause
         restartAfterPause(1);
     }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Set the highscore passed from main
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void showHighscore() {
+        Intent intent = getIntent();
+        if (intent.hasExtra(ChooseGameActivity.HIGHSCORE)) {
+            int value = intent.getIntExtra(ChooseGameActivity.HIGHSCORE,-1);
+            highscore_value_tv.setText(Integer.toString(value));
+        } else {
+            highscore_value_tv.setText("0");
+        }
+    }
+
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -242,7 +260,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
             @Override
             public void onClick(View v) {
                 // show unityads randomic
-                myUtil.showUnityAdsRandom(NumberOrderActivity.this);
+                MathBrainerUtility.showUnityAdsRandom(NumberOrderActivity.this);
 
                 Intent intent = new Intent(NumberOrderActivity.this, ChooseGameActivity.class);
                 startActivity(intent);
@@ -408,7 +426,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
             // statistics
             Results.incrementGameResultsThread("games_played");
             Results.incrementGameResultsThread("games_lose");
-            Results.incrementGameResultByDeltaThread("number_order_game_score", score);
+            Results.updateGameResultHighscoreThread("number_order_game_score", score);
             Results.incrementGameResultByDeltaThread("global_score", score);
 
             return true;
@@ -445,7 +463,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         drawquiz_challenge.resetGame();
 
         // show the items in number defined by level
-        itemsToCount = myUtil.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),(int)maxItemsToCount);
+        itemsToCount = MathBrainerUtility.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),(int)maxItemsToCount);
         drawquiz.redraw(itemsToCount);
         drawquiz_challenge.redraw(itemsToCount);
 
@@ -684,7 +702,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         super.onBackPressed();
 
         // show unityads randomic
-        myUtil.showUnityAdsRandom(this);
+        MathBrainerUtility.showUnityAdsRandom(this);
 
     }
 

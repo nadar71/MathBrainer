@@ -16,7 +16,7 @@ import java.util.List;
 
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.customviews.model.CircularImage;
-import eu.indiewalkabout.mathbrainer.util.myUtil;
+import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility;
 
 
 public class MarkerWithNumberView extends View {
@@ -116,13 +116,13 @@ public class MarkerWithNumberView extends View {
             Bitmap bitmapWithNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
 
             // draw text on bitmap
-            myUtil.drawTextToBitmap(context, bitmapWithNumber, Integer.toString(i));
+            MathBrainerUtility.drawTextToBitmap(context, bitmapWithNumber, Integer.toString(i));
 
             boolean isOverlap = true;
 
             while (isOverlap) {
-                randX = myUtil.randRange_ApiCheck(offsetFromBorder, (int) (mWidth - offsetFromBorder));
-                randY = myUtil.randRange_ApiCheck(offsetFromBorder, (int) (mHeight - offsetFromBorder));
+                randX = MathBrainerUtility.randRange_ApiCheck(offsetFromBorder, (int) (mWidth - offsetFromBorder));
+                randY = MathBrainerUtility.randRange_ApiCheck(offsetFromBorder, (int) (mHeight - offsetFromBorder));
                 isOverlap = isOverlapping(randX, randY, size);
             }
 
@@ -133,7 +133,7 @@ public class MarkerWithNumberView extends View {
             imgNumberList.add(imgWithNumber);
 
             // draw on canvas marker with  number on them
-            canvas.drawBitmap(myUtil.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
+            canvas.drawBitmap(MathBrainerUtility.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
                     randX, randY, paint);
 
         }

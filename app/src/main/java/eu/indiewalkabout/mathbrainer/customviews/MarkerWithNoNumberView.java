@@ -19,7 +19,7 @@ import java.util.List;
 
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.customviews.model.CircularImage;
-import eu.indiewalkabout.mathbrainer.util.myUtil;
+import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility;
 
 public class MarkerWithNoNumberView extends View {
     private static final String TAG = MarkerWithNoNumberView.class.getSimpleName();
@@ -230,7 +230,7 @@ public class MarkerWithNoNumberView extends View {
             imgNoNumberList.add(imgWithNoNumber);
 
             // draw on canvas marker with no number on them
-            canvas.drawBitmap(myUtil.resizeBitmapByScale(bitmapWithNoNumber, imageScaleXY),
+            canvas.drawBitmap(MathBrainerUtility.resizeBitmapByScale(bitmapWithNoNumber, imageScaleXY),
                     x, y, paint);
         }
 
@@ -323,7 +323,7 @@ public class MarkerWithNoNumberView extends View {
         Bitmap bitmapWithNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
 
         // draw text on bitmap
-        myUtil.drawTextToBitmap(context, bitmapWithNumber, Integer.toString(number));
+        MathBrainerUtility.drawTextToBitmap(context, bitmapWithNumber, Integer.toString(number));
 
         // create an image view and store in solutions list
         CircularImage solutionsImg = new CircularImage(context, img.get_x(), img.get_y(), img.getSize());

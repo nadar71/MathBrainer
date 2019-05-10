@@ -1,6 +1,11 @@
 package eu.indiewalkabout.mathbrainer.ui;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +15,8 @@ import android.widget.ImageView;
 
 import com.google.android.gms.ads.AdView;
 
+import java.util.List;
+
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.aritmetic.DoubleNumberActivity;
 import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Choose_Result_Activity;
@@ -17,8 +24,10 @@ import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Write_Result_Activity;
 import eu.indiewalkabout.mathbrainer.aritmetic.RandomOperationActivity;
 import eu.indiewalkabout.mathbrainer.othergames.CountObjectsActivity;
 import eu.indiewalkabout.mathbrainer.othergames.NumberOrderActivity;
+import eu.indiewalkabout.mathbrainer.statistics.GameResult;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.statistics.Results;
+import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility;
 
 /**
  * ---------------------------------------------------------------------------------------------
@@ -27,10 +36,14 @@ import eu.indiewalkabout.mathbrainer.statistics.Results;
  */
 public class ChooseGameActivity extends AppCompatActivity {
 
+    private static final String TAG = ChooseGameActivity.class.getSimpleName();
+
     // admob banner ref
     private AdView mAdView;
 
     public static final String OPERATION_KEY = "operation";
+    public static final String HIGHSCORE = "highscore";
+
 
     // Button refs
     Button sumChooseBtn;
@@ -53,6 +66,27 @@ public class ChooseGameActivity extends AppCompatActivity {
     ImageView orderBtn;
     ImageView info_img;
     ImageView highscore_img;
+
+    // highscores value
+    int totalHighScore_value;
+    int sumWriteHighscore_value;
+    int diffWriteHighscore_value;
+    int multWriteHighscore_value;
+    int divWriteHighscore_value;
+    int sumChooseHighscore_value;
+    int diffChooseHighscore_value;
+    int multChooseHighscore_value;
+    int divChooseHighscore_value;
+    int doublingHighscore_value;
+    int mixedOps_chooseHighscore_value;
+    int mixedOps_writeHighscore_value;
+    int randomOpsHighscore_value;
+    int quickCountHighscore_value;
+    int orderHighscore_value;
+
+
+    // game results list
+    List<GameResult> gameResults;
 
 
 
@@ -120,10 +154,12 @@ public class ChooseGameActivity extends AppCompatActivity {
         info_img        = findViewById(R.id.info_img);
         highscore_img   = findViewById(R.id.highscores_img);
 
-        // activate clicks on answer buttons
+        // keep scores to pass to games highscores visualization
+        updateGamesScores();
+
+        // activate all btn
         setBtnPressedListener();
 
-        // make bottom navigation bar and status bar hide
         hideStatusNavBars();
 
     }
@@ -141,9 +177,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         sumChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Intent intent = new Intent(ChooseGameActivity.this, Sum_Choose_Result_Activity.class);
                 Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Choose_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"+");
+                intent.putExtra(HIGHSCORE,sumChooseHighscore_value);
                 startActivity(intent);
             }
         });
@@ -151,9 +187,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         diffChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Intent intent = new Intent(ChooseGameActivity.this, Diff_Choose_Result_Activity.class);
                 Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Choose_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"-");
+                intent.putExtra(HIGHSCORE,diffChooseHighscore_value);
                 startActivity(intent);
             }
         });
@@ -162,9 +198,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         multChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Intent intent = new Intent(ChooseGameActivity.this, Mult_Choose_Result_Activity.class);
                 Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Choose_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"*");
+                intent.putExtra(HIGHSCORE,multChooseHighscore_value);
                 startActivity(intent);
             }
         });
@@ -173,9 +209,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         divChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Intent intent = new Intent(ChooseGameActivity.this, Div_Choose_Result_Activity.class);
                 Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Choose_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"/");
+                intent.putExtra(HIGHSCORE,divChooseHighscore_value);
                 startActivity(intent);
             }
         });
@@ -183,9 +219,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         sumWriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Intent intent = new Intent(ChooseGameActivity.this, Sum_Write_Result_Activity.class);
                 Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Write_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"+");
+                intent.putExtra(HIGHSCORE,sumWriteHighscore_value);
                 startActivity(intent);
             }
         });
@@ -194,9 +230,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         diffWriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Intent intent = new Intent(ChooseGameActivity.this, Diff_Write_Result_Activity.class);
                 Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Write_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"-");
+                intent.putExtra(HIGHSCORE,diffWriteHighscore_value);
                 startActivity(intent);
             }
         });
@@ -205,9 +241,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         multWriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Intent intent = new Intent(ChooseGameActivity.this, Mult_Write_Result_Activity.class);
                 Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Write_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"*");
+                intent.putExtra(HIGHSCORE,multWriteHighscore_value);
                 startActivity(intent);
             }
         });
@@ -215,9 +251,9 @@ public class ChooseGameActivity extends AppCompatActivity {
         divWriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Intent intent = new Intent(ChooseGameActivity.this, Div_Write_Result_Activity.class);
                 Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Write_Result_Activity.class);
                 intent.putExtra(OPERATION_KEY,"/");
+                intent.putExtra(HIGHSCORE,divWriteHighscore_value);
                 startActivity(intent);
             }
         });
@@ -227,6 +263,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Write_Result_Activity.class);
+                intent.putExtra(HIGHSCORE,mixedOps_writeHighscore_value);
                 startActivity(intent);
             }
         });
@@ -235,6 +272,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseGameActivity.this, Math_Op_Choose_Result_Activity.class);
+                intent.putExtra(HIGHSCORE,mixedOps_chooseHighscore_value);
                 startActivity(intent);
             }
         });
@@ -243,6 +281,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseGameActivity.this,CountObjectsActivity.class);
+                intent.putExtra(HIGHSCORE,quickCountHighscore_value);
                 startActivity(intent);
             }
         });
@@ -252,6 +291,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseGameActivity.this,DoubleNumberActivity.class);
+                intent.putExtra(HIGHSCORE,doublingHighscore_value);
                 startActivity(intent);
             }
         });
@@ -261,6 +301,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseGameActivity.this,NumberOrderActivity.class);
+                intent.putExtra(HIGHSCORE,orderHighscore_value);
                 startActivity(intent);
             }
         });
@@ -269,6 +310,7 @@ public class ChooseGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseGameActivity.this,RandomOperationActivity.class);
+                intent.putExtra(HIGHSCORE,randomOpsHighscore_value);
                 startActivity(intent);
             }
         });
@@ -292,6 +334,64 @@ public class ChooseGameActivity extends AppCompatActivity {
         });
 
     }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Used to reload from db the tasks list and update the list view in screen
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void updateGamesScores() {
+        HighscoresViewModelFactory factory = new HighscoresViewModelFactory();
+
+        // keep updated with LiveData/ViewModel
+        HighScoresViewModel viewModel = ViewModelProviders.of(this,factory).get(HighScoresViewModel.class);
+
+        // retrieve data
+        LiveData<List<GameResult>> gameResults = viewModel.getGameResultsList();
+
+        // get data from observer, update view
+        gameResults.observe(this, new Observer<List<GameResult>>() {
+            @Override
+            public void onChanged(@Nullable List<GameResult> gameResultEntries) {
+                Log.d(TAG, "LiveData : updated game results received. ");
+                setGameResults(gameResultEntries);
+            }
+        });
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Put game result in textview
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void setGameResults(List<GameResult> gameResults){
+
+        this.gameResults = gameResults;
+
+        // set vars
+        totalHighScore_value           = MathBrainerUtility.getGameResultsFromList("global_score",gameResults);
+
+        sumWriteHighscore_value        = MathBrainerUtility.getGameResultsFromList("sum_write_result_game_score",gameResults);
+        diffWriteHighscore_value       = MathBrainerUtility.getGameResultsFromList("diff_write_result_game_score",gameResults);
+        multWriteHighscore_value       = MathBrainerUtility.getGameResultsFromList("mult_write_result_game_score",gameResults);
+        divWriteHighscore_value        = MathBrainerUtility.getGameResultsFromList("div_write_result_game_score",gameResults);
+
+        sumChooseHighscore_value       = MathBrainerUtility.getGameResultsFromList("sum_choose_result_game_score",gameResults);
+        diffChooseHighscore_value      = MathBrainerUtility.getGameResultsFromList("diff_choose_result_game_score",gameResults);
+        multChooseHighscore_value      = MathBrainerUtility.getGameResultsFromList("mult_choose_result_game_score",gameResults);
+        divChooseHighscore_value       = MathBrainerUtility.getGameResultsFromList("div_choose_result_game_score",gameResults);
+
+        doublingHighscore_value        = MathBrainerUtility.getGameResultsFromList("doublenumber_game_score",gameResults);
+        mixedOps_chooseHighscore_value = MathBrainerUtility.getGameResultsFromList("mix_choose_result_game_score",gameResults);
+        mixedOps_writeHighscore_value  = MathBrainerUtility.getGameResultsFromList("mix_write_result_game_score",gameResults);
+        randomOpsHighscore_value       = MathBrainerUtility.getGameResultsFromList("random_op_game_score",gameResults);
+
+        quickCountHighscore_value      = MathBrainerUtility.getGameResultsFromList("count_objects_game_score",gameResults);
+        orderHighscore_value           = MathBrainerUtility.getGameResultsFromList("number_order_game_score",gameResults);
+    }
+
 
 
 

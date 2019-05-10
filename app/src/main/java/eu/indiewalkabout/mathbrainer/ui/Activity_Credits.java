@@ -16,7 +16,7 @@ import com.unity3d.ads.UnityAds;
 
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
-import eu.indiewalkabout.mathbrainer.util.myUtil;
+import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility;
 
 public class Activity_Credits extends AppCompatActivity {
 
@@ -103,7 +103,7 @@ public class Activity_Credits extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // show unityads randomic
-                myUtil.showUnityAdsRandom(Activity_Credits.this);
+                MathBrainerUtility.showUnityAdsRandom(Activity_Credits.this);
 
                 Intent intent = new Intent(Activity_Credits.this, ChooseGameActivity.class);
                 startActivity(intent);
@@ -206,7 +206,7 @@ public class Activity_Credits extends AppCompatActivity {
         super.onBackPressed();
 
         // show unityads randomic
-        myUtil.showUnityAdsRandom(this);
+        MathBrainerUtility.showUnityAdsRandom(this);
 
     }
 }

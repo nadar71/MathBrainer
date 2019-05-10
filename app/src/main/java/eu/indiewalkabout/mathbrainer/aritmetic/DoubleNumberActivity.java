@@ -126,6 +126,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         scoreLabel_tv          = (TextView) findViewById(R.id.scoreLabel_tv);
         highscore_label_tv     = (TextView) findViewById(R.id.high_scoreLabel_tv);
         highscore_value_tv     = (TextView) findViewById(R.id.high_scoreValue_tv);
+        highscore_value_tv.setText("-1"); // debug init
 
 
         // show result tv
@@ -173,15 +174,16 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
             @Override
             public void onClick(View v) {
                 // show unityads randomic
-                myUtil.showUnityAdsRandom(DoubleNumberActivity.this);
+                MathBrainerUtility.showUnityAdsRandom(DoubleNumberActivity.this);
 
                 Intent intent = new Intent(DoubleNumberActivity.this, ChooseGameActivity.class);
                 startActivity(intent);
             }
         });
 
-        // make bottom navigation bar and status bar hide
         hideStatusNavBars();
+
+        showHighscore();
 
 
     }
@@ -202,6 +204,23 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         super.onPause();
         countDownIndicator.countdownReset();
 
+    }
+
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Set the highscore passed from main
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void showHighscore() {
+        Intent intent = getIntent();
+        if (intent.hasExtra(ChooseGameActivity.HIGHSCORE)) {
+            int value = intent.getIntExtra(ChooseGameActivity.HIGHSCORE,-1);
+            highscore_value_tv.setText(Integer.toString(value));
+        } else {
+            highscore_value_tv.setText("0");
+        }
     }
 
     /**
@@ -471,7 +490,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
             // statistics
             Results.incrementGameResultsThread("games_played");
             Results.incrementGameResultsThread("games_lose");
-            Results.incrementGameResultByDeltaThread("doublenumber_game_score", score);
+            Results.updateGameResultHighscoreThread("doublenumber_game_score", score);
             Results.incrementGameResultByDeltaThread("global_score", score);
 
             return true;
@@ -505,7 +524,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     @Override
     public void newChallenge() {
         // set the number to be doubled
-        numToBeDoubled = myUtil.randRange_ApiCheck(min, max);
+        numToBeDoubled = MathBrainerUtility.randRange_ApiCheck(min, max);
         numberToBeDoubled_tv.setText(Integer.toString(numToBeDoubled));
 
         // clean edit text field
@@ -659,7 +678,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         countDownIndicator.countdownReset();
 
         // show unityads randomic
-        myUtil.showUnityAdsRandom(this);
+        MathBrainerUtility.showUnityAdsRandom(this);
 
     }
 

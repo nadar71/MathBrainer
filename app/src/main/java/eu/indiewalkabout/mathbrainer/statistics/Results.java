@@ -60,6 +60,24 @@ public class Results {
 
 
 
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Update highscore for a game result if last score is greater
+     * ---------------------------------------------------------------------------------------------
+     */
+    public static void updateGameResultHighscoreThread(final String gameResultsName, final int lastScore){
+        AppExecutors executorsInstance = ((SingletonProvider) SingletonProvider.getsContext()).getAppExecutorsInstance();
+        executorsInstance.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                MathBrainerRepository repository = ((SingletonProvider) SingletonProvider.getsContext()).getRepository();
+                repository.updateGameResultHighscore(gameResultsName, lastScore);
+            }
+        });
+    }
+
+
+
 
 
 

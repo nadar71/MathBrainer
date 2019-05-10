@@ -37,7 +37,7 @@ import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog;
 import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
-import eu.indiewalkabout.mathbrainer.util.myUtil;
+import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility;
 
 
 import com.unity3d.ads.IUnityAdsListener;
@@ -190,8 +190,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         // set first level
         updateLevel();
 
-        // make bottom navigation bar and status bar hide
         hideStatusNavBars();
+
+        showHighscore();
 
     }
 
@@ -206,6 +207,21 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
     }
 
 
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Set the highscore passed from main
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void showHighscore() {
+        Intent intent = getIntent();
+        if (intent.hasExtra(ChooseGameActivity.HIGHSCORE)) {
+            int value = intent.getIntExtra(ChooseGameActivity.HIGHSCORE,-1);
+            highscore_value_tv.setText(Integer.toString(value));
+        } else {
+            highscore_value_tv.setText("0");
+        }
+    }
 
 
     /**
@@ -282,7 +298,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
             @Override
             public void onClick(View v) {
                 // show unityads randomic
-                myUtil.showUnityAdsRandom(CountObjectsActivity.this);
+                MathBrainerUtility.showUnityAdsRandom(CountObjectsActivity.this);
 
                 Intent intent = new Intent(CountObjectsActivity.this, ChooseGameActivity.class);
                 startActivity(intent);
@@ -464,7 +480,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
             // statistics
             Results.incrementGameResultsThread("games_played");
             Results.incrementGameResultsThread("games_lose");
-            Results.incrementGameResultByDeltaThread("count_objects_game_score", score);
+            Results.updateGameResultHighscoreThread("count_objects_game_score", score);
             Results.incrementGameResultByDeltaThread("global_score", score);
 
             return true;
@@ -500,7 +516,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         result_tv.setVisibility(View.INVISIBLE);
 
         // show the items in number defined by level
-        itemsToCount = myUtil.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),maxItemsToCount);
+        itemsToCount = MathBrainerUtility.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),maxItemsToCount);
         drawquiz.redraw(itemsToCount);
 
         // show items to count
@@ -577,7 +593,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         answerOK = itemsToCount;
 
         // choose the button where put the correct answer
-        correctBtnNumber = myUtil.randRange_ApiCheck(minAnswerBtnNum, maxAnswerBtnNum);
+        correctBtnNumber = MathBrainerUtility.randRange_ApiCheck(minAnswerBtnNum, maxAnswerBtnNum);
         Button tmpBtn    = getTheBtnNumber(correctBtnNumber);
         tmpBtn.setText(Integer.toString(answerOK));
 
@@ -609,9 +625,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
      * ---------------------------------------------------------------------------------------------
      */
     private int randomOffsetSum(){
-        int result = myUtil.randRange_ApiCheck(1, (int)(offset * 1.0));
+        int result = MathBrainerUtility.randRange_ApiCheck(1, (int)(offset * 1.0));
         if ( (result >= 1) && (result <= 3) ) {
-            int sign = myUtil.randomSignChooser();
+            int sign = MathBrainerUtility.randomSignChooser();
             return answerOK + sign * result;
         }
         return answerOK + result;
@@ -786,7 +802,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         super.onBackPressed();
 
         // show unityads randomic
-        myUtil.showUnityAdsRandom(this);
+        MathBrainerUtility.showUnityAdsRandom(this);
 
     }
 
@@ -874,9 +890,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
                 // draw on canvas
                 item = item.copy(Bitmap.Config.ARGB_8888, true);
-                int randX = myUtil.randRange_ApiCheck(15, validDrawAreaItemsWidth);
-                int randY = myUtil.randRange_ApiCheck(15, validDrawAreaItemsHeight);
-                ourCanvas.drawBitmap(myUtil.resizeBitmapByScale(item, imageScaleXY),
+                int randX = MathBrainerUtility.randRange_ApiCheck(15, validDrawAreaItemsWidth);
+                int randY = MathBrainerUtility.randRange_ApiCheck(15, validDrawAreaItemsHeight);
+                ourCanvas.drawBitmap(MathBrainerUtility.resizeBitmapByScale(item, imageScaleXY),
                         randX, randY, paint);
 
             } catch (IOException e) {
@@ -891,9 +907,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         // dummy check from drawable
         Bitmap a = BitmapFactory.decodeResource(getResources(), R.drawable.memo101);
         a = a.copy(Bitmap.Config.ARGB_8888, true);
-        int randX = myUtil.randRange_ApiCheck(15, validDrawAreaItemsWidth);
-        int randY = myUtil.randRange_ApiCheck(15, validDrawAreaItemsHeight);
-        ourCanvas.drawBitmap(myUtil.resizeBitmapByScale(a, imageScaleXY, false, 100, 100), randX, randY, paint);
+        int randX = MathBrainerUtility.randRange_ApiCheck(15, validDrawAreaItemsWidth);
+        int randY = MathBrainerUtility.randRange_ApiCheck(15, validDrawAreaItemsHeight);
+        ourCanvas.drawBitmap(MathBrainerUtility.resizeBitmapByScale(a, imageScaleXY, false, 100, 100), randX, randY, paint);
         */
 
         // invalidate view for redrawing

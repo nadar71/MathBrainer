@@ -15,7 +15,7 @@ import java.util.List;
 
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.customviews.model.CircularImage;
-import eu.indiewalkabout.mathbrainer.util.myUtil;
+import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility;
 
 public class SolutionsView extends View {
     private static final String TAG = SolutionsView.class.getSimpleName();
@@ -119,12 +119,12 @@ public class SolutionsView extends View {
                 Bitmap bitmapWithNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
 
                 // draw text on bitmap
-                myUtil.drawTextToBitmap(context, bitmapWithNumber,
+                MathBrainerUtility.drawTextToBitmap(context, bitmapWithNumber,
                         Integer.toString(solutionImg.get_number()));
 
 
                 // draw on canvas marker with  number on them
-                canvas.drawBitmap(myUtil.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
+                canvas.drawBitmap(MathBrainerUtility.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
                         solutionImg.get_x(), solutionImg.get_y(), paint);
             }
         }

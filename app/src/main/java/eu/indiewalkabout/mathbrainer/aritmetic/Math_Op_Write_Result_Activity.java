@@ -30,8 +30,8 @@ import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.CountDownIndicator;
 import eu.indiewalkabout.mathbrainer.util.GameOverDialog;
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions;
+import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility;
 import eu.indiewalkabout.mathbrainer.util.MyKeyboard;
-import eu.indiewalkabout.mathbrainer.util.myUtil;
 
 import com.unity3d.ads.IUnityAdsListener;
 import com.unity3d.ads.UnityAds;
@@ -200,7 +200,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             @Override
             public void onClick(View v) {
                 // show unityads randomic
-                myUtil.showUnityAdsRandom(Math_Op_Write_Result_Activity.this);
+                MathBrainerUtility.showUnityAdsRandom(Math_Op_Write_Result_Activity.this);
 
                 Intent intent = new Intent(Math_Op_Write_Result_Activity.this, ChooseGameActivity.class);
                 startActivity(intent);
@@ -208,8 +208,9 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         });
 
 
-        // make bottom navigation bar and status bar hide
         hideStatusNavBars();
+
+        showHighscore();
 
     }
 
@@ -232,6 +233,20 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
     }
 
 
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Set the highscore passed from main
+     * ---------------------------------------------------------------------------------------------
+     */
+    private void showHighscore() {
+        Intent intent = getIntent();
+        if (intent.hasExtra(ChooseGameActivity.HIGHSCORE)) {
+            int value = intent.getIntExtra(ChooseGameActivity.HIGHSCORE,-1);
+            highscore_value_tv.setText(Integer.toString(value));
+        } else {
+            highscore_value_tv.setText("0");
+        }
+    }
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -552,7 +567,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             // statistics
             Results.incrementGameResultsThread("games_played");
             Results.incrementGameResultsThread("games_lose");
-            Results.incrementGameResultByDeltaThread(scoreType, score);
+            Results.updateGameResultHighscoreThread(scoreType, score);
             Results.incrementGameResultByDeltaThread("global_score", score);
 
             return true;
@@ -586,7 +601,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
     @Override
     public void newChallenge() {
         // set operation to be processed; general case symbols.length-1 > 1
-        operation = symbols[myUtil.randRange_ApiCheck(0, symbols.length - 1)];
+        operation = symbols[MathBrainerUtility.randRange_ApiCheck(0, symbols.length - 1)];
 
         // calculate the quiz operation
         calculateOperation();
@@ -612,8 +627,8 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             case '+':
                 //operationSymbol_tv.setText("+");
                 // set operands to be processed
-                firstOperand  = myUtil.randRange_ApiCheck(min, max);
-                secondOperand = myUtil.randRange_ApiCheck(min, max);
+                firstOperand  = MathBrainerUtility.randRange_ApiCheck(min, max);
+                secondOperand = MathBrainerUtility.randRange_ApiCheck(min, max);
 
                 // store correct answer
                 answerOK = firstOperand + secondOperand;
@@ -628,8 +643,8 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             case '-':
                 //operationSymbol_tv.setText("-");
                 // set operands to be processed
-                firstOperand  = myUtil.randRange_ApiCheck(min, max);
-                secondOperand = myUtil.randRange_ApiCheck(min, firstOperand);
+                firstOperand  = MathBrainerUtility.randRange_ApiCheck(min, max);
+                secondOperand = MathBrainerUtility.randRange_ApiCheck(min, firstOperand);
 
                 // store correct answer
                 answerOK = firstOperand - secondOperand;
@@ -644,13 +659,13 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             case '*':
                 //operationSymbol_tv.setText("*");
                 // set operands to be processed
-                int guess = myUtil.randRange_ApiCheck(1, 2);
+                int guess = MathBrainerUtility.randRange_ApiCheck(1, 2);
                 if (guess == 1){
-                    firstOperand  = myUtil.randRange_ApiCheck(multMin, multHMax);
-                    secondOperand = myUtil.randRange_ApiCheck(multMin, multLMax);
+                    firstOperand  = MathBrainerUtility.randRange_ApiCheck(multMin, multHMax);
+                    secondOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multLMax);
                 }else{
-                    firstOperand  = myUtil.randRange_ApiCheck(multMin, multLMax);
-                    secondOperand = myUtil.randRange_ApiCheck(multMin, multHMax);
+                    firstOperand  = MathBrainerUtility.randRange_ApiCheck(multMin, multLMax);
+                    secondOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multHMax);
                 }
 
                 // store correct answer
@@ -666,9 +681,9 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             case '/':
                 //operationSymbol_tv.setText("/");
                 // set operands to be processed
-                secondOperand = myUtil.randRange_ApiCheck(divMin, divHMax);
+                secondOperand = MathBrainerUtility.randRange_ApiCheck(divMin, divHMax);
                 // store correct answer
-                answerOK = myUtil.randRange_ApiCheck(divMin, divLMax);
+                answerOK = MathBrainerUtility.randRange_ApiCheck(divMin, divLMax);
                 firstOperand  = answerOK * secondOperand;
 
                 operationSymbol_tv.setText(Character.toString(operation));
@@ -846,7 +861,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         countDownIndicator.countdownReset();
 
         // show unityads randomic
-        myUtil.showUnityAdsRandom(this);
+        MathBrainerUtility.showUnityAdsRandom(this);
 
     }
 

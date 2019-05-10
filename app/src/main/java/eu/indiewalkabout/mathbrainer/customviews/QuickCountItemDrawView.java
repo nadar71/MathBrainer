@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.indiewalkabout.mathbrainer.util.myUtil;
+import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility;
 import eu.indiewalkabout.mathbrainer.customviews.model.CircularImage;
 
 /**
@@ -124,8 +124,8 @@ public class QuickCountItemDrawView extends View {
                 boolean isOverlap = true;
 
                 while (isOverlap) {
-                    randX = myUtil.randRange_ApiCheck(offsetFromBorder, (int) (mWidth - offsetFromBorder));
-                    randY = myUtil.randRange_ApiCheck(offsetFromBorder, (int) (mHeight - offsetFromBorder));
+                    randX = MathBrainerUtility.randRange_ApiCheck(offsetFromBorder, (int) (mWidth - offsetFromBorder));
+                    randY = MathBrainerUtility.randRange_ApiCheck(offsetFromBorder, (int) (mHeight - offsetFromBorder));
                     isOverlap = isOverlapping(randX,randY, size);
                 }
 
@@ -133,7 +133,7 @@ public class QuickCountItemDrawView extends View {
                 itemList.add(new CircularImage(context, randX, randY, size));
 
                 // draw on canvas
-                canvas.drawBitmap(myUtil.resizeBitmapByScale(item, imageScaleXY),
+                canvas.drawBitmap(MathBrainerUtility.resizeBitmapByScale(item, imageScaleXY),
                         randX, randY, paint);
 
             } catch (IOException e) {

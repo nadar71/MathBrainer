@@ -145,6 +145,17 @@ public class MathBrainerRepository {
     }
 
 
+    public void updateGameResultHighscore(String gameResultName, int lastScore){
+        int previousResult = mathBrainerDB.MathBrainerDbDao().getGameResult(gameResultName);
+        if (previousResult < lastScore) {
+            mathBrainerDB.MathBrainerDbDao().updateGameResult(gameResultName, lastScore);
+        }else{
+            return;
+        }
+
+    }
+
+
 
     // delete single record
     public void deleteGameResult(GameResult gameResult){
