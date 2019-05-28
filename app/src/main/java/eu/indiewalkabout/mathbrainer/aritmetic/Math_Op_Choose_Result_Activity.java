@@ -414,6 +414,10 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         backhome_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // saves score
+                isComingHome();
+
                 // show unityads randomic
                 MathBrainerUtility.showUnityAdsRandom(Math_Op_Choose_Result_Activity.this);
 
@@ -637,6 +641,16 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         }
 
 
+    }
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Saves the score and others game data if coming back home before reach game over condition
+     * ---------------------------------------------------------------------------------------------
+     */
+    public void isComingHome() {
+        Results.updateGameResultHighscoreThread(scoreType, score);
+        Results.incrementGameResultByDeltaThread("global_score", score);
     }
 
 
@@ -1102,6 +1116,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         super.onBackPressed();
         // reset and destroy counter
         countDownIndicator.countdownReset();
+
+        // saves score
+        isComingHome();
 
         // show unityads randomic
         MathBrainerUtility.showUnityAdsRandom(this);

@@ -173,6 +173,10 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         backhome_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // saves score
+                isComingHome();
+
                 // show unityads randomic
                 MathBrainerUtility.showUnityAdsRandom(DoubleNumberActivity.this);
 
@@ -507,6 +511,16 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
 
     /**
      * ---------------------------------------------------------------------------------------------
+     * Saves the score and others game data if coming back home before reach game over condition
+     * ---------------------------------------------------------------------------------------------
+     */
+    public void isComingHome() {
+            Results.updateGameResultHighscoreThread("doublenumber_game_score", score);
+            Results.incrementGameResultByDeltaThread("global_score", score);
+    }
+
+    /**
+     * ---------------------------------------------------------------------------------------------
      * Update progress bar
      * ---------------------------------------------------------------------------------------------
      */
@@ -676,6 +690,9 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         super.onBackPressed();
         // reset and destroy counter
         countDownIndicator.countdownReset();
+
+        // saves score
+        isComingHome();
 
         // show unityads randomic
         MathBrainerUtility.showUnityAdsRandom(this);

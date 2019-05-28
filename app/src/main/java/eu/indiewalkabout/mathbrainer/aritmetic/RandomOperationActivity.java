@@ -295,6 +295,10 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         backhome_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // saves score
+                isComingHome();
+
                 // show unityads randomic
                 MathBrainerUtility.showUnityAdsRandom(RandomOperationActivity.this);
 
@@ -552,6 +556,17 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         }
 
 
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Saves the score and others game data if coming back home before reach game over condition
+     * ---------------------------------------------------------------------------------------------
+     */
+    public void isComingHome() {
+        Results.updateGameResultHighscoreThread("random_op_game_score", score);
+        Results.incrementGameResultByDeltaThread("global_score", score);
     }
 
 
@@ -825,6 +840,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         super.onBackPressed();
         // reset and destroy counter
         countDownIndicator.countdownReset();
+
+        // saves score
+        isComingHome();
 
         // show unityads randomic
         MathBrainerUtility.showUnityAdsRandom(this);

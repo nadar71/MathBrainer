@@ -259,6 +259,10 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         backhome_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // saves score
+                isComingHome();
+
                 // show unityads randomic
                 MathBrainerUtility.showUnityAdsRandom(NumberOrderActivity.this);
 
@@ -436,6 +440,20 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         return false;
 
     }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Saves the score and others game data if coming back home before reach game over condition
+     * ---------------------------------------------------------------------------------------------
+     */
+    public void isComingHome() {
+        Results.updateGameResultHighscoreThread("number_order_game_score", score);
+        Results.incrementGameResultByDeltaThread("global_score", score);
+    }
+
+
+
 
     @Override
     public void addContentView(View view, ViewGroup.LayoutParams params) {
@@ -700,6 +718,9 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
     // ---------------------------------------------------------------------------------------------
     public void onBackPressed() {
         super.onBackPressed();
+
+        // saves score
+        isComingHome();
 
         // show unityads randomic
         MathBrainerUtility.showUnityAdsRandom(this);

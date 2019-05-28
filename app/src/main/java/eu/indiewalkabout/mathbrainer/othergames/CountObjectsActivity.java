@@ -297,6 +297,10 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         backhome_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // saves score
+                isComingHome();
+
                 // show unityads randomic
                 MathBrainerUtility.showUnityAdsRandom(CountObjectsActivity.this);
 
@@ -489,6 +493,17 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
         return false;
 
+    }
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Saves the score and others game data if coming back home before reach game over condition
+     * ---------------------------------------------------------------------------------------------
+     */
+    public void isComingHome() {
+        Results.updateGameResultHighscoreThread("count_objects_game_score", score);
+        Results.incrementGameResultByDeltaThread("global_score", score);
     }
 
     @Override
@@ -800,6 +815,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
     // ---------------------------------------------------------------------------------------------
     public void onBackPressed() {
         super.onBackPressed();
+
+        // saves score
+        isComingHome();
 
         // show unityads randomic
         MathBrainerUtility.showUnityAdsRandom(this);
