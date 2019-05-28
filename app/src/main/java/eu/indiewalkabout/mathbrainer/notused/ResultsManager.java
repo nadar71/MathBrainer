@@ -1,9 +1,10 @@
-package eu.indiewalkabout.mathbrainer.statistics;
+package eu.indiewalkabout.mathbrainer.notused;
 
 
 /**
+ * -------------------------------------------------------------------------------------------------
  * Singletons class for storing and retrieving match data
- *
+ * -------------------------------------------------------------------------------------------------
  */
 public class ResultsManager {
 

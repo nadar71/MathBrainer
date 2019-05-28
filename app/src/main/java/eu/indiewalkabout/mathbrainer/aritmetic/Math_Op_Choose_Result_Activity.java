@@ -40,7 +40,6 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
     // admob banner ref
     private AdView mAdView;
 
-    // tag for log
     private final static String TAG = Math_Op_Choose_Result_Activity.class.getSimpleName();
 
     // view ref

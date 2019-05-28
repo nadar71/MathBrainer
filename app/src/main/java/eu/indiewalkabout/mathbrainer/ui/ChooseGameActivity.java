@@ -319,7 +319,7 @@ public class ChooseGameActivity extends AppCompatActivity {
         info_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChooseGameActivity.this, Activity_Credits.class);
+                Intent intent = new Intent(ChooseGameActivity.this, GameCreditsActivity.class);
                 startActivity(intent);
             }
         });

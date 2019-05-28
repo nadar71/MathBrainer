@@ -44,7 +44,6 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     // admob banner ref
     private AdView mAdView;
 
-    // tag for log
     private final static String TAG = DoubleNumberActivity.class.getSimpleName();
 
     // view ref

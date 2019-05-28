@@ -8,7 +8,7 @@ import com.google.android.gms.ads.AdView;
 import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 
-// TODO
+// TODO : to be implemented
 public class FallingOperationsActivity extends AppCompatActivity {
 
     // admob banner ref

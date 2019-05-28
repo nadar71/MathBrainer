@@ -17,7 +17,7 @@ public abstract class MathBrainerDatabase extends RoomDatabase {
     private static final String DBNAME = "MathBrainerDB";
     private static MathBrainerDatabase sDbInstance ;
 
-    // get for the dao
+    // get the dao
     public abstract MathBrainerDbDao MathBrainerDbDao();
 
 

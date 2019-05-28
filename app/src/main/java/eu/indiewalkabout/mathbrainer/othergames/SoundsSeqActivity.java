@@ -9,7 +9,7 @@ import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 
 
-// TODO
+// TODO  : to be implemented
 public class SoundsSeqActivity extends AppCompatActivity {
 
     // admob banner ref

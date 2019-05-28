@@ -18,11 +18,11 @@ import eu.indiewalkabout.mathbrainer.R;
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK;
 import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility;
 
-public class Activity_Credits extends AppCompatActivity {
+public class GameCreditsActivity extends AppCompatActivity {
 
-    public static final String TAG = Activity_Credits.class.getName();
+    public static final String TAG = GameCreditsActivity.class.getName();
 
-    final private Activity_Credits.UnityAdsListener unityAdsListener = new Activity_Credits.UnityAdsListener();
+    final private GameCreditsActivity.UnityAdsListener unityAdsListener = new GameCreditsActivity.UnityAdsListener();
 
     TextView  gdprConsent_tv;
     ImageView backhome_img;
@@ -96,16 +96,16 @@ public class Activity_Credits extends AppCompatActivity {
         mAdView = findViewById(R.id.adView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(Activity_Credits.this));
+        mAdView.loadAd(ConsentSDK.getAdRequest(GameCreditsActivity.this));
 
 
         backhome_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // show unityads randomic
-                MathBrainerUtility.showUnityAdsRandom(Activity_Credits.this);
+                MathBrainerUtility.showUnityAdsRandom(GameCreditsActivity.this);
 
-                Intent intent = new Intent(Activity_Credits.this, ChooseGameActivity.class);
+                Intent intent = new Intent(GameCreditsActivity.this, ChooseGameActivity.class);
                 startActivity(intent);
             }
         });

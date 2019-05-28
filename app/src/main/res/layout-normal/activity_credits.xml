@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_gray_01"
-    tools:context=".ui.Activity_Credits">
+    tools:context=".ui.GameCreditsActivity">
 
     <TextView
         android:id="@+id/credits_title_tv"

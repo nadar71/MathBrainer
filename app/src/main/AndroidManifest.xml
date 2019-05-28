@@ -11,7 +11,7 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.Activity_Credits"></activity>
+        <activity android:name=".ui.GameCreditsActivity"></activity>
         <!-- ADMOB -->
         <!-- Sample AdMob App ID:        ca-app-pub-3940256099942544~3347511713 -->
         <!-- THIS APP REAL AdMob App ID: -->

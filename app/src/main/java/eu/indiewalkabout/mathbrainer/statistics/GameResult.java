@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 
 /**
+ * -------------------------------------------------------------------------------------------------
  * Game result object; store in key-value pairs the game results.
  * The name of the adopted keys are below :
  * - global_score
@@ -41,6 +42,7 @@ import android.support.annotation.NonNull;
  * - numbers_in_order
  * - games_played
  * - games_lose
+ * -------------------------------------------------------------------------------------------------
  */
 @Entity(tableName = "GAMERESULTS_LIST")
 public class GameResult {
