@@ -11,7 +11,8 @@ A quick and easy math braintrainer free app for keep mind sharp.
 
 It is based on easy mental calculation, with timer or not,to do in the very very spare or useless time,
 like in queue, while waiting metro or bus, why  you're not able to sleep in a queue.
-When you have only few minutes to spare and no more
+When you have only few minutes to spare and no more.
+Check out it on [Google Play](https://play.google.com/store/apps/details?id=eu.indiewalkabout.mathbrainer)!
 
 **Main features** :
 - 14 math games of different kind 
