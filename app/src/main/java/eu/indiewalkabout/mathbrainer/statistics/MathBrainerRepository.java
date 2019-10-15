@@ -24,9 +24,6 @@ public class MathBrainerRepository {
 
 
 
-
-
-
     private MathBrainerRepository(MathBrainerDatabase db){
         this.mathBrainerDB = db;
 
@@ -71,7 +68,7 @@ public class MathBrainerRepository {
 
     /**
      * ---------------------------------------------------------------------------------------------
-     * Get singletons instance
+     * Get singleton instance
      * @param database
      * @return
      * ---------------------------------------------------------------------------------------------
