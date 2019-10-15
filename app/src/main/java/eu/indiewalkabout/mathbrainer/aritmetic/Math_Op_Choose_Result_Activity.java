@@ -239,8 +239,8 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
      */
     private void showHighscore() {
         Intent intent = getIntent();
-        if (intent.hasExtra(ChooseGameActivity.HIGHSCORE)) {
-            int value = intent.getIntExtra(ChooseGameActivity.HIGHSCORE,-1);
+        if (intent.hasExtra(ChooseGameActivity.Companion.getHIGHSCORE())) {
+            int value = intent.getIntExtra(ChooseGameActivity.Companion.getHIGHSCORE(),-1);
             highscore_value_tv.setText(Integer.toString(value));
         } else {
             highscore_value_tv.setText("0");
@@ -255,8 +255,8 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
     private void setOperationSymbol() {
         Intent intent = getIntent();
         char[] operationSpec;
-        if (intent.hasExtra(ChooseGameActivity.OPERATION_KEY)) {
-            operationSpec =  intent.getStringExtra(ChooseGameActivity.OPERATION_KEY).toCharArray();
+        if (intent.hasExtra(ChooseGameActivity.Companion.getOPERATION_KEY())) {
+            operationSpec =  intent.getStringExtra(ChooseGameActivity.Companion.getOPERATION_KEY()).toCharArray();
             switch(operationSpec[0]){
                 case '+':
                     symbols = new char[1];

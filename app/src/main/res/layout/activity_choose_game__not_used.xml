@@ -38,7 +38,7 @@
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
     <Button
-        android:id="@+id/MixedOps_WriteResultBtn"
+        android:id="@+id/resultWriteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -55,7 +55,7 @@
         app:layout_constraintVertical_bias="0.538" />
 
     <Button
-        android:id="@+id/MixedOps_ChooseResultBtn"
+        android:id="@+id/resultChooseBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -67,15 +67,15 @@
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/MixedOps_WriteResultBtn"
+        app:layout_constraintBottom_toTopOf="@+id/resultWriteBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/MixedOps_WriteResultBtn"
-        app:layout_constraintTop_toBottomOf="@+id/MixedOps_WriteResultBtn"
+        app:layout_constraintStart_toEndOf="@+id/resultWriteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/resultWriteBtn"
         app:layout_constraintVertical_bias="0.538" />
 
     <Button
-        android:id="@+id/sumWrite_Btn"
+        android:id="@+id/sumWriteBtn"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -87,10 +87,10 @@
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sumChoose_Btn" />
+        app:layout_constraintTop_toBottomOf="@+id/sumChooseBtn" />
 
     <Button
-        android:id="@+id/diffWrite_Btn"
+        android:id="@+id/diffWriteBtn"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -101,13 +101,13 @@
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/sumWrite_Btn"
-        app:layout_constraintStart_toEndOf="@+id/sumWrite_Btn"
-        app:layout_constraintTop_toBottomOf="@+id/sumWrite_Btn"
+        app:layout_constraintBottom_toTopOf="@+id/sumWriteBtn"
+        app:layout_constraintStart_toEndOf="@+id/sumWriteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/sumWriteBtn"
         app:layout_constraintVertical_bias="0.538" />
 
     <Button
-        android:id="@+id/multWrite_Btn"
+        android:id="@+id/multWriteBtn"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -118,13 +118,13 @@
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/diffWrite_Btn"
-        app:layout_constraintStart_toEndOf="@+id/diffWrite_Btn"
-        app:layout_constraintTop_toBottomOf="@+id/diffWrite_Btn"
+        app:layout_constraintBottom_toTopOf="@+id/diffWriteBtn"
+        app:layout_constraintStart_toEndOf="@+id/diffWriteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/diffWriteBtn"
         app:layout_constraintVertical_bias="0.538" />
 
     <Button
-        android:id="@+id/divWrite_Btn"
+        android:id="@+id/divWriteBtn"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -136,11 +136,11 @@
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/multWrite_Btn"
+        app:layout_constraintBottom_toTopOf="@+id/multWriteBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.24"
-        app:layout_constraintStart_toEndOf="@+id/multWrite_Btn"
-        app:layout_constraintTop_toBottomOf="@+id/multWrite_Btn"
+        app:layout_constraintStart_toEndOf="@+id/multWriteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/multWriteBtn"
         app:layout_constraintVertical_bias="0.538" />
 
 
@@ -174,7 +174,7 @@
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sumWrite_Btn" />
+        app:layout_constraintTop_toBottomOf="@+id/sumWriteBtn" />
 
     <Button
         android:id="@+id/orderBtn"
@@ -239,7 +239,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/sumChoose_Btn"
+        android:id="@+id/sumChooseBtn"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -254,7 +254,7 @@
         app:layout_constraintTop_toBottomOf="@+id/highscore_title_label_tv" />
 
     <Button
-        android:id="@+id/diffChoose_Btn"
+        android:id="@+id/diffChooseBtn"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -265,13 +265,13 @@
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/sumChoose_Btn"
-        app:layout_constraintStart_toEndOf="@+id/sumChoose_Btn"
-        app:layout_constraintTop_toBottomOf="@+id/sumChoose_Btn"
+        app:layout_constraintBottom_toTopOf="@+id/sumChooseBtn"
+        app:layout_constraintStart_toEndOf="@+id/sumChooseBtn"
+        app:layout_constraintTop_toBottomOf="@+id/sumChooseBtn"
         app:layout_constraintVertical_bias="0.538" />
 
     <Button
-        android:id="@+id/multChoose_Btn"
+        android:id="@+id/multChooseBtn"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -282,13 +282,13 @@
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/diffChoose_Btn"
-        app:layout_constraintStart_toEndOf="@+id/diffChoose_Btn"
-        app:layout_constraintTop_toBottomOf="@+id/diffChoose_Btn"
+        app:layout_constraintBottom_toTopOf="@+id/diffChooseBtn"
+        app:layout_constraintStart_toEndOf="@+id/diffChooseBtn"
+        app:layout_constraintTop_toBottomOf="@+id/diffChooseBtn"
         app:layout_constraintVertical_bias="0.538" />
 
     <Button
-        android:id="@+id/divChoose_Btn"
+        android:id="@+id/divChooseBtn"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -300,11 +300,11 @@
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/multChoose_Btn"
+        app:layout_constraintBottom_toTopOf="@+id/multChooseBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/multChoose_Btn"
-        app:layout_constraintTop_toBottomOf="@+id/multChoose_Btn"
+        app:layout_constraintStart_toEndOf="@+id/multChooseBtn"
+        app:layout_constraintTop_toBottomOf="@+id/multChooseBtn"
         app:layout_constraintVertical_bias="0.538" />
 
     <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->

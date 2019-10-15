@@ -216,8 +216,8 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      */
     private void showHighscore() {
         Intent intent = getIntent();
-        if (intent.hasExtra(ChooseGameActivity.HIGHSCORE)) {
-            int value = intent.getIntExtra(ChooseGameActivity.HIGHSCORE,-1);
+        if (intent.hasExtra(ChooseGameActivity.Companion.getHIGHSCORE())) {
+            int value = intent.getIntExtra(ChooseGameActivity.Companion.getHIGHSCORE(),-1);
             highscore_value_tv.setText(Integer.toString(value));
         } else {
             highscore_value_tv.setText("0");

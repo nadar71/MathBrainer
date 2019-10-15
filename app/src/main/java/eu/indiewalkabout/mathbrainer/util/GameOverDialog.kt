@@ -13,6 +13,8 @@ import eu.indiewalkabout.mathbrainer.R
 import kotlinx.android.synthetic.main.dialog_gameover.view.*
 
 class GameOverDialog(private val context: Context, private val caller: IGameFunctions, private val activity: Activity) {
+    internal var homeBtn :ImageView? = null
+    internal var restartBtn :ImageView? = null
     private var alertDialog: AlertDialog? = null
 
 
@@ -31,8 +33,6 @@ class GameOverDialog(private val context: Context, private val caller: IGameFunc
         // dialogLayout.setBackgroundColor(context.getResources().getColor( R.color.transparent_gray));
 
 
-
-
         builder.setView(dialogLayout)
 
         alertDialog = builder.show()
@@ -40,17 +40,15 @@ class GameOverDialog(private val context: Context, private val caller: IGameFunc
         // Prevent dialog from closing on outside touch
         alertDialog!!.setCancelable(false)
 
-        val homeBtn = dialogLayout.findViewById<ImageView>(R.id.homeBtn)
 
-        homeBtn.setOnClickListener {
+        homeBtn!!.setOnClickListener {
             alertDialog!!.dismiss()
             val intent = Intent(activity, ChooseGameActivity::class.java)
             activity.startActivity(intent)
         }
 
-        val restartBtn = dialogLayout.findViewById<ImageView>(R.id.restartBtn)
 
-        restartBtn.setOnClickListener {
+        restartBtn!!.setOnClickListener {
             alertDialog!!.dismiss()
             activity.finish()
             activity.startActivity(activity.intent)
