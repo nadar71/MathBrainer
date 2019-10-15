@@ -11,11 +11,11 @@ public class Results {
      * ---------------------------------------------------------------------------------------------
      */
     public static void initResultsThread(){
-        AppExecutors executorsInstance = ((SingletonProvider) SingletonProvider.getsContext()).getAppExecutorsInstance();
+        AppExecutors executorsInstance = ((SingletonProvider) SingletonProvider.Companion.getsContext()).getAppExecutorsInstance();
         executorsInstance.diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                MathBrainerRepository repository = ((SingletonProvider) SingletonProvider.getsContext()).getRepository();
+                MathBrainerRepository repository = ((SingletonProvider) SingletonProvider.Companion.getsContext()).getRepository();
                 repository.initGameResults();
             }
         });
@@ -28,11 +28,11 @@ public class Results {
      * ---------------------------------------------------------------------------------------------
      */
     public static void incrementGameResultsThread(final String gameResultsName){
-        AppExecutors executorsInstance = ((SingletonProvider) SingletonProvider.getsContext()).getAppExecutorsInstance();
+        AppExecutors executorsInstance = ((SingletonProvider) SingletonProvider.Companion.getsContext()).getAppExecutorsInstance();
         executorsInstance.diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                MathBrainerRepository repository = ((SingletonProvider) SingletonProvider.getsContext()).getRepository();
+                MathBrainerRepository repository = ((SingletonProvider) SingletonProvider.Companion.getsContext()).getRepository();
                 repository.incrementGameResult(gameResultsName);
             }
         });
@@ -48,11 +48,11 @@ public class Results {
      * ---------------------------------------------------------------------------------------------
      */
     public static void incrementGameResultByDeltaThread(final String gameResultsName, final int delta){
-        AppExecutors executorsInstance = ((SingletonProvider) SingletonProvider.getsContext()).getAppExecutorsInstance();
+        AppExecutors executorsInstance = ((SingletonProvider) SingletonProvider.Companion.getsContext()).getAppExecutorsInstance();
         executorsInstance.diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                MathBrainerRepository repository = ((SingletonProvider) SingletonProvider.getsContext()).getRepository();
+                MathBrainerRepository repository = ((SingletonProvider) SingletonProvider.Companion.getsContext()).getRepository();
                 repository.incrementGameResultByDelta(gameResultsName, delta);
             }
         });
@@ -66,11 +66,11 @@ public class Results {
      * ---------------------------------------------------------------------------------------------
      */
     public static void updateGameResultHighscoreThread(final String gameResultsName, final int lastScore){
-        AppExecutors executorsInstance = ((SingletonProvider) SingletonProvider.getsContext()).getAppExecutorsInstance();
+        AppExecutors executorsInstance = ((SingletonProvider) SingletonProvider.Companion.getsContext()).getAppExecutorsInstance();
         executorsInstance.diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                MathBrainerRepository repository = ((SingletonProvider) SingletonProvider.getsContext()).getRepository();
+                MathBrainerRepository repository = ((SingletonProvider) SingletonProvider.Companion.getsContext()).getRepository();
                 repository.updateGameResultHighscore(gameResultsName, lastScore);
             }
         });

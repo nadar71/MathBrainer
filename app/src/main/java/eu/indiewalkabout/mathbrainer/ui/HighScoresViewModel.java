@@ -28,7 +28,7 @@ public class HighScoresViewModel extends ViewModel {
         Log.d(TAG, "Retrieving game results list from repository");
 
         // get repository instance
-        repository = ((SingletonProvider) SingletonProvider.getsContext()).getRepository();
+        repository = ((SingletonProvider) SingletonProvider.Companion.getsContext()).getRepository();
         gameResultList = repository.getAllGamesResults();
     }
 
