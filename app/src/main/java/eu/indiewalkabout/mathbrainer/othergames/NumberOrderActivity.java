@@ -264,7 +264,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
                 isComingHome();
 
                 // show unityads randomic
-                MathBrainerUtility.showUnityAdsRandom(NumberOrderActivity.this);
+                MathBrainerUtility.INSTANCE.showUnityAdsRandom(NumberOrderActivity.this);
 
                 Intent intent = new Intent(NumberOrderActivity.this, ChooseGameActivity.class);
                 startActivity(intent);
@@ -481,7 +481,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         drawquiz_challenge.resetGame();
 
         // show the items in number defined by level
-        itemsToCount = MathBrainerUtility.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),(int)maxItemsToCount);
+        itemsToCount = MathBrainerUtility.INSTANCE.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),(int)maxItemsToCount);
         drawquiz.redraw(itemsToCount);
         drawquiz_challenge.redraw(itemsToCount);
 
@@ -723,7 +723,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         isComingHome();
 
         // show unityads randomic
-        MathBrainerUtility.showUnityAdsRandom(this);
+        MathBrainerUtility.INSTANCE.showUnityAdsRandom(this);
 
     }
 

@@ -7,9 +7,7 @@ import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputConnection
-import android.widget.Button
 import android.widget.LinearLayout
-import kotlinx.android.synthetic.main.keyboard.*
 
 import eu.indiewalkabout.mathbrainer.R
 import kotlinx.android.synthetic.main.keyboard.view.*
@@ -38,7 +36,7 @@ class MyKeyboard @JvmOverloads constructor(context: Context,
 
         LayoutInflater.from(context).inflate(R.layout.keyboard, this, true)
 
-        
+
         // set button click listeners
         button_1.setOnClickListener(this)
         button_2.setOnClickListener(this)

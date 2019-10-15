@@ -300,7 +300,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
                 isComingHome();
 
                 // show unityads randomic
-                MathBrainerUtility.showUnityAdsRandom(RandomOperationActivity.this);
+                MathBrainerUtility.INSTANCE.showUnityAdsRandom(RandomOperationActivity.this);
 
                 Intent intent = new Intent(RandomOperationActivity.this, ChooseGameActivity.class);
                 startActivity(intent);
@@ -596,7 +596,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         // currentLevelAnswerBtnVisible = levelAnswerBtnTotalNum;
 
         // set operation to be processed
-        operation    = symbols[MathBrainerUtility.randRange_ApiCheck(0, symbols.length-1)];
+        operation    = symbols[MathBrainerUtility.INSTANCE.randRange_ApiCheck(0, symbols.length-1)];
 
         // calculate the quiz operation
         calculateOperation();
@@ -618,8 +618,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         switch(operation){
             case '+':
                 // set operands to be processed
-                firstOperand  = MathBrainerUtility.randRange_ApiCheck(min, max);
-                secondOperand = MathBrainerUtility.randRange_ApiCheck(min, max);
+                firstOperand  = MathBrainerUtility.INSTANCE.randRange_ApiCheck(min, max);
+                secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(min, max);
 
                 // store correct answer
                 answer      = firstOperand + secondOperand;
@@ -631,8 +631,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
             case '-':
                 // set operands to be processed
-                firstOperand  = MathBrainerUtility.randRange_ApiCheck(min, max);
-                secondOperand = MathBrainerUtility.randRange_ApiCheck(min, firstOperand);
+                firstOperand  = MathBrainerUtility.INSTANCE.randRange_ApiCheck(min, max);
+                secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(min, firstOperand);
 
                 // store correct answer
                 answer = firstOperand - secondOperand;
@@ -644,13 +644,13 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
             case '*':
                 // set operands to be processed
-                int guess = MathBrainerUtility.randRange_ApiCheck(1, 2);
+                int guess = MathBrainerUtility.INSTANCE.randRange_ApiCheck(1, 2);
                 if (guess == 1){
-                    firstOperand  = MathBrainerUtility.randRange_ApiCheck(multMin, multHMax);
-                    secondOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multLMax);
+                    firstOperand  = MathBrainerUtility.INSTANCE.randRange_ApiCheck(multMin, multHMax);
+                    secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(multMin, multLMax);
                 }else{
-                    firstOperand  = MathBrainerUtility.randRange_ApiCheck(multMin, multLMax);
-                    secondOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multHMax);
+                    firstOperand  = MathBrainerUtility.INSTANCE.randRange_ApiCheck(multMin, multLMax);
+                    secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(multMin, multHMax);
                 }
 
                 // store correct answer
@@ -663,9 +663,9 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
             case '/':
                 // set operands to be processed
-                secondOperand = MathBrainerUtility.randRange_ApiCheck(divMin, divHMax);
+                secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(divMin, divHMax);
                 // store correct answer
-                answer = MathBrainerUtility.randRange_ApiCheck(divMin, divLMax);
+                answer = MathBrainerUtility.INSTANCE.randRange_ApiCheck(divMin, divLMax);
                 firstOperand  = answer * secondOperand;
 
                 // statistics
@@ -845,7 +845,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         isComingHome();
 
         // show unityads randomic
-        MathBrainerUtility.showUnityAdsRandom(this);
+        MathBrainerUtility.INSTANCE.showUnityAdsRandom(this);
 
     }
 }

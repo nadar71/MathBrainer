@@ -230,7 +230,7 @@ public class MarkerWithNoNumberView extends View {
             imgNoNumberList.add(imgWithNoNumber);
 
             // draw on canvas marker with no number on them
-            canvas.drawBitmap(MathBrainerUtility.resizeBitmapByScale(bitmapWithNoNumber, imageScaleXY),
+            canvas.drawBitmap(MathBrainerUtility.INSTANCE.resizeBitmapByScale(bitmapWithNoNumber, imageScaleXY),
                     x, y, paint);
         }
 
@@ -323,7 +323,7 @@ public class MarkerWithNoNumberView extends View {
         Bitmap bitmapWithNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
 
         // draw text on bitmap
-        MathBrainerUtility.drawTextToBitmap(context, bitmapWithNumber, Integer.toString(number));
+        MathBrainerUtility.INSTANCE.drawTextToBitmap(context, bitmapWithNumber, Integer.toString(number));
 
         // create an image view and store in solutions list
         CircularImage solutionsImg = new CircularImage(context, img.get_x(), img.get_y(), img.getSize());

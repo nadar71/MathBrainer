@@ -1,32 +1,28 @@
-package eu.indiewalkabout.mathbrainer.util;
+package eu.indiewalkabout.mathbrainer.util
 
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.os.Build;
+import android.app.Activity
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.Typeface
+import android.os.Build
 
-import com.unity3d.ads.UnityAds;
+import com.unity3d.ads.UnityAds
+import java.util.Random
+import java.util.concurrent.ThreadLocalRandom
 
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
-import eu.indiewalkabout.mathbrainer.statistics.GameResult;
+import eu.indiewalkabout.mathbrainer.statistics.GameResult
 
 /**
  * ---------------------------------------------------------------------------------------------
  * Helper class for utilities
  * ---------------------------------------------------------------------------------------------
  */
-public class MathBrainerUtility {
+object MathBrainerUtility {
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -37,15 +33,14 @@ public class MathBrainerUtility {
      * @return
      * ---------------------------------------------------------------------------------------------
      */
-    public static int randRange_ApiCheck(int min, int max){
+    fun randRange_ApiCheck(min: Int, max: Int): Int {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            return ThreadLocalRandom.current().nextInt(min, max + 1);
+            return ThreadLocalRandom.current().nextInt(min, max + 1)
         else {
-            Random rand = new Random(System.currentTimeMillis());
-            return rand.nextInt((max - min +1 ) + min);
+            val rand = Random(System.currentTimeMillis())
+            return rand.nextInt(max - min + 1 + min)
         }
     }
-
 
 
     /**
@@ -53,14 +48,13 @@ public class MathBrainerUtility {
      * Random answer for sum generator
      * ---------------------------------------------------------------------------------------------
      */
-    public static int randomSignChooser(){
-        int result = MathBrainerUtility.randRange_ApiCheck(1, 2);
-        if (result == 1)
-            return -1;
+    fun randomSignChooser(): Int {
+        val result = MathBrainerUtility.randRange_ApiCheck(1, 2)
+        return if (result == 1)
+            -1
         else
-            return 1;
+            1
     }
-
 
 
     /**
@@ -68,22 +62,22 @@ public class MathBrainerUtility {
      * Return a scaled bitmap resized by scale
      * ---------------------------------------------------------------------------------------------
      */
-    public static Bitmap resizeBitmapByScale(Bitmap bitmap, float scale) {
+    fun resizeBitmapByScale(bitmap: Bitmap, scale: Float): Bitmap {
 
 
         // dimensions scaled
-        int width  = Math.round(bitmap.getWidth() * scale);
-        int height = Math.round(bitmap.getHeight() * scale);
+        val width = Math.round(bitmap.width * scale)
+        val height = Math.round(bitmap.height * scale)
 
-        if (width == bitmap.getWidth() && height == bitmap.getHeight()){
+        if (width == bitmap.width && height == bitmap.height) {
 
-            return bitmap;
+            return bitmap
         }
 
         // create a target bitmap where to write on with dimensions scaled, same bitmap param config
-        Bitmap target = Bitmap.createScaledBitmap(bitmap, width, height, false);
-        target = target.copy(Bitmap.Config.ARGB_8888, true);
-        return target;
+        var target = Bitmap.createScaledBitmap(bitmap, width, height, false)
+        target = target.copy(Bitmap.Config.ARGB_8888, true)
+        return target
 
     }
 
@@ -97,12 +91,12 @@ public class MathBrainerUtility {
      * @return
      * ---------------------------------------------------------------------------------------------
      */
-    public static Bitmap drawTextToBitmap(Context gContext,
-                                   Bitmap bitmap,
-                                   String gText) {
+    fun drawTextToBitmap(gContext: Context,
+                         bitmap: Bitmap,
+                         gText: String): Bitmap {
 
-        Resources resources = gContext.getResources();
-        float scale = resources.getDisplayMetrics().density;
+        val resources = gContext.resources
+        val scale = resources.displayMetrics.density
         /*
         Bitmap bitmap =
                 BitmapFactory.decodeResource(resources, gResId);
@@ -118,40 +112,38 @@ public class MathBrainerUtility {
         bitmap = bitmap.copy(bitmapConfig, true);
         */
 
-        Canvas canvas = new Canvas(bitmap);
+        val canvas = Canvas(bitmap)
 
         // set specific font
-        AssetManager assetManager = gContext.getAssets();
-        Typeface plain = Typeface.createFromAsset(assetManager, "font/quicksand.otf");
-        Typeface bold = Typeface.create(plain, Typeface.BOLD);
+        val assetManager = gContext.assets
+        val plain = Typeface.createFromAsset(assetManager, "font/quicksand.otf")
+        val bold = Typeface.create(plain, Typeface.BOLD)
 
         // new antialised Paint
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
         // text color
-        paint.setColor(Color.rgb(255, 255, 255));
+        paint.color = Color.rgb(255, 255, 255)
 
         // text font
-        paint.setTypeface(bold);
+        paint.typeface = bold
 
         // text size in pixels
-        paint.setTextSize((int) (80 * scale));
+        paint.textSize = (80 * scale).toInt().toFloat()
 
         // text shadow
-        paint.setShadowLayer(1f, 0f, 1f, Color.BLACK);
+        paint.setShadowLayer(1f, 0f, 1f, Color.BLACK)
 
         // draw text to the Canvas center
-        Rect bounds = new Rect();
-        paint.getTextBounds(gText, 0, gText.length(), bounds);
-        int x = (bitmap.getWidth() - bounds.width())/2;
-        int y = (bitmap.getHeight() + bounds.height())/2;
+        val bounds = Rect()
+        paint.getTextBounds(gText, 0, gText.length, bounds)
+        val x = (bitmap.width - bounds.width()) / 2
+        val y = (bitmap.height + bounds.height()) / 2
 
-        canvas.drawText(gText, x, y, paint);
+        canvas.drawText(gText, x.toFloat(), y.toFloat(), paint)
 
-        return bitmap;
+        return bitmap
     }
-
-
 
 
     /**
@@ -159,15 +151,14 @@ public class MathBrainerUtility {
      * Show unity ads with a defined random frequency
      * ---------------------------------------------------------------------------------------------
      */
-    public static void showUnityAdsRandom(Activity activity){
-        int guess = MathBrainerUtility.randRange_ApiCheck(1,10);
+    fun showUnityAdsRandom(activity: Activity) {
+        val guess = MathBrainerUtility.randRange_ApiCheck(1, 10)
         if (guess <= 4) {
-            if (UnityAds.isReady()){
-                UnityAds.show(activity);
+            if (UnityAds.isReady()) {
+                UnityAds.show(activity)
             }
         }
     }
-
 
 
     /**
@@ -175,12 +166,12 @@ public class MathBrainerUtility {
      * Return game result value for a given game result in list
      * ---------------------------------------------------------------------------------------------
      */
-    public static int getGameResultsFromList(String gameResultKey, List<GameResult> resultsList){
-        for(GameResult g : resultsList){
-            if (g.getResult_name().equals(gameResultKey)) {
-                return g.getResult_value();
+    fun getGameResultsFromList(gameResultKey: String, resultsList: List<GameResult>): Int {
+        for (g in resultsList) {
+            if (g.result_name == gameResultKey) {
+                return g.result_value
             }
         }
-        return -1;
+        return -1
     }
 }

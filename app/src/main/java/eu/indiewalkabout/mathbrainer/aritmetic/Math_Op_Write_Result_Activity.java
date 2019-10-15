@@ -203,7 +203,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
                 isComingHome();
 
                 // show unityads randomic
-                MathBrainerUtility.showUnityAdsRandom(Math_Op_Write_Result_Activity.this);
+                MathBrainerUtility.INSTANCE.showUnityAdsRandom(Math_Op_Write_Result_Activity.this);
 
                 Intent intent = new Intent(Math_Op_Write_Result_Activity.this, ChooseGameActivity.class);
                 startActivity(intent);
@@ -614,7 +614,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
     @Override
     public void newChallenge() {
         // set operation to be processed; general case symbols.length-1 > 1
-        operation = symbols[MathBrainerUtility.randRange_ApiCheck(0, symbols.length - 1)];
+        operation = symbols[MathBrainerUtility.INSTANCE.randRange_ApiCheck(0, symbols.length - 1)];
 
         // calculate the quiz operation
         calculateOperation();
@@ -640,8 +640,8 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             case '+':
                 //operationSymbol_tv.setText("+");
                 // set operands to be processed
-                firstOperand  = MathBrainerUtility.randRange_ApiCheck(min, max);
-                secondOperand = MathBrainerUtility.randRange_ApiCheck(min, max);
+                firstOperand  = MathBrainerUtility.INSTANCE.randRange_ApiCheck(min, max);
+                secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(min, max);
 
                 // store correct answer
                 answerOK = firstOperand + secondOperand;
@@ -656,8 +656,8 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             case '-':
                 //operationSymbol_tv.setText("-");
                 // set operands to be processed
-                firstOperand  = MathBrainerUtility.randRange_ApiCheck(min, max);
-                secondOperand = MathBrainerUtility.randRange_ApiCheck(min, firstOperand);
+                firstOperand  = MathBrainerUtility.INSTANCE.randRange_ApiCheck(min, max);
+                secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(min, firstOperand);
 
                 // store correct answer
                 answerOK = firstOperand - secondOperand;
@@ -672,13 +672,13 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             case '*':
                 //operationSymbol_tv.setText("*");
                 // set operands to be processed
-                int guess = MathBrainerUtility.randRange_ApiCheck(1, 2);
+                int guess = MathBrainerUtility.INSTANCE.randRange_ApiCheck(1, 2);
                 if (guess == 1){
-                    firstOperand  = MathBrainerUtility.randRange_ApiCheck(multMin, multHMax);
-                    secondOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multLMax);
+                    firstOperand  = MathBrainerUtility.INSTANCE.randRange_ApiCheck(multMin, multHMax);
+                    secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(multMin, multLMax);
                 }else{
-                    firstOperand  = MathBrainerUtility.randRange_ApiCheck(multMin, multLMax);
-                    secondOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multHMax);
+                    firstOperand  = MathBrainerUtility.INSTANCE.randRange_ApiCheck(multMin, multLMax);
+                    secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(multMin, multHMax);
                 }
 
                 // store correct answer
@@ -694,9 +694,9 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             case '/':
                 //operationSymbol_tv.setText("/");
                 // set operands to be processed
-                secondOperand = MathBrainerUtility.randRange_ApiCheck(divMin, divHMax);
+                secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(divMin, divHMax);
                 // store correct answer
-                answerOK = MathBrainerUtility.randRange_ApiCheck(divMin, divLMax);
+                answerOK = MathBrainerUtility.INSTANCE.randRange_ApiCheck(divMin, divLMax);
                 firstOperand  = answerOK * secondOperand;
 
                 operationSymbol_tv.setText(Character.toString(operation));
@@ -877,7 +877,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         isComingHome();
 
         // show unityads randomic
-        MathBrainerUtility.showUnityAdsRandom(this);
+        MathBrainerUtility.INSTANCE.showUnityAdsRandom(this);
 
     }
 

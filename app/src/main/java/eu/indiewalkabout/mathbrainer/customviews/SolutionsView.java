@@ -119,12 +119,12 @@ public class SolutionsView extends View {
                 Bitmap bitmapWithNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
 
                 // draw text on bitmap
-                MathBrainerUtility.drawTextToBitmap(context, bitmapWithNumber,
+                MathBrainerUtility.INSTANCE.drawTextToBitmap(context, bitmapWithNumber,
                         Integer.toString(solutionImg.get_number()));
 
 
                 // draw on canvas marker with  number on them
-                canvas.drawBitmap(MathBrainerUtility.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
+                canvas.drawBitmap(MathBrainerUtility.INSTANCE.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
                         solutionImg.get_x(), solutionImg.get_y(), paint);
             }
         }

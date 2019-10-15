@@ -103,7 +103,7 @@ public class GameCreditsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // show unityads randomic
-                MathBrainerUtility.showUnityAdsRandom(GameCreditsActivity.this);
+                MathBrainerUtility.INSTANCE.showUnityAdsRandom(GameCreditsActivity.this);
 
                 Intent intent = new Intent(GameCreditsActivity.this, ChooseGameActivity.class);
                 startActivity(intent);
@@ -206,7 +206,7 @@ public class GameCreditsActivity extends AppCompatActivity {
         super.onBackPressed();
 
         // show unityads randomic
-        MathBrainerUtility.showUnityAdsRandom(this);
+        MathBrainerUtility.INSTANCE.showUnityAdsRandom(this);
 
     }
 }

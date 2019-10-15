@@ -116,13 +116,13 @@ public class MarkerWithNumberView extends View {
             Bitmap bitmapWithNumber = marker.copy(Bitmap.Config.ARGB_8888, true);
 
             // draw text on bitmap
-            MathBrainerUtility.drawTextToBitmap(context, bitmapWithNumber, Integer.toString(i));
+            MathBrainerUtility.INSTANCE.drawTextToBitmap(context, bitmapWithNumber, Integer.toString(i));
 
             boolean isOverlap = true;
 
             while (isOverlap) {
-                randX = MathBrainerUtility.randRange_ApiCheck(offsetFromBorder, (int) (mWidth - offsetFromBorder));
-                randY = MathBrainerUtility.randRange_ApiCheck(offsetFromBorder, (int) (mHeight - offsetFromBorder));
+                randX = MathBrainerUtility.INSTANCE.randRange_ApiCheck(offsetFromBorder, (int) (mWidth - offsetFromBorder));
+                randY = MathBrainerUtility.INSTANCE.randRange_ApiCheck(offsetFromBorder, (int) (mHeight - offsetFromBorder));
                 isOverlap = isOverlapping(randX, randY, size);
             }
 
@@ -133,7 +133,7 @@ public class MarkerWithNumberView extends View {
             imgNumberList.add(imgWithNumber);
 
             // draw on canvas marker with  number on them
-            canvas.drawBitmap(MathBrainerUtility.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
+            canvas.drawBitmap(MathBrainerUtility.INSTANCE.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
                     randX, randY, paint);
 
         }

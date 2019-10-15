@@ -418,7 +418,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
                 isComingHome();
 
                 // show unityads randomic
-                MathBrainerUtility.showUnityAdsRandom(Math_Op_Choose_Result_Activity.this);
+                MathBrainerUtility.INSTANCE.showUnityAdsRandom(Math_Op_Choose_Result_Activity.this);
 
                 Intent intent = new Intent(Math_Op_Choose_Result_Activity.this, ChooseGameActivity.class);
                 startActivity(intent);
@@ -678,7 +678,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         currentLevelAnswerBtnVisible = levelAnswerBtnTotalNum;
 
         // set operation to be processed
-        operation = symbols[MathBrainerUtility.randRange_ApiCheck(0, symbols.length-1)];
+        operation = symbols[MathBrainerUtility.INSTANCE.randRange_ApiCheck(0, symbols.length-1)];
 
         // calculate the quiz operation
         calculateOperation();
@@ -701,8 +701,8 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         switch(operation){
             case '+':
                 // set operands to be processed
-                firstOperand  = MathBrainerUtility.randRange_ApiCheck(min, max);
-                secondOperand = MathBrainerUtility.randRange_ApiCheck(min, max);
+                firstOperand  = MathBrainerUtility.INSTANCE.randRange_ApiCheck(min, max);
+                secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(min, max);
 
                 // store correct answer
                 answerOK = firstOperand + secondOperand;
@@ -717,8 +717,8 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
             case '-':
                 // set operands to be processed
-                firstOperand  = MathBrainerUtility.randRange_ApiCheck(min, max);
-                secondOperand = MathBrainerUtility.randRange_ApiCheck(min, firstOperand);
+                firstOperand  = MathBrainerUtility.INSTANCE.randRange_ApiCheck(min, max);
+                secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(min, firstOperand);
 
                 // store correct answer
                 answerOK = firstOperand - secondOperand;
@@ -733,13 +733,13 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
             case '*':
                 // set operands to be processed
-                int guess = MathBrainerUtility.randRange_ApiCheck(1, 2);
+                int guess = MathBrainerUtility.INSTANCE.randRange_ApiCheck(1, 2);
                 if (guess == 1){
-                    firstOperand  = MathBrainerUtility.randRange_ApiCheck(multMin, multHMax);
-                    secondOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multLMax);
+                    firstOperand  = MathBrainerUtility.INSTANCE.randRange_ApiCheck(multMin, multHMax);
+                    secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(multMin, multLMax);
                 }else{
-                    firstOperand  = MathBrainerUtility.randRange_ApiCheck(multMin, multLMax);
-                    secondOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multHMax);
+                    firstOperand  = MathBrainerUtility.INSTANCE.randRange_ApiCheck(multMin, multLMax);
+                    secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(multMin, multHMax);
                 }
 
                 // store correct answer
@@ -755,9 +755,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
             case '/':
                 // set operands to be processed
-                secondOperand = MathBrainerUtility.randRange_ApiCheck(divMin, divHMax);
+                secondOperand = MathBrainerUtility.INSTANCE.randRange_ApiCheck(divMin, divHMax);
                 // store correct answer
-                answerOK = MathBrainerUtility.randRange_ApiCheck(divMin, divLMax);
+                answerOK = MathBrainerUtility.INSTANCE.randRange_ApiCheck(divMin, divLMax);
                 firstOperand  = answerOK * secondOperand;
 
                 // set operations value in view
@@ -790,7 +790,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
      */
     private void setupAnswersBtn() {
         // choose the button where put the correct answer
-        correctBtnNumber = MathBrainerUtility.randRange_ApiCheck(minAnswerBtnNum, maxAnswerBtnNum);
+        correctBtnNumber = MathBrainerUtility.INSTANCE.randRange_ApiCheck(minAnswerBtnNum, maxAnswerBtnNum);
         Button tmpBtn    = getTheBtnNumber(correctBtnNumber);
         tmpBtn.setText(Integer.toString(answerOK));
 
@@ -873,7 +873,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
      */
     private void setAnswerBtnVisibility(Button thisBtn) {
 
-        int guess = MathBrainerUtility.randomSignChooser();
+        int guess = MathBrainerUtility.INSTANCE.randomSignChooser();
         if ( (guess > 0 ) && (currentLevelAnswerBtnVisible > 0)  ) {
             thisBtn.setVisibility(View.VISIBLE);
             currentLevelAnswerBtnVisible--;
@@ -889,9 +889,9 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
      * ---------------------------------------------------------------------------------------------
      */
     private int randomOffsetSum(){
-        int result = MathBrainerUtility.randRange_ApiCheck(1, (int)(offset * 1.5));
+        int result = MathBrainerUtility.INSTANCE.randRange_ApiCheck(1, (int)(offset * 1.5));
         if ( (result >= 1) && (result <= 3) ) {
-            return answerOK + MathBrainerUtility.randomSignChooser()* result;
+            return answerOK + MathBrainerUtility.INSTANCE.randomSignChooser()* result;
         }
         return answerOK + result;
     }
@@ -903,32 +903,32 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
      * ---------------------------------------------------------------------------------------------
      */
     private int randomOffsetMult(){
-        int result = MathBrainerUtility.randRange_ApiCheck(1, offset * 2);
-        int sign   = MathBrainerUtility.randomSignChooser();
+        int result = MathBrainerUtility.INSTANCE.randRange_ApiCheck(1, offset * 2);
+        int sign   = MathBrainerUtility.INSTANCE.randomSignChooser();
 
         if ( (result >= 4) && (result <= 11) ){
             if (sign > 0 ) {
-                return answerOK + MathBrainerUtility.randomSignChooser() * result;
+                return answerOK + MathBrainerUtility.INSTANCE.randomSignChooser() * result;
             } else {
-                return (int) ( answerOK + ( MathBrainerUtility.randomSignChooser() * (int) ( 10 + result) * 0.1));
+                return (int) ( answerOK + ( MathBrainerUtility.INSTANCE.randomSignChooser() * (int) ( 10 + result) * 0.1));
             }
 
         } else if ((result > 11) && (result <= 16)) {
             if (sign > 0 ) {
-                return answerOK + MathBrainerUtility.randomSignChooser() * result;
+                return answerOK + MathBrainerUtility.INSTANCE.randomSignChooser() * result;
             } else {
                 return (int) answerOK * (int)(result * 0.1);
             }
 
         } else if (result > 16)  {
             if (sign > 0 ) {
-                return answerOK + MathBrainerUtility.randomSignChooser() * result;
+                return answerOK + MathBrainerUtility.INSTANCE.randomSignChooser() * result;
             } else {
-                return  (int) ( answerOK + ( MathBrainerUtility.randomSignChooser() * (int) ( 3 + result) * 0.1));
+                return  (int) ( answerOK + ( MathBrainerUtility.INSTANCE.randomSignChooser() * (int) ( 3 + result) * 0.1));
             }
 
         } else
-            return answerOK + MathBrainerUtility.randomSignChooser() * result;
+            return answerOK + MathBrainerUtility.INSTANCE.randomSignChooser() * result;
 
     }
 
@@ -1120,7 +1120,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         isComingHome();
 
         // show unityads randomic
-        MathBrainerUtility.showUnityAdsRandom(this);
+        MathBrainerUtility.INSTANCE.showUnityAdsRandom(this);
 
     }
 

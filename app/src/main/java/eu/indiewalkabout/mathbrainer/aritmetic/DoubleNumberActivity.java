@@ -177,7 +177,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
                 isComingHome();
 
                 // show unityads randomic
-                MathBrainerUtility.showUnityAdsRandom(DoubleNumberActivity.this);
+                MathBrainerUtility.INSTANCE.showUnityAdsRandom(DoubleNumberActivity.this);
 
                 Intent intent = new Intent(DoubleNumberActivity.this, ChooseGameActivity.class);
                 startActivity(intent);
@@ -537,7 +537,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     @Override
     public void newChallenge() {
         // set the number to be doubled
-        numToBeDoubled = MathBrainerUtility.randRange_ApiCheck(min, max);
+        numToBeDoubled = MathBrainerUtility.INSTANCE.randRange_ApiCheck(min, max);
         numberToBeDoubled_tv.setText(Integer.toString(numToBeDoubled));
 
         // clean edit text field
@@ -694,7 +694,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         isComingHome();
 
         // show unityads randomic
-        MathBrainerUtility.showUnityAdsRandom(this);
+        MathBrainerUtility.INSTANCE.showUnityAdsRandom(this);
 
     }
 

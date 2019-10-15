@@ -302,7 +302,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
                 isComingHome();
 
                 // show unityads randomic
-                MathBrainerUtility.showUnityAdsRandom(CountObjectsActivity.this);
+                MathBrainerUtility.INSTANCE.showUnityAdsRandom(CountObjectsActivity.this);
 
                 Intent intent = new Intent(CountObjectsActivity.this, ChooseGameActivity.class);
                 startActivity(intent);
@@ -531,7 +531,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         result_tv.setVisibility(View.INVISIBLE);
 
         // show the items in number defined by level
-        itemsToCount = MathBrainerUtility.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),maxItemsToCount);
+        itemsToCount = MathBrainerUtility.INSTANCE.randRange_ApiCheck((int)Math.ceil(maxItemsToCount * 0.7),maxItemsToCount);
         drawquiz.redraw(itemsToCount);
 
         // show items to count
@@ -608,7 +608,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         answerOK = itemsToCount;
 
         // choose the button where put the correct answer
-        correctBtnNumber = MathBrainerUtility.randRange_ApiCheck(minAnswerBtnNum, maxAnswerBtnNum);
+        correctBtnNumber = MathBrainerUtility.INSTANCE.randRange_ApiCheck(minAnswerBtnNum, maxAnswerBtnNum);
         Button tmpBtn    = getTheBtnNumber(correctBtnNumber);
         tmpBtn.setText(Integer.toString(answerOK));
 
@@ -640,9 +640,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
      * ---------------------------------------------------------------------------------------------
      */
     private int randomOffsetSum(){
-        int result = MathBrainerUtility.randRange_ApiCheck(1, (int)(offset * 1.0));
+        int result = MathBrainerUtility.INSTANCE.randRange_ApiCheck(1, (int)(offset * 1.0));
         if ( (result >= 1) && (result <= 3) ) {
-            int sign = MathBrainerUtility.randomSignChooser();
+            int sign = MathBrainerUtility.INSTANCE.randomSignChooser();
             return answerOK + sign * result;
         }
         return answerOK + result;
@@ -820,7 +820,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         isComingHome();
 
         // show unityads randomic
-        MathBrainerUtility.showUnityAdsRandom(this);
+        MathBrainerUtility.INSTANCE.showUnityAdsRandom(this);
 
     }
 
@@ -908,9 +908,9 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
                 // draw on canvas
                 item = item.copy(Bitmap.Config.ARGB_8888, true);
-                int randX = MathBrainerUtility.randRange_ApiCheck(15, validDrawAreaItemsWidth);
-                int randY = MathBrainerUtility.randRange_ApiCheck(15, validDrawAreaItemsHeight);
-                ourCanvas.drawBitmap(MathBrainerUtility.resizeBitmapByScale(item, imageScaleXY),
+                int randX = MathBrainerUtility.INSTANCE.randRange_ApiCheck(15, validDrawAreaItemsWidth);
+                int randY = MathBrainerUtility.INSTANCE.randRange_ApiCheck(15, validDrawAreaItemsHeight);
+                ourCanvas.drawBitmap(MathBrainerUtility.INSTANCE.resizeBitmapByScale(item, imageScaleXY),
                         randX, randY, paint);
 
             } catch (IOException e) {

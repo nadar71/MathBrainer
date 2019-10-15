@@ -371,25 +371,25 @@ public class ChooseGameActivity extends AppCompatActivity {
         this.gameResults = gameResults;
 
         // set vars
-        totalHighScore_value           = MathBrainerUtility.getGameResultsFromList("global_score",gameResults);
+        totalHighScore_value           = MathBrainerUtility.INSTANCE.getGameResultsFromList("global_score",gameResults);
 
-        sumWriteHighscore_value        = MathBrainerUtility.getGameResultsFromList("sum_write_result_game_score",gameResults);
-        diffWriteHighscore_value       = MathBrainerUtility.getGameResultsFromList("diff_write_result_game_score",gameResults);
-        multWriteHighscore_value       = MathBrainerUtility.getGameResultsFromList("mult_write_result_game_score",gameResults);
-        divWriteHighscore_value        = MathBrainerUtility.getGameResultsFromList("div_write_result_game_score",gameResults);
+        sumWriteHighscore_value        = MathBrainerUtility.INSTANCE.getGameResultsFromList("sum_write_result_game_score",gameResults);
+        diffWriteHighscore_value       = MathBrainerUtility.INSTANCE.getGameResultsFromList("diff_write_result_game_score",gameResults);
+        multWriteHighscore_value       = MathBrainerUtility.INSTANCE.getGameResultsFromList("mult_write_result_game_score",gameResults);
+        divWriteHighscore_value        = MathBrainerUtility.INSTANCE.getGameResultsFromList("div_write_result_game_score",gameResults);
 
-        sumChooseHighscore_value       = MathBrainerUtility.getGameResultsFromList("sum_choose_result_game_score",gameResults);
-        diffChooseHighscore_value      = MathBrainerUtility.getGameResultsFromList("diff_choose_result_game_score",gameResults);
-        multChooseHighscore_value      = MathBrainerUtility.getGameResultsFromList("mult_choose_result_game_score",gameResults);
-        divChooseHighscore_value       = MathBrainerUtility.getGameResultsFromList("div_choose_result_game_score",gameResults);
+        sumChooseHighscore_value       = MathBrainerUtility.INSTANCE.getGameResultsFromList("sum_choose_result_game_score",gameResults);
+        diffChooseHighscore_value      = MathBrainerUtility.INSTANCE.getGameResultsFromList("diff_choose_result_game_score",gameResults);
+        multChooseHighscore_value      = MathBrainerUtility.INSTANCE.getGameResultsFromList("mult_choose_result_game_score",gameResults);
+        divChooseHighscore_value       = MathBrainerUtility.INSTANCE.getGameResultsFromList("div_choose_result_game_score",gameResults);
 
-        doublingHighscore_value        = MathBrainerUtility.getGameResultsFromList("doublenumber_game_score",gameResults);
-        mixedOps_chooseHighscore_value = MathBrainerUtility.getGameResultsFromList("mix_choose_result_game_score",gameResults);
-        mixedOps_writeHighscore_value  = MathBrainerUtility.getGameResultsFromList("mix_write_result_game_score",gameResults);
-        randomOpsHighscore_value       = MathBrainerUtility.getGameResultsFromList("random_op_game_score",gameResults);
+        doublingHighscore_value        = MathBrainerUtility.INSTANCE.getGameResultsFromList("doublenumber_game_score",gameResults);
+        mixedOps_chooseHighscore_value = MathBrainerUtility.INSTANCE.getGameResultsFromList("mix_choose_result_game_score",gameResults);
+        mixedOps_writeHighscore_value  = MathBrainerUtility.INSTANCE.getGameResultsFromList("mix_write_result_game_score",gameResults);
+        randomOpsHighscore_value       = MathBrainerUtility.INSTANCE.getGameResultsFromList("random_op_game_score",gameResults);
 
-        quickCountHighscore_value      = MathBrainerUtility.getGameResultsFromList("count_objects_game_score",gameResults);
-        orderHighscore_value           = MathBrainerUtility.getGameResultsFromList("number_order_game_score",gameResults);
+        quickCountHighscore_value      = MathBrainerUtility.INSTANCE.getGameResultsFromList("count_objects_game_score",gameResults);
+        orderHighscore_value           = MathBrainerUtility.INSTANCE.getGameResultsFromList("number_order_game_score",gameResults);
     }
 
 
