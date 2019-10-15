@@ -123,7 +123,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
 
     // max time, increased by level growing
     private long timerLength            = 20000;
-    private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
+    private long timerCountDownInterval = CountDownIndicator.Companion.getDEFAULT_COUNTDOWNINTERVAL();
 
     // game over dialog
     GameOverDialog gameOverDialog;

@@ -107,7 +107,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
 
     // max time, increased by level growing
     private long timerLength            = 20000;
-    private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
+    private long timerCountDownInterval = CountDownIndicator.Companion.getDEFAULT_COUNTDOWNINTERVAL();
 
     // custom keyboard instance
     MyKeyboard keyboard;

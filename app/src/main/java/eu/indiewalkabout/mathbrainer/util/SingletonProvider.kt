@@ -46,7 +46,7 @@ class SingletonProvider : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appExecutorsInstance = AppExecutors.getInstance()
+        appExecutorsInstance = AppExecutors.instance
 
         sContext = applicationContext
 

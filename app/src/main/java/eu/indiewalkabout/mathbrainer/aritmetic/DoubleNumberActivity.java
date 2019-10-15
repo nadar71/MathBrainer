@@ -88,8 +88,8 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
     CountDownIndicator countDownIndicator;
 
     // max time, increased by level growing
-    private long timerLength            = CountDownIndicator.DEFAULT_MILLISINFUTURE;
-    private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
+    private long timerLength            = CountDownIndicator.Companion.getDEFAULT_MILLISINFUTURE();
+    private long timerCountDownInterval = CountDownIndicator.Companion.getDEFAULT_COUNTDOWNINTERVAL();
 
     // game session end dialog
     EndGameSessionDialog endSessiondialog;

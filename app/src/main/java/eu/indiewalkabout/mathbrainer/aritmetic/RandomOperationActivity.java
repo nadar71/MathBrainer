@@ -113,7 +113,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
     // max time, increased by level growing
     private long timerLength            = 20000;
-    private long timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL;
+    private long timerCountDownInterval = CountDownIndicator.Companion.getDEFAULT_COUNTDOWNINTERVAL();
 
     // game session end dialog
     EndGameSessionDialog endSessiondialog;
