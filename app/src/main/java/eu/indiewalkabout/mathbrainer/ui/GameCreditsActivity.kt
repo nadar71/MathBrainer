@@ -24,7 +24,7 @@ class GameCreditsActivity : AppCompatActivity() {
 
     internal var gdprConsent_tv: TextView? = null
     internal var backhome_img:  ImageView? = null
-    private var consentSDK: ConsentSDK? = null
+    private lateinit var consentSDK: ConsentSDK
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,7 +118,7 @@ class GameCreditsActivity : AppCompatActivity() {
                 .addCustomLogTag("gdpr_TAG") // Add custom tag default: ID_LOG
                 .addPrivacyPolicy("http://www.indie-walkabout.eu/privacy-policy-app") // Add your privacy policy url
                 .addPublisherId("pub-8846176967909254") // Add your admob publisher id
-                .build()
+                .build()!!
     }
 
 

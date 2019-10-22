@@ -68,7 +68,7 @@ class HighscoresActivity : AppCompatActivity() {
 
 
         // To check the consent and load ads
-        consentSDK.checkConsent(object : ConsentSDK.ConsentCallback() {
+        consentSDK?.checkConsent(object : ConsentSDK.ConsentCallback() {
             override fun onResult(isRequestLocationInEeaOrUnknown: Boolean) {
                 Log.i("gdpr_TAG", "onResult: isRequestLocationInEeaOrUnknown : $isRequestLocationInEeaOrUnknown")
                 // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad

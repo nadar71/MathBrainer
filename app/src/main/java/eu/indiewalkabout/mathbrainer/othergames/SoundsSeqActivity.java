@@ -23,6 +23,6 @@ public class SoundsSeqActivity extends AppCompatActivity {
         mAdView = findViewById(R.id.mAdView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(SoundsSeqActivity.this));
+        mAdView.loadAd(ConsentSDK.Companion.getAdRequest(SoundsSeqActivity.this));
     }
 }

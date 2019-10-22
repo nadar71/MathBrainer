@@ -133,7 +133,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         mAdView = findViewById(R.id.mAdView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(RandomOperationActivity.this));
+        mAdView.loadAd(ConsentSDK.Companion.getAdRequest(RandomOperationActivity.this));
 
         // set views ref
         firstOperand_tv     = (TextView)   findViewById(R.id.firstOperand_tv);
