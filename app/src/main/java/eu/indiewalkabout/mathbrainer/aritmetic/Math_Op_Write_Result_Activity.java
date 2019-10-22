@@ -130,7 +130,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         setOperationSymbol();
 
 
-        mAdView = findViewById(R.id.adView);
+        mAdView = findViewById(R.id.mAdView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle
         // the right way to load the ad

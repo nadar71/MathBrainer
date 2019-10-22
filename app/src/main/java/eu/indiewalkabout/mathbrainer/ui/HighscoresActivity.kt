@@ -31,51 +31,6 @@ import kotlinx.android.synthetic.main.activity_highscores.*
 class HighscoresActivity : AppCompatActivity() {
 
 
-    // admob banner ref
-    private var mAdView: AdView? = null
-
-    /*
-    // Button refs
-    internal var sumChooseBtn:  Button? = null
-    internal var diffChooseBtn:  Button? = null
-    internal var multChooseBtn:  Button? = null
-    internal var divChooseBtn:  Button? = null
-
-    internal var sumWriteBtn:  Button? = null
-    internal var diffWriteBtn:  Button? = null
-    internal var multWriteBtn:  Button? = null
-    internal var divWriteBtn:  Button? = null
-
-    internal var resultWriteBtn:  Button? = null
-    internal var resultChooseBtn:  Button? = null
-    internal var doublingBtn:  Button? = null
-
-    internal var randomOpsBtn:  Button? = null
-
-    internal var quickCountBtn:  ImageView? = null
-    internal var orderBtn:  ImageView? = null
-    internal var home_img:  ImageView? = null
-
-
-    // game results scores ref
-    internal var totalHighScore_tv:  TextView? = null
-    internal var sumWriteScore_tv:  TextView? = null
-    internal var diffWriteScore_tv:  TextView? = null
-    internal var multWriteScore_tv:  TextView? = null
-    internal var divWriteScore_tv:  TextView? = null
-    internal var sumChooseScore_tv:  TextView? = null
-    internal var diffChooseScore_tv:  TextView? = null
-    internal var multChooseScore_tv:  TextView? = null
-    internal var divChooseScore_tv:  TextView? = null
-    internal var doublingScore_tv:  TextView? = null
-    internal var mixedOps_chooseScore_tv:  TextView? = null
-    internal var mixedOps_writeScore_tv:  TextView? = null
-    internal var randomOpsScore_tv:  TextView? = null
-    internal var quickCountScore_tv:  TextView? = null
-    internal var orderScore_tv:  TextView? = null
-
-     */
-
     // game results list
     internal var gameResults: List<GameResult>? = null
 
@@ -121,64 +76,9 @@ class HighscoresActivity : AppCompatActivity() {
             }
         })
 
-        mAdView = findViewById(R.id.adView)
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
         mAdView!!.loadAd(ConsentSDK.getAdRequest(this@HighscoresActivity))
-
-        /*
-        // -----------------------------------------------------------------------------------------
-        // Aritmetic operation button
-        // -----------------------------------------------------------------------------------------
-
-        // --------------------------------------------
-        // Basic op btn
-        // --------------------------------------------
-        sumChooseBtn = findViewById(R.id.sumChooseBtn)
-        diffChooseBtn = findViewById(R.id.diffChooseBtn)
-        multChooseBtn = findViewById(R.id.multChooseBtn)
-        divChooseBtn = findViewById(R.id.divChooseBtn)
-
-        sumWriteBtn = findViewById(R.id.sumWriteBtn)
-        diffWriteBtn = findViewById(R.id.diffWriteBtn)
-        multWriteBtn = findViewById(R.id.multWriteBtn)
-        divWriteBtn = findViewById(R.id.divWriteBtn)
-
-
-        // --------------------------------------------
-        // Mixed op btn
-        // --------------------------------------------
-        resultWriteBtn = findViewById(R.id.resultWriteBtn)
-        resultChooseBtn = findViewById(R.id.resultChooseBtn)
-        quickCountBtn = findViewById(R.id.quickCountBtn)
-        doublingBtn = findViewById(R.id.doublingBtn)
-        orderBtn = findViewById(R.id.orderBtn)
-        randomOpsBtn = findViewById(R.id.randomOpsBtn)
-
-        home_img = findViewById(R.id.home_img)
-        */
-
-        // --------------------------------------------
-        // Games results ref
-        // --------------------------------------------
-        /*
-        totalHighScore_tv = findViewById(R.id.totalHighScore_tv)
-        sumWriteScore_tv = findViewById(R.id.sumWriteScore_tv)
-        diffWriteScore_tv = findViewById(R.id.diffWriteScore_tv)
-        multWriteScore_tv = findViewById(R.id.multWriteScore_tv)
-        divWriteScore_tv = findViewById(R.id.divWriteScore_tv)
-        sumChooseScore_tv = findViewById(R.id.sumChooseScore_tv)
-        diffChooseScore_tv = findViewById(R.id.diffChooseScore_tv)
-        multChooseScore_tv = findViewById(R.id.multChooseScore_tv)
-        divChooseScore_tv = findViewById(R.id.divChooseScore_tv)
-        doublingScore_tv = findViewById(R.id.doublingScore_tv)
-        mixedOps_chooseScore_tv = findViewById(R.id.mixedOps_chooseScore_tv)
-        mixedOps_writeScore_tv = findViewById(R.id.mixedOps_writeScore_tv)
-        randomOpsScore_tv = findViewById(R.id.randomOpsScore_tv)
-        quickCountScore_tv = findViewById(R.id.quickCountScore_tv)
-        orderScore_tv = findViewById(R.id.orderScore_tv)
-        */
-
 
 
         // show updated scores

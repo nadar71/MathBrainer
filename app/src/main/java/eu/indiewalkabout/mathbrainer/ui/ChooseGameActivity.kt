@@ -31,9 +31,6 @@ import kotlinx.android.synthetic.main.activity_choose_game_new.*
  */
 class ChooseGameActivity : AppCompatActivity() {
 
-    // admob banner ref
-    private var mAdView: AdView? = null
-
 
     // highscores value
     internal var totalHighScore_value: Int = 0
@@ -83,7 +80,6 @@ class ChooseGameActivity : AppCompatActivity() {
             }
         })
 
-        mAdView = findViewById(R.id.adView)
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
         mAdView!!.loadAd(ConsentSDK.getAdRequest(this@ChooseGameActivity))

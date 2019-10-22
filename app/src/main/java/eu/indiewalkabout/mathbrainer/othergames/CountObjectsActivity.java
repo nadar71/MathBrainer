@@ -133,7 +133,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         // Unity ads init
         UnityAds.initialize(this,getResources().getString(R.string.unityads_key),unityAdsListener);
 
-        mAdView = findViewById(R.id.adView);
+        mAdView = findViewById(R.id.mAdView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
         mAdView.loadAd(ConsentSDK.getAdRequest(CountObjectsActivity.this));

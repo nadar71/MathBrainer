@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        mAdView = findViewById(R.id.adView);
+        mAdView = findViewById(R.id.mAdView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
         mAdView.loadAd(ConsentSDK.getAdRequest(MainActivity.this));

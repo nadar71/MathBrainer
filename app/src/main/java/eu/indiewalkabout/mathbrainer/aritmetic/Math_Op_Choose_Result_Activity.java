@@ -140,7 +140,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         // Check if it's mixed op or single specific operation
         setOperationSymbol();
 
-        mAdView = findViewById(R.id.adView);
+        mAdView = findViewById(R.id.mAdView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
         mAdView.loadAd(ConsentSDK.getAdRequest(Math_Op_Choose_Result_Activity.this));

@@ -20,7 +20,7 @@ public class SoundsSeqActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sounds_seq);
 
-        mAdView = findViewById(R.id.adView);
+        mAdView = findViewById(R.id.mAdView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
         mAdView.loadAd(ConsentSDK.getAdRequest(SoundsSeqActivity.this));

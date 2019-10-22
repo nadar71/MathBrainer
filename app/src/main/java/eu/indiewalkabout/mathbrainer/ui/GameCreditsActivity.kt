@@ -10,26 +10,21 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 
-import com.google.android.gms.ads.AdView
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
 
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK
 import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility
+import kotlinx.android.synthetic.main.activity_credits.*
 
 class GameCreditsActivity : AppCompatActivity() {
 
     private val unityAdsListener = UnityAdsListener()
 
-
     internal var gdprConsent_tv: TextView? = null
     internal var backhome_img:  ImageView? = null
     private var consentSDK: ConsentSDK? = null
-
-
-    // admob banner ref
-    private var mAdView: AdView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,8 +68,6 @@ class GameCreditsActivity : AppCompatActivity() {
             gdprConsent_tv!!.visibility = View.INVISIBLE
         }
 
-
-        mAdView = findViewById(R.id.adView)
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
         mAdView!!.loadAd(ConsentSDK.getAdRequest(this@GameCreditsActivity))

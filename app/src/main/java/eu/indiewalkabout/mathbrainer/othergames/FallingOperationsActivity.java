@@ -20,7 +20,7 @@ public class FallingOperationsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_falling_operations);
 
 
-        mAdView = findViewById(R.id.adView);
+        mAdView = findViewById(R.id.mAdView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
         mAdView.loadAd(ConsentSDK.getAdRequest(FallingOperationsActivity.this));
