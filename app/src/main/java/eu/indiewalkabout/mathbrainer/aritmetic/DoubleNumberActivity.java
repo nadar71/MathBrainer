@@ -382,11 +382,11 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         keyboard.setVisibility(View.INVISIBLE);
 
         // statistics
-        Results.incrementGameResultsThread("operations_executed");
-        Results.incrementGameResultsThread("operations_ok");
+        Results.INSTANCE.incrementGameResultsThread("operations_executed");
+        Results.INSTANCE.incrementGameResultsThread("operations_ok");
 
-        Results.incrementGameResultsThread("doublings");
-        Results.incrementGameResultsThread("multiplications");
+        Results.INSTANCE.incrementGameResultsThread("doublings");
+        Results.INSTANCE.incrementGameResultsThread("multiplications");
 
     }
 
@@ -407,11 +407,11 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         keyboard.setVisibility(View.INVISIBLE);
 
         // statistics
-        Results.incrementGameResultsThread("operations_executed");
-        Results.incrementGameResultsThread("operations_ko");
+        Results.INSTANCE.incrementGameResultsThread("operations_executed");
+        Results.INSTANCE.incrementGameResultsThread("operations_ko");
 
-        Results.incrementGameResultsThread("doublings");
-        Results.incrementGameResultsThread("multiplications");
+        Results.INSTANCE.incrementGameResultsThread("doublings");
+        Results.INSTANCE.incrementGameResultsThread("multiplications");
     }
 
 
@@ -479,7 +479,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         lifes--;
 
         // statistics
-        Results.incrementGameResultsThread("lifes_missed");
+        Results.INSTANCE.incrementGameResultsThread("lifes_missed");
 
         Log.d(TAG, "isGameOver: " + lifes);
 
@@ -491,10 +491,10 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
             endGame();
 
             // statistics
-            Results.incrementGameResultsThread("games_played");
-            Results.incrementGameResultsThread("games_lose");
-            Results.updateGameResultHighscoreThread("doublenumber_game_score", score);
-            Results.incrementGameResultByDeltaThread("global_score", score);
+            Results.INSTANCE.incrementGameResultsThread("games_played");
+            Results.INSTANCE.incrementGameResultsThread("games_lose");
+            Results.INSTANCE.updateGameResultHighscoreThread("doublenumber_game_score", score);
+            Results.INSTANCE.incrementGameResultByDeltaThread("global_score", score);
 
             return true;
 
@@ -514,8 +514,8 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
      * ---------------------------------------------------------------------------------------------
      */
     public void isComingHome() {
-            Results.updateGameResultHighscoreThread("doublenumber_game_score", score);
-            Results.incrementGameResultByDeltaThread("global_score", score);
+            Results.INSTANCE.updateGameResultHighscoreThread("doublenumber_game_score", score);
+            Results.INSTANCE.incrementGameResultByDeltaThread("global_score", score);
     }
 
     /**
@@ -628,7 +628,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         }
 
         // statistics
-        Results.incrementGameResultsThread("level_upgrades");
+        Results.INSTANCE.incrementGameResultsThread("level_upgrades");
 
     }
 

@@ -435,8 +435,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
 
 
         // statistics
-        Results.incrementGameResultsThread("operations_executed");
-        Results.incrementGameResultsThread("operations_ok");
+        Results.INSTANCE.incrementGameResultsThread("operations_executed");
+        Results.INSTANCE.incrementGameResultsThread("operations_ok");
     }
 
 
@@ -462,8 +462,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         gridLayout.setVisibility(View.INVISIBLE);
 
         // statistics
-        Results.incrementGameResultsThread("operations_executed");
-        Results.incrementGameResultsThread("operations_ko");
+        Results.INSTANCE.incrementGameResultsThread("operations_executed");
+        Results.INSTANCE.incrementGameResultsThread("operations_ko");
     }
 
 
@@ -530,7 +530,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         lifes--;
 
         // statistics
-        Results.incrementGameResultsThread("lifes_missed");
+        Results.INSTANCE.incrementGameResultsThread("lifes_missed");
 
         Log.d(TAG, "isGameOver: " + lifes);
 
@@ -542,10 +542,10 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
             endGame();
 
             // statistics
-            Results.incrementGameResultsThread("games_played");
-            Results.incrementGameResultsThread("games_lose");
-            Results.updateGameResultHighscoreThread("random_op_game_score", score);
-            Results.incrementGameResultByDeltaThread("global_score", score);
+            Results.INSTANCE.incrementGameResultsThread("games_played");
+            Results.INSTANCE.incrementGameResultsThread("games_lose");
+            Results.INSTANCE.updateGameResultHighscoreThread("random_op_game_score", score);
+            Results.INSTANCE.incrementGameResultByDeltaThread("global_score", score);
 
             return true;
 
@@ -565,8 +565,8 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
      * ---------------------------------------------------------------------------------------------
      */
     public void isComingHome() {
-        Results.updateGameResultHighscoreThread("random_op_game_score", score);
-        Results.incrementGameResultByDeltaThread("global_score", score);
+        Results.INSTANCE.updateGameResultHighscoreThread("random_op_game_score", score);
+        Results.INSTANCE.incrementGameResultByDeltaThread("global_score", score);
     }
 
 
@@ -625,7 +625,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
                 answer      = firstOperand + secondOperand;
 
                 // statistics
-                Results.incrementGameResultsThread("sums");
+                Results.INSTANCE.incrementGameResultsThread("sums");
 
                 break;
 
@@ -638,7 +638,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
                 answer = firstOperand - secondOperand;
 
                 // statistics
-                Results.incrementGameResultsThread("differences");
+                Results.INSTANCE.incrementGameResultsThread("differences");
 
                 break;
 
@@ -657,7 +657,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
                 answer = firstOperand * secondOperand;
 
                 // statistics
-                Results.incrementGameResultsThread("multiplications");
+                Results.INSTANCE.incrementGameResultsThread("multiplications");
 
                 break;
 
@@ -669,7 +669,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
                 firstOperand  = answer * secondOperand;
 
                 // statistics
-                Results.incrementGameResultsThread("divisions");
+                Results.INSTANCE.incrementGameResultsThread("divisions");
 
                 break;
             default:
@@ -778,7 +778,7 @@ public class RandomOperationActivity extends AppCompatActivity implements IGameF
         }
 
         // statistics
-        Results.incrementGameResultsThread("level_upgrades");
+        Results.INSTANCE.incrementGameResultsThread("level_upgrades");
 
     }
 

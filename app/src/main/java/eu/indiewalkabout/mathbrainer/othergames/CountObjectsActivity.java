@@ -376,17 +376,17 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
                     result_tv.setTextColor(Color.RED);
 
                     // statistics
-                    Results.incrementGameResultsThread("operations_executed");
-                    Results.incrementGameResultsThread("operations_ko");
+                    Results.INSTANCE.incrementGameResultsThread("operations_executed");
+                    Results.INSTANCE.incrementGameResultsThread("operations_ko");
 
                 } else if (win == true){
                     result_tv.setText(getResources().getString(R.string.ok_str));
                     result_tv.setTextColor(Color.GREEN);
 
                     // statistics
-                    Results.incrementGameResultsThread("operations_executed");
-                    Results.incrementGameResultsThread("operations_ok");
-                    Results.incrementGameResultByDeltaThread("objects_counted", itemsToCount);
+                    Results.INSTANCE.incrementGameResultsThread("operations_executed");
+                    Results.INSTANCE.incrementGameResultsThread("operations_ok");
+                    Results.INSTANCE.incrementGameResultByDeltaThread("objects_counted", itemsToCount);
                 }
 
             }
@@ -469,7 +469,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         lifes--;
 
         // statistics
-        Results.incrementGameResultsThread("lifes_missed");
+        Results.INSTANCE.incrementGameResultsThread("lifes_missed");
 
 
         // Update UI
@@ -482,10 +482,10 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
             endGame();
 
             // statistics
-            Results.incrementGameResultsThread("games_played");
-            Results.incrementGameResultsThread("games_lose");
-            Results.updateGameResultHighscoreThread("count_objects_game_score", score);
-            Results.incrementGameResultByDeltaThread("global_score", score);
+            Results.INSTANCE.incrementGameResultsThread("games_played");
+            Results.INSTANCE.incrementGameResultsThread("games_lose");
+            Results.INSTANCE.updateGameResultHighscoreThread("count_objects_game_score", score);
+            Results.INSTANCE.incrementGameResultByDeltaThread("global_score", score);
 
             return true;
 
@@ -502,8 +502,8 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
      * ---------------------------------------------------------------------------------------------
      */
     public void isComingHome() {
-        Results.updateGameResultHighscoreThread("count_objects_game_score", score);
-        Results.incrementGameResultByDeltaThread("global_score", score);
+        Results.INSTANCE.updateGameResultHighscoreThread("count_objects_game_score", score);
+        Results.INSTANCE.incrementGameResultByDeltaThread("global_score", score);
     }
 
     @Override
@@ -741,7 +741,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         }
 
         // statistics
-        Results.incrementGameResultsThread("level_upgrades");
+        Results.INSTANCE.incrementGameResultsThread("level_upgrades");
     }
 
 

@@ -363,16 +363,16 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
                     result_tv.setTextColor(Color.RED);
 
                     // statistics
-                    Results.incrementGameResultsThread("operations_executed");
-                    Results.incrementGameResultsThread("operations_ko");
+                    Results.INSTANCE.incrementGameResultsThread("operations_executed");
+                    Results.INSTANCE.incrementGameResultsThread("operations_ko");
 
                 } else if (win == true){
                     result_tv.setText(getResources().getString(R.string.ok_str));
                     result_tv.setTextColor(Color.GREEN);
                     // statistics
-                    Results.incrementGameResultsThread("operations_executed");
-                    Results.incrementGameResultsThread("operations_ok");
-                    Results.incrementGameResultByDeltaThread("numbers_in_order", itemsToCount);
+                    Results.INSTANCE.incrementGameResultsThread("operations_executed");
+                    Results.INSTANCE.incrementGameResultsThread("operations_ok");
+                    Results.INSTANCE.incrementGameResultByDeltaThread("numbers_in_order", itemsToCount);
                 } else if (!win){
                     result_tv.setText(getResources().getString(R.string.quick_count_relaunch));
                     result_tv.setTextColor(Color.GREEN);
@@ -416,7 +416,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         lifes--;
 
         // statistics
-        Results.incrementGameResultsThread("lifes_missed");
+        Results.INSTANCE.incrementGameResultsThread("lifes_missed");
 
         // Update UI
         if ( lifes > -1) { lifesValue_iv.get(lifes).setVisibility(View.INVISIBLE);}
@@ -428,10 +428,10 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
             endGame();
 
             // statistics
-            Results.incrementGameResultsThread("games_played");
-            Results.incrementGameResultsThread("games_lose");
-            Results.updateGameResultHighscoreThread("number_order_game_score", score);
-            Results.incrementGameResultByDeltaThread("global_score", score);
+            Results.INSTANCE.incrementGameResultsThread("games_played");
+            Results.INSTANCE.incrementGameResultsThread("games_lose");
+            Results.INSTANCE.updateGameResultHighscoreThread("number_order_game_score", score);
+            Results.INSTANCE.incrementGameResultByDeltaThread("global_score", score);
 
             return true;
 
@@ -448,8 +448,8 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
      * ---------------------------------------------------------------------------------------------
      */
     public void isComingHome() {
-        Results.updateGameResultHighscoreThread("number_order_game_score", score);
-        Results.incrementGameResultByDeltaThread("global_score", score);
+        Results.INSTANCE.updateGameResultHighscoreThread("number_order_game_score", score);
+        Results.INSTANCE.incrementGameResultByDeltaThread("global_score", score);
     }
 
 
@@ -639,7 +639,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         }
 
         // statistics
-        Results.incrementGameResultsThread("level_upgrades");
+        Results.INSTANCE.incrementGameResultsThread("level_upgrades");
 
     }
 

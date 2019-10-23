@@ -24,7 +24,7 @@ class HighScoresViewModel : ViewModel() {
         Log.d(TAG, "Retrieving game results list from repository")
 
         // get repository instance
-        repository = (SingletonProvider.getsContext() as SingletonProvider).repository
+        repository = (SingletonProvider.getsContext() as SingletonProvider).repository!!
         gameResultsList = repository.allGamesResults
     }
 

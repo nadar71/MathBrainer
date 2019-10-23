@@ -465,8 +465,8 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         keyboard.setVisibility(View.INVISIBLE);
 
         // statistics
-        Results.incrementGameResultsThread("operations_executed");
-        Results.incrementGameResultsThread("operations_ok");
+        Results.INSTANCE.incrementGameResultsThread("operations_executed");
+        Results.INSTANCE.incrementGameResultsThread("operations_ok");
     }
 
 
@@ -487,8 +487,8 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         keyboard.setVisibility(View.INVISIBLE);
 
         // statistics
-        Results.incrementGameResultsThread("operations_executed");
-        Results.incrementGameResultsThread("operations_ko");
+        Results.INSTANCE.incrementGameResultsThread("operations_executed");
+        Results.INSTANCE.incrementGameResultsThread("operations_ko");
     }
 
 
@@ -556,7 +556,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         lifes--;
 
         // statistics
-        Results.incrementGameResultsThread("lifes_missed");
+        Results.INSTANCE.incrementGameResultsThread("lifes_missed");
 
         Log.d(TAG, "isGameOver: " + lifes);
 
@@ -568,10 +568,10 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
             endGame();
 
             // statistics
-            Results.incrementGameResultsThread("games_played");
-            Results.incrementGameResultsThread("games_lose");
-            Results.updateGameResultHighscoreThread(scoreType, score);
-            Results.incrementGameResultByDeltaThread("global_score", score);
+            Results.INSTANCE.incrementGameResultsThread("games_played");
+            Results.INSTANCE.incrementGameResultsThread("games_lose");
+            Results.INSTANCE.updateGameResultHighscoreThread(scoreType, score);
+            Results.INSTANCE.incrementGameResultByDeltaThread("global_score", score);
 
             return true;
 
@@ -591,8 +591,8 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
      * ---------------------------------------------------------------------------------------------
      */
     public void isComingHome() {
-        Results.updateGameResultHighscoreThread(scoreType, score);
-        Results.incrementGameResultByDeltaThread("global_score", score);
+        Results.INSTANCE.updateGameResultHighscoreThread(scoreType, score);
+        Results.INSTANCE.incrementGameResultByDeltaThread("global_score", score);
     }
 
     /**
@@ -647,7 +647,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
                 answerOK = firstOperand + secondOperand;
 
                 // statistics
-                Results.incrementGameResultsThread("sums");
+                Results.INSTANCE.incrementGameResultsThread("sums");
 
                 operationSymbol_tv.setText(Character.toString(operation));
 
@@ -665,7 +665,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
                 operationSymbol_tv.setText(Character.toString(operation));
 
                 // statistics
-                Results.incrementGameResultsThread("differences");
+                Results.INSTANCE.incrementGameResultsThread("differences");
 
                 break;
 
@@ -687,7 +687,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
                 operationSymbol_tv.setText("X");
 
                 // statistics
-                Results.incrementGameResultsThread("multiplications");
+                Results.INSTANCE.incrementGameResultsThread("multiplications");
 
                 break;
 
@@ -702,7 +702,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
                 operationSymbol_tv.setText(Character.toString(operation));
 
                 // statistics
-                Results.incrementGameResultsThread("divisions");
+                Results.INSTANCE.incrementGameResultsThread("divisions");
 
                 break;
             default:
@@ -808,7 +808,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
         }
 
         // statistics
-        Results.incrementGameResultsThread("level_upgrades");
+        Results.INSTANCE.incrementGameResultsThread("level_upgrades");
 
     }
 

@@ -1,17 +1,15 @@
-package eu.indiewalkabout.mathbrainer.statistics;
+package eu.indiewalkabout.mathbrainer.statistics
 
-import android.arch.lifecycle.LiveData;
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
-
-import java.util.List;
+import android.arch.lifecycle.LiveData
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Delete
+import android.arch.persistence.room.Insert
+import android.arch.persistence.room.OnConflictStrategy
+import android.arch.persistence.room.Query
+import android.arch.persistence.room.Update
 
 @Dao
-public interface MathBrainerDbDao {
+interface MathBrainerDbDao {
 
     //----------------------------------------------------------------------------------------------
     //  QUERY
@@ -19,23 +17,22 @@ public interface MathBrainerDbDao {
 
     // retrieve ALL KIND OF FOOD  without regarding exipring date
     @Query("SELECT * FROM GAMERESULTS_LIST ")
-    LiveData<List<GameResult>> loadAllGamesResults();
+    fun loadAllGamesResults(): LiveData<List<GameResult>>
 
     // check if game result is in db;is return string null it isn't
     @Query("SELECT * FROM GAMERESULTS_LIST WHERE result_name = :gameResultName")
-    GameResult isGameResultExists(String gameResultName);
+    fun isGameResultExists(gameResultName: String): GameResult
 
     // get game result value
     @Query("SELECT result_value FROM GAMERESULTS_LIST WHERE result_name = :gameResultName")
-    int getGameResult(String gameResultName);
+    fun getGameResult(gameResultName: String): Int
 
 
     //----------------------------------------------------------------------------------------------
     //  INSERT
     //----------------------------------------------------------------------------------------------
     @Insert
-    void insertGameResult(GameResult gameResult);
-
+    fun insertGameResult(gameResult: GameResult)
 
 
     //----------------------------------------------------------------------------------------------
@@ -43,14 +40,14 @@ public interface MathBrainerDbDao {
     //----------------------------------------------------------------------------------------------
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateGameResult(GameResult gameResult);
+    fun updateGameResult(gameResult: GameResult)
 
     @Query("UPDATE GAMERESULTS_LIST SET result_value = :value WHERE result_name = :gameResultName")
-    void updateGameResult(String gameResultName, int value);
+    fun updateGameResult(gameResultName: String, value: Int)
 
     // delete single record
     @Delete
-    void deleteGameResult(GameResult gameResult);
+    fun deleteGameResult(gameResult: GameResult)
 
 
     //----------------------------------------------------------------------------------------------
@@ -58,6 +55,6 @@ public interface MathBrainerDbDao {
     //----------------------------------------------------------------------------------------------
     // drop table
     @Query("DELETE FROM GAMERESULTS_LIST")
-    public void dropTable();
+    fun dropTable()
 
 }

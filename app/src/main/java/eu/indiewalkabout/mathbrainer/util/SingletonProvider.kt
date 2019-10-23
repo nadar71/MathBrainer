@@ -31,7 +31,7 @@ class SingletonProvider : Application() {
      * @return
      * ---------------------------------------------------------------------------------------------
      */
-    val database: MathBrainerDatabase
+    val database: MathBrainerDatabase?
         get() = MathBrainerDatabase.getsDbInstance(this)
 
 
@@ -41,8 +41,8 @@ class SingletonProvider : Application() {
      * @return
      * ---------------------------------------------------------------------------------------------
      */
-    val repository: MathBrainerRepository
-        get() = MathBrainerRepository.getInstance(database)
+    val repository: MathBrainerRepository?
+        get() = database?.let { MathBrainerRepository.getInstance(it) }
 
     override fun onCreate() {
         super.onCreate()
