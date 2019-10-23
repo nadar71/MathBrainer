@@ -1,5 +1,8 @@
 package eu.indiewalkabout.mathbrainer.util
 
+
+
+
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -18,6 +21,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK.Companion.nonPersonalizedAdsBundle
 
 import java.net.MalformedURLException
@@ -89,20 +93,20 @@ class ConsentSDK {
         }
 
         // Build
-        fun build(): ConsentSDK? {
+        fun build(): ConsentSDK {
             if (this.DEBUG) {
-                val consentSDK = publisherId?.let { privacyURL?.let { it1 -> ConsentSDK(context, it, it1, true) } }
-                consentSDK?.LOG_TAG ?:  this.LOG_TAG
-                consentSDK?.DEVICE_ID ?: this.DEVICE_ID
+                val consentSDK = ConsentSDK(context, publisherId, privacyURL, true)
+                consentSDK.LOG_TAG = this.LOG_TAG
+                consentSDK.DEVICE_ID = this.DEVICE_ID
                 return consentSDK
             } else {
-                return publisherId?.let { privacyURL?.let { it1 -> ConsentSDK(context, it, it1) } }
+                return ConsentSDK(context, publisherId, privacyURL)
             }
         }
     }
 
     // Initialize debug
-    constructor(context: Context, publisherId: String, privacyURL: String, DEBUG: Boolean) {
+    constructor(context: Context, publisherId: String?, privacyURL: String?, DEBUG: Boolean) {
         this.context = context
         this.settings = initPreferences(context)
         this.publisherId = publisherId
@@ -112,7 +116,7 @@ class ConsentSDK {
     }
 
     // Initialize production
-    constructor(context: Context, publisherId: String, privacyURL: String) {
+    constructor(context: Context, publisherId: String?, privacyURL: String?) {
         this.context = context
         this.settings = context.getSharedPreferences(preferences_name, Context.MODE_PRIVATE)
         this.publisherId = publisherId
@@ -144,7 +148,7 @@ class ConsentSDK {
             }
             consentInformation.debugGeography = DebugGeography.DEBUG_GEOGRAPHY_EEA
         }
-        val publisherIds = publisherId?.let { arrayOf<String>(it) }
+        val publisherIds = arrayOf<String?>(publisherId)
         consentInformation.requestConsentInfoUpdate(publisherIds, object : ConsentInfoUpdateListener {
             override fun onConsentInfoUpdated(consentStatus: ConsentStatus) {
                 callback?.onResult(consentInformation, consentStatus)
@@ -323,26 +327,24 @@ class ConsentSDK {
             return settings.getBoolean(ads_preference, PERSONALIZED)
         }
 
-        // -----------------------------------------------------------------------------------------
-        // Init admob
-        // Sample AdMob app ID:         ca-app-pub-3940256099942544~3347511713
-        // THIS APP REAL AdMob app ID:
-        // -----------------------------------------------------------------------------------------
-        // Get AdRequest
+
+        // Get AdRequest, use App ID
+        // TODO : delete test device before publishing
         fun getAdRequest(context: Context): AdRequest {
             if (isConsentPersonalized(context)) {
-                MobileAds.initialize(context, "@string/admob_key_app_id")
+                MobileAds.initialize(context, context.getString(R.string.admob_key_app_id))
                 return AdRequest.Builder()
                         .addTestDevice("7DC1A1E8AEAD7908E42271D4B68FB270")
                         .build()
             } else {
-                MobileAds.initialize(context, "@string/admob_key_app_id")
+                MobileAds.initialize(context, context.getString(R.string.admob_key_app_id))
                 return AdRequest.Builder()
                         .addNetworkExtrasBundle(AdMobAdapter::class.java, nonPersonalizedAdsBundle)
                         .addTestDevice("7DC1A1E8AEAD7908E42271D4B68FB270")
                         .build()
             }
         }
+
 
         // Get Non Personalized Ads Bundle
         private val nonPersonalizedAdsBundle: Bundle
@@ -359,4 +361,5 @@ class ConsentSDK {
     }
 
 }
+
 
