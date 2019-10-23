@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
 
@@ -50,6 +51,32 @@ class ChooseGameActivity : AppCompatActivity() {
     internal var orderHighscore_value: Int = 0
 
 
+    private lateinit var consentSDK: ConsentSDK
+
+
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Get if consent gdpr must be asked or not
+     * ---------------------------------------------------------------------------------------------
+     */
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Set if consent gdpr must be asked or not
+     * ---------------------------------------------------------------------------------------------
+     */
+    var consentSDKNeed: Boolean
+        get() {
+            val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+            return prefs.getBoolean(APP_CONSENT_NEED, DEFAULT_CONSENT_NEED)
+        }
+        set(isNeeded) {
+            val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+            val editor = prefs.edit()
+            editor.putBoolean(APP_CONSENT_NEED, isNeeded)
+            editor.apply()
+        }
+
+
     // game results list
     internal var gameResults: List<GameResult>? = null
 
@@ -61,29 +88,6 @@ class ChooseGameActivity : AppCompatActivity() {
         // init db with results to 0 where needed
         Results.initResultsThread()
 
-        // Initialize ConsentSDK
-        val consentSDK = ConsentSDK.Builder(this)
-                .addTestDeviceId("7DC1A1E8AEAD7908E42271D4B68FB270") // redminote 5 // Add your test device id "Remove addTestDeviceId on production!"
-                // .addTestDeviceId("9978A5F791A259430A0156313ED9C6A2")
-                .addCustomLogTag("gdpr_TAG") // Add custom tag default: ID_LOG
-                .addPrivacyPolicy("http://www.indie-walkabout.eu/privacy-policy-app") // Add your privacy policy url
-                .addPublisherId("pub-8846176967909254") // Add your admob publisher id
-                .build()
-
-
-        // To check the consent and load ads
-        consentSDK.checkConsent(object : ConsentSDK.ConsentCallback() {
-            override fun onResult(isRequestLocationInEeaOrUnknown: Boolean) {
-                Log.i("gdpr_TAG", "onResult: isRequestLocationInEeaOrUnknown : $isRequestLocationInEeaOrUnknown")
-                // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-                mAdView!!.loadAd(ConsentSDK.getAdRequest(this@ChooseGameActivity))
-            }
-        })
-
-
-        // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView!!.loadAd(ConsentSDK.getAdRequest(this@ChooseGameActivity))
-
         // keep scores to pass to games highscores visualization
         updateGamesScores()
 
@@ -94,6 +98,37 @@ class ChooseGameActivity : AppCompatActivity() {
 
     }
 
+
+    override fun onStart() {
+        super.onStart()
+
+        checkConsentActive = consentSDKNeed
+
+        if (checkConsentActive) {
+            // Initialize ConsentSDK
+            consentSDK = ConsentSDK.Builder(this)
+                    .addTestDeviceId("7DC1A1E8AEAD7908E42271D4B68FB270") // redminote 5 // Add your test device id "Remove addTestDeviceId on production!"
+                    // .addTestDeviceId("9978A5F791A259430A0156313ED9C6A2")
+                    .addCustomLogTag("gdpr_TAG") // Add custom tag default: ID_LOG
+                    .addPrivacyPolicy("http://www.indie-walkabout.eu/privacy-policy-app") // Add your privacy policy url
+                    .addPublisherId("pub-8846176967909254") // Add your admob publisher id
+                    .build()
+
+
+            // To check the consent and load ads
+            consentSDK.checkConsent(object : ConsentSDK.ConsentCallback() {
+                override fun onResult(isRequestLocationInEeaOrUnknown: Boolean) {
+                    Log.i("gdpr_TAG", "onResult: isRequestLocationInEeaOrUnknown : $isRequestLocationInEeaOrUnknown")
+                    // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
+                    mAdView.loadAd(ConsentSDK.getAdRequest(this@ChooseGameActivity))
+                }
+            })
+
+
+            // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
+            mAdView.loadAd(ConsentSDK.getAdRequest(this@ChooseGameActivity))
+        }
+    }
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -295,6 +330,12 @@ class ChooseGameActivity : AppCompatActivity() {
 
         val OPERATION_KEY = "operation"
         val HIGHSCORE = "highscore"
+
+        private val APP_CONSENT_NEED = "consent_requested"
+        private val DEFAULT_CONSENT_NEED = true
+
+        // Consent SDK vars
+        private var checkConsentActive = true
     }
 
 

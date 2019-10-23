@@ -112,7 +112,7 @@ public class DoubleNumberActivity extends AppCompatActivity implements IGameFunc
         mAdView = findViewById(R.id.mAdView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(DoubleNumberActivity.this));
+        mAdView.loadAd(ConsentSDK.Companion.getAdRequest(DoubleNumberActivity.this));
 
         // set views ref
         numberToBeDoubled_tv   = (TextView)  findViewById(R.id.randomNum_tv);

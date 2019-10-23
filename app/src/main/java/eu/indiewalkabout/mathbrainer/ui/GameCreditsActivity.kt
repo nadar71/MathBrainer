@@ -22,9 +22,9 @@ class GameCreditsActivity : AppCompatActivity() {
 
     private val unityAdsListener = UnityAdsListener()
 
-    internal var gdprConsent_tv: TextView? = null
-    internal var backhome_img:  ImageView? = null
-    private var consentSDK: ConsentSDK? = null
+    // internal var gdprConsent_tv: TextView? = null
+    // internal var backhome_img:  ImageView? = null
+    private lateinit var consentSDK: ConsentSDK
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +43,7 @@ class GameCreditsActivity : AppCompatActivity() {
             val choice = if (ConsentSDK.isConsentPersonalized(this)) "Personalize" else "Non-Personalize"
             Log.i(TAG, "onCreate: consent choice : $choice")
 
-            gdprConsent_tv!!.setOnClickListener {
+            gdprConsent_tv.setOnClickListener {
                 // Check Consent SDK
                 // Request the consent without callback
                 // consentSDK.requestConsent(null);
@@ -73,7 +73,7 @@ class GameCreditsActivity : AppCompatActivity() {
         mAdView!!.loadAd(ConsentSDK.getAdRequest(this@GameCreditsActivity))
 
 
-        backhome_img!!.setOnClickListener {
+        backhome_img.setOnClickListener {
             // show unityads randomic
             MathBrainerUtility.showUnityAdsRandom(this@GameCreditsActivity)
 
@@ -118,7 +118,7 @@ class GameCreditsActivity : AppCompatActivity() {
                 .addCustomLogTag("gdpr_TAG") // Add custom tag default: ID_LOG
                 .addPrivacyPolicy("http://www.indie-walkabout.eu/privacy-policy-app") // Add your privacy policy url
                 .addPublisherId("pub-8846176967909254") // Add your admob publisher id
-                .build()
+                .build()!!
     }
 
 

@@ -23,6 +23,6 @@ public class FallingOperationsActivity extends AppCompatActivity {
         mAdView = findViewById(R.id.mAdView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(FallingOperationsActivity.this));
+        mAdView.loadAd(ConsentSDK.Companion.getAdRequest(FallingOperationsActivity.this));
     }
 }

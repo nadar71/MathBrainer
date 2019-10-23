@@ -143,7 +143,7 @@ public class Math_Op_Choose_Result_Activity extends AppCompatActivity implements
         mAdView = findViewById(R.id.mAdView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(Math_Op_Choose_Result_Activity.this));
+        mAdView.loadAd(ConsentSDK.Companion.getAdRequest(Math_Op_Choose_Result_Activity.this));
 
         // Unity ads init
         UnityAds.initialize(this,getResources().getString(R.string.unityads_key),unityAdsListener);

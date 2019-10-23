@@ -124,7 +124,7 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         mAdView = findViewById(R.id.mAdView);
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(NumberOrderActivity.this));
+        mAdView.loadAd(ConsentSDK.Companion.getAdRequest(NumberOrderActivity.this));
 
         // setup context
         context = this;

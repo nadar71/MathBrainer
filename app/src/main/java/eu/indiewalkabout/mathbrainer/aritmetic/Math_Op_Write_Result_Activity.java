@@ -134,7 +134,7 @@ public class Math_Op_Write_Result_Activity extends AppCompatActivity implements 
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle
         // the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(Math_Op_Write_Result_Activity.this));
+        mAdView.loadAd(ConsentSDK.Companion.getAdRequest(Math_Op_Write_Result_Activity.this));
 
 
         // set views ref
