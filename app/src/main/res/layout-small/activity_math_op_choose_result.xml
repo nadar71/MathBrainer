@@ -9,7 +9,7 @@
 
 
     <ProgressBar
-        android:id="@+id/progressbar"
+        android:id="@+id/countdownBar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="8dp"
@@ -34,7 +34,7 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
+        app:layout_constraintTop_toBottomOf="@+id/countdownBar" />
 
     <TextView
         android:id="@+id/levelValue_tv"
@@ -92,7 +92,7 @@
 
 
     <TextView
-        android:id="@+id/high_scoreLabel_tv"
+        android:id="@+id/highscore_label_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -114,7 +114,7 @@
         app:layout_constraintVertical_bias="0.574" />
 
     <TextView
-        android:id="@+id/high_scoreValue_tv"
+        android:id="@+id/highscore_value_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -308,14 +308,14 @@
         android:text="@string/choose_op_instructions"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/answerBtnGrid"
-        app:layout_constraintEnd_toStartOf="@+id/answerBtnGrid"
+        app:layout_constraintBottom_toTopOf="@+id/gridLayout"
+        app:layout_constraintEnd_toStartOf="@+id/gridLayout"
         app:layout_constraintHorizontal_bias="0.489"
-        app:layout_constraintStart_toEndOf="@+id/answerBtnGrid"
+        app:layout_constraintStart_toEndOf="@+id/gridLayout"
         app:layout_constraintTop_toBottomOf="@+id/operationsSection_lo" />
 
     <GridLayout
-        android:id="@+id/answerBtnGrid"
+        android:id="@+id/gridLayout"
         android:layout_width="155dp"
         android:layout_height="121dp"
         android:layout_marginTop="8dp"
@@ -345,7 +345,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/answer_01Btn"
+                    android:id="@+id/answer01Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginLeft="5dp"
@@ -365,7 +365,7 @@
                     tools:layout_editor_absoluteY="313dp" />
 
                 <Button
-                    android:id="@+id/answer_02Btn"
+                    android:id="@+id/answer02Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginLeft="5dp"
@@ -385,7 +385,7 @@
                     tools:layout_editor_absoluteY="240dp" />
 
                 <Button
-                    android:id="@+id/answer_03Btn"
+                    android:id="@+id/answer03Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginLeft="5dp"
@@ -412,7 +412,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/answer_04Btn"
+                    android:id="@+id/answer04Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginLeft="5dp"
@@ -431,7 +431,7 @@
                     tools:layout_editor_absoluteY="313dp" />
 
                 <Button
-                    android:id="@+id/answer_05Btn"
+                    android:id="@+id/answer05Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginLeft="5dp"
@@ -450,7 +450,7 @@
                     tools:layout_editor_absoluteY="240dp" />
 
                 <Button
-                    android:id="@+id/answer_06Btn"
+                    android:id="@+id/answer06Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginLeft="5dp"
@@ -476,7 +476,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/answer_07Btn"
+                    android:id="@+id/answer07Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginLeft="5dp"
@@ -495,7 +495,7 @@
                     tools:layout_editor_absoluteY="313dp" />
 
                 <Button
-                    android:id="@+id/answer_08Btn"
+                    android:id="@+id/answer08Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginLeft="5dp"
@@ -514,7 +514,7 @@
                     tools:layout_editor_absoluteY="240dp" />
 
                 <Button
-                    android:id="@+id/answer_09Btn"
+                    android:id="@+id/answer09Btn"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginLeft="5dp"

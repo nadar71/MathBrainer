@@ -139,8 +139,8 @@ public class NumberOrderActivity extends AppCompatActivity implements IGameFunct
         backhome_img       = (ImageView)  findViewById(R.id.backhome_img);
 
         scoreLabel_tv      = (TextView) findViewById(R.id.scoreLabel_tv);
-        highscore_label_tv = (TextView) findViewById(R.id.high_scoreLabel_tv);
-        highscore_value_tv = (TextView) findViewById(R.id.high_scoreValue_tv);
+        highscore_label_tv = (TextView) findViewById(R.id.highscore_label_tv);
+        highscore_value_tv = (TextView) findViewById(R.id.highscore_value_tv);
 
         // set quiz with and without number invisible, not already in the game
         drawquiz.setVisibility(View.INVISIBLE);

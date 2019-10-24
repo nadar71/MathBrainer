@@ -9,7 +9,7 @@
 
 
     <ProgressBar
-        android:id="@+id/progressbar"
+        android:id="@+id/countdownBar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="8dp"
@@ -34,7 +34,7 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
+        app:layout_constraintTop_toBottomOf="@+id/countdownBar" />
 
     <TextView
         android:id="@+id/levelValue_tv"
@@ -94,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/scoreLabel_tv" />
 
     <TextView
-        android:id="@+id/high_scoreLabel_tv"
+        android:id="@+id/highscore_label_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -114,7 +114,7 @@
         app:layout_constraintTop_toBottomOf="@+id/level_tv" />
 
     <TextView
-        android:id="@+id/high_scoreValue_tv"
+        android:id="@+id/highscore_value_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -150,7 +150,7 @@
 
 
     <GridLayout
-        android:id="@+id/gridLayout"
+        android:id="@+id/lifeGridLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

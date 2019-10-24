@@ -9,7 +9,7 @@
 
 
     <ProgressBar
-        android:id="@+id/progressbar"
+        android:id="@+id/countdownBar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="20dp"
@@ -34,7 +34,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
+        app:layout_constraintTop_toBottomOf="@+id/countdownBar" />
 
     <TextView
         android:id="@+id/levelValue_tv"
@@ -92,7 +92,7 @@
 
 
     <TextView
-        android:id="@+id/high_scoreLabel_tv"
+        android:id="@+id/highscore_label_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -111,7 +111,7 @@
         app:layout_constraintStart_toEndOf="@+id/level_tv" />
 
     <TextView
-        android:id="@+id/high_scoreValue_tv"
+        android:id="@+id/highscore_value_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -144,7 +144,7 @@
 
 
     <GridLayout
-        android:id="@+id/gridLayout"
+        android:id="@+id/lifeGridLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -262,7 +262,7 @@
             android:textSize="56sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/firstOperand_tv"
-            app:layout_constraintEnd_toStartOf="@+id/equalLabel_tv"
+            app:layout_constraintEnd_toStartOf="@+id/equals_sign_tv"
             app:layout_constraintStart_toEndOf="@+id/operationSymbol_tv" />
 
         <TextView
@@ -288,7 +288,7 @@
 
 
         <TextView
-            android:id="@+id/equalLabel_tv"
+            android:id="@+id/equals_sign_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -317,7 +317,7 @@
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/secondOperand_tv"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/equalLabel_tv"
+            app:layout_constraintStart_toEndOf="@+id/equals_sign_tv"
             tools:text="2" />
 
         <ImageView
@@ -348,14 +348,14 @@
         android:textColor="@color/colorAccent"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/answerBtnGrid"
+        app:layout_constraintBottom_toTopOf="@+id/gridLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/operationsSection_lo" />
 
     <GridLayout
-        android:id="@+id/answerBtnGrid"
+        android:id="@+id/gridLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -380,7 +380,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/answer_mult_btn"
+                android:id="@+id/answer_mult_Btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
@@ -396,7 +396,7 @@
                 tools:layout_editor_absoluteY="240dp" />
 
             <Button
-                android:id="@+id/answer_minus_btn"
+                android:id="@+id/answer_minus_Btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
@@ -414,7 +414,7 @@
                 tools:layout_editor_absoluteY="240dp" />
 
             <Button
-                android:id="@+id/answer_div_btn"
+                android:id="@+id/answer_div_Btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
@@ -431,7 +431,7 @@
                 tools:layout_editor_absoluteY="313dp" />
 
             <Button
-                android:id="@+id/answer_plus_btn"
+                android:id="@+id/answer_plus_Btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"

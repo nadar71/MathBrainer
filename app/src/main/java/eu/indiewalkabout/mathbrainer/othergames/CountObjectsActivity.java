@@ -150,7 +150,7 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
 
         // other views
         instructions_tv = findViewById(R.id.quiz_instructions_tv);
-        buttonGrid      = findViewById(R.id.answerBtnGrid);
+        buttonGrid      = findViewById(R.id.gridLayout);
         btnNewGame      = findViewById(R.id.new_game_btn);
         result_tv       = findViewById(R.id.result_tv);
         backhome_img    = (ImageView)  findViewById(R.id.backhome_img);
@@ -163,8 +163,8 @@ public class CountObjectsActivity extends AppCompatActivity implements  IGameFun
         count_obj_instructions_tv = (TextView)  findViewById(R.id.count_obj_instructions_tv);
 
         scoreLabel_tv          = (TextView) findViewById(R.id.scoreLabel_tv);
-        highscore_label_tv     = (TextView) findViewById(R.id.high_scoreLabel_tv);
-        highscore_value_tv     = (TextView) findViewById(R.id.high_scoreValue_tv);
+        highscore_label_tv     = (TextView) findViewById(R.id.highscore_label_tv);
+        highscore_value_tv     = (TextView) findViewById(R.id.highscore_value_tv);
 
         // init lifes led images
         lifesValue_iv = new ArrayList<ImageView>();

@@ -82,7 +82,7 @@
         app:layout_constraintTop_toBottomOf="@+id/scoreLabel_tv" />
 
     <TextView
-        android:id="@+id/high_scoreLabel_tv"
+        android:id="@+id/highscore_label_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -104,7 +104,7 @@
         app:layout_constraintVertical_bias="0.571" />
 
     <TextView
-        android:id="@+id/high_scoreValue_tv"
+        android:id="@+id/highscore_value_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -140,7 +140,7 @@
 
 
     <GridLayout
-        android:id="@+id/gridLayout"
+        android:id="@+id/lifeGridLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

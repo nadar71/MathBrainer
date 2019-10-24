@@ -83,7 +83,7 @@
 
 
     <TextView
-        android:id="@+id/high_scoreLabel_tv"
+        android:id="@+id/highscore_label_tv"
         android:layout_width="158dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -106,7 +106,7 @@
         app:layout_constraintVertical_bias="0.568" />
 
     <TextView
-        android:id="@+id/high_scoreValue_tv"
+        android:id="@+id/highscore_value_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -145,7 +145,7 @@
 
 
     <GridLayout
-        android:id="@+id/gridLayout"
+        android:id="@+id/lifeGridLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -298,9 +298,9 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/answerBtnGrid"
-        app:layout_constraintEnd_toStartOf="@+id/answerBtnGrid"
-        app:layout_constraintStart_toEndOf="@+id/answerBtnGrid"
+        app:layout_constraintBottom_toTopOf="@+id/gridLayout"
+        app:layout_constraintEnd_toStartOf="@+id/gridLayout"
+        app:layout_constraintStart_toEndOf="@+id/gridLayout"
         app:layout_constraintTop_toTopOf="@+id/itemDrawing_v"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -323,7 +323,7 @@
         app:layout_constraintTop_toBottomOf="@id/itemDrawing_v" />
 
     <GridLayout
-        android:id="@+id/answerBtnGrid"
+        android:id="@+id/gridLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"

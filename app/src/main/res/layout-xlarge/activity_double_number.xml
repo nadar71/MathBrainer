@@ -9,7 +9,7 @@
 
 
     <ProgressBar
-        android:id="@+id/progressbar"
+        android:id="@+id/countdownBar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="20dp"
@@ -34,7 +34,7 @@
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressbar" />
+        app:layout_constraintTop_toBottomOf="@+id/countdownBar" />
 
     <TextView
         android:id="@+id/levelValue_tv"
@@ -96,7 +96,7 @@
 
 
     <TextView
-        android:id="@+id/high_scoreLabel_tv"
+        android:id="@+id/highscore_label_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
@@ -119,7 +119,7 @@
         app:layout_constraintVertical_bias="0.543" />
 
     <TextView
-        android:id="@+id/high_scoreValue_tv"
+        android:id="@+id/highscore_value_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -158,7 +158,7 @@
 
 
     <GridLayout
-        android:id="@+id/gridLayout"
+        android:id="@+id/lifeGridLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -224,7 +224,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <TextView
-            android:id="@+id/randomNum_tv"
+            android:id="@+id/numberToBeDoubled_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -238,7 +238,7 @@
             android:textSize="60sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/result_tv"
-            app:layout_constraintEnd_toStartOf="@+id/answerDouble_tv"
+            app:layout_constraintEnd_toStartOf="@+id/operationSymbol_tv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.579"
@@ -246,7 +246,7 @@
 
 
         <TextView
-            android:id="@+id/answerDouble_tv"
+            android:id="@+id/operationSymbol_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -259,11 +259,11 @@
             android:textColor="@android:color/background_light"
             android:textSize="60sp"
             android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/randomNum_tv"
+            app:layout_constraintBaseline_toBaselineOf="@+id/numberToBeDoubled_tv"
             app:layout_constraintEnd_toStartOf="@+id/secondOperand_tv"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/randomNum_tv" />
+            app:layout_constraintStart_toEndOf="@+id/numberToBeDoubled_tv" />
 
 
         <EditText
@@ -288,9 +288,9 @@
             android:textColor="@android:color/background_light"
             android:textSize="60sp"
             android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/randomNum_tv"
+            app:layout_constraintBaseline_toBaselineOf="@+id/numberToBeDoubled_tv"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/answerDouble_tv"
+            app:layout_constraintStart_toEndOf="@+id/operationSymbol_tv"
             tools:text="1000" />
 
         <TextView
@@ -311,7 +311,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/answerDouble_tv"
+            app:layout_constraintTop_toBottomOf="@+id/operationSymbol_tv"
             app:layout_constraintVertical_bias="0.94" />
 
 
