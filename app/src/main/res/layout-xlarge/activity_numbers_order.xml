@@ -295,15 +295,12 @@
         android:id="@+id/backhome_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         android:background="@drawable/rounded_rect_dark_gray_btn"
         android:padding="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.97"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout"
+        app:layout_constraintBottom_toTopOf="@+id/quiz_instructions_tv"
+        app:layout_constraintEnd_toEndOf="@+id/quiz_instructions_tv"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/quiz_instructions_tv"
         app:srcCompat="@drawable/ic_home_white_24dp" />
 
     <TextView

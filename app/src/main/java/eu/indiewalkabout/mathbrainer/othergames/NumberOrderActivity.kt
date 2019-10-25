@@ -12,11 +12,8 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-
-import com.google.android.gms.ads.AdView
 
 import java.util.ArrayList
 
@@ -34,7 +31,6 @@ import kotlinx.android.synthetic.main.activity_numbers_order.*
 
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
-import kotlinx.android.synthetic.main.activity_math_op_choose_result.*
 import kotlinx.android.synthetic.main.activity_numbers_order.backhome_img
 import kotlinx.android.synthetic.main.activity_numbers_order.highscore_label_tv
 import kotlinx.android.synthetic.main.activity_numbers_order.highscore_value_tv
@@ -49,26 +45,10 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
 
     private val unityAdsListener = UnityAdsListener()
 
-    // Our costumview img references (almost useless)
-    // private ImageView ourFrame;
-
     // Costum views drawing items to count
     private lateinit var drawquiz_challenge: MarkerWithNoNumberView
     private lateinit var drawquiz: MarkerWithNumberView
     private lateinit var solutionsView: SolutionsView
-
-/*
-    private var scoreValue_tv: TextView? = null
-    private var levelValue_tv: TextView? = null
-    private var instructions_tv: TextView? = null
-    private var result_tv: TextView? = null
-    private var scoreLabel_tv: TextView? = null
-    private var highscore_label_tv: TextView? = null
-    private var highscore_value_tv: TextView? = null
-    private var backhome_img: ImageView? = null
-    private var btnNewGame: Button? = null
-
- */
 
     private lateinit var lifesValue_iv: ArrayList<ImageView>
 
@@ -169,30 +149,10 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         // setup context
         context = this
 
-        //Get a reference to our ImageView in the layout
-        // ourFrame = (ImageView) findViewById(R.id.canvas_image_ref_img);
-
-
         // get the items to count view, set invisible at the moment
         solutionsView      = findViewById(R.id.solutionsShowing_v)
         drawquiz_challenge = findViewById(R.id.itemDrawingNoNumber_v)
         drawquiz           = findViewById(R.id.itemDrawing_v)
-
-        /*
-        backhome_img = findViewById<View>(R.id.backhome_img) as ImageView
-        scoreLabel_tv = findViewById<View>(R.id.scoreLabel_tv) as TextView
-        highscore_label_tv = findViewById<View>(R.id.highscore_label_tv) as TextView
-        highscore_value_tv = findViewById<View>(R.id.highscore_value_tv) as TextView
-
-        // other views
-        instructions_tv = findViewById(R.id.quiz_instructions_tv)
-        btnNewGame = findViewById(R.id.btnNewGame)
-        result_tv = findViewById(R.id.result_tv)
-
-        scoreValue_tv = findViewById<View>(R.id.scoreValue_tv) as TextView
-        levelValue_tv = findViewById<View>(R.id.levelValue_tv) as TextView
-         */
-
 
 
         // set quiz with and without number invisible, not already in the game
@@ -382,7 +342,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         val handler = Handler()
         val runnable = Runnable {
             btnNewGame.visibility = View.VISIBLE
-            instructions_tv.text = "   "
+            quiz_instructions_tv.text = "   "
             result_tv.visibility = View.VISIBLE
             if (win == false) {
                 result_tv.text = resources.getString(R.string.wrong_str)
@@ -492,7 +452,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
      * ---------------------------------------------------------------------------------------------
      */
     private fun showQuiz() {
-        instructions_tv.text = resources.getString(R.string.click_order_instructions)
+        quiz_instructions_tv.text = resources.getString(R.string.click_order_instructions)
         solutionsView.visibility = View.INVISIBLE
         btnNewGame.visibility = View.INVISIBLE
         result_tv.visibility = View.INVISIBLE
@@ -507,7 +467,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
      */
     private fun hideQuiz() {
         // debug drawquiz.setVisibility(View.INVISIBLE);
-        instructions_tv.text = resources.getString(R.string.click_order_start)
+        quiz_instructions_tv.text = resources.getString(R.string.click_order_start)
         solutionsView.visibility = View.VISIBLE
         drawquiz_challenge.visibility = View.VISIBLE
 
@@ -569,7 +529,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
                 this@NumberOrderActivity, this)
 
         result_tv.visibility = View.INVISIBLE
-        instructions_tv.visibility = View.INVISIBLE
+        quiz_instructions_tv.visibility = View.INVISIBLE
         drawquiz.visibility = View.INVISIBLE
         drawquiz_challenge.visibility = View.INVISIBLE
     }
