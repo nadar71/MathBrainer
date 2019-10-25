@@ -257,13 +257,13 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@+id/new_game_btn"
+        app:layout_constraintEnd_toStartOf="@+id/btnNewGame"
         app:layout_constraintHorizontal_bias="0.519"
-        app:layout_constraintStart_toEndOf="@+id/new_game_btn"
+        app:layout_constraintStart_toEndOf="@+id/btnNewGame"
         app:layout_constraintTop_toTopOf="@+id/quiz_instructions_tv" />
 
     <Button
-        android:id="@+id/new_game_btn"
+        android:id="@+id/btnNewGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
