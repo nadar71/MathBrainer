@@ -1,7 +1,7 @@
 package eu.indiewalkabout.mathbrainer.statistics
 
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 
 import java.util.ArrayList
 

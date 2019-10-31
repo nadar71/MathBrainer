@@ -1,7 +1,7 @@
 package eu.indiewalkabout.mathbrainer.ui
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import android.util.Log
 
 import eu.indiewalkabout.mathbrainer.statistics.GameResult

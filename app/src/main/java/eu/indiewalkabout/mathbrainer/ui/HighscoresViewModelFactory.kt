@@ -1,8 +1,8 @@
 package eu.indiewalkabout.mathbrainer.ui
 
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 
 class HighscoresViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
