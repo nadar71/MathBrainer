@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 /**
  * -------------------------------------------------------------------------------------------------
  * Game result object; store in key-value pairs the game results.
- * The name of the adopted keys are below :
+ * The name of the adopted keys/primary key are below :
  * - global_score
  * - doublenumber_game_score
  *

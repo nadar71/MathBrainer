@@ -71,6 +71,15 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity android:name=".aritmetic.Math_Op_Choose_Result_Activity" />
+
+
+        <!-- test lib -->
+        <uses-library android:name="android.test.runner"
+            android:required="false" />
+        <uses-library android:name="android.test.base"
+            android:required="false" />
+        <uses-library android:name="android.test.mock"
+            android:required="false" />
     </application>
 
 </manifest>

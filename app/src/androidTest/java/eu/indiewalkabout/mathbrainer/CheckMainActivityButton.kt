@@ -1,46 +1,34 @@
 package eu.indiewalkabout.mathbrainer
 
+// import androidx.test.espresso.intent.Intents
+// import androidx.test.rule.ActivityTestRule
+// import androidx.test.ext.junit.runners.AndroidJUnit4
+
+// import androidx.test.espresso.intent.Intents.intended
+// import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+// import androidx.test.runner.AndroidJUnit4
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.filters.LargeTest
+import androidx.test.rule.ActivityTestRule
 import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity
 import eu.indiewalkabout.mathbrainer.ui.GameCreditsActivity
 import eu.indiewalkabout.mathbrainer.ui.HighscoresActivity
-
-import android.content.Context
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.espresso.ViewInteraction
-import androidx.test.espresso.intent.Intents
-import androidx.test.filters.LargeTest
-import androidx.test.rule.ActivityTestRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import android.view.View
-import android.view.ViewGroup
-import android.view.ViewParent
-import org.hamcrest.Description
-import org.hamcrest.Matcher
-import org.hamcrest.TypeSafeMatcher
-import org.hamcrest.core.IsInstanceOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.Espresso.pressBackUnconditionally
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
-import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.runner.AndroidJUnit4
-import org.hamcrest.Matchers.allOf
-
 
 @LargeTest
-@RunWith(AndroidJUnit4::class)
+@RunWith(androidx.test.ext.junit.runners.AndroidJUnit4::class)
 class CheckMainActivityButton {
     private lateinit var activity: ChooseGameActivity
 

@@ -9,9 +9,12 @@ import android.widget.ProgressBar
 
 import eu.indiewalkabout.mathbrainer.R
 
-class CountDownIndicator(context: Context, var countdownBar: ProgressBar?, private val caller: IGameFunctions)// this.mathCountDownTimer = new MathCountDownTimer(DEFAULT_MILLISINFUTURE, DEFAULT_COUNTDOWNINTERVAL, this);;
-// TODO : detect configuration changes and update this fields with setCaller to avoid error !!
+class CountDownIndicator(context: Context, var countdownBar: ProgressBar?,
+                         private val caller: IGameFunctions)
     : ProgressBar(context) {
+
+    // this.mathCountDownTimer = new MathCountDownTimer(DEFAULT_MILLISINFUTURE, DEFAULT_COUNTDOWNINTERVAL, this);;
+    // TODO : detect configuration changes and update this fields with setCaller to avoid error !!
 
     // ---------------------------------------------------------------------------------------------
     // Getter and setter stuff
@@ -19,7 +22,7 @@ class CountDownIndicator(context: Context, var countdownBar: ProgressBar?, priva
 
 
     var mathCountDownTimer: MathCountDownTimer? = null
-    private var thirtyPercentToGo: Int = 0
+    var thirtyPercentToGo: Int = 0
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -90,7 +93,6 @@ class CountDownIndicator(context: Context, var countdownBar: ProgressBar?, priva
             countdownBar!!.progressDrawable = resources.getDrawable(R.drawable.horizontal_progress_drawable_red)
         }
         caller.updateProgressBar(progress)
-
     }
 
     companion object {

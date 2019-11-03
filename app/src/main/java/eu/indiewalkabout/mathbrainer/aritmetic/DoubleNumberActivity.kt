@@ -51,7 +51,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
     private var level = 0
 
     // lifes counter; 0 to gameover
-    private var lifes = 3
+    internal var lifes = 3
 
     // random range of number to be doubled
     private var min = 1
@@ -89,24 +89,24 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
      * @return boolean  : return true/false in case of gameover/gamecontinuing
      * ---------------------------------------------------------------------------------------------
      */
-    override// update life counts
-    // statistics
-    // Update UI
-    // check game over condition
-    // statistics
-    // lifes remaining >0, restart a new counter
-    // countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
-    val isGameOver: Boolean
+    override val isGameOver: Boolean
         get() {
+            // update life counts
             lifes--
+
+            // statistics
             Results.incrementGameResultsThread("lifes_missed")
 
+            // Update UI
             Log.d(TAG, "isGameOver: $lifes")
             if (lifes > -1) {
                 lifesValue_iv[lifes].visibility = View.INVISIBLE
             }
+
+            // check game over condition
             if (lifes <= 0) {
                 endGame()
+                // statistics
                 Results.incrementGameResultsThread("games_played")
                 Results.incrementGameResultsThread("games_lose")
                 Results.updateGameResultHighscoreThread("doublenumber_game_score", score)
@@ -115,6 +115,8 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
                 return true
 
             } else {
+                // lifes remaining >0, restart a new counter
+                // countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
                 return false
             }
 
