@@ -219,7 +219,8 @@ class HighscoresActivity : AppCompatActivity() {
         val factory = HighscoresViewModelFactory()
 
         // keep updated with LiveData/ViewModel
-        val viewModel = ViewModelProviders.of(this, factory).get(HighScoresViewModel::class.java)
+        val viewModel = ViewModelProviders.of(this, factory)
+                .get(HighScoresViewModel::class.java)
 
         // retrieve data
         val gameResults = viewModel.gameResultsList
