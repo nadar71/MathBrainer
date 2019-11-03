@@ -34,33 +34,29 @@ public class MathBrainerDbDaoTest_java {
 
     @Before
     public void createDb() {
-        /*
         mathBrainerDatabase = Room.inMemoryDatabaseBuilder(
                 InstrumentationRegistry.getInstrumentation().getContext(),
                 MathBrainerDatabase.class).build();
         mathBrainerDatabaseDao = mathBrainerDatabase.MathBrainerDbDao();
 
-         */
     }
 
     @After
     public void closeDb() throws IOException {
 
-        // mathBrainerDatabase.close();
+        mathBrainerDatabase.close();
     }
 
 
     @Test
     public void insertGameResult_test() throws Exception {
-        /*
+
         GameResult gameResult = new GameResult("global_score", 1000);
         mathBrainerDatabaseDao.insertGameResult(gameResult);
 
         LiveData<List<GameResult>> results =  mathBrainerDatabaseDao.loadAllGamesResults();
         Observer<List<GameResult>> observer = ids -> assertEquals(1, ids.size());
         results.observeForever(observer);
-
-         */
 
     }
 

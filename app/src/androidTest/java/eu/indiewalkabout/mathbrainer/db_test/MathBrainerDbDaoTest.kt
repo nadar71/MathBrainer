@@ -25,7 +25,7 @@ class MathBrainerDbDaoTest {
     private lateinit var mathBrainerDatabase: MathBrainerDatabase
     private lateinit var mathBrainerDatabaseDao: MathBrainerDbDao
 
-    /*
+
     @Before
     fun createDb() {
         mathBrainerDatabase = Room.inMemoryDatabaseBuilder<MathBrainerDatabase>(
@@ -40,9 +40,7 @@ class MathBrainerDbDaoTest {
         mathBrainerDatabase!!.close()
     }
 
-     */
 
-/*
     @Test
     @Throws(Exception::class)
     fun insertGameResult_test(){
@@ -53,7 +51,7 @@ class MathBrainerDbDaoTest {
         assertEquals(results.size, 1)
 
     }
-*/
+
 
 
 }
