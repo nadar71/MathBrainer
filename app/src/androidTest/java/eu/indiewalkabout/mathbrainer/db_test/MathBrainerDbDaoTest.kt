@@ -15,14 +15,17 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
+// @RunWith(ParameterizedAndroidJUnit4::class)
 class MathBrainerDbDaoTest {
 
-    @Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
+
 
     private lateinit var mathBrainerDatabase: MathBrainerDatabase
     private lateinit var mathBrainerDatabaseDao: MathBrainerDbDao
 
+    /*
     @Before
     fun createDb() {
         mathBrainerDatabase = Room.inMemoryDatabaseBuilder<MathBrainerDatabase>(
@@ -36,6 +39,8 @@ class MathBrainerDbDaoTest {
     fun closeDb() {
         mathBrainerDatabase!!.close()
     }
+
+     */
 
 /*
     @Test
