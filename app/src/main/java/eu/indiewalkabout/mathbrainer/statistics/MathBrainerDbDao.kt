@@ -19,7 +19,7 @@ interface MathBrainerDbDao {
     @Query("SELECT * FROM GAMERESULTS_LIST ")
     fun loadAllGamesResults(): LiveData<List<GameResult>>
 
-    // check if game result is in db;is return string null it isn't
+    // check if game result is in db; return string null if it isn't
     @Query("SELECT * FROM GAMERESULTS_LIST WHERE result_name = :gameResultName")
     fun isGameResultExists(gameResultName: String): GameResult
 

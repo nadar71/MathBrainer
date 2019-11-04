@@ -245,37 +245,37 @@ class HighscoresActivity : AppCompatActivity() {
         // set vars
         totalHighScore_value = MathBrainerUtility.getGameResultsFromList("global_score", gameResults!!)
 
-        sumWriteHighscore_value = MathBrainerUtility.getGameResultsFromList("sum_write_result_game_score", gameResults)
+        sumWriteHighscore_value  = MathBrainerUtility.getGameResultsFromList("sum_write_result_game_score", gameResults)
         diffWriteHighscore_value = MathBrainerUtility.getGameResultsFromList("diff_write_result_game_score", gameResults)
         multWriteHighscore_value = MathBrainerUtility.getGameResultsFromList("mult_write_result_game_score", gameResults)
-        divWriteHighscore_value = MathBrainerUtility.getGameResultsFromList("div_write_result_game_score", gameResults)
+        divWriteHighscore_value  = MathBrainerUtility.getGameResultsFromList("div_write_result_game_score", gameResults)
 
-        sumChooseHighscore_value = MathBrainerUtility.getGameResultsFromList("sum_choose_result_game_score", gameResults)
+        sumChooseHighscore_value  = MathBrainerUtility.getGameResultsFromList("sum_choose_result_game_score", gameResults)
         diffChooseHighscore_value = MathBrainerUtility.getGameResultsFromList("diff_choose_result_game_score", gameResults)
         multChooseHighscore_value = MathBrainerUtility.getGameResultsFromList("mult_choose_result_game_score", gameResults)
-        divChooseHighscore_value = MathBrainerUtility.getGameResultsFromList("div_choose_result_game_score", gameResults)
+        divChooseHighscore_value  = MathBrainerUtility.getGameResultsFromList("div_choose_result_game_score", gameResults)
 
-        doublingHighscore_value = MathBrainerUtility.getGameResultsFromList("doublenumber_game_score", gameResults)
+        doublingHighscore_value        = MathBrainerUtility.getGameResultsFromList("doublenumber_game_score", gameResults)
         mixedOps_chooseHighscore_value = MathBrainerUtility.getGameResultsFromList("mix_choose_result_game_score", gameResults)
-        mixedOps_writeHighscore_value = MathBrainerUtility.getGameResultsFromList("mix_write_result_game_score", gameResults)
-        randomOpsHighscore_value = MathBrainerUtility.getGameResultsFromList("random_op_game_score", gameResults)
+        mixedOps_writeHighscore_value  = MathBrainerUtility.getGameResultsFromList("mix_write_result_game_score", gameResults)
+        randomOpsHighscore_value       = MathBrainerUtility.getGameResultsFromList("random_op_game_score", gameResults)
 
         quickCountHighscore_value = MathBrainerUtility.getGameResultsFromList("count_objects_game_score", gameResults)
-        orderHighscore_value = MathBrainerUtility.getGameResultsFromList("number_order_game_score", gameResults)
+        orderHighscore_value      = MathBrainerUtility.getGameResultsFromList("number_order_game_score", gameResults)
 
 
         // set textviews
         totalHighScore_tv.text = Integer.toString(totalHighScore_value)
 
-        sumWriteScore_tv.text = Integer.toString(sumWriteHighscore_value)
+        sumWriteScore_tv.text  = Integer.toString(sumWriteHighscore_value)
         diffWriteScore_tv.text = Integer.toString(diffWriteHighscore_value)
         multWriteScore_tv.text = Integer.toString(multWriteHighscore_value)
-        divWriteScore_tv.text = Integer.toString(divWriteHighscore_value)
+        divWriteScore_tv.text  = Integer.toString(divWriteHighscore_value)
 
-        sumChooseScore_tv.text = Integer.toString(sumChooseHighscore_value)
+        sumChooseScore_tv.text  = Integer.toString(sumChooseHighscore_value)
         diffChooseScore_tv.text = Integer.toString(diffChooseHighscore_value)
         multChooseScore_tv.text = Integer.toString(multChooseHighscore_value)
-        divChooseScore_tv.text = Integer.toString(divChooseHighscore_value)
+        divChooseScore_tv.text  = Integer.toString(divChooseHighscore_value)
 
         doublingScore_tv.text = Integer.toString(doublingHighscore_value)
         mixedOps_chooseScore_tv.text = Integer.toString(mixedOps_chooseHighscore_value)
