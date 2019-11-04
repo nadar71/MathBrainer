@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer;
+package eu.indiewalkabout.mathbrainer.db_test;
 
 
 import org.junit.After;
