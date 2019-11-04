@@ -12,7 +12,7 @@ import java.util.ArrayList
  */
 class MathBrainerRepository private constructor(private val mathBrainerDB: MathBrainerDatabase) {
 
-    private val game_results_list = ArrayList<String>()
+    val game_results_list = ArrayList<String>()
 
 
     //----------------------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ class MathBrainerRepository private constructor(private val mathBrainerDB: MathB
         return if (mathBrainerDB.MathBrainerDbDao().isGameResultExists(gameResult) != null) {
             mathBrainerDB.MathBrainerDbDao().getGameResult(gameResult)
         } else -1
-// game result not present and then not initialized
+    // game result not present and then not initialized
     }
 
 
