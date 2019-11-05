@@ -66,19 +66,14 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 
-    // Dependencies for local unit tests
-    testImplementation "junit:junit: 4.12"
-    testImplementation "org.hamcrest:hamcrest-all:1.3"
-    testImplementation "androidx.arch.core:core-testing:2.0.0"
-
-    // Dependencies for Android instrumented unit tests
-    androidTestImplementation "junit:junit:4.12"
-
     // Testing code should not be included in the main code.
     // Once https://issuetracker.google.com/128612536 is fixed this can be fixed.
     implementation "androidx.test:core:1.2.0"
 
-    // AndroidX Test - JVM testing
+    // Dependencies for local unit tests - JVM testing
+    testImplementation "junit:junit: 4.12"
+    testImplementation "org.hamcrest:hamcrest-all:1.3"
+    testImplementation "androidx.arch.core:core-testing:2.0.0"
     testImplementation 'androidx.test:runner:1.2.0'
     testImplementation "androidx.test:core-ktx:1.2.0"
     testImplementation "androidx.test.ext:junit:1.1.1"
@@ -89,6 +84,7 @@ dependencies {
 
 
     // AndroidX Test - Instrumented testing
+    androidTestImplementation "junit:junit:4.12"
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation "androidx.test.ext:junit:1.1.1"
     androidTestImplementation "androidx.arch.core:core-testing:2.0.0"
