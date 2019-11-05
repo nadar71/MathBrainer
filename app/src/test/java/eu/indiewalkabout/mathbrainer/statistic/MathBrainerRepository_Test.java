@@ -1,9 +1,16 @@
-package eu.indiewalkabout.mathbrainer;
+package eu.indiewalkabout.mathbrainer.statistic;
 
+import android.app.Application;
+
+import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import eu.indiewalkabout.mathbrainer.statistics.GameResult;
 import eu.indiewalkabout.mathbrainer.statistics.MathBrainerDatabase;
@@ -18,6 +25,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.*;
 
+/*
+MathBrainerRepository_Test bug #58
+Launching every single tests by itself they are passed, but running altogether only the first
+it's ok, the other no, independently by which tests are active in the class.
+
+Tried with reset mocks in teardown function and remock explicitly inside @before method,
+as well as doing it inside each test (both reset and remock), check the commented code.
+ */
+
+@RunWith(MockitoJUnitRunner.class)
 public class MathBrainerRepository_Test {
 
     @Mock
@@ -31,13 +48,37 @@ public class MathBrainerRepository_Test {
 
     MathBrainerRepository repository;
 
+
     @Before
     public void setup() {
+        // mockDb = mock(MathBrainerDatabase.class);
+        // mockDao = mock(MathBrainerDbDao.class);
+        // gameResult = mock(GameResult.class);
         MockitoAnnotations.initMocks(this);
-        // repository = ((SingletonProvider) SingletonProvider.Companion.getsContext()).getRepository();
         repository = MathBrainerRepository.Companion.getInstance(mockDb);
         when(mockDb.MathBrainerDbDao()).thenReturn(mockDao);
+
     }
+
+/*
+    @After
+    public void teardown() {
+        Mockito.reset(mockDb);
+        Mockito.reset(mockDao);
+        Mockito.reset(gameResult);
+        // Mockito.clearInvocations();
+        Mockito.validateMockitoUsage();
+        // mockDb = null;
+        // mockDao = null;
+        // gameResult = null;
+        // repository = null;
+    }
+
+ */
+
+
+
+
 
     @Test
     public void initGameResults_test(){
@@ -49,18 +90,19 @@ public class MathBrainerRepository_Test {
     public void getGameResult_test(){
         when(mockDao.isGameResultExists(anyString())).thenReturn(gameResult);
         when(mockDao.getGameResult(anyString())).thenReturn(1);
-        repository.getGameResult("dummy");
+        if (repository != null)  repository.getGameResult("dummy");
         verify(mockDao, times(1)).isGameResultExists(any());
         verify(mockDao, times(1)).getGameResult(anyString());
     }
+
 
 
     @Test
     public void insertGameResult_test(){
         repository.insertGameResult(gameResult);
         verify(mockDao, times(1)).insertGameResult(any());
-
     }
+
 
     @Test
     public void incrementGameResult_test(){
@@ -96,6 +138,7 @@ public class MathBrainerRepository_Test {
         repository.deleteGameResult(gameResult);
         verify(mockDao, times(1)).deleteGameResult(any());
     }
+
 
 
 

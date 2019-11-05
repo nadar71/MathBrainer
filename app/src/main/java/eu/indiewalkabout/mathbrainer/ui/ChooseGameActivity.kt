@@ -10,13 +10,11 @@ import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
 
-import com.google.android.gms.ads.AdView
-
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.aritmetic.DoubleNumberActivity
-import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Choose_Result_Activity
-import eu.indiewalkabout.mathbrainer.aritmetic.Math_Op_Write_Result_Activity
-import eu.indiewalkabout.mathbrainer.aritmetic.RandomOperationActivity
+import eu.indiewalkabout.mathbrainer.arithmetic.DoubleNumberActivity
+import eu.indiewalkabout.mathbrainer.arithmetic.Math_Op_Choose_Result_Activity
+import eu.indiewalkabout.mathbrainer.arithmetic.Math_Op_Write_Result_Activity
+import eu.indiewalkabout.mathbrainer.arithmetic.RandomOperationActivity
 import eu.indiewalkabout.mathbrainer.othergames.CountObjectsActivity
 import eu.indiewalkabout.mathbrainer.othergames.NumberOrderActivity
 import eu.indiewalkabout.mathbrainer.statistics.GameResult

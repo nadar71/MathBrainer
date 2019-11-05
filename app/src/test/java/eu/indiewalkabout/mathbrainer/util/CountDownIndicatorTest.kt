@@ -11,7 +11,9 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 
-
+/*
+NB : needs testImplementation "org.robolectric:robolectric:4.3.1" to run
+ */
 @RunWith(AndroidJUnit4::class)
 class CountDownIndicatorTest {
     var countdown: CountDownIndicator? = null

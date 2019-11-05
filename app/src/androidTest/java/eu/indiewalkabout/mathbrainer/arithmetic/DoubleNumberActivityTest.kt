@@ -1,10 +1,9 @@
-package eu.indiewalkabout.mathbrainer.aritmetic
+package eu.indiewalkabout.mathbrainer.arithmetic
 
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.runner.RunWith
 import androidx.test.filters.LargeTest
