@@ -11,7 +11,7 @@ import android.util.Log
 abstract class MathBrainerDatabase : RoomDatabase() {
 
     // get the dao
-    abstract fun MathBrainerDbDao(): MathBrainerDbDao
+    abstract fun mathBrainerDbDao(): MathBrainerDbDao
 
     companion object {
 

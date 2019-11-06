@@ -1,14 +1,9 @@
 package eu.indiewalkabout.mathbrainer.statistic;
 
-import android.app.Application;
-
-import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -16,16 +11,14 @@ import eu.indiewalkabout.mathbrainer.statistics.GameResult;
 import eu.indiewalkabout.mathbrainer.statistics.MathBrainerDatabase;
 import eu.indiewalkabout.mathbrainer.statistics.MathBrainerDbDao;
 import eu.indiewalkabout.mathbrainer.statistics.MathBrainerRepository;
-import eu.indiewalkabout.mathbrainer.util.SingletonProvider;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.*;
 
-/*
+/* TODO : fix error
 MathBrainerRepository_Test bug #58
 Launching every single tests by itself they are passed, but running altogether only the first
 it's ok, the other no, independently by which tests are active in the class.
@@ -52,11 +45,11 @@ public class MathBrainerRepository_Test {
     @Before
     public void setup() {
         // mockDb = mock(MathBrainerDatabase.class);
-        // mockDao = mock(MathBrainerDbDao.class);
+        // mockDao = mock(mathBrainerDbDao.class);
         // gameResult = mock(GameResult.class);
         MockitoAnnotations.initMocks(this);
         repository = MathBrainerRepository.Companion.getInstance(mockDb);
-        when(mockDb.MathBrainerDbDao()).thenReturn(mockDao);
+        when(mockDb.mathBrainerDbDao()).thenReturn(mockDao);
 
     }
 

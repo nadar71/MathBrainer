@@ -20,7 +20,7 @@ class MathBrainerRepository private constructor(private val mathBrainerDB: MathB
     //----------------------------------------------------------------------------------------------
     // retrieve all games results
     val allGamesResults: LiveData<List<GameResult>>
-        get() = mathBrainerDB.MathBrainerDbDao().loadAllGamesResults()
+        get() = mathBrainerDB.mathBrainerDbDao().loadAllGamesResults()
 
 
     init {
@@ -73,15 +73,15 @@ class MathBrainerRepository private constructor(private val mathBrainerDB: MathB
         for (gameResultName in game_results_list) {
             if (getGameResult(gameResultName) < 0) {  // result not present, init
                 val gameResultNew = GameResult(gameResultName, 0)
-                mathBrainerDB.MathBrainerDbDao().insertGameResult(gameResultNew)
+                mathBrainerDB.mathBrainerDbDao().insertGameResult(gameResultNew)
             }
         }
     }
 
     // retrieve a specific game result
     fun getGameResult(gameResult: String): Int {
-        return if (mathBrainerDB.MathBrainerDbDao().isGameResultExists(gameResult) != null) {
-            mathBrainerDB.MathBrainerDbDao().getGameResult(gameResult)
+        return if (mathBrainerDB.mathBrainerDbDao().isGameResultExists(gameResult) != null) {
+            mathBrainerDB.mathBrainerDbDao().getGameResult(gameResult)
         } else -1
     // game result not present and then not initialized
     }
@@ -91,7 +91,7 @@ class MathBrainerRepository private constructor(private val mathBrainerDB: MathB
     //  INSERT
     //----------------------------------------------------------------------------------------------
     fun insertGameResult(gameResult: GameResult) {
-        mathBrainerDB.MathBrainerDbDao().insertGameResult(gameResult)
+        mathBrainerDB.mathBrainerDbDao().insertGameResult(gameResult)
     }
 
 
@@ -99,21 +99,21 @@ class MathBrainerRepository private constructor(private val mathBrainerDB: MathB
     //  UPDATE
     //----------------------------------------------------------------------------------------------
     fun incrementGameResult(gameResultName: String) {
-        val previousResult = mathBrainerDB.MathBrainerDbDao().getGameResult(gameResultName)
-        mathBrainerDB.MathBrainerDbDao().updateGameResult(gameResultName, previousResult + 1)
+        val previousResult = mathBrainerDB.mathBrainerDbDao().getGameResult(gameResultName)
+        mathBrainerDB.mathBrainerDbDao().updateGameResult(gameResultName, previousResult + 1)
     }
 
 
     fun incrementGameResultByDelta(gameResultName: String, delta: Int) {
-        val previousResult = mathBrainerDB.MathBrainerDbDao().getGameResult(gameResultName)
-        mathBrainerDB.MathBrainerDbDao().updateGameResult(gameResultName, previousResult + delta)
+        val previousResult = mathBrainerDB.mathBrainerDbDao().getGameResult(gameResultName)
+        mathBrainerDB.mathBrainerDbDao().updateGameResult(gameResultName, previousResult + delta)
     }
 
 
     fun updateGameResultHighscore(gameResultName: String, lastScore: Int) {
-        val previousResult = mathBrainerDB.MathBrainerDbDao().getGameResult(gameResultName)
+        val previousResult = mathBrainerDB.mathBrainerDbDao().getGameResult(gameResultName)
         if (previousResult < lastScore) {
-            mathBrainerDB.MathBrainerDbDao().updateGameResult(gameResultName, lastScore)
+            mathBrainerDB.mathBrainerDbDao().updateGameResult(gameResultName, lastScore)
         } else {
             return
         }
@@ -123,7 +123,7 @@ class MathBrainerRepository private constructor(private val mathBrainerDB: MathB
 
     // delete single record
     fun deleteGameResult(gameResult: GameResult) {
-        mathBrainerDB.MathBrainerDbDao().deleteGameResult(gameResult)
+        mathBrainerDB.mathBrainerDbDao().deleteGameResult(gameResult)
     }
 
     companion object {

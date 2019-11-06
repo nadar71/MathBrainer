@@ -40,7 +40,7 @@ class MathBrainerDbDaoTest {
         mathBrainerDatabase = Room.inMemoryDatabaseBuilder<MathBrainerDatabase>(
                 InstrumentationRegistry.getInstrumentation().context,
                 MathBrainerDatabase::class.java).build()
-        mathBrainerDatabaseDao = mathBrainerDatabase!!.MathBrainerDbDao()
+        mathBrainerDatabaseDao = mathBrainerDatabase!!.mathBrainerDbDao()
     }
 
     @After

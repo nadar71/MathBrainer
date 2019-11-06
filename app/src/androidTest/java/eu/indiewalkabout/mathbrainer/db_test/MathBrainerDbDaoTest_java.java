@@ -37,13 +37,12 @@ public class MathBrainerDbDaoTest_java {
         mathBrainerDatabase = Room.inMemoryDatabaseBuilder(
                 InstrumentationRegistry.getInstrumentation().getContext(),
                 MathBrainerDatabase.class).build();
-        mathBrainerDatabaseDao = mathBrainerDatabase.MathBrainerDbDao();
+        mathBrainerDatabaseDao = mathBrainerDatabase.mathBrainerDbDao();
 
     }
 
     @After
     public void closeDb() throws IOException {
-
         mathBrainerDatabase.close();
     }
 
@@ -55,7 +54,7 @@ public class MathBrainerDbDaoTest_java {
 
         LiveData<List<GameResult>> results =  mathBrainerDatabaseDao.loadAllGamesResults();
 
-        Observer<List<GameResult>> observer = ids -> assertEquals(1, ids.size());
+        Observer<List<GameResult>> observer = res -> assertEquals(1, res.size());
         results.observeForever(observer);
         List<GameResult> currentRes = results.getValue();
 
@@ -82,7 +81,7 @@ public class MathBrainerDbDaoTest_java {
 
         LiveData<List<GameResult>> results =  mathBrainerDatabaseDao.loadAllGamesResults();
 
-        Observer<List<GameResult>> observer = ids -> assertEquals(4, ids.size());
+        Observer<List<GameResult>> observer = res -> assertEquals(4, res.size());
         results.observeForever(observer);
         List<GameResult> currentRes = results.getValue();
 
@@ -123,7 +122,7 @@ public class MathBrainerDbDaoTest_java {
 
         LiveData<List<GameResult>> results =  mathBrainerDatabaseDao.loadAllGamesResults();
 
-        Observer<List<GameResult>> observer = ids -> assertEquals(4, ids.size());
+        Observer<List<GameResult>> observer = res -> assertEquals(4, res.size());
         results.observeForever(observer);
         List<GameResult> currentRes = results.getValue();
 
@@ -149,7 +148,7 @@ public class MathBrainerDbDaoTest_java {
 
         LiveData<List<GameResult>> results =  mathBrainerDatabaseDao.loadAllGamesResults();
 
-        Observer<List<GameResult>> observer = ids -> {};
+        Observer<List<GameResult>> observer = res -> {};
         results.observeForever(observer);
         List<GameResult> currentRes = results.getValue();
 
@@ -171,13 +170,13 @@ public class MathBrainerDbDaoTest_java {
         LiveData<List<GameResult>> results =  mathBrainerDatabaseDao.loadAllGamesResults();
 
         // before
-        Observer<List<GameResult>> observer = ids -> assertEquals(2, ids.size());
+        Observer<List<GameResult>> observer = res -> assertEquals(2, res.size());
 
         GameResult tobeDeleted = new GameResult("doublenumber_game_score", 110);
         mathBrainerDatabaseDao.deleteGameResult(tobeDeleted);
 
         // after
-        Observer<List<GameResult>>  observer_02 = ids -> assertEquals(1, ids.size());
+        Observer<List<GameResult>>  observer_02 = res -> assertEquals(1, res.size());
 
 
     }
@@ -201,13 +200,13 @@ public class MathBrainerDbDaoTest_java {
         LiveData<List<GameResult>> results =  mathBrainerDatabaseDao.loadAllGamesResults();
 
         // before
-        Observer<List<GameResult>> observer = ids -> assertEquals(4, ids.size());
+        Observer<List<GameResult>> observer = res -> assertEquals(4, res.size());
 
         mathBrainerDatabaseDao.deleteGameResult(new GameResult("doublenumber_game_score", 110));
         mathBrainerDatabaseDao.deleteGameResult(new GameResult("mix_choose_result_game_score", 110));
 
         // after
-        Observer<List<GameResult>>  observer_02 = ids -> assertEquals(2, ids.size());
+        Observer<List<GameResult>>  observer_02 = res -> assertEquals(2, res.size());
 
     }
 
