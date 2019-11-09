@@ -16,7 +16,7 @@ import org.junit.runner.RunWith
 
 
 /*
-Error with : ava.lang.RuntimeException:
+Error with : java.lang.RuntimeException:
 Delegate runner 'androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner'
 for AndroidJUnit4 could not be loaded.
 

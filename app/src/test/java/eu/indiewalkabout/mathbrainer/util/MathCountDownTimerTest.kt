@@ -12,6 +12,7 @@ class MathCountDownTimerTest {
 
     @Before
     fun setUp() {
+        // mock log
         mockkStatic(Log::class)
         every { Log.v(any(), any()) } returns 0
         every { Log.d(any(), any()) } returns 0

@@ -20,6 +20,7 @@ import eu.indiewalkabout.mathbrainer.statistics.GameResult;
 import eu.indiewalkabout.mathbrainer.statistics.MathBrainerDatabase;
 import eu.indiewalkabout.mathbrainer.statistics.MathBrainerDbDao;
 
+
 import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
