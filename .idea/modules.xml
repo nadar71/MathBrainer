@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MathBrainer.iml" filepath="$PROJECT_DIR$/MathBrainer.iml" group="MathBrainer" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="MathBrainer/app" />
-      <module fileurl="file://$PROJECT_DIR$/unity-ads/unity-ads.iml" filepath="$PROJECT_DIR$/unity-ads/unity-ads.iml" group="MathBrainer/unity-ads" />
+      <module fileurl="file://$PROJECT_DIR$/MathBrainer.iml" filepath="$PROJECT_DIR$/MathBrainer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MathBrainer.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MathBrainer.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MathBrainer.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MathBrainer.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MathBrainer.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MathBrainer.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MathBrainer.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MathBrainer.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unity-ads/MathBrainer.unity-ads.iml" filepath="$PROJECT_DIR$/.idea/modules/unity-ads/MathBrainer.unity-ads.iml" />
     </modules>
   </component>
 </project>

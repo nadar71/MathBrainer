@@ -10,12 +10,12 @@ import android.util.Log
 import android.view.View
 
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.arithmetic.DoubleNumberActivity
-import eu.indiewalkabout.mathbrainer.arithmetic.Math_Op_Choose_Result_Activity
-import eu.indiewalkabout.mathbrainer.arithmetic.Math_Op_Write_Result_Activity
-import eu.indiewalkabout.mathbrainer.arithmetic.RandomOperationActivity
-import eu.indiewalkabout.mathbrainer.othergames.CountObjectsActivity
-import eu.indiewalkabout.mathbrainer.othergames.NumberOrderActivity
+import eu.indiewalkabout.mathbrainer.games.arithmetic.DoubleNumberActivity
+import eu.indiewalkabout.mathbrainer.games.arithmetic.Math_Op_Choose_Result_Activity
+import eu.indiewalkabout.mathbrainer.games.arithmetic.Math_Op_Write_Result_Activity
+import eu.indiewalkabout.mathbrainer.games.arithmetic.RandomOperationActivity
+import eu.indiewalkabout.mathbrainer.games.othergames.CountObjectsActivity
+import eu.indiewalkabout.mathbrainer.games.othergames.NumberOrderActivity
 import eu.indiewalkabout.mathbrainer.statistics.GameResult
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK
 import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility

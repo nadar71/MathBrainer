@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_dark"
-    tools:context="eu.indiewalkabout.mathbrainer.othergames.NumberOrderActivity">
+    tools:context=".games.othergames.NumberOrderActivity">
 
 
     <TextView
@@ -206,7 +206,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/scoreValue_tv">
 
-        <eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView
+        <eu.indiewalkabout.mathbrainer.games.customviews.MarkerWithNumberView
             android:id="@+id/itemDrawing_v"
             android:layout_width="357dp"
             android:layout_height="603dp"
@@ -221,7 +221,7 @@
             app:layout_constraintTop_toTopOf="@+id/drawing_container"
             app:layout_constraintVertical_bias="0.506" />
 
-        <eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView
+        <eu.indiewalkabout.mathbrainer.games.customviews.MarkerWithNoNumberView
             android:id="@+id/itemDrawingNoNumber_v"
             android:layout_width="357dp"
             android:layout_height="603dp"
@@ -233,7 +233,7 @@
             app:layout_constraintStart_toStartOf="@+id/drawing_container"
             app:layout_constraintTop_toTopOf="@+id/drawing_container" />
 
-        <eu.indiewalkabout.mathbrainer.customviews.SolutionsView
+        <eu.indiewalkabout.mathbrainer.games.customviews.SolutionsView
             android:id="@+id/solutionsShowing_v"
             android:layout_width="357dp"
             android:layout_height="603dp"

@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer.othergames
+package eu.indiewalkabout.mathbrainer.games.othergames
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -13,15 +13,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 
 import java.util.ArrayList
 
 import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNoNumberView
-import eu.indiewalkabout.mathbrainer.customviews.MarkerWithNumberView
-import eu.indiewalkabout.mathbrainer.customviews.SolutionsView
+import eu.indiewalkabout.mathbrainer.games.customviews.MarkerWithNoNumberView
+import eu.indiewalkabout.mathbrainer.games.customviews.MarkerWithNumberView
+import eu.indiewalkabout.mathbrainer.games.customviews.SolutionsView
 import eu.indiewalkabout.mathbrainer.statistics.Results
 import eu.indiewalkabout.mathbrainer.util.ConsentSDK
 import eu.indiewalkabout.mathbrainer.util.GameOverDialog
