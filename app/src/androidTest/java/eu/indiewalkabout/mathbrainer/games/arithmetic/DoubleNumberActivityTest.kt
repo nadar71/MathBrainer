@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer.arithmetic
+package eu.indiewalkabout.mathbrainer.games.arithmetic
 
 import org.junit.After
 import org.junit.Before

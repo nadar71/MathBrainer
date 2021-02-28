@@ -1,7 +1,6 @@
-package eu.indiewalkabout.mathbrainer.customviews
+package eu.indiewalkabout.mathbrainer.games.customviews
 
 import android.content.Context
-import android.content.res.AssetManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -12,11 +11,10 @@ import android.util.Log
 import android.view.View
 
 import java.io.IOException
-import java.io.InputStream
 import java.util.ArrayList
 
 import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility
-import eu.indiewalkabout.mathbrainer.customviews.model.CircularImage
+import eu.indiewalkabout.mathbrainer.games.customviews.model.CircularImage
 
 /**
  * ---------------------------------------------------------------------------------------------

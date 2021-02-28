@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_dark"
-    tools:context="eu.indiewalkabout.mathbrainer.othergames.NumberOrderActivity">
+    tools:context=".games.othergames.NumberOrderActivity">
 
 
     <TextView
@@ -212,7 +212,7 @@
         app:srcCompat="@drawable/ic_home_white_24dp" />
 
 
-    <eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView
+    <eu.indiewalkabout.mathbrainer.games.customviews.QuickCountItemDrawView
         android:id="@+id/itemDrawing_v"
         android:layout_width="0dp"
         android:layout_height="0dp"

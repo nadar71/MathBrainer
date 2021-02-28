@@ -1,7 +1,6 @@
 package eu.indiewalkabout.mathbrainer.statistics
 
-import eu.indiewalkabout.mathbrainer.util.AppExecutors
-import eu.indiewalkabout.mathbrainer.util.SingletonProvider
+import eu.indiewalkabout.mathbrainer.AppMathBrainer
 
 object Results {
 
@@ -11,9 +10,9 @@ object Results {
      * ---------------------------------------------------------------------------------------------
      */
     fun initResultsThread() {
-        val executorsInstance = (SingletonProvider.getsContext() as SingletonProvider).appExecutorsInstance
+        val executorsInstance = (AppMathBrainer.getsContext() as AppMathBrainer).appExecutorsInstance
         executorsInstance!!.diskIO().execute {
-            val repository = (SingletonProvider.getsContext() as SingletonProvider).repository
+            val repository = (AppMathBrainer.getsContext() as AppMathBrainer).repository
             repository?.initGameResults()
         }
     }
@@ -25,9 +24,9 @@ object Results {
      * ---------------------------------------------------------------------------------------------
      */
     fun incrementGameResultsThread(gameResultsName: String) {
-        val executorsInstance = (SingletonProvider.getsContext() as SingletonProvider).appExecutorsInstance
+        val executorsInstance = (AppMathBrainer.getsContext() as AppMathBrainer).appExecutorsInstance
         executorsInstance!!.diskIO().execute {
-            val repository = (SingletonProvider.getsContext() as SingletonProvider).repository
+            val repository = (AppMathBrainer.getsContext() as AppMathBrainer).repository
             repository?.incrementGameResult(gameResultsName)
         }
     }
@@ -40,9 +39,9 @@ object Results {
      * ---------------------------------------------------------------------------------------------
      */
     fun incrementGameResultByDeltaThread(gameResultsName: String, delta: Int) {
-        val executorsInstance = (SingletonProvider.getsContext() as SingletonProvider).appExecutorsInstance
+        val executorsInstance = (AppMathBrainer.getsContext() as AppMathBrainer).appExecutorsInstance
         executorsInstance!!.diskIO().execute {
-            val repository = (SingletonProvider.getsContext() as SingletonProvider).repository
+            val repository = (AppMathBrainer.getsContext() as AppMathBrainer).repository
             repository?.incrementGameResultByDelta(gameResultsName, delta)
         }
     }
@@ -54,9 +53,9 @@ object Results {
      * ---------------------------------------------------------------------------------------------
      */
     fun updateGameResultHighscoreThread(gameResultsName: String, lastScore: Int) {
-        val executorsInstance = (SingletonProvider.getsContext() as SingletonProvider).appExecutorsInstance
+        val executorsInstance = (AppMathBrainer.getsContext() as AppMathBrainer).appExecutorsInstance
         executorsInstance!!.diskIO().execute {
-            val repository = (SingletonProvider.getsContext() as SingletonProvider).repository
+            val repository = (AppMathBrainer.getsContext() as AppMathBrainer).repository
             repository?.updateGameResultHighscore(gameResultsName, lastScore)
         }
     }

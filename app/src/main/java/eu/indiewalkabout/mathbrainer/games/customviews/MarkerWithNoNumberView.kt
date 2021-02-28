@@ -1,8 +1,7 @@
-package eu.indiewalkabout.mathbrainer.customviews
+package eu.indiewalkabout.mathbrainer.games.customviews
 
 import androidx.lifecycle.MutableLiveData
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -17,7 +16,7 @@ import android.view.View
 import java.util.ArrayList
 
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.customviews.model.CircularImage
+import eu.indiewalkabout.mathbrainer.games.customviews.model.CircularImage
 import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility
 
 class MarkerWithNoNumberView : View {

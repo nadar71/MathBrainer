@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer.arithmetic
+package eu.indiewalkabout.mathbrainer.games.arithmetic
 
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -6,11 +6,14 @@ import android.graphics.Color
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
+import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
+import android.widget.TextView
 
 import java.util.ArrayList
 
@@ -22,13 +25,15 @@ import eu.indiewalkabout.mathbrainer.util.CountDownIndicator
 import eu.indiewalkabout.mathbrainer.util.GameOverDialog
 import eu.indiewalkabout.mathbrainer.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility
+import eu.indiewalkabout.mathbrainer.util.MyKeyboard
+import kotlinx.android.synthetic.main.activity_math_op_write_result.*
+
 
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
-import kotlinx.android.synthetic.main.activity_math_op_choose_result.*
 
 
-class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
+class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
 
     private val unityAdsListener = UnityAdsListener()
 
@@ -37,16 +42,14 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     // store initial text color
     private var quizDefaultTextColor: ColorStateList? = null
 
+
     // numbers to be processed
     private var firstOperand: Int = 0
     private var secondOperand: Int = 0
     private var operation: Char = ' '
 
-    // answer and its stuff
+    // correct answer
     private var answerOK: Int = 0
-    private var correctBtnNumber = 1
-    private val offset = 10
-    private var pressedBtnValue = 0
 
     // starting level
     private var level = 0
@@ -58,6 +61,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     private var min = 1
     private var max = 100
 
+
     private val multMin = 1
     private var multHMax = 30
     private var multLMax = 15
@@ -66,36 +70,28 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     private var divHMax = 15
     private var divLMax = 11
 
-
-    // store wring answer to avoid duplicates
-    internal lateinit var wrongAnswer: ArrayList<Int>
-
-    // operation symbols
-    private var symbols = charArrayOf('+', '-', '*', '/')
+    private lateinit var symbols: CharArray // = {'+','-','*','/'};
     private lateinit var scoreType: String
-    private val scoreTypeList = arrayOf("sum_choose_result_game_score", "diff_choose_result_game_score", "mult_choose_result_game_score", "div_choose_result_game_score", "mix_choose_result_game_score")
+    private val scoreTypeList = arrayOf("sum_write_result_game_score", "diff_write_result_game_score", "mult_write_result_game_score", "div_write_result_game_score", "mix_write_result_game_score")
 
     // num of challenge to pass to next level
     // changing while level growing
     private var numChallengeEachLevel = 12
     private var countChallenge = 1
 
-    // random range for answer btn number
-    // changing while level growing
-    private val minAnswerBtnNum = 3
-    private val maxAnswerBtnNum = 9
-    private var currentLevelAnswerBtnVisible = 3
-    private var levelAnswerBtnTotalNum = 3
-
     // score var
     private var score = 0
 
     // countdown objects
+    // internal var countdownBar: ProgressBar
     internal lateinit var countDownIndicator: CountDownIndicator
 
     // max time, increased by level growing
     private var timerLength: Long = 20000
     private val timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL
+
+    // custom keyboard instance
+    internal lateinit var keyboard: MyKeyboard
 
     // game over dialog
     internal lateinit var gameOverDialog: GameOverDialog
@@ -128,9 +124,8 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
                 endGame()
                 Results.incrementGameResultsThread("games_played")
                 Results.incrementGameResultsThread("games_lose")
-                Results.updateGameResultHighscoreThread(scoreType, score)
+                Results.updateGameResultHighscoreThread(scoreType!!, score)
                 Results.incrementGameResultByDeltaThread("global_score", score)
-
 
                 return true
 
@@ -144,7 +139,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_math_op_choose_result)
+        setContentView(R.layout.activity_math_op_write_result)
 
         // Unity ads init
         UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
@@ -153,15 +148,14 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         setOperationSymbol()
 
 
-        // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(this@Math_Op_Choose_Result_Activity))
-
-        // Unity ads init
-        UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
+        // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle
+        // the right way to load the ad
+        mAdView.loadAd(ConsentSDK.getAdRequest(this@Math_Op_Write_Result_Activity))
 
 
         // store quiz text color for later use
         quizDefaultTextColor = firstOperand_tv.textColors
+
 
         // init lifes led images
         lifesValue_iv = ArrayList()
@@ -169,22 +163,45 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         lifesValue_iv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
         lifesValue_iv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
 
-        // define wrong answers storage
-        wrongAnswer = ArrayList()
 
+        // keyboard
+        setupCustomKeyboard()
 
         // Create new count down indicator, without starting it
-        countDownIndicator = CountDownIndicator(this@Math_Op_Choose_Result_Activity,
-                countdownBar, this@Math_Op_Choose_Result_Activity)
+        countDownIndicator = CountDownIndicator(this@Math_Op_Write_Result_Activity,
+                countdownBar, this@Math_Op_Write_Result_Activity)
 
         // start with first challenge and countdown init
         newChallenge()
 
-        // activate clicks on answer buttons
-        setBtnPressedListener()
-
         // set first level
         updateLevel()
+
+        // set listener on DONE button on soft keyboard to get the player input
+        playerInput_et.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+            override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent): Boolean {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                    checkPlayerInput()
+
+                    return true
+
+                }
+                return false
+            }
+        })
+
+        backhome_img.setOnClickListener {
+            // saves score
+            isComingHome()
+
+            // show unityads randomic
+            MathBrainerUtility.showUnityAdsRandom(this@Math_Op_Write_Result_Activity)
+
+            val intent = Intent(this@Math_Op_Write_Result_Activity, ChooseGameActivity::class.java)
+            startActivity(intent)
+        }
+
 
         hideStatusNavBars()
 
@@ -195,10 +212,8 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
 
     override fun onResume() {
         super.onResume()
-
         // make bottom navigation bar and status bar hide
         hideStatusNavBars()
-
         newChallenge()
     }
 
@@ -291,101 +306,60 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         decorView.systemUiVisibility = uiOptions
     }
 
-
     /**
      * ---------------------------------------------------------------------------------------------
-     * Set up the button pressed listener and checking answers
+     * Create  and setup customkeyboard
      * ---------------------------------------------------------------------------------------------
      */
-    private fun setBtnPressedListener() {
-        answer01Btn.setOnClickListener { view ->
-            val b = view as Button
-            pressedBtnValue = Integer.parseInt(b.text as String)
-            checkPlayerInput()
+    private fun setupCustomKeyboard() {
+        // init custom keyboard
+        keyboard = findViewById<View>(R.id.keyboard) as MyKeyboard
+
+
+        // prevent system keyboard from appearing when EditText is tapped
+        playerInput_et.setOnTouchListener { v, event ->
+            val inType = playerInput_et.inputType // backup the input type
+            playerInput_et.inputType = InputType.TYPE_NULL // disable soft input
+            playerInput_et.onTouchEvent(event) // call native handler
+            playerInput_et.inputType = inType // restore input type
+            playerInput_et.setTextIsSelectable(false)
+            true // consume touch even
         }
 
 
-        answer02Btn.setOnClickListener { view ->
-            val b = view as Button
-            pressedBtnValue = Integer.parseInt(b.text as String)
-            checkPlayerInput()
-        }
-
-
-        answer03Btn.setOnClickListener { view ->
-            val b = view as Button
-            pressedBtnValue = Integer.parseInt(b.text as String)
-            checkPlayerInput()
-        }
-
-
-        answer04Btn.setOnClickListener { view ->
-            val b = view as Button
-            pressedBtnValue = Integer.parseInt(b.text as String)
-            checkPlayerInput()
-        }
-
-
-        answer05Btn.setOnClickListener { view ->
-            val b = view as Button
-            pressedBtnValue = Integer.parseInt(b.text as String)
-            checkPlayerInput()
-        }
-
-
-        answer06Btn.setOnClickListener { view ->
-            val b = view as Button
-            pressedBtnValue = Integer.parseInt(b.text as String)
-            checkPlayerInput()
-        }
-
-
-        answer07Btn.setOnClickListener { view ->
-            val b = view as Button
-            pressedBtnValue = Integer.parseInt(b.text as String)
-            checkPlayerInput()
-        }
-
-
-        answer08Btn.setOnClickListener { view ->
-            val b = view as Button
-            pressedBtnValue = Integer.parseInt(b.text as String)
-            checkPlayerInput()
-        }
-
-
-        answer09Btn.setOnClickListener { view ->
-            val b = view as Button
-            pressedBtnValue = Integer.parseInt(b.text as String)
-            checkPlayerInput()
-        }
-
-
-        backhome_img.setOnClickListener {
-            // saves score
-            isComingHome()
-
-            // show unityads randomic
-            MathBrainerUtility.showUnityAdsRandom(this@Math_Op_Choose_Result_Activity)
-
-            val intent = Intent(this@Math_Op_Choose_Result_Activity, ChooseGameActivity::class.java)
-            startActivity(intent)
-        }
+        // pass the InputConnection from the EditText to the keyboard
+        val ic = playerInput_et.onCreateInputConnection(EditorInfo())
+        keyboard.setInputConnection(ic, this@Math_Op_Write_Result_Activity)
     }
+
 
     /**
      * ---------------------------------------------------------------------------------------------
      * Check if player input is right/wrong and update score
      * ---------------------------------------------------------------------------------------------
      */
-    override fun checkPlayerInput() {
 
-        Log.d(TAG, "checkPlayerInput: pressedBtnValue : $pressedBtnValue")
+    override fun checkPlayerInput() {
+        var inputNum = 0
+
+        // get the player input
+        val tmp = playerInput_et.text.toString()
+
+        // stop timer
+        countDownIndicator.countdownReset()
+
+        // nothing inserted, ignore
+        if (tmp.isEmpty()) {
+            return
+        }
+
+        inputNum = Integer.parseInt(tmp)
+
+        Log.d(TAG, "checkPlayerInput: inputNum : $inputNum")
 
         // check if result is ok...
-        // if (pressedBtnValue != 0  && pressedBtnValue == answerOK) {
-        if (pressedBtnValue == answerOK) {
-
+        // if (inputNum != 0  && inputNum == answerOK) {
+        if (inputNum == answerOK) {
             updateScore()
 
             countChallenge++
@@ -407,7 +381,6 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
             // lose a life, check if it's game over
             val gameover = isGameOver
 
-            // new number to double
             if (gameover == false) {
                 // show result and start a new game session if allowed
                 showResult(false)
@@ -438,7 +411,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
 
     /**
      * ---------------------------------------------------------------------------------------------
-     * Show the result of the
+     * Show the result of the game session
      * ---------------------------------------------------------------------------------------------
      */
     private fun showResult(win: Boolean) {
@@ -446,6 +419,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         if (win == true) {
             showOkResult()
             newchallengeAfterTimerLength(1000)
+
 
         } else {
             showWrongResult()
@@ -461,19 +435,21 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
      * ---------------------------------------------------------------------------------------------
      */
     private fun showOkResult() {
-        instructions_tv.visibility = View.INVISIBLE
         result_tv.visibility = View.VISIBLE
         result_tv.text = resources.getString(R.string.ok_str)
         result_tv.setTextColor(Color.GREEN)
         firstOperand_tv.setTextColor(Color.GREEN)
         secondOperand_tv.setTextColor(Color.GREEN)
         operationSymbol_tv.setTextColor(Color.GREEN)
-        gridLayout.visibility = View.INVISIBLE
+        playerInput_et.setTextColor(Color.GREEN)
+        // hide keyboard
+        keyboard.visibility = View.INVISIBLE
 
         // statistics
         Results.incrementGameResultsThread("operations_executed")
         Results.incrementGameResultsThread("operations_ok")
     }
+
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -481,14 +457,15 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
      * ---------------------------------------------------------------------------------------------
      */
     private fun showWrongResult() {
-        instructions_tv.visibility = View.INVISIBLE
         result_tv.visibility = View.VISIBLE
         result_tv.text = resources.getString(R.string.wrong_str) + " : " + answerOK
         result_tv.setTextColor(Color.RED)
         firstOperand_tv.setTextColor(Color.RED)
         secondOperand_tv.setTextColor(Color.RED)
         operationSymbol_tv.setTextColor(Color.RED)
-        gridLayout.visibility = View.INVISIBLE
+        playerInput_et.setTextColor(Color.RED)
+        // hide keyboard
+        keyboard.visibility = View.INVISIBLE
 
         // statistics
         Results.incrementGameResultsThread("operations_executed")
@@ -522,9 +499,10 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         firstOperand_tv.setTextColor(quizDefaultTextColor)
         secondOperand_tv.setTextColor(quizDefaultTextColor)
         operationSymbol_tv.setTextColor(quizDefaultTextColor)
-        instructions_tv.visibility = View.VISIBLE
-        gridLayout.visibility = View.VISIBLE
+        playerInput_et.setTextColor(quizDefaultTextColor)
+        keyboard.visibility = View.VISIBLE
     }
+
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -536,9 +514,11 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         highscore_value_tv.visibility = View.INVISIBLE
         scoreLabel_tv.visibility = View.VISIBLE
         scoreValue_tv.visibility = View.VISIBLE
+
         score += 25
         scoreValue_tv.text = Integer.toString(score)
     }
+
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -549,7 +529,6 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         Results.updateGameResultHighscoreThread(scoreType, score)
         Results.incrementGameResultByDeltaThread("global_score", score)
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -567,25 +546,21 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
      * ---------------------------------------------------------------------------------------------
      */
     override fun newChallenge() {
-        // clear wrong answers list
-        wrongAnswer.clear()
-
-        // reset the number of visible button
-        currentLevelAnswerBtnVisible = levelAnswerBtnTotalNum
-
-        // set operation to be processed
-        operation = symbols[MathBrainerUtility.randRange_ApiCheck(0, symbols.size - 1)]
+        // set operation to be processed; general case symbols.length-1 > 1
+        operation = symbols!![MathBrainerUtility.randRange_ApiCheck(0, symbols!!.size - 1)]
 
         // calculate the quiz operation
         calculateOperation()
 
+        // clean edit text field
+        playerInput_et.isFocused
+        playerInput_et.setText("")
         Log.d(TAG, "newChallenge: $countChallenge")
 
         // reset countdown if any and restart if
         countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval)
 
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -596,6 +571,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     private fun calculateOperation() {
         when (operation) {
             '+' -> {
+                //operationSymbol_tv.setText("+");
                 // set operands to be processed
                 firstOperand = MathBrainerUtility.randRange_ApiCheck(min, max)
                 secondOperand = MathBrainerUtility.randRange_ApiCheck(min, max)
@@ -603,14 +579,14 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
                 // store correct answer
                 answerOK = firstOperand + secondOperand
 
-                // set operations value in view
-                operationSymbol_tv.text = Character.toString(operation)
-
                 // statistics
                 Results.incrementGameResultsThread("sums")
+
+                operationSymbol_tv.text = Character.toString(operation)
             }
 
             '-' -> {
+                //operationSymbol_tv.setText("-");
                 // set operands to be processed
                 firstOperand = MathBrainerUtility.randRange_ApiCheck(min, max)
                 secondOperand = MathBrainerUtility.randRange_ApiCheck(min, firstOperand)
@@ -618,7 +594,6 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
                 // store correct answer
                 answerOK = firstOperand - secondOperand
 
-                // set operations value in view
                 operationSymbol_tv.text = Character.toString(operation)
 
                 // statistics
@@ -626,6 +601,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
             }
 
             '*' -> {
+                //operationSymbol_tv.setText("*");
                 // set operands to be processed
                 val guess = MathBrainerUtility.randRange_ApiCheck(1, 2)
                 if (guess == 1) {
@@ -639,7 +615,6 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
                 // store correct answer
                 answerOK = firstOperand * secondOperand
 
-                // set operations value in view
                 operationSymbol_tv.text = "X"
 
                 // statistics
@@ -647,13 +622,13 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
             }
 
             '/' -> {
+                //operationSymbol_tv.setText("/");
                 // set operands to be processed
                 secondOperand = MathBrainerUtility.randRange_ApiCheck(divMin, divHMax)
                 // store correct answer
                 answerOK = MathBrainerUtility.randRange_ApiCheck(divMin, divLMax)
                 firstOperand = answerOK * secondOperand
 
-                // set operations value in view
                 operationSymbol_tv.text = Character.toString(operation)
 
                 // statistics
@@ -667,174 +642,6 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         firstOperand_tv.text = Integer.toString(firstOperand)
         secondOperand_tv.text = Integer.toString(secondOperand)
 
-        // setup answers on button
-        setupAnswersBtn()
-
-
-    }
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Create setup correct answer and false answer on buttons
-     * ---------------------------------------------------------------------------------------------
-     */
-    private fun setupAnswersBtn() {
-        // choose the button where put the correct answer
-        correctBtnNumber = MathBrainerUtility.randRange_ApiCheck(minAnswerBtnNum, maxAnswerBtnNum)
-        var tmpBtn : Button? = getTheBtnNumber(correctBtnNumber)
-        tmpBtn!!.text = Integer.toString(answerOK)
-
-        // visible answer button update
-        currentLevelAnswerBtnVisible--
-
-        // set wrong answer on the others
-        for (i in 1..maxAnswerBtnNum) {
-            if (i != correctBtnNumber) {
-                when (operation) {
-
-                    '+', '-' -> {
-                        tmpBtn = getTheBtnNumber(i)
-                        var result = 0
-                        // repeat until find a result not already choosen
-                        do {
-                            result = Math.abs(randomOffsetSum())
-                        } while (wrongAnswer.lastIndexOf(result) > 0)
-                        wrongAnswer.add(result)
-
-                        tmpBtn!!.text = result.toString()
-
-                        // make btn visible based on num answer btn visible per level
-                        setAnswerBtnVisibility(tmpBtn)
-                    }
-
-                    '*' -> {
-                        tmpBtn = getTheBtnNumber(i)
-                        var result = 0
-                        do {
-                            result = Math.abs(randomOffsetMult())
-                        } while (wrongAnswer.lastIndexOf(result) > 0)
-                        wrongAnswer.add(result)
-
-                        tmpBtn!!.text = result.toString()
-
-                        // make btn visible based on num answer btn visible per level
-                        setAnswerBtnVisibility(tmpBtn)
-                    }
-
-                    '/' -> {
-                        tmpBtn = getTheBtnNumber(i)
-                        var result = 0
-                        do {
-                            result = Math.abs(randomOffsetSum())
-                        } while (wrongAnswer.lastIndexOf(result) > 0)
-                        wrongAnswer.add(result)
-
-                        tmpBtn!!.text = result.toString()
-
-                        // make btn visible based on num answer btn visible per level
-                        setAnswerBtnVisibility(tmpBtn)
-                    }
-                    else -> {
-                    }
-                }
-            } else { // the btn with the right answer must be alwys visible
-                tmpBtn = getTheBtnNumber(correctBtnNumber)
-                tmpBtn!!.visibility = View.VISIBLE
-            }
-        }
-    }
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set btn visible or not depending on current level button visible
-     * @param thisBtn
-     * ---------------------------------------------------------------------------------------------
-     */
-    private fun setAnswerBtnVisibility(thisBtn: Button) {
-
-        val guess = MathBrainerUtility.randomSignChooser()
-        if (guess > 0 && currentLevelAnswerBtnVisible > 0) {
-            thisBtn.visibility = View.VISIBLE
-            currentLevelAnswerBtnVisible--
-        } else {
-            thisBtn.visibility = View.INVISIBLE
-        }
-    }
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Random answer for sum generator
-     * ---------------------------------------------------------------------------------------------
-     */
-    private fun randomOffsetSum(): Int {
-        val result = MathBrainerUtility.randRange_ApiCheck(1, (offset * 1.5).toInt())
-        return if (result >= 1 && result <= 3) {
-            answerOK + MathBrainerUtility.randomSignChooser() * result
-        } else answerOK + result
-    }
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Random answer for multiplication generator
-     * ---------------------------------------------------------------------------------------------
-     */
-    private fun randomOffsetMult(): Int {
-        val result = MathBrainerUtility.randRange_ApiCheck(1, offset * 2)
-        val sign = MathBrainerUtility.randomSignChooser()
-
-        return if (result >= 4 && result <= 11) {
-            if (sign > 0) {
-                answerOK + MathBrainerUtility.randomSignChooser() * result
-            } else {
-                (answerOK + MathBrainerUtility.randomSignChooser().toDouble() * (10 + result).toDouble() * 0.1).toInt()
-            }
-
-        } else if (result > 11 && result <= 16) {
-            if (sign > 0) {
-                answerOK + MathBrainerUtility.randomSignChooser() * result
-            } else {
-                answerOK * (result * 0.1).toInt()
-            }
-
-        } else if (result > 16) {
-            if (sign > 0) {
-                answerOK + MathBrainerUtility.randomSignChooser() * result
-            } else {
-                (answerOK + MathBrainerUtility.randomSignChooser().toDouble() * (3 + result).toDouble() * 0.1).toInt()
-            }
-
-        } else
-            answerOK + MathBrainerUtility.randomSignChooser() * result
-
-    }
-
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Return the button based on number
-     * @param num
-     * @return
-     * ---------------------------------------------------------------------------------------------
-     */
-    internal fun getTheBtnNumber(num: Int): Button? {
-        when (num) {
-            1 -> return answer01Btn
-            2 -> return answer02Btn
-            3 -> return answer03Btn
-            4 -> return answer04Btn
-            5 -> return answer05Btn
-            6 -> return answer06Btn
-            7 -> return answer07Btn
-            8 -> return answer08Btn
-            9 -> return answer09Btn
-            else -> {
-            }
-        }
-        return null
     }
 
 
@@ -846,11 +653,10 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     private fun endGame() {
         val handler = Handler()
 
+        showWrongResult()
+
         // reset counter
         countDownIndicator.countdownReset()
-
-        // gridLayout.setVisibility(View.INVISIBLE);
-        showWrongResult()
 
         val runnable = Runnable { showGameOverDialog() }
         handler.postDelayed(runnable, 500)
@@ -865,7 +671,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
      */
     private fun showGameOverDialog() {
         gameOverDialog = GameOverDialog(this,
-                this@Math_Op_Choose_Result_Activity, this)
+                this@Math_Op_Write_Result_Activity, this)
 
         hideLastQuiz()
 
@@ -878,6 +684,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
      * ---------------------------------------------------------------------------------------------
      */
     private fun hideLastQuiz() {
+        playerInput_et.visibility = View.INVISIBLE
         firstOperand_tv.visibility = View.INVISIBLE
         secondOperand_tv.visibility = View.INVISIBLE
         operationSymbol_tv.visibility = View.INVISIBLE
@@ -910,11 +717,6 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
             divLMax += 1
 
             numChallengeEachLevel += 5
-
-            // increase the number of visible answer button
-            if (level < 9 && levelAnswerBtnTotalNum < 9) {
-                levelAnswerBtnTotalNum++
-            }
 
             // increase time accordingly, but slightly
             timerLength = timerLength + 5000
@@ -989,8 +791,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
 
     companion object {
 
-        private val TAG = Math_Op_Choose_Result_Activity::class.java.simpleName
+        private val TAG = Math_Op_Write_Result_Activity::class.java.simpleName
     }
-
 
 }

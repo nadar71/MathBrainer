@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer.arithmetic
+package eu.indiewalkabout.mathbrainer.games.arithmetic
 
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -6,29 +6,34 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import android.text.InputType
 import android.util.Log
+import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.view.inputmethod.EditorInfo
+import android.widget.ImageView
+import android.widget.TextView
+
 
 import java.util.ArrayList
 
 import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.statistics.Results
-import eu.indiewalkabout.mathbrainer.util.ConsentSDK
-import eu.indiewalkabout.mathbrainer.util.CountDownIndicator
-import eu.indiewalkabout.mathbrainer.util.EndGameSessionDialog
-import eu.indiewalkabout.mathbrainer.util.GameOverDialog
-import eu.indiewalkabout.mathbrainer.util.IGameFunctions
-import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility
-
+import eu.indiewalkabout.mathbrainer.util.*
 
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
-import kotlinx.android.synthetic.main.activity_random_operation.*
+import kotlinx.android.synthetic.main.activity_double_number.*
 
-class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
+
+/**
+ * ---------------------------------------------------------------------------------------------
+ * Given a number, write its double
+ * ---------------------------------------------------------------------------------------------
+ */
+class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
 
     private val unityAdsListener = UnityAdsListener()
 
@@ -37,49 +42,22 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     // store initial text color
     private var quizDefaultTextColor: ColorStateList? = null
 
-
-    // numbers to be processed
-    private var firstOperand: Int = 0
-    private var secondOperand: Int = 0
-    private var operation: Char = ' '
-
-    // answer and its stuff
-    private var answer: Int = 0
-    private var operationOK: String? = null
-    private val correctBtnNumber = 1
-    private val offset = 10
-    private var pressedBtnValue = ""
+    // number to be doubled
+    private var numToBeDoubled: Int = 0
 
     // starting level
     private var level = 0
 
     // lifes counter; 0 to gameover
-    private var lifes = 3
+    internal var lifes = 3
 
-    // random range of number to be processed
+    // random range of number to be doubled
     private var min = 1
     private var max = 100
 
-    private val multMin = 1
-    private var multHMax = 30
-    private var multLMax = 15
-
-    private val divMin = 1
-    private var divHMax = 15
-    private var divLMax = 11
-
-
-    // store wring answer to avoid duplicates
-    internal lateinit var wrongAnswer: ArrayList<Int>
-
-    // operation symbols
-    private val symbols = charArrayOf('+', '-', '*', '/')
-
-    // num of challenge to pass to next level
-    // changing while level growing
-    private var numChallengeEachLevel = 12
+    // num of challenge to be in the test
+    private val numChallengeEachLevel = 10
     private var countChallenge = 1
-
 
     // score var
     private var score = 0
@@ -89,11 +67,14 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     internal lateinit var countDownIndicator: CountDownIndicator
 
     // max time, increased by level growing
-    private var timerLength: Long = 20000
+    private var timerLength = CountDownIndicator.DEFAULT_MILLISINFUTURE
     private val timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL
 
     // game session end dialog
     internal var endSessiondialog: EndGameSessionDialog? = null
+
+    // custom keyboard instance
+    internal lateinit var keyboard: MyKeyboard
 
     // game over dialog
     internal lateinit var gameOverDialog: GameOverDialog
@@ -106,32 +87,34 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
      * @return boolean  : return true/false in case of gameover/gamecontinuing
      * ---------------------------------------------------------------------------------------------
      */
-    override// update life counts
-    // statistics
-    // Update UI
-    // check game over condition
-    // statistics
-    // lifes remaining >0, restart a new counter
-    // countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
-    val isGameOver: Boolean
+    override val isGameOver: Boolean
         get() {
+            // update life counts
             lifes--
+
+            // statistics
             Results.incrementGameResultsThread("lifes_missed")
 
+            // Update UI
             Log.d(TAG, "isGameOver: $lifes")
             if (lifes > -1) {
                 lifesValue_iv[lifes].visibility = View.INVISIBLE
             }
+
+            // check game over condition
             if (lifes <= 0) {
                 endGame()
+                // statistics
                 Results.incrementGameResultsThread("games_played")
                 Results.incrementGameResultsThread("games_lose")
-                Results.updateGameResultHighscoreThread("random_op_game_score", score)
+                Results.updateGameResultHighscoreThread("doublenumber_game_score", score)
                 Results.incrementGameResultByDeltaThread("global_score", score)
 
                 return true
 
             } else {
+                // lifes remaining >0, restart a new counter
+                // countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
                 return false
             }
 
@@ -141,17 +124,18 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_random_operation)
+        setContentView(R.layout.activity_double_number)
 
         // Unity ads init
         UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(this@RandomOperationActivity))
+        mAdView.loadAd(ConsentSDK.getAdRequest(this@DoubleNumberActivity))
 
+        highscore_value_tv.text = "-1" // debug init
 
         // store quiz text color for later use
-        quizDefaultTextColor = firstOperand_tv.textColors
+        quizDefaultTextColor = numberToBeDoubled_tv.textColors
 
         // init lifes led images
         lifesValue_iv = ArrayList()
@@ -159,22 +143,41 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         lifesValue_iv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
         lifesValue_iv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
 
-
-        // define wrong answers storage
-        wrongAnswer = ArrayList()
+        // keyboard
+        setupCustomKeyboard()
 
         // Create new count down indicator, without starting it
-        countDownIndicator = CountDownIndicator(this@RandomOperationActivity,
-                countdownBar, this@RandomOperationActivity)
+        countDownIndicator = CountDownIndicator(this@DoubleNumberActivity,
+                countdownBar, this@DoubleNumberActivity)
+
 
         // start with first challenge and countdown init
         newChallenge()
 
-        // activate clicks on answer buttons
-        setBtnPressedListener()
-
         // set first level
         updateLevel()
+
+        // set listener on DONE button on soft keyboard to get the player input
+        playerInput_et.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+            override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent): Boolean {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    checkPlayerInput()
+                    return true
+                }
+                return false
+            }
+        })
+
+        backhome_img.setOnClickListener {
+            // saves score
+            isComingHome()
+
+            // show unityads randomic
+            MathBrainerUtility.showUnityAdsRandom(this@DoubleNumberActivity)
+
+            val intent = Intent(this@DoubleNumberActivity, ChooseGameActivity::class.java)
+            startActivity(intent)
+        }
 
         hideStatusNavBars()
 
@@ -194,7 +197,9 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     override fun onPause() {
         super.onPause()
         countDownIndicator.countdownReset()
+
     }
+
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -232,49 +237,28 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
     /**
      * ---------------------------------------------------------------------------------------------
-     * Set up the button pressed listener and checking answers
+     * Create  and setup customkeyboard
      * ---------------------------------------------------------------------------------------------
      */
-    private fun setBtnPressedListener() {
-        answer_plus_Btn.setOnClickListener { view ->
-            // val b = view as Button
-            pressedBtnValue = "+"
-            checkPlayerInput()
+    private fun setupCustomKeyboard() {
+        // init custom keyboard
+        keyboard = findViewById<View>(R.id.keyboard) as MyKeyboard
+
+        // prevent system keyboard from appearing when EditText is tapped
+        playerInput_et.setOnTouchListener { v, event ->
+            val inType = playerInput_et.inputType // backup the input type
+            playerInput_et.inputType = InputType.TYPE_NULL // disable soft input
+            playerInput_et.onTouchEvent(event) // call native handler
+            playerInput_et.inputType = inType // restore input type
+            playerInput_et.setTextIsSelectable(false)
+            true // consume touch even
         }
 
-
-        answer_minus_Btn.setOnClickListener { view ->
-            // val b = view as Button
-            pressedBtnValue = "-"
-            checkPlayerInput()
-        }
-
-
-        answer_mult_Btn.setOnClickListener { view ->
-            // val b = view as Button
-            pressedBtnValue = "*"
-            checkPlayerInput()
-        }
-
-
-        answer_div_Btn.setOnClickListener { view ->
-            // val b = view as Button
-            pressedBtnValue = "/"
-            checkPlayerInput()
-        }
-
-        backhome_img.setOnClickListener {
-            // saves score
-            isComingHome()
-
-            // show unityads randomic
-            MathBrainerUtility.showUnityAdsRandom(this@RandomOperationActivity)
-
-            val intent = Intent(this@RandomOperationActivity, ChooseGameActivity::class.java)
-            startActivity(intent)
-        }
-
+        // pass the InputConnection from the EditText to the keyboard
+        val ic = playerInput_et.onCreateInputConnection(EditorInfo())
+        keyboard.setInputConnection(ic, this@DoubleNumberActivity)
     }
+
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -282,19 +266,26 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
      * ---------------------------------------------------------------------------------------------
      */
     override fun checkPlayerInput() {
+        var inputNum = 0
 
-        Log.d(TAG, "checkPlayerInput: pressedBtnValue : $pressedBtnValue")
+        // get the player input
+        val tmp = playerInput_et.text.toString()
+
+        // nothing inserted, ignore
+        if (tmp.isEmpty()) {
+            return
+        }
+
+        inputNum = Integer.parseInt(tmp)
+
+        Log.d(TAG, "checkPlayerInput: inputNum : $inputNum")
 
         // check if result is ok...
-        if (!pressedBtnValue.isEmpty() && pressedBtnValue == operationOK) {
+        if (inputNum != 0 && inputNum == 2 * numToBeDoubled) {
 
             updateScore()
 
             countChallenge++
-
-            setOperationText()
-
-            operationSymbol_tv.visibility = View.VISIBLE
 
             // rise level after numChallengeEachLevel reached
             if (countChallenge > numChallengeEachLevel) {
@@ -313,6 +304,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
             // lose a life, check if it's game over
             val gameover = isGameOver
 
+            // new number to double
             if (gameover == false) {
                 // show result and start a new game session if allowed
                 showResult(false)
@@ -321,20 +313,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         }
     }
 
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set the currect symbol operation for multiplication: X for *
-     * ---------------------------------------------------------------------------------------------
-     */
-    private fun setOperationText() {
-        if (operationOK == "*") {
-            operationSymbol_tv.text = "X"
-        } else {
-            operationSymbol_tv.text = operationOK
-        }
-
-    }
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -374,32 +352,28 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         }
     }
 
-
     /**
      * ---------------------------------------------------------------------------------------------
      * Show ok in case of game win
      * ---------------------------------------------------------------------------------------------
      */
     private fun showOkResult() {
-        instruction_tv.visibility = View.INVISIBLE
-
         result_tv.visibility = View.VISIBLE
         result_tv.text = resources.getString(R.string.ok_str)
         result_tv.setTextColor(Color.GREEN)
-        firstOperand_tv.setTextColor(Color.GREEN)
-        secondOperand_tv.setTextColor(Color.GREEN)
-
-        setOperationText()
-        // operationSymbol_tv.setText(operationOK);
+        numberToBeDoubled_tv.setTextColor(Color.GREEN)
         operationSymbol_tv.setTextColor(Color.GREEN)
-        operation_result_tv.setTextColor(Color.GREEN)
-        equals_sign_tv.setTextColor(Color.GREEN)
-        lifeGridLayout.visibility = View.INVISIBLE
-
+        playerInput_et.setTextColor(Color.GREEN)
+        // hide keyboard
+        keyboard.visibility = View.INVISIBLE
 
         // statistics
         Results.incrementGameResultsThread("operations_executed")
         Results.incrementGameResultsThread("operations_ok")
+
+        Results.incrementGameResultsThread("doublings")
+        Results.incrementGameResultsThread("multiplications")
+
     }
 
 
@@ -409,24 +383,21 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
      * ---------------------------------------------------------------------------------------------
      */
     private fun showWrongResult() {
-        instruction_tv.visibility = View.INVISIBLE
-
         result_tv.visibility = View.VISIBLE
-        result_tv.text = resources.getString(R.string.wrong_str) + " : " + operationOK
+        result_tv.text = resources.getString(R.string.wrong_str) + " : " + 2 * numToBeDoubled
         result_tv.setTextColor(Color.RED)
-        firstOperand_tv.setTextColor(Color.RED)
-        secondOperand_tv.setTextColor(Color.RED)
-
-        setOperationText()
-        // operationSymbol_tv.setText(operationOK);
+        numberToBeDoubled_tv.setTextColor(Color.RED)
         operationSymbol_tv.setTextColor(Color.RED)
-        operation_result_tv.setTextColor(Color.RED)
-        equals_sign_tv.setTextColor(Color.RED)
-        lifeGridLayout.visibility = View.INVISIBLE
+        playerInput_et.setTextColor(Color.RED)
+        // hide keyboard
+        keyboard.visibility = View.INVISIBLE
 
         // statistics
         Results.incrementGameResultsThread("operations_executed")
         Results.incrementGameResultsThread("operations_ko")
+
+        Results.incrementGameResultsThread("doublings")
+        Results.incrementGameResultsThread("multiplications")
     }
 
 
@@ -445,6 +416,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         handler.postDelayed(runnable, timerLength.toLong())
     }
 
+
     /**
      * ---------------------------------------------------------------------------------------------
      * Setup before new game session
@@ -452,13 +424,10 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
      */
     private fun setupBeforeNewGame() {
         result_tv.visibility = View.INVISIBLE
-        instruction_tv.visibility = View.VISIBLE
-        firstOperand_tv.setTextColor(quizDefaultTextColor)
-        secondOperand_tv.setTextColor(quizDefaultTextColor)
+        numberToBeDoubled_tv.setTextColor(quizDefaultTextColor)
         operationSymbol_tv.setTextColor(quizDefaultTextColor)
-        operation_result_tv.setTextColor(quizDefaultTextColor)
-        equals_sign_tv.setTextColor(quizDefaultTextColor)
-        lifeGridLayout.visibility = View.VISIBLE
+        playerInput_et.setTextColor(quizDefaultTextColor)
+        keyboard.visibility = View.VISIBLE
     }
 
     /**
@@ -483,10 +452,9 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
      * ---------------------------------------------------------------------------------------------
      */
     fun isComingHome() {
-        Results.updateGameResultHighscoreThread("random_op_game_score", score)
+        Results.updateGameResultHighscoreThread("doublenumber_game_score", score)
         Results.incrementGameResultByDeltaThread("global_score", score)
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -504,104 +472,17 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
      * ---------------------------------------------------------------------------------------------
      */
     override fun newChallenge() {
-        // clear wrong answers list
-        wrongAnswer.clear()
+        // set the number to be doubled
+        numToBeDoubled = MathBrainerUtility.randRange_ApiCheck(min, max)
+        numberToBeDoubled_tv.text = Integer.toString(numToBeDoubled)
 
-        // reset the number of visible button
-        // todo :delete
-        // currentLevelAnswerBtnVisible = levelAnswerBtnTotalNum;
-
-        // set operation to be processed
-        operation = symbols[MathBrainerUtility.randRange_ApiCheck(0, symbols.size - 1)]
-
-        // calculate the quiz operation
-        calculateOperation()
-
+        // clean edit text field
+        playerInput_et.isFocused
+        playerInput_et.setText("")
         Log.d(TAG, "newChallenge: $countChallenge")
 
         // reset countdown if any and restart if
         countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval)
-
-    }
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Choose the right operands based on based on operation symbol,update UI, do calculation ,
-     * and store the correct answer.
-     * ---------------------------------------------------------------------------------------------
-     */
-    private fun calculateOperation() {
-        when (operation) {
-            '+' -> {
-                // set operands to be processed
-                firstOperand = MathBrainerUtility.randRange_ApiCheck(min, max)
-                secondOperand = MathBrainerUtility.randRange_ApiCheck(min, max)
-
-                // store correct answer
-                answer = firstOperand + secondOperand
-
-                // statistics
-                Results.incrementGameResultsThread("sums")
-            }
-
-            '-' -> {
-                // set operands to be processed
-                firstOperand = MathBrainerUtility.randRange_ApiCheck(min, max)
-                secondOperand = MathBrainerUtility.randRange_ApiCheck(min, firstOperand)
-
-                // store correct answer
-                answer = firstOperand - secondOperand
-
-                // statistics
-                Results.incrementGameResultsThread("differences")
-            }
-
-            '*' -> {
-                // set operands to be processed
-                val guess = MathBrainerUtility.randRange_ApiCheck(1, 2)
-                if (guess == 1) {
-                    firstOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multHMax)
-                    secondOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multLMax)
-                } else {
-                    firstOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multLMax)
-                    secondOperand = MathBrainerUtility.randRange_ApiCheck(multMin, multHMax)
-                }
-
-                // store correct answer
-                answer = firstOperand * secondOperand
-
-                // statistics
-                Results.incrementGameResultsThread("multiplications")
-            }
-
-            '/' -> {
-                // set operands to be processed
-                secondOperand = MathBrainerUtility.randRange_ApiCheck(divMin, divHMax)
-                // store correct answer
-                answer = MathBrainerUtility.randRange_ApiCheck(divMin, divLMax)
-                firstOperand = answer * secondOperand
-
-                // statistics
-                Results.incrementGameResultsThread("divisions")
-            }
-            else -> {
-            }
-        }
-
-        // right answer
-        operationOK = Character.toString(operation)
-
-        // set values in view
-        operation_result_tv.text = Integer.toString(answer)
-
-        // hide correct operation
-        // operationSymbol_tv.setText(operationOK);
-        // operationSymbol_tv.setVisibility(View.INVISIBLE);
-        operationSymbol_tv.text = resources.getString(R.string.question_mark)
-
-        firstOperand_tv.text = Integer.toString(firstOperand)
-        secondOperand_tv.text = Integer.toString(secondOperand)
-
 
     }
 
@@ -614,15 +495,13 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     private fun endGame() {
         val handler = Handler()
 
+        showWrongResult()
+
         // reset counter
         countDownIndicator.countdownReset()
 
-        showWrongResult()
-
         val runnable = Runnable { showGameOverDialog() }
         handler.postDelayed(runnable, 500)
-
-
     }
 
 
@@ -633,15 +512,22 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
      */
     private fun showGameOverDialog() {
         gameOverDialog = GameOverDialog(this,
-                this@RandomOperationActivity, this)
+                this@DoubleNumberActivity, this)
+
+        hideLastQuiz()
+    }
 
 
-        // hide input field
-        firstOperand_tv.visibility = View.INVISIBLE
-        secondOperand_tv.visibility = View.INVISIBLE
+    /**
+     * ---------------------------------------------------------------------------------------------
+     * Hide quiz
+     * ---------------------------------------------------------------------------------------------
+     */
+    private fun hideLastQuiz() {
+        playerInput_et.visibility = View.INVISIBLE
+        numberToBeDoubled_tv.visibility = View.INVISIBLE
         operationSymbol_tv.visibility = View.INVISIBLE
-        operation_result_tv.visibility = View.INVISIBLE
-        equals_sign_tv.visibility = View.INVISIBLE
+        operationSymbol_tv.visibility = View.INVISIBLE
         result_tv.visibility = View.INVISIBLE
     }
 
@@ -659,24 +545,11 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
         // increment level difficulty
         if (level > 1) {
-            // for +, -
             min = max
             max = 100 * level + 50 * (level - 1)
 
-            // for *,/
-            multHMax += 5
-            multLMax += 1
-
-            divHMax += 2
-            divLMax += 1
-
-            numChallengeEachLevel += 5
-
-            // increase the number of visible answer button
-            // if (level < 9 ) levelAnswerBtnTotalNum++;
-
             // increase time accordingly, but slightly
-            timerLength = timerLength + 5000
+            timerLength = timerLength + 1000
             Log.d(TAG, "updatingLevel: New Level! new min : " + min + " new max: " + max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec.")
         }
 
@@ -748,7 +621,8 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
     companion object {
 
-        // tag for log
-        private val TAG = Math_Op_Choose_Result_Activity::class.java.simpleName
+        private val TAG = DoubleNumberActivity::class.java.simpleName
     }
+
+
 }

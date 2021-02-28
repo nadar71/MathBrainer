@@ -6,7 +6,7 @@ import android.util.Log
 
 import eu.indiewalkabout.mathbrainer.statistics.GameResult
 import eu.indiewalkabout.mathbrainer.statistics.MathBrainerRepository
-import eu.indiewalkabout.mathbrainer.util.SingletonProvider
+import eu.indiewalkabout.mathbrainer.AppMathBrainer
 
 
 /**
@@ -24,7 +24,7 @@ class HighScoresViewModel : ViewModel() {
         Log.d(TAG, "Retrieving game results list from repository")
 
         // get repository instance
-        repository = (SingletonProvider.getsContext() as SingletonProvider).repository!!
+        repository = (AppMathBrainer.getsContext() as AppMathBrainer).repository!!
         gameResultsList = repository.allGamesResults
     }
 

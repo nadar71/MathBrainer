@@ -1,10 +1,8 @@
-package eu.indiewalkabout.mathbrainer.customviews.model
+package eu.indiewalkabout.mathbrainer.games.customviews.model
 
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.appcompat.widget.AppCompatImageView
-import android.view.View
-import android.widget.ImageView
 
 class CircularImage : AppCompatImageView {
     internal lateinit var context: Context

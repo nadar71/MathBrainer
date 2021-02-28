@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer.othergames
+package eu.indiewalkabout.mathbrainer.games.othergames
 
 import android.content.Context
 import android.content.Intent
@@ -18,7 +18,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
 
 import java.io.IOException
 import java.util.ArrayList
@@ -35,7 +34,7 @@ import eu.indiewalkabout.mathbrainer.util.MathBrainerUtility
 
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
-import eu.indiewalkabout.mathbrainer.customviews.QuickCountItemDrawView
+import eu.indiewalkabout.mathbrainer.games.customviews.QuickCountItemDrawView
 
 import kotlinx.android.synthetic.main.activity_count_objects.*
 import kotlinx.android.synthetic.main.activity_count_objects.backhome_img

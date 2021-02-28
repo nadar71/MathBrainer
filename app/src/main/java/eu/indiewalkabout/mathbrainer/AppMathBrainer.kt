@@ -1,20 +1,21 @@
-package eu.indiewalkabout.mathbrainer.util
+package eu.indiewalkabout.mathbrainer
 
 import android.app.Application
 import android.content.Context
 
 import eu.indiewalkabout.mathbrainer.statistics.MathBrainerDatabase
 import eu.indiewalkabout.mathbrainer.statistics.MathBrainerRepository
+import eu.indiewalkabout.mathbrainer.util.AppExecutors
 
 
 /**
  * -------------------------------------------------------------------------------------------------
  * Class used for access singletons and application context wherever in the app.
  * Just like repository is an interface for all data operations.
- * NB : register in manifest in <Application android:name=".SingletonProvider">... </Application>
+ * NB : register in manifest in <Application android:name=".AppMathBrainer">... </Application>
  * -------------------------------------------------------------------------------------------------
  */
-class SingletonProvider : Application() {
+class AppMathBrainer : Application() {
 
     /**
      * ---------------------------------------------------------------------------------------------
