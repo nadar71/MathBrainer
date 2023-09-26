@@ -329,7 +329,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <eu.indiewalkabout.mathbrainer.util.MyKeyboard
+    <eu.indiewalkabout.mathbrainer.core.util.MyKeyboard
         android:id="@+id/keyboard"
         android:layout_width="300dp"
         android:layout_height="182dp"

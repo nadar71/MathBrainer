@@ -4,9 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import eu.indiewalkabout.mathbrainer.statistics.GameResult
-import eu.indiewalkabout.mathbrainer.statistics.MathBrainerDatabase
-import eu.indiewalkabout.mathbrainer.statistics.MathBrainerDbDao
+import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
+import eu.indiewalkabout.mathbrainer.data.local.db.MathBrainerDatabase
+import eu.indiewalkabout.mathbrainer.data.local.db.MathBrainerDbDao
 import junit.framework.Assert.assertEquals
 import org.junit.After
 import org.junit.Before

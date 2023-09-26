@@ -3,6 +3,9 @@ package eu.indiewalkabout.mathbrainer.util
 import android.widget.ProgressBar
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import eu.indiewalkabout.mathbrainer.core.util.CountDownIndicator
+import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
+import eu.indiewalkabout.mathbrainer.core.util.MathCountDownTimer
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before

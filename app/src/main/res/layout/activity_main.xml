@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="eu.indiewalkabout.mathbrainer.notused.MainActivity">
+    tools:context="eu.indiewalkabout.mathbrainer.core.notused.MainActivity">
 
     <TextView
         android:id="@+id/highscore_title_label_tv"

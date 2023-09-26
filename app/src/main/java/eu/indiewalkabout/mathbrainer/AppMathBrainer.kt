@@ -3,9 +3,9 @@ package eu.indiewalkabout.mathbrainer
 import android.app.Application
 import android.content.Context
 
-import eu.indiewalkabout.mathbrainer.statistics.MathBrainerDatabase
-import eu.indiewalkabout.mathbrainer.statistics.MathBrainerRepository
-import eu.indiewalkabout.mathbrainer.util.AppExecutors
+import eu.indiewalkabout.mathbrainer.data.local.db.MathBrainerDatabase
+import eu.indiewalkabout.mathbrainer.data.repository.MathBrainerRepository
+import eu.indiewalkabout.mathbrainer.core.util.AppExecutors
 
 
 /**

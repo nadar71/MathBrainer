@@ -11,7 +11,7 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.GameCreditsActivity"></activity>
+        <activity android:name=".presentation.ui.GameCreditsActivity"></activity>
         <!-- ADMOB -->
         <!-- Sample AdMob App ID:        ca-app-pub-3940256099942544~3347511713 -->
         <!-- THIS APP REAL AdMob App ID: -->
@@ -20,11 +20,11 @@
             android:value="@string/admob_key_app_id" />
 
         <activity
-            android:name=".notused.MainActivity"
+            android:name=".core.notused.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".ui.ChooseGameActivity"
+            android:name=".presentation.ui.HomeGameActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -35,42 +35,42 @@
         </activity>
 
         <activity
-            android:name=".ui.HighscoresActivity"
+            android:name=".presentation.ui.HighscoresActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name="eu.indiewalkabout.mathbrainer.games.arithmetic.Math_Op_Write_Result_Activity"
+            android:name=".presentation.games.arithmetic.Math_Op_Write_Result_Activity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="eu.indiewalkabout.mathbrainer.games.othergames.CountObjectsActivity"
+            android:name=".presentation.games.othergames.CountObjectsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="eu.indiewalkabout.mathbrainer.games.arithmetic.DoubleNumberActivity"
+            android:name=".presentation.games.arithmetic.DoubleNumberActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="eu.indiewalkabout.mathbrainer.games.othergames.FallingOperationsActivity"
+            android:name=".presentation.games.othergames.FallingOperationsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="eu.indiewalkabout.mathbrainer.games.othergames.NumberOrderActivity"
+            android:name=".presentation.games.othergames.NumberOrderActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="eu.indiewalkabout.mathbrainer.games.arithmetic.RandomOperationActivity"
+            android:name=".presentation.games.arithmetic.RandomOperationActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="eu.indiewalkabout.mathbrainer.games.othergames.SoundsSeqActivity"
+            android:name=".presentation.games.othergames.SoundsSeqActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-        <activity android:name="eu.indiewalkabout.mathbrainer.games.arithmetic.Math_Op_Choose_Result_Activity" />
+        <activity android:name=".presentation.games.arithmetic.Math_Op_Choose_Result_Activity" />
 
 
         <!-- test lib -->

@@ -7,10 +7,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import eu.indiewalkabout.mathbrainer.statistics.GameResult;
-import eu.indiewalkabout.mathbrainer.statistics.MathBrainerDatabase;
-import eu.indiewalkabout.mathbrainer.statistics.MathBrainerDbDao;
-import eu.indiewalkabout.mathbrainer.statistics.MathBrainerRepository;
+import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult;
+import eu.indiewalkabout.mathbrainer.data.local.db.MathBrainerDatabase;
+import eu.indiewalkabout.mathbrainer.data.local.db.MathBrainerDbDao;
+import eu.indiewalkabout.mathbrainer.data.repository.MathBrainerRepository;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;

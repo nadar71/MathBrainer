@@ -16,10 +16,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 @RunWith(AndroidJUnit4::class)
 class DoubleNumberActivityTest {
 
-    lateinit var doubleNumberActivity : DoubleNumberActivity
+    lateinit var doubleNumberActivity : eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.DoubleNumberActivity
 
     @get:Rule
-    val activityRule = ActivityTestRule(DoubleNumberActivity::class.java)
+    val activityRule = ActivityTestRule(eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.DoubleNumberActivity::class.java)
 
     @Before
     fun setUp() {

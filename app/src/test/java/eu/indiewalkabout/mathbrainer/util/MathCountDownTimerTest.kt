@@ -1,6 +1,8 @@
 package eu.indiewalkabout.mathbrainer.util
 
 import android.util.Log
+import eu.indiewalkabout.mathbrainer.core.util.CountDownIndicator
+import eu.indiewalkabout.mathbrainer.core.util.MathCountDownTimer
 import io.mockk.every
 import io.mockk.mockkStatic
 import org.junit.After
