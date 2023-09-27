@@ -81,7 +81,7 @@ android {
     viewBinding {
         enabled true
     }
-
+    namespace 'eu.indiewalkabout.mathbrainer'
 
 
 }
