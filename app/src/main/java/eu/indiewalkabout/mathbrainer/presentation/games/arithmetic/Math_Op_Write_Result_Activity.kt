@@ -14,10 +14,10 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 
 import java.util.ArrayList
 
-import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
@@ -26,18 +26,18 @@ import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.MyKeyboard
-import kotlinx.android.synthetic.main.activity_math_op_write_result.*
 
 
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
+import eu.indiewalkabout.mathbrainer.databinding.ActivityMathOpWriteResultBinding
 
 
 class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
-
+    private lateinit var binding: ActivityMathOpWriteResultBinding
     private val unityAdsListener = UnityAdsListener()
 
-    private lateinit var lifesValue_iv: ArrayList<ImageView>
+    private lateinit var livesValueIv: ArrayList<ImageView>
 
     // store initial text color
     private var quizDefaultTextColor: ColorStateList? = null
@@ -54,8 +54,8 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     // starting level
     private var level = 0
 
-    // lifes counter; 0 to gameover
-    private var lifes = 3
+    // lives counter; 0 to gameover
+    private var lives = 3
 
     // random range of number to be processed
     private var min = 1
@@ -97,34 +97,31 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     internal lateinit var gameOverDialog: GameOverDialog
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Update lifes view and check if it's game over or not
-     * @override of IGameFunctions isGameOver()
-     * @return boolean  : return true/false in case of gameover/gamecontinuing
-     * ---------------------------------------------------------------------------------------------
-     */
-    override// update life counts
+     
+    // Update lives view and check if it's game over or not
+    // @override of IGameFunctions isGameOver()
+    // @return boolean  : return true/false in case of game over/game continuing
+    // update life counts
     // statistics
     // Update UI
     // check game over condition
     // statistics
-    // lifes remaining >0, restart a new counter
+    // lives remaining >0, restart a new counter
     // countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
-    val isGameOver: Boolean
+    override val isGameOver: Boolean
         get() {
-            lifes--
-            Results.incrementGameResultsThread("lifes_missed")
+            lives--
+            Results.incrementGameResultsThread("lives_missed")
 
-            Log.d(TAG, "isGameOver: $lifes")
-            if (lifes > -1) {
-                lifesValue_iv[lifes].visibility = View.INVISIBLE
+            Log.d(TAG, "isGameOver: $lives")
+            if (lives > -1) {
+                livesValueIv[lives].visibility = View.INVISIBLE
             }
-            if (lifes <= 0) {
+            if (lives <= 0) {
                 endGame()
                 Results.incrementGameResultsThread("games_played")
                 Results.incrementGameResultsThread("games_lose")
-                Results.updateGameResultHighscoreThread(scoreType!!, score)
+                Results.updateGameResultHighscoreThread(scoreType, score)
                 Results.incrementGameResultByDeltaThread("global_score", score)
 
                 return true
@@ -139,7 +136,9 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_math_op_write_result)
+        // setContentView(R.layout.activity_math_op_write_result)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_math_op_write_result)
+
 
         // Unity ads init
         UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
@@ -157,11 +156,11 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         quizDefaultTextColor = firstOperand_tv.textColors
 
 
-        // init lifes led images
-        lifesValue_iv = ArrayList()
-        lifesValue_iv.add(findViewById<View>(R.id.life_01_iv) as ImageView)
-        lifesValue_iv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
-        lifesValue_iv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
+        // init lives led images
+        livesValueIv = ArrayList()
+        livesValueIv.add(findViewById<View>(R.id.life_01_iv) as ImageView)
+        livesValueIv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
+        livesValueIv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
 
 
         // keyboard
@@ -169,7 +168,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
 
         // Create new count down indicator, without starting it
         countDownIndicator = CountDownIndicator(this@Math_Op_Write_Result_Activity,
-                countdownBar, this@Math_Op_Write_Result_Activity)
+            binding.countdownBar, this@Math_Op_Write_Result_Activity)
 
         // start with first challenge and countdown init
         newChallenge()
@@ -178,7 +177,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         updateLevel()
 
         // set listener on DONE button on soft keyboard to get the player input
-        playerInput_et.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+        binding.playerInputEt.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent): Boolean {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
 
@@ -191,7 +190,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
             }
         })
 
-        backhome_img.setOnClickListener {
+        binding.backhomeImg.setOnClickListener {
             // saves score
             isComingHome()
 

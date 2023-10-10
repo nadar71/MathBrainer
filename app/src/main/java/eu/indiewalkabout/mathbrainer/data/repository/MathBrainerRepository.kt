@@ -36,7 +36,7 @@ class MathBrainerRepository private constructor(private val mathBrainerDB: MathB
         game_results_list.add("divisions")
         game_results_list.add("doublings")
         game_results_list.add("level_upgrades")
-        game_results_list.add("lifes_missed")
+        game_results_list.add("lives_missed")
         game_results_list.add("objects_counted")
         game_results_list.add("numbers_in_order")
         game_results_list.add("games_played")

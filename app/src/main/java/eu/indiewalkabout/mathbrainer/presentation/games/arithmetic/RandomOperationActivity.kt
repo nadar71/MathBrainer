@@ -32,7 +32,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
     private val unityAdsListener = UnityAdsListener()
 
-    private lateinit var lifesValue_iv: ArrayList<ImageView>
+    private lateinit var livesValueIv: ArrayList<ImageView>
 
     // store initial text color
     private var quizDefaultTextColor: ColorStateList? = null
@@ -53,8 +53,8 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     // starting level
     private var level = 0
 
-    // lifes counter; 0 to gameover
-    private var lifes = 3
+    // lives counter; 0 to gameover
+    private var lives = 3
 
     // random range of number to be processed
     private var min = 1
@@ -70,7 +70,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
 
     // store wring answer to avoid duplicates
-    internal lateinit var wrongAnswer: ArrayList<Int>
+    private lateinit var wrongAnswer: ArrayList<Int>
 
     // operation symbols
     private val symbols = charArrayOf('+', '-', '*', '/')
@@ -86,7 +86,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
     // countdown objects
     // internal var countdownBar: ProgressBar
-    internal lateinit var countDownIndicator: CountDownIndicator
+    private lateinit var countDownIndicator: CountDownIndicator
 
     // max time, increased by level growing
     private var timerLength: Long = 20000
@@ -96,33 +96,30 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     internal var endSessiondialog: EndGameSessionDialog? = null
 
     // game over dialog
-    internal lateinit var gameOverDialog: GameOverDialog
+    private lateinit var gameOverDialog: GameOverDialog
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Update lifes view and check if it's game over or not
-     * @override of IGameFunctions isGameOver()
-     * @return boolean  : return true/false in case of gameover/gamecontinuing
-     * ---------------------------------------------------------------------------------------------
-     */
-    override// update life counts
+
+    // Update lives view and check if it's game over or not
+    // @override of IGameFunctions isGameOver()
+    // @return boolean  : return true/false in case of gameover/gamecontinuing
+    // update life counts
     // statistics
     // Update UI
     // check game over condition
     // statistics
-    // lifes remaining >0, restart a new counter
+    // lives remaining >0, restart a new counter
     // countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
-    val isGameOver: Boolean
+    override val isGameOver: Boolean
         get() {
-            lifes--
-            Results.incrementGameResultsThread("lifes_missed")
+            lives--
+            Results.incrementGameResultsThread("lives_missed")
 
-            Log.d(TAG, "isGameOver: $lifes")
-            if (lifes > -1) {
-                lifesValue_iv[lifes].visibility = View.INVISIBLE
+            Log.d(TAG, "isGameOver: $lives")
+            if (lives > -1) {
+                livesValueIv[lives].visibility = View.INVISIBLE
             }
-            if (lifes <= 0) {
+            if (lives <= 0) {
                 endGame()
                 Results.incrementGameResultsThread("games_played")
                 Results.incrementGameResultsThread("games_lose")
@@ -153,11 +150,11 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         // store quiz text color for later use
         quizDefaultTextColor = firstOperand_tv.textColors
 
-        // init lifes led images
-        lifesValue_iv = ArrayList()
-        lifesValue_iv.add(findViewById<View>(R.id.life_01_iv) as ImageView)
-        lifesValue_iv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
-        lifesValue_iv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
+        // init lives led images
+        livesValueIv = ArrayList()
+        livesValueIv.add(findViewById<View>(R.id.life_01_iv) as ImageView)
+        livesValueIv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
+        livesValueIv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
 
 
         // define wrong answers storage

@@ -52,7 +52,7 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
 
     private val unityAdsListener = UnityAdsListener()
 
-    private lateinit var lifesValue_iv: ArrayList<ImageView>
+    private lateinit var livesValueIv: ArrayList<ImageView>
 
     // answer and its stuff
     private var answerOK: Int = 0
@@ -63,8 +63,8 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     // starting level
     private var level = 0
 
-    // lifes counter; 0 to gameover
-    private var lifes = 3
+    // lives counter; 0 to gameover
+    private var lives = 3
 
     // random range of offset from correct answer
     private val min = 1
@@ -113,7 +113,7 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
 
     /**
      * ---------------------------------------------------------------------------------------------
-     * Update lifes view and check if it's game over or not
+     * Update lives view and check if it's game over or not
      * @override of IGameFunctions isGameOver()
      * @return boolean  : return true/false in case of gameover/gamecontinuing
      * ---------------------------------------------------------------------------------------------
@@ -125,13 +125,13 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     // statistics
     val isGameOver: Boolean
         get() {
-            Log.d(TAG, "isGameOver: $lifes")
-            lifes--
-            Results.incrementGameResultsThread("lifes_missed")
-            if (lifes > -1) {
-                lifesValue_iv[lifes].visibility = View.INVISIBLE
+            Log.d(TAG, "isGameOver: $lives")
+            lives--
+            Results.incrementGameResultsThread("lives_missed")
+            if (lives > -1) {
+                livesValueIv[lives].visibility = View.INVISIBLE
             }
-            if (lifes <= 0) {
+            if (lives <= 0) {
 
                 endGame()
                 Results.incrementGameResultsThread("games_played")
@@ -193,11 +193,11 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         btnNewGame.visibility = View.INVISIBLE
         result_tv.visibility = View.INVISIBLE
 
-        // init lifes led images
-        lifesValue_iv = ArrayList()
-        lifesValue_iv.add(findViewById<View>(R.id.life_01_iv) as ImageView)
-        lifesValue_iv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
-        lifesValue_iv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
+        // init lives led images
+        livesValueIv = ArrayList()
+        livesValueIv.add(findViewById<View>(R.id.life_01_iv) as ImageView)
+        livesValueIv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
+        livesValueIv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
 
         // define wrong answers storage
         wrongAnswer = ArrayList()

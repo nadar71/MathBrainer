@@ -36,7 +36,7 @@ import androidx.room.PrimaryKey
  * - divisions
  * - doublings
  * - level_upgrades
- * - lifes_missed
+ * - lives_missed
  * - objects_counted
  * - numbers_in_order
  * - games_played

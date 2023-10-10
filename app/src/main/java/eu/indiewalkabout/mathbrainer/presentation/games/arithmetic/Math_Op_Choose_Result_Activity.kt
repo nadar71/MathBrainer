@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import androidx.databinding.DataBindingUtil
 
 import java.util.ArrayList
 
@@ -25,14 +26,14 @@ import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
-import kotlinx.android.synthetic.main.activity_math_op_choose_result.*
+import eu.indiewalkabout.mathbrainer.databinding.ActivityMathOpChooseResultBinding
 
 
 class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
-
+    private lateinit var binding: ActivityMathOpChooseResultBinding
     private val unityAdsListener = UnityAdsListener()
 
-    private lateinit var lifesValue_iv: ArrayList<ImageView>
+    private lateinit var livesValueIv: ArrayList<ImageView>
 
     // store initial text color
     private var quizDefaultTextColor: ColorStateList? = null
@@ -51,8 +52,8 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     // starting level
     private var level = 0
 
-    // lifes counter; 0 to gameover
-    private var lifes = 3
+    // lives counter; 0 to gameover
+    private var lives = 3
 
     // random range of number to be processed
     private var min = 1
@@ -68,12 +69,14 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
 
 
     // store wring answer to avoid duplicates
-    internal lateinit var wrongAnswer: ArrayList<Int>
+    private lateinit var wrongAnswer: ArrayList<Int>
 
     // operation symbols
     private var symbols = charArrayOf('+', '-', '*', '/')
     private lateinit var scoreType: String
-    private val scoreTypeList = arrayOf("sum_choose_result_game_score", "diff_choose_result_game_score", "mult_choose_result_game_score", "div_choose_result_game_score", "mix_choose_result_game_score")
+    private val scoreTypeList = arrayOf("sum_choose_result_game_score",
+        "diff_choose_result_game_score", "mult_choose_result_game_score",
+        "div_choose_result_game_score", "mix_choose_result_game_score")
 
     // num of challenge to pass to next level
     // changing while level growing
@@ -91,40 +94,37 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     private var score = 0
 
     // countdown objects
-    internal lateinit var countDownIndicator: CountDownIndicator
+    private lateinit var countDownIndicator: CountDownIndicator
 
     // max time, increased by level growing
     private var timerLength: Long = 20000
     private val timerCountDownInterval = CountDownIndicator.DEFAULT_COUNTDOWNINTERVAL
 
     // game over dialog
-    internal lateinit var gameOverDialog: GameOverDialog
+    private lateinit var gameOverDialog: GameOverDialog
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Update lifes view and check if it's game over or not
-     * @override of IGameFunctions isGameOver()
-     * @return boolean  : return true/false in case of gameover/gamecontinuing
-     * ---------------------------------------------------------------------------------------------
-     */
-    override// update life counts
+
+    // Update lives view and check if it's game over or not
+    // @override of IGameFunctions isGameOver()
+    // @return boolean  : return true/false in case of game over/game continuing
+    // update life counts
     // statistics
     // Update UI
     // check game over condition
     // statistics
-    // lifes remaining >0, restart a new counter
+    // lives remaining >0, restart a new counter
     // countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
-    val isGameOver: Boolean
+    override val isGameOver: Boolean
         get() {
-            lifes--
-            Results.incrementGameResultsThread("lifes_missed")
+            lives--
+            Results.incrementGameResultsThread("lives_missed")
 
-            Log.d(TAG, "isGameOver: $lifes")
-            if (lifes > -1) {
-                lifesValue_iv[lifes].visibility = View.INVISIBLE
+            Log.d(TAG, "isGameOver: $lives")
+            if (lives > -1) {
+                livesValueIv[lives].visibility = View.INVISIBLE
             }
-            if (lifes <= 0) {
+            if (lives <= 0) {
                 endGame()
                 Results.incrementGameResultsThread("games_played")
                 Results.incrementGameResultsThread("games_lose")
@@ -144,7 +144,8 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_math_op_choose_result)
+        // setContentView(R.layout.activity_math_op_choose_result)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_math_op_choose_result)
 
         // Unity ads init
         UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
@@ -161,13 +162,13 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
 
 
         // store quiz text color for later use
-        quizDefaultTextColor = firstOperand_tv.textColors
+        quizDefaultTextColor = binding.firstOperandTv.textColors
 
-        // init lifes led images
-        lifesValue_iv = ArrayList()
-        lifesValue_iv.add(findViewById<View>(R.id.life_01_iv) as ImageView)
-        lifesValue_iv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
-        lifesValue_iv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
+        // init lives led images
+        livesValueIv = ArrayList()
+        livesValueIv.add(findViewById<View>(R.id.life_01_iv) as ImageView)
+        livesValueIv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
+        livesValueIv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
 
         // define wrong answers storage
         wrongAnswer = ArrayList()
@@ -175,7 +176,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
 
         // Create new count down indicator, without starting it
         countDownIndicator = CountDownIndicator(this@Math_Op_Choose_Result_Activity,
-                countdownBar, this@Math_Op_Choose_Result_Activity)
+            binding.countdownBar, this@Math_Op_Choose_Result_Activity)
 
         // start with first challenge and countdown init
         newChallenge()
@@ -210,26 +211,18 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set the highscore passed from main
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set the highscore passed from main
     private fun showHighscore() {
         val intent = intent
         if (intent.hasExtra(HomeGameActivity.HIGHSCORE)) {
             val value = intent.getIntExtra(HomeGameActivity.HIGHSCORE, -1)
-            highscore_value_tv.text = Integer.toString(value)
+            binding.highscoreValueTv.text = value.toString()
         } else {
-            highscore_value_tv.text = "0"
+            binding.highscoreValueTv.text = "0"
         }
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Check and set the symbol of the operation from the caller intent
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Check and set the symbol of the operation from the caller intent
     private fun setOperationSymbol() {
         val intent = intent
         val operationSpec: CharArray
@@ -273,11 +266,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Make bottom navigation bar and status bar hide, without resize when reappearing
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
@@ -292,76 +281,72 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set up the button pressed listener and checking answers
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set up the button pressed listener and checking answers
     private fun setBtnPressedListener() {
-        answer01Btn.setOnClickListener { view ->
+        binding.answer01Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
 
-        answer02Btn.setOnClickListener { view ->
+        binding.answer02Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
 
-        answer03Btn.setOnClickListener { view ->
+        binding.answer03Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
 
-        answer04Btn.setOnClickListener { view ->
+        binding.answer04Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
 
-        answer05Btn.setOnClickListener { view ->
+        binding.answer05Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
 
-        answer06Btn.setOnClickListener { view ->
+        binding.answer06Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
 
-        answer07Btn.setOnClickListener { view ->
+        binding.answer07Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
 
-        answer08Btn.setOnClickListener { view ->
+        binding.answer08Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
 
-        answer09Btn.setOnClickListener { view ->
+        binding.answer09Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
 
-        backhome_img.setOnClickListener {
+        binding.backhomeImg.setOnClickListener {
             // saves score
             isComingHome()
 
@@ -373,11 +358,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         }
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Check if player input is right/wrong and update score
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Check if player input is right/wrong and update score
     override fun checkPlayerInput() {
 
         Log.d(TAG, "checkPlayerInput: pressedBtnValue : $pressedBtnValue")
@@ -408,7 +389,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
             val gameover = isGameOver
 
             // new number to double
-            if (gameover == false) {
+            if (!gameover) {
                 // show result and start a new game session if allowed
                 showResult(false)
             }
@@ -417,18 +398,14 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Check state at countdown expired
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Check state at countdown expired
     override fun checkCountdownExpired() {
 
         // lose a life, check if it's game over
         val gameover = isGameOver
 
         // new number to double
-        if (gameover == false) {
+        if (!gameover) {
             // show result and start a new game session if allowed
             showResult(false)
         }
@@ -436,14 +413,10 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show the result of the
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show the result of the
     private fun showResult(win: Boolean) {
 
-        if (win == true) {
+        if (win) {
             showOkResult()
             newchallengeAfterTimerLength(1000)
 
@@ -455,40 +428,32 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show ok in case of game win
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show ok in case of game win
     private fun showOkResult() {
-        instructions_tv.visibility = View.INVISIBLE
-        result_tv.visibility = View.VISIBLE
-        result_tv.text = resources.getString(R.string.ok_str)
-        result_tv.setTextColor(Color.GREEN)
-        firstOperand_tv.setTextColor(Color.GREEN)
-        secondOperand_tv.setTextColor(Color.GREEN)
-        operationSymbol_tv.setTextColor(Color.GREEN)
-        gridLayout.visibility = View.INVISIBLE
+        binding.instructionsTv.visibility = View.INVISIBLE
+        binding.resultTv.visibility = View.VISIBLE
+        binding.resultTv.text = resources.getString(R.string.ok_str)
+        binding.resultTv.setTextColor(Color.GREEN)
+        binding.firstOperandTv.setTextColor(Color.GREEN)
+        binding.secondOperandTv.setTextColor(Color.GREEN)
+        binding.operationSymbolTv.setTextColor(Color.GREEN)
+        binding.gridLayout.visibility = View.INVISIBLE
 
         // statistics
         Results.incrementGameResultsThread("operations_executed")
         Results.incrementGameResultsThread("operations_ok")
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show wrong in case of game lose
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show wrong in case of game lose
     private fun showWrongResult() {
-        instructions_tv.visibility = View.INVISIBLE
-        result_tv.visibility = View.VISIBLE
-        result_tv.text = resources.getString(R.string.wrong_str) + " : " + answerOK
-        result_tv.setTextColor(Color.RED)
-        firstOperand_tv.setTextColor(Color.RED)
-        secondOperand_tv.setTextColor(Color.RED)
-        operationSymbol_tv.setTextColor(Color.RED)
-        gridLayout.visibility = View.INVISIBLE
+        binding.instructionsTv.visibility = View.INVISIBLE
+        binding.resultTv.visibility = View.VISIBLE
+        binding.resultTv.text = resources.getString(R.string.wrong_str) + " : " + answerOK
+        binding.resultTv.setTextColor(Color.RED)
+        binding.firstOperandTv.setTextColor(Color.RED)
+        binding.secondOperandTv.setTextColor(Color.RED)
+        binding.operationSymbolTv.setTextColor(Color.RED)
+        binding.gridLayout.visibility = View.INVISIBLE
 
         // statistics
         Results.incrementGameResultsThread("operations_executed")
@@ -496,11 +461,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Launch new challenge after timerLength
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Launch new challenge after timerLength
     private fun newchallengeAfterTimerLength(timerLength: Int) {
         val handler = Handler()
         val runnable = Runnable {
@@ -512,60 +473,40 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Setup before new game session
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Setup before new game session
     private fun setupBeforeNewGame() {
-        result_tv.visibility = View.INVISIBLE
-        firstOperand_tv.setTextColor(quizDefaultTextColor)
-        secondOperand_tv.setTextColor(quizDefaultTextColor)
-        operationSymbol_tv.setTextColor(quizDefaultTextColor)
-        instructions_tv.visibility = View.VISIBLE
-        gridLayout.visibility = View.VISIBLE
+        binding.resultTv.visibility = View.INVISIBLE
+        binding.firstOperandTv.setTextColor(quizDefaultTextColor)
+        binding.secondOperandTv.setTextColor(quizDefaultTextColor)
+        binding.operationSymbolTv.setTextColor(quizDefaultTextColor)
+        binding.instructionsTv.visibility = View.VISIBLE
+        binding.gridLayout.visibility = View.VISIBLE
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Update score view
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Update score view
     private fun updateScore() {
-        highscore_label_tv.visibility = View.INVISIBLE
-        highscore_value_tv.visibility = View.INVISIBLE
-        scoreLabel_tv.visibility = View.VISIBLE
-        scoreValue_tv.visibility = View.VISIBLE
-        score += 25
-        scoreValue_tv.text = Integer.toString(score)
+       binding.highscoreLabelTv.visibility = View.INVISIBLE
+       binding.highscoreValueTv.visibility = View.INVISIBLE
+       binding.scoreLabelTv.visibility = View.VISIBLE
+       binding.scoreValueTv.visibility = View.VISIBLE
+       score += 25
+       binding.scoreValueTv.text = score.toString()
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Saves the score and others game data if coming back home before reach game over condition
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Saves the score and others game data if coming back home before reach game over condition
     fun isComingHome() {
         Results.updateGameResultHighscoreThread(scoreType, score)
         Results.incrementGameResultByDeltaThread("global_score", score)
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Update progress bar
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Update progress bar
     override fun updateProgressBar(progress: Int) {
-        countdownBar.progress = progress
+        binding.countdownBar.progress = progress
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set new challenge in view
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set new challenge in view
     override fun newChallenge() {
         // clear wrong answers list
         wrongAnswer.clear()
@@ -587,12 +528,9 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Choose the right operands based on based on operation symbol,update UI, do calculation ,
-     * and store the correct answer.
-     * ---------------------------------------------------------------------------------------------
-     */
+
+    // Choose the right operands based on based on operation symbol,update UI, do calculation ,
+    // and store the correct answer.
     private fun calculateOperation() {
         when (operation) {
             '+' -> {
@@ -604,7 +542,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
                 answerOK = firstOperand + secondOperand
 
                 // set operations value in view
-                operationSymbol_tv.text = Character.toString(operation)
+                binding.operationSymbolTv.text = Character.toString(operation)
 
                 // statistics
                 Results.incrementGameResultsThread("sums")
@@ -619,7 +557,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
                 answerOK = firstOperand - secondOperand
 
                 // set operations value in view
-                operationSymbol_tv.text = Character.toString(operation)
+                binding.operationSymbolTv.text = Character.toString(operation)
 
                 // statistics
                 Results.incrementGameResultsThread("differences")
@@ -640,7 +578,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
                 answerOK = firstOperand * secondOperand
 
                 // set operations value in view
-                operationSymbol_tv.text = "X"
+                binding.operationSymbolTv.text = "X"
 
                 // statistics
                 Results.incrementGameResultsThread("multiplications")
@@ -654,7 +592,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
                 firstOperand = answerOK * secondOperand
 
                 // set operations value in view
-                operationSymbol_tv.text = Character.toString(operation)
+                binding.operationSymbolTv.text = Character.toString(operation)
 
                 // statistics
                 Results.incrementGameResultsThread("divisions")
@@ -664,8 +602,8 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         }
 
 
-        firstOperand_tv.text = Integer.toString(firstOperand)
-        secondOperand_tv.text = Integer.toString(secondOperand)
+        binding.firstOperandTv.text = firstOperand.toString()
+        binding.secondOperandTv.text = secondOperand.toString()
 
         // setup answers on button
         setupAnswersBtn()
@@ -674,16 +612,12 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Create setup correct answer and false answer on buttons
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Create setup correct answer and false answer on buttons
     private fun setupAnswersBtn() {
         // choose the button where put the correct answer
         correctBtnNumber = MathBrainerUtility.randRange_ApiCheck(minAnswerBtnNum, maxAnswerBtnNum)
         var tmpBtn : Button? = getTheBtnNumber(correctBtnNumber)
-        tmpBtn!!.text = Integer.toString(answerOK)
+        tmpBtn!!.text = answerOK.toString()
 
         // visible answer button update
         currentLevelAnswerBtnVisible--
@@ -746,12 +680,8 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set btn visible or not depending on current level button visible
-     * @param thisBtn
-     * ---------------------------------------------------------------------------------------------
-     */
+     // Set btn visible or not depending on current level button visible
+     // @param thisBtn
     private fun setAnswerBtnVisibility(thisBtn: Button) {
 
         val guess = MathBrainerUtility.randomSignChooser()
@@ -764,29 +694,21 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Random answer for sum generator
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Random answer for sum generator
     private fun randomOffsetSum(): Int {
         val result = MathBrainerUtility.randRange_ApiCheck(1, (offset * 1.5).toInt())
-        return if (result >= 1 && result <= 3) {
+        return if (result in 1..3) {
             answerOK + MathBrainerUtility.randomSignChooser() * result
         } else answerOK + result
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Random answer for multiplication generator
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Random answer for multiplication generator
     private fun randomOffsetMult(): Int {
         val result = MathBrainerUtility.randRange_ApiCheck(1, offset * 2)
         val sign = MathBrainerUtility.randomSignChooser()
 
-        return if (result >= 4 && result <= 11) {
+        return if (result in 4..11) {
             if (sign > 0) {
                 answerOK + MathBrainerUtility.randomSignChooser() * result
             } else {
@@ -813,24 +735,21 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Return the button based on number
-     * @param num
-     * @return
-     * ---------------------------------------------------------------------------------------------
-     */
-    internal fun getTheBtnNumber(num: Int): Button? {
+
+     // Return the button based on number
+     // @param num
+     // @return
+     private fun getTheBtnNumber(num: Int): Button? {
         when (num) {
-            1 -> return answer01Btn
-            2 -> return answer02Btn
-            3 -> return answer03Btn
-            4 -> return answer04Btn
-            5 -> return answer05Btn
-            6 -> return answer06Btn
-            7 -> return answer07Btn
-            8 -> return answer08Btn
-            9 -> return answer09Btn
+            1 -> return binding.answer01Btn
+            2 -> return binding.answer02Btn
+            3 -> return binding.answer03Btn
+            4 -> return binding.answer04Btn
+            5 -> return binding.answer05Btn
+            6 -> return binding.answer06Btn
+            7 -> return binding.answer07Btn
+            8 -> return binding.answer08Btn
+            9 -> return binding.answer09Btn
             else -> {
             }
         }
@@ -838,11 +757,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show end game message
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show end game message
     private fun endGame() {
         val handler = Handler()
 
@@ -858,11 +773,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show gameover dialog
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show gameover dialog
     private fun showGameOverDialog() {
         gameOverDialog = GameOverDialog(this,
                 this@Math_Op_Choose_Result_Activity, this)
@@ -872,29 +783,21 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Hide quiz
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Hide quiz
     private fun hideLastQuiz() {
-        firstOperand_tv.visibility = View.INVISIBLE
-        secondOperand_tv.visibility = View.INVISIBLE
-        operationSymbol_tv.visibility = View.INVISIBLE
-        result_tv.visibility = View.INVISIBLE
+        binding.firstOperandTv.visibility = View.INVISIBLE
+        binding.secondOperandTv.visibility = View.INVISIBLE
+        binding.operationSymbolTv.visibility = View.INVISIBLE
+        binding.resultTv.visibility = View.INVISIBLE
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Updating level
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Updating level
     private fun updateLevel() {
         // increment level
         level++
 
-        levelValue_tv.text = Integer.toString(level)
+        binding.levelValueTv.text = Integer.toString(level)
 
         // increment level difficulty
         if (level > 1) {
@@ -927,11 +830,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Unity ads listener
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Unity ads listener
     private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
@@ -952,11 +851,10 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * MENU STUFF
-     * ---------------------------------------------------------------------------------------------
-     */
+
+    // ---------------------------------------------------------------------------------------------
+    // MENU STUFF
+    // ---------------------------------------------------------------------------------------------
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 

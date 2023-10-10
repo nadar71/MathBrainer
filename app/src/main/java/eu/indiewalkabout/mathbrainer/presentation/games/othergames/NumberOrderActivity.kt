@@ -18,9 +18,6 @@ import java.util.ArrayList
 
 import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.games.customviews.MarkerWithNoNumberView
-import eu.indiewalkabout.mathbrainer.games.customviews.MarkerWithNumberView
-import eu.indiewalkabout.mathbrainer.games.customviews.SolutionsView
 import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
 import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
@@ -30,14 +27,10 @@ import kotlinx.android.synthetic.main.activity_numbers_order.*
 
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
-import kotlinx.android.synthetic.main.activity_numbers_order.backhome_img
-import kotlinx.android.synthetic.main.activity_numbers_order.highscore_label_tv
-import kotlinx.android.synthetic.main.activity_numbers_order.highscore_value_tv
-import kotlinx.android.synthetic.main.activity_numbers_order.levelValue_tv
-import kotlinx.android.synthetic.main.activity_numbers_order.mAdView
-import kotlinx.android.synthetic.main.activity_numbers_order.result_tv
-import kotlinx.android.synthetic.main.activity_numbers_order.scoreLabel_tv
-import kotlinx.android.synthetic.main.activity_numbers_order.scoreValue_tv
+import eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNoNumberView
+import eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNumberView
+import eu.indiewalkabout.mathbrainer.presentation.games.customviews.SolutionsView
+
 
 
 class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
@@ -49,13 +42,13 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     private lateinit var drawquiz: MarkerWithNumberView
     private lateinit var solutionsView: SolutionsView
 
-    private lateinit var lifesValue_iv: ArrayList<ImageView>
+    private lateinit var livesValueIv: ArrayList<ImageView>
 
     // starting level
     private var level = 0
 
-    // lifes counter; 0 to gameover
-    private var lifes = 3
+    // lives counter; 0 to gameover
+    private var lives = 3
 
     // random range of offset from correct answer
     private val min = 1
@@ -95,7 +88,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
 
     /**
      * ---------------------------------------------------------------------------------------------
-     * Update lifes view and check if it's game over or not
+     * Update lives view and check if it's game over or not
      * @override of IGameFunctions isGameOver()
      * @return boolean  : return true/false in case of gameover/gamecontinuing
      * ---------------------------------------------------------------------------------------------
@@ -107,13 +100,13 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     // statistics
     val isGameOver: Boolean
         get() {
-            Log.d(TAG, "isGameOver: $lifes")
-            lifes--
-            Results.incrementGameResultsThread("lifes_missed")
-            if (lifes > -1) {
-                lifesValue_iv[lifes].visibility = View.INVISIBLE
+            Log.d(TAG, "isGameOver: $lives")
+            lives--
+            Results.incrementGameResultsThread("lives_missed")
+            if (lives > -1) {
+                livesValueIv[lives].visibility = View.INVISIBLE
             }
-            if (lifes <= 0) {
+            if (lives <= 0) {
 
                 endGame()
                 Results.incrementGameResultsThread("games_played")
@@ -168,11 +161,11 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         btnNewGame.visibility = View.INVISIBLE
         result_tv.visibility = View.INVISIBLE
 
-        // init lifes led images
-        lifesValue_iv = ArrayList()
-        lifesValue_iv.add(findViewById<View>(R.id.life_01_iv) as ImageView)
-        lifesValue_iv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
-        lifesValue_iv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
+        // init lives led images
+        livesValueIv = ArrayList()
+        livesValueIv.add(findViewById<View>(R.id.life_01_iv) as ImageView)
+        livesValueIv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
+        livesValueIv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
 
         // define wrong answers storage
         wrongAnswer = ArrayList()
@@ -203,7 +196,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
 
     override fun onPause() {
         super.onPause()
-        // essential to show another quiz without loosing lifes in case of onPause
+        // essential to show another quiz without loosing lives in case of onPause
         restartAfterPause(1)
     }
 

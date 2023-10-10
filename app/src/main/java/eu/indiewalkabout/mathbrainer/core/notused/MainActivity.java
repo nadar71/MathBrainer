@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // admob banner ref
-    private AdView mAdView;
+    AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
