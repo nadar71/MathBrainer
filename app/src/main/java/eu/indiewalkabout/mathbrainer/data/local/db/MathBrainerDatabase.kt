@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
 
 
@@ -16,9 +17,6 @@ abstract class MathBrainerDatabase : RoomDatabase() {
     abstract fun mathBrainerDbDao(): MathBrainerDbDao
 
     companion object {
-
-        private val TAG = MathBrainerDatabase::class.java.simpleName
-
         // lock for synchro
         private val LOCK = Any()
         private val DBNAME = "MathBrainerDB"

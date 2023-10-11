@@ -18,11 +18,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-
+import androidx.databinding.DataBindingUtil
 import java.io.IOException
 import java.util.ArrayList
-
-import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity
+import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
@@ -30,26 +29,15 @@ import eu.indiewalkabout.mathbrainer.core.util.EndGameSessionDialog
 import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-
-
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
-import eu.indiewalkabout.mathbrainer.games.customviews.QuickCountItemDrawView
+import eu.indiewalkabout.mathbrainer.core.util.TAG
+import eu.indiewalkabout.mathbrainer.databinding.ActivityCountObjectsBinding
+import eu.indiewalkabout.mathbrainer.presentation.games.customviews.QuickCountItemDrawView
 
-import kotlinx.android.synthetic.main.activity_count_objects.*
-import kotlinx.android.synthetic.main.activity_count_objects.backhome_img
-import kotlinx.android.synthetic.main.activity_count_objects.gridLayout
-import kotlinx.android.synthetic.main.activity_count_objects.highscore_label_tv
-import kotlinx.android.synthetic.main.activity_count_objects.highscore_value_tv
-import kotlinx.android.synthetic.main.activity_count_objects.levelValue_tv
-import kotlinx.android.synthetic.main.activity_count_objects.result_tv
-import kotlinx.android.synthetic.main.activity_count_objects.scoreLabel_tv
-import kotlinx.android.synthetic.main.activity_count_objects.scoreValue_tv
-import kotlinx.android.synthetic.main.activity_math_op_choose_result.mAdView
-import kotlinx.android.synthetic.main.activity_math_op_choose_result.*
 
 class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
-
+    private lateinit var binding: ActivityCountObjectsBinding
     private val unityAdsListener = UnityAdsListener()
 
     private lateinit var livesValueIv: ArrayList<ImageView>
@@ -70,10 +58,10 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     private val min = 1
     private val max = 6
 
-    // Our costumview img references (almost useless)
+    // Our customview img references (almost useless)
     private lateinit var ourFrame: ImageView
 
-    // Costum view drawing items to count
+    // Custom view drawing items to count
     private lateinit var drawquiz: QuickCountItemDrawView
 
     // store wring answer to avoid duplicates
@@ -111,19 +99,15 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     internal lateinit var gameOverDialog: GameOverDialog
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Update lives view and check if it's game over or not
-     * @override of IGameFunctions isGameOver()
-     * @return boolean  : return true/false in case of gameover/gamecontinuing
-     * ---------------------------------------------------------------------------------------------
-     */
-    override// update life counts
+    // Update lives view and check if it's game over or not
+    // @override of IGameFunctions isGameOver()
+    // @return boolean  : return true/false in case of gameover/gamecontinuing
+    // update life counts
     // statistics
     // Update UI
     // check game over condition
     // statistics
-    val isGameOver: Boolean
+    override val isGameOver: Boolean
         get() {
             Log.d(TAG, "isGameOver: $lives")
             lives--
@@ -138,13 +122,9 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
                 Results.incrementGameResultsThread("games_lose")
                 Results.updateGameResultHighscoreThread("count_objects_game_score", score)
                 Results.incrementGameResultByDeltaThread("global_score", score)
-
                 return true
-
             }
-
             return false
-
         }
 
 
@@ -169,14 +149,14 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_count_objects)
+        // setContentView(R.layout.activity_count_objects)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_count_objects)
 
         // Unity ads init
         UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(this@CountObjectsActivity))
+        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@CountObjectsActivity))
 
         // setup context
         context = this
@@ -190,8 +170,8 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         // get the items to count view, set inviisible at the moment
         drawquiz.visibility = View.INVISIBLE
 
-        btnNewGame.visibility = View.INVISIBLE
-        result_tv.visibility = View.INVISIBLE
+        binding.btnNewGame.visibility = View.INVISIBLE
+        binding.resultTv.visibility = View.INVISIBLE
 
         // init lives led images
         livesValueIv = ArrayList()
@@ -226,27 +206,19 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set the highscore passed from main
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set the highscore passed from main
     private fun showHighscore() {
         val intent = intent
         if (intent.hasExtra(ChooseGameActivity.HIGHSCORE)) {
             val value = intent.getIntExtra(ChooseGameActivity.HIGHSCORE, -1)
-            highscore_value_tv.text = Integer.toString(value)
+            binding.highscoreValueTv.text = value.toString()
         } else {
-            highscore_value_tv.text = "0"
+            binding.highscoreValueTv.text = "0"
         }
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Make bottom navigation bar and status bar hide, without resize when reappearing
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
@@ -261,89 +233,68 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set up the button pressed listener and checking answers
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set up the button pressed listener and checking answers
     private fun setBtnPressedListener() {
-        answer_01_btn.setOnClickListener { view ->
+        binding.answer01Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
 
-        answer_02_btn.setOnClickListener { view ->
+        binding.answer02Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
 
-        answer_03_btn.setOnClickListener { view ->
+        binding.answer03Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
 
-        answer_04_btn.setOnClickListener { view ->
+        binding.answer04Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
-        btnNewGame.setOnClickListener { newChallenge() }
+        binding.btnNewGame.setOnClickListener { newChallenge() }
 
-        backhome_img.setOnClickListener {
+        binding.backhomeImg.setOnClickListener {
             // saves score
             isComingHome()
-
             // show unityads randomic
             MathBrainerUtility.showUnityAdsRandom(this@CountObjectsActivity)
-
             val intent = Intent(this@CountObjectsActivity, ChooseGameActivity::class.java)
             startActivity(intent)
         }
 
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Check if player input is right/wrong and update score
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Check if player input is right/wrong and update score
     override fun checkPlayerInput() {
-
         Log.d(TAG, "checkPlayerInput: pressedBtnValue : $pressedBtnValue")
-
         // check if result is ok...
         if (pressedBtnValue != 0 && pressedBtnValue == answerOK) {
-
             updateScore()
-
             countChallenge++
-
             // rise level after numChallengeEachLevel reached
             if (countChallenge > numChallengeEachLevel) {
                 // reset counter
                 countChallenge = 0
-
                 updateLevel()
             }
-
             showNewBtnAfterTimerLength(100, true)
-
             // ...otherwise a life will be lost
-
         } else {
-
             // hideAnswerAfterTimerLength(1000);
             // lose a life, check if it's game over
             val gameover = isGameOver
-
-            if (gameover == false) {
+            if (!gameover) {
                 showNewBtnAfterTimerLength(100, false)
             }
 
@@ -351,31 +302,27 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show button for new challenge after timerLength
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show button for new challenge after timerLength
     private fun showNewBtnAfterTimerLength(timerLength: Int, win: Boolean) {
-        gridLayout.visibility = View.INVISIBLE
-        quiz_instructions_tv.visibility = View.INVISIBLE
+        binding.gridLayout.visibility = View.INVISIBLE
+        binding.quizInstructionsTv.visibility = View.INVISIBLE
 
         val handler = Handler()
         val runnable = Runnable {
-            btnNewGame.visibility = View.VISIBLE
-            quiz_instructions_tv.text = "   "
-            result_tv.visibility = View.VISIBLE
+            binding.btnNewGame.visibility = View.VISIBLE
+            binding.quizInstructionsTv.text = "   "
+            binding.resultTv.visibility = View.VISIBLE
             if (win == false) {
-                result_tv.text = resources.getString(R.string.wrong_str)
-                result_tv.setTextColor(Color.RED)
+                binding.resultTv.text = resources.getString(R.string.wrong_str)
+                binding.resultTv.setTextColor(Color.RED)
 
                 // statistics
                 Results.incrementGameResultsThread("operations_executed")
                 Results.incrementGameResultsThread("operations_ko")
 
             } else if (win == true) {
-                result_tv.text = resources.getString(R.string.ok_str)
-                result_tv.setTextColor(Color.GREEN)
+                binding.resultTv.text = resources.getString(R.string.ok_str)
+                binding.resultTv.setTextColor(Color.GREEN)
 
                 // statistics
                 Results.incrementGameResultsThread("operations_executed")
@@ -388,11 +335,7 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Hide answer as items group after timerLength
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Hide answer as items group after timerLength
     private fun hideAnswerAfterTimerLength(timerLength: Int) {
         val handler = Handler()
         val runnable = Runnable { drawquiz.visibility = View.INVISIBLE }
@@ -401,45 +344,32 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Launch new challenge after timerLength
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Launch new challenge after timerLength
     private fun newchallengeAfterTimerLength(timerLength: Int) {
         val handler = Handler()
         val runnable = Runnable {
-            gridLayout.visibility = View.INVISIBLE
-            quiz_instructions_tv.visibility = View.INVISIBLE
-            btnNewGame.visibility = View.VISIBLE
+            binding.gridLayout.visibility = View.INVISIBLE
+            binding.quizInstructionsTv.visibility = View.INVISIBLE
+            binding.btnNewGame.visibility = View.VISIBLE
         }
         // execute runnable after a timerLength
         handler.postDelayed(runnable, timerLength.toLong())
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Update score view
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Update score view
     private fun updateScore() {
-        highscore_label_tv.visibility = View.INVISIBLE
-        highscore_value_tv.visibility = View.INVISIBLE
-        scoreLabel_tv.visibility = View.VISIBLE
-        scoreValue_tv.visibility = View.VISIBLE
-
+        binding.highscoreLabelTv.visibility = View.INVISIBLE
+        binding.highscoreValueTv.visibility = View.INVISIBLE
+        binding.scoreLabelTv.visibility = View.VISIBLE
+        binding.scoreValueTv.visibility = View.VISIBLE
         score += 25
-        scoreValue_tv.text = Integer.toString(score)
+        binding.scoreValueTv.text = Integer.toString(score)
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Saves the score and others game data if coming back home before reach game over condition
-     * ---------------------------------------------------------------------------------------------
-     */
-    fun isComingHome() {
+    // Saves the score and others game data if coming back home before reach game over condition
+    private fun isComingHome() {
         Results.updateGameResultHighscoreThread("count_objects_game_score", score)
         Results.incrementGameResultByDeltaThread("global_score", score)
     }
@@ -453,68 +383,48 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set new challenge in view
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set new challenge in view
     override fun newChallenge() {
         // clear wrong answers list
         wrongAnswer.clear()
-
-        result_tv.visibility = View.INVISIBLE
-
+        binding.resultTv.visibility = View.INVISIBLE
         // show the items in number defined by level
-        itemsToCount = MathBrainerUtility.randRange_ApiCheck(Math.ceil(maxItemsToCount * 0.7).toInt(), maxItemsToCount)
+        itemsToCount = MathBrainerUtility.randRange_ApiCheck(
+            Math.ceil(maxItemsToCount * 0.7).toInt(),
+            maxItemsToCount
+        )
         drawquiz.redraw(itemsToCount)
-
         // show items to count
         showItems()
-
         // hide and show button for answer
         hideQuizAfterTimerLength(timerLength.toInt())
-
         Log.d(TAG, "newChallenge: $countChallenge")
-
         // set the answer buttons
         setupAnswersBtn(itemsToCount)
-
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show items to count, hide anserws buttons
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show items to count, hide anserws buttons
     private fun showItems() {
-        btnNewGame.visibility = View.INVISIBLE
-        gridLayout.visibility = View.INVISIBLE
-        quiz_instructions_tv.visibility = View.INVISIBLE
+        binding.btnNewGame.visibility = View.INVISIBLE
+        binding.gridLayout.visibility = View.INVISIBLE
+        binding.quizInstructionsTv.visibility = View.INVISIBLE
         drawquiz.visibility = View.VISIBLE
-        count_obj_instructions_tv.visibility = View.VISIBLE
+        binding.countObjInstructionsTv.visibility = View.VISIBLE
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show items to count, hide anserws buttons
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show items to count, hide anserws buttons
     private fun hideItems() {
-        gridLayout.visibility = View.VISIBLE
-        quiz_instructions_tv.visibility = View.VISIBLE
-        quiz_instructions_tv.text = resources.getString(R.string.count_objects_question)
+        binding.gridLayout.visibility = View.VISIBLE
+        binding.quizInstructionsTv.visibility = View.VISIBLE
+        binding.quizInstructionsTv.text = resources.getString(R.string.count_objects_question)
         drawquiz.visibility = View.INVISIBLE
-        count_obj_instructions_tv.visibility = View.INVISIBLE
+        binding.countObjInstructionsTv.visibility = View.INVISIBLE
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Hide items group after timerLength
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Hide items group after timerLength
     private fun hideQuizAfterTimerLength(timerLength: Int) {
         val handler = Handler()
         val runnable = Runnable { hideItems() }
@@ -523,35 +433,24 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Create setup correct answer and false answer on buttons
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Create setup correct answer and false answer on buttons
     private fun setupAnswersBtn(numItemsToCount: Int) {
-
         // set the correct answer
         answerOK = itemsToCount
-
         // choose the button where put the correct answer
         correctBtnNumber = MathBrainerUtility.randRange_ApiCheck(minAnswerBtnNum, maxAnswerBtnNum)
         var tmpBtn = getTheBtnNumber(correctBtnNumber)
-        tmpBtn!!.text = Integer.toString(answerOK)
-
-
+        tmpBtn!!.text = answerOK.toString()
         // set wrong answer on the others
         for (i in 1..maxAnswerBtnNum) {
             if (i != correctBtnNumber) {
-
                 tmpBtn = getTheBtnNumber(i)
                 var result = 0
                 do {
                     result = randomOffsetSum()
                 } while (wrongAnswer.lastIndexOf(result) > 0)
                 wrongAnswer.add(result)
-
                 tmpBtn!!.text = result.toString()
-
             } else { // the btn with the right answer must be alwys visible
                 tmpBtn = getTheBtnNumber(correctBtnNumber)
             }
@@ -559,14 +458,10 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Random answer for sum generator
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Random answer for sum generator
     private fun randomOffsetSum(): Int {
         val result = MathBrainerUtility.randRange_ApiCheck(1, (offset * 1.0).toInt())
-        if (result >= 1 && result <= 3) {
+        if (result in 1..3) {
             val sign = MathBrainerUtility.randomSignChooser()
             return answerOK + sign * result
         }
@@ -574,19 +469,15 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Return the button based on number
-     * @param num
-     * @return
-     * ---------------------------------------------------------------------------------------------
-     */
-    internal fun getTheBtnNumber(num: Int): Button? {
+    // Return the button based on number
+    // @param num
+    // @return
+    private fun getTheBtnNumber(num: Int): Button? {
         when (num) {
-            1 -> return answer_01_btn
-            2 -> return answer_02_btn
-            3 -> return answer_03_btn
-            4 -> return answer_04_btn
+            1 -> return binding.answer01Btn
+            2 -> return binding.answer02Btn
+            3 -> return binding.answer03Btn
+            4 -> return binding.answer04Btn
             else -> {
             }
         }
@@ -594,20 +485,16 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show end game message
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show end game message
     private fun endGame() {
         val handler = Handler()
 
-        result_tv.visibility = View.VISIBLE
-        result_tv.text = resources.getString(R.string.wrong_str)
-        result_tv.setTextColor(Color.RED)
+        binding.resultTv.visibility = View.VISIBLE
+        binding.resultTv.text = resources.getString(R.string.wrong_str)
+        binding.resultTv.setTextColor(Color.RED)
 
-        gridLayout.visibility = View.INVISIBLE
-        quiz_instructions_tv.visibility = View.INVISIBLE
+        binding.gridLayout.visibility = View.INVISIBLE
+        binding.quizInstructionsTv.visibility = View.INVISIBLE
         drawquiz.visibility = View.INVISIBLE
 
         val runnable = Runnable { showGameOverDialog() }
@@ -616,97 +503,66 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show gameover dialog
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show gameover dialog
     private fun showGameOverDialog() {
-        gameOverDialog = GameOverDialog(this,
-                this@CountObjectsActivity, this)
-
-        result_tv.visibility = View.INVISIBLE
+        gameOverDialog = GameOverDialog(
+            this,
+            this@CountObjectsActivity, this
+        )
+        binding.resultTv.visibility = View.INVISIBLE
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Updating level
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Updating level
     private fun updateLevel() {
         // increment level
         level++
-
-        levelValue_tv.text = Integer.toString(level)
-
+        binding.levelValueTv.text = level.toString()
         // increment level difficulty
         if (level > 1 && level < 30) {
-
             maxItemsToCount += 2
-
             timerLength += 0.5f
-
             numChallengeEachLevel += 0
-
-            Log.d(TAG, "updatingLevel: New Level! new min : " + min + " new max: "
-                    + max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec.")
+            Log.d(
+                TAG, "updatingLevel: New Level! new min : " + min + " new max: "
+                        + max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec."
+            )
         }
-
         // statistics
         Results.incrementGameResultsThread("level_upgrades")
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Check state at countdown expired
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Check state at countdown expired
     override fun checkCountdownExpired() {
-
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Unity ads listener
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Unity ads listener
     private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
-
         }
 
         override fun onUnityAdsStart(s: String) {
-
         }
 
         override fun onUnityAdsFinish(s: String, finishState: UnityAds.FinishState) {
-
         }
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
-
         }
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * MENU STUFF
-     * ---------------------------------------------------------------------------------------------
-     */
+    // ---------------------------------------------------------------------------------------------
+    // MENU STUFF
+    // ---------------------------------------------------------------------------------------------
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-
         // When the home button is pressed, take the user back to Home
         if (id == android.R.id.home) {
-
-
             onBackPressed()
         }
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -716,13 +572,10 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     // ---------------------------------------------------------------------------------------------
     override fun onBackPressed() {
         super.onBackPressed()
-
         // saves score
         isComingHome()
-
         // show unityads randomic
         MathBrainerUtility.showUnityAdsRandom(this)
-
     }
 
 
@@ -731,7 +584,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     // Draw game items to count
     // -------------------------------------------
     private fun drawGame() {
-
         val display = windowManager.defaultDisplay
         val size = Point()
         display.getSize(size)
@@ -750,26 +602,25 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         val imageScaleXY = 0.2f
 
         //Create a bitmap object to use as our canvas
-        Log.d(TAG, "onCreate: validDrawAreaItemsWidth : $validDrawAreaItemsWidth validDrawAreaItemsHeight : $validDrawAreaItemsHeight")
+        Log.d(
+            TAG,
+            "onCreate: validDrawAreaItemsWidth : $validDrawAreaItemsWidth validDrawAreaItemsHeight : $validDrawAreaItemsHeight"
+        )
 
-        val ourBitmap = Bitmap.createBitmap(validDrawAreaWidth, validDrawAreaHeight, Bitmap.Config.ARGB_8888)
+        val ourBitmap =
+            Bitmap.createBitmap(validDrawAreaWidth, validDrawAreaHeight, Bitmap.Config.ARGB_8888)
 
         //Assign the bitmap to image = our frame
         ourFrame.setImageBitmap(ourBitmap)
-
         // Assign the bitmap to the canvas
         val ourCanvas = Canvas(ourBitmap)
-
         //A paint object that does our drawing, on our canvas
         val paint = Paint()
-
         //Set the background color
         ourCanvas.drawColor(Color.TRANSPARENT)
         // ourCanvas.drawColor(Color.argb(0, 0, 0, 255));
-
         //Change the color of the virtual paint brush
         paint.color = Color.argb(255, 1, 255, 255)
-
 
         // draw 20 images
         for (i in 0..19) {
@@ -787,7 +638,8 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
                 val randY = MathBrainerUtility.randRange_ApiCheck(15, validDrawAreaItemsHeight)
                 ourCanvas.drawBitmap(
                     MathBrainerUtility.resizeBitmapByScale(item, imageScaleXY),
-                        randX.toFloat(), randY.toFloat(), paint)
+                    randX.toFloat(), randY.toFloat(), paint
+                )
 
             } catch (e: IOException) {
                 Log.d(TAG, "drawGame: " + e.message)
@@ -795,7 +647,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
                 // we should really close our input streams here.
             }
         }
-
 
         /*
         // dummy check from drawable
@@ -809,11 +660,5 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         // invalidate view for redrawing
         ourFrame.invalidate()
     }
-
-    companion object {
-
-        private val TAG = CountObjectsActivity::class.java.simpleName
-    }
-
 
 }

@@ -2,57 +2,51 @@ package eu.indiewalkabout.mathbrainer.presentation.ui
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-
+import androidx.databinding.DataBindingUtil
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.games.arithmetic.Math_Op_Choose_Result_Activity
-import eu.indiewalkabout.mathbrainer.games.arithmetic.Math_Op_Write_Result_Activity
-import eu.indiewalkabout.mathbrainer.games.arithmetic.RandomOperationActivity
-import eu.indiewalkabout.mathbrainer.games.othergames.CountObjectsActivity
-import eu.indiewalkabout.mathbrainer.games.othergames.NumberOrderActivity
 import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import kotlinx.android.synthetic.main.activity_highscores.*
+import eu.indiewalkabout.mathbrainer.core.util.TAG
+import eu.indiewalkabout.mathbrainer.databinding.ActivityHighscoresBinding
+import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.Math_Op_Choose_Result_Activity
+import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.Math_Op_Write_Result_Activity
+import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.RandomOperationActivity
+import eu.indiewalkabout.mathbrainer.presentation.games.othergames.CountObjectsActivity
+import eu.indiewalkabout.mathbrainer.presentation.games.othergames.NumberOrderActivity
 
-/**
- * ---------------------------------------------------------------------------------------------
- * Choose the type of game
- * ---------------------------------------------------------------------------------------------
- */
+// Choose the type of game
 class HighscoresActivity : AppCompatActivity() {
-
-
+    private lateinit var binding: ActivityHighscoresBinding
     // game results list
-    internal var gameResults: List<GameResult>? = null
-
+    private var gameResults: List<GameResult>? = null
     // highscores value
-    internal var totalHighScore_value: Int = 0
-    internal var sumWriteHighscore_value: Int = 0
-    internal var diffWriteHighscore_value: Int = 0
-    internal var multWriteHighscore_value: Int = 0
-    internal var divWriteHighscore_value: Int = 0
-    internal var sumChooseHighscore_value: Int = 0
-    internal var diffChooseHighscore_value: Int = 0
-    internal var multChooseHighscore_value: Int = 0
-    internal var divChooseHighscore_value: Int = 0
-    internal var doublingHighscore_value: Int = 0
-    internal var mixedOps_chooseHighscore_value: Int = 0
-    internal var mixedOps_writeHighscore_value: Int = 0
-    internal var randomOpsHighscore_value: Int = 0
-    internal var quickCountHighscore_value: Int = 0
-    internal var orderHighscore_value: Int = 0
+    private var totalHighScore_value: Int = 0
+    private var sumWriteHighscore_value: Int = 0
+    private var diffWriteHighscore_value: Int = 0
+    private var multWriteHighscore_value: Int = 0
+    private var divWriteHighscore_value: Int = 0
+    private var sumChooseHighscore_value: Int = 0
+    private var diffChooseHighscore_value: Int = 0
+    private var multChooseHighscore_value: Int = 0
+    private var divChooseHighscore_value: Int = 0
+    private var doublingHighscore_value: Int = 0
+    private var mixedOps_chooseHighscore_value: Int = 0
+    private var mixedOps_writeHighscore_value: Int = 0
+    private var randomOpsHighscore_value: Int = 0
+    private var quickCountHighscore_value: Int = 0
+    private var orderHighscore_value: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_highscores)
-
+        // setContentView(R.layout.activity_highscores)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_highscores)
 
         // Initialize ConsentSDK
         val consentSDK = ConsentSDK.Builder(this)
@@ -65,48 +59,39 @@ class HighscoresActivity : AppCompatActivity() {
 
 
         // To check the consent and load ads
-        consentSDK?.checkConsent(object : ConsentSDK.ConsentCallback() {
+        consentSDK.checkConsent(object : ConsentSDK.ConsentCallback() {
             override fun onResult(isRequestLocationInEeaOrUnknown: Boolean) {
                 Log.i("gdpr_TAG", "onResult: isRequestLocationInEeaOrUnknown : $isRequestLocationInEeaOrUnknown")
                 // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-                mAdView!!.loadAd(ConsentSDK.getAdRequest(this@HighscoresActivity))
+                binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@HighscoresActivity))
             }
         })
 
-
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView!!.loadAd(ConsentSDK.getAdRequest(this@HighscoresActivity))
-
+        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@HighscoresActivity))
 
         // show updated scores
         showGamesScores()
-
 
         // activate clicks on answer buttons
         setBtnPressedListener()
 
         // make bottom navigation bar and status bar hide
         hideStatusNavBars()
-
-
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set up the button pressed listener and checking answers
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set up the button pressed listener and checking answers
     private fun setBtnPressedListener() {
 
-        sumChooseBtn.setOnClickListener {
+        binding.sumChooseBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, Math_Op_Choose_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "+")
             intent.putExtra(HIGHSCORE, sumChooseHighscore_value)
             startActivity(intent)
         }
 
-        diffChooseBtn.setOnClickListener {
+        binding.diffChooseBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, Math_Op_Choose_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "-")
             intent.putExtra(HIGHSCORE, diffChooseHighscore_value)
@@ -114,7 +99,7 @@ class HighscoresActivity : AppCompatActivity() {
         }
 
 
-        multChooseBtn.setOnClickListener {
+        binding.multChooseBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, Math_Op_Choose_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "*")
             intent.putExtra(HIGHSCORE, multChooseHighscore_value)
@@ -122,14 +107,14 @@ class HighscoresActivity : AppCompatActivity() {
         }
 
 
-        divChooseBtn.setOnClickListener {
+        binding.divChooseBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, Math_Op_Choose_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "/")
             intent.putExtra(HIGHSCORE, divChooseHighscore_value)
             startActivity(intent)
         }
 
-        sumWriteBtn.setOnClickListener {
+        binding.sumWriteBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, Math_Op_Write_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "+")
             intent.putExtra(HIGHSCORE, sumWriteHighscore_value)
@@ -137,7 +122,7 @@ class HighscoresActivity : AppCompatActivity() {
         }
 
 
-        diffWriteBtn.setOnClickListener {
+        binding.diffWriteBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, Math_Op_Write_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "-")
             intent.putExtra(HIGHSCORE, diffWriteHighscore_value)
@@ -145,14 +130,14 @@ class HighscoresActivity : AppCompatActivity() {
         }
 
 
-        multWriteBtn.setOnClickListener {
+        binding.multWriteBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, Math_Op_Write_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "*")
             intent.putExtra(HIGHSCORE, multWriteHighscore_value)
             startActivity(intent)
         }
 
-        divWriteBtn.setOnClickListener {
+        binding.divWriteBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, Math_Op_Write_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "/")
             intent.putExtra(HIGHSCORE, divWriteHighscore_value)
@@ -160,46 +145,46 @@ class HighscoresActivity : AppCompatActivity() {
         }
 
 
-        resultWriteBtn.setOnClickListener {
+        binding.resultWriteBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, Math_Op_Write_Result_Activity::class.java)
             intent.putExtra(HIGHSCORE, mixedOps_writeHighscore_value)
             startActivity(intent)
         }
 
-        resultChooseBtn.setOnClickListener {
+        binding.resultChooseBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, Math_Op_Choose_Result_Activity::class.java)
             intent.putExtra(HIGHSCORE, mixedOps_chooseHighscore_value)
             startActivity(intent)
         }
 
-        quickCountBtn.setOnClickListener {
+        binding.quickCountBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, CountObjectsActivity::class.java)
             intent.putExtra(HIGHSCORE, quickCountHighscore_value)
             startActivity(intent)
         }
 
 
-        doublingBtn.setOnClickListener {
+        binding.doublingBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.DoubleNumberActivity::class.java)
             intent.putExtra(HIGHSCORE, doublingHighscore_value)
             startActivity(intent)
         }
 
 
-        orderBtn.setOnClickListener {
+        binding.orderBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, NumberOrderActivity::class.java)
             intent.putExtra(HIGHSCORE, orderHighscore_value)
             startActivity(intent)
         }
 
-        randomOpsBtn.setOnClickListener {
+        binding.randomOpsBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, RandomOperationActivity::class.java)
             intent.putExtra(HIGHSCORE, randomOpsHighscore_value)
             startActivity(intent)
         }
 
 
-        home_img.setOnClickListener {
+        binding.homeImg.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, HomeGameActivity::class.java)
             startActivity(intent)
         }
@@ -207,11 +192,7 @@ class HighscoresActivity : AppCompatActivity() {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Used to reload from db the tasks list and update the list view in screen
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Used to reload from db the tasks list and update the list view in screen
     private fun showGamesScores() {
         val factory = HighscoresViewModelFactory()
 
@@ -230,13 +211,8 @@ class HighscoresActivity : AppCompatActivity() {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Put game result in textview
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Put game result in textview
     private fun setGameResults(gameResults: List<GameResult>?) {
-
         this.gameResults = gameResults
 
         // set vars
@@ -262,41 +238,35 @@ class HighscoresActivity : AppCompatActivity() {
 
 
         // set textviews
-        totalHighScore_tv.text = Integer.toString(totalHighScore_value)
+        binding.totalHighScoreTv.text = totalHighScore_value.toString()
 
-        sumWriteScore_tv.text  = Integer.toString(sumWriteHighscore_value)
-        diffWriteScore_tv.text = Integer.toString(diffWriteHighscore_value)
-        multWriteScore_tv.text = Integer.toString(multWriteHighscore_value)
-        divWriteScore_tv.text  = Integer.toString(divWriteHighscore_value)
+        binding.sumWriteScoreTv.text  = sumWriteHighscore_value.toString()
+        binding.diffWriteScoreTv.text = diffWriteHighscore_value.toString()
+        binding.multWriteScoreTv.text = multWriteHighscore_value.toString()
+        binding.divWriteScoreTv.text  = divWriteHighscore_value.toString()
 
-        sumChooseScore_tv.text  = Integer.toString(sumChooseHighscore_value)
-        diffChooseScore_tv.text = Integer.toString(diffChooseHighscore_value)
-        multChooseScore_tv.text = Integer.toString(multChooseHighscore_value)
-        divChooseScore_tv.text  = Integer.toString(divChooseHighscore_value)
+        binding.sumChooseScoreTv.text  = sumChooseHighscore_value.toString()
+        binding.diffChooseScoreTv.text = diffChooseHighscore_value.toString()
+        binding.multChooseScoreTv.text = multChooseHighscore_value.toString()
+        binding.divChooseScoreTv.text  = divChooseHighscore_value.toString()
 
-        doublingScore_tv.text = Integer.toString(doublingHighscore_value)
-        mixedOps_chooseScore_tv.text = Integer.toString(mixedOps_chooseHighscore_value)
-        mixedOps_writeScore_tv.text = Integer.toString(mixedOps_writeHighscore_value)
-        randomOpsScore_tv.text = Integer.toString(randomOpsHighscore_value)
+        binding.doublingScoreTv.text = doublingHighscore_value.toString()
+        binding.mixedOpsChooseScoreTv.text = mixedOps_chooseHighscore_value.toString()
+        binding.mixedOpsWriteScoreTv.text = mixedOps_writeHighscore_value.toString()
+        binding.randomOpsScoreTv.text = randomOpsHighscore_value.toString()
 
-        quickCountScore_tv.text = Integer.toString(quickCountHighscore_value)
-        orderScore_tv.text = Integer.toString(orderHighscore_value)
+        binding.quickCountScoreTv.text = quickCountHighscore_value.toString()
+        binding.orderScoreTv.text = orderHighscore_value.toString()
 
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Make bottom navigation bar and status bar hide, without resize when reappearing
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
         val uiOptions = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
-
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
-
                 // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_FULLSCREEN) // // hide status bar
@@ -304,10 +274,8 @@ class HighscoresActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = HighscoresActivity::class.java.simpleName
         val OPERATION_KEY = "operation"
         val HIGHSCORE = "highscore"
     }
-
 
 }

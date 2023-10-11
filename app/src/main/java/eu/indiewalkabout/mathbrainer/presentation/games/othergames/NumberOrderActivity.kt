@@ -13,20 +13,19 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-
+import androidx.databinding.DataBindingUtil
 import java.util.ArrayList
-
-import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity
+import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
 import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import kotlinx.android.synthetic.main.activity_numbers_order.*
-
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
+import eu.indiewalkabout.mathbrainer.core.util.TAG
+import eu.indiewalkabout.mathbrainer.databinding.ActivityNumbersOrderBinding
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNoNumberView
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNumberView
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.SolutionsView
@@ -34,10 +33,10 @@ import eu.indiewalkabout.mathbrainer.presentation.games.customviews.SolutionsVie
 
 
 class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
-
+    private lateinit var binding: ActivityNumbersOrderBinding
     private val unityAdsListener = UnityAdsListener()
 
-    // Costum views drawing items to count
+    // Custom views drawing items to count
     private lateinit var drawquiz_challenge: MarkerWithNoNumberView
     private lateinit var drawquiz: MarkerWithNumberView
     private lateinit var solutionsView: SolutionsView
@@ -54,15 +53,13 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     private val min = 1
     private val max = 6
 
-
     // store wring answer to avoid duplicates
-    internal lateinit var wrongAnswer: ArrayList<Int>
+    private lateinit var wrongAnswer: ArrayList<Int>
 
     // num of challenge to pass to next level
     // changing while level growing
     private var numChallengeEachLevel = 2
     private var countChallenge = 1
-
 
     // score var
     private var score = 0
@@ -79,26 +76,23 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     // items to count in current level
     private var itemsToCount = maxItemsToCount.toInt()
 
-    // get the touch event from costum class on markers touching
-    private lateinit var touchEventResInCostumView: MutableLiveData<Int>
+    // get the touch event from custom class on markers touching
+    private lateinit var touchEventResInCustomView: MutableLiveData<Int>
 
     // game over dialog
-    internal lateinit var gameOverDialog: GameOverDialog
+    private lateinit var gameOverDialog: GameOverDialog
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Update lives view and check if it's game over or not
-     * @override of IGameFunctions isGameOver()
-     * @return boolean  : return true/false in case of gameover/gamecontinuing
-     * ---------------------------------------------------------------------------------------------
-     */
-    override// update life counts
+
+    // Update lives view and check if it's game over or not
+    // @override of IGameFunctions isGameOver()
+    // @return boolean  : return true/false in case of gameover/gamecontinuing
+    // update life counts
     // statistics
     // Update UI
     // check game over condition
     // statistics
-    val isGameOver: Boolean
+    override val isGameOver: Boolean
         get() {
             Log.d(TAG, "isGameOver: $lives")
             lives--
@@ -107,19 +101,14 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
                 livesValueIv[lives].visibility = View.INVISIBLE
             }
             if (lives <= 0) {
-
                 endGame()
                 Results.incrementGameResultsThread("games_played")
                 Results.incrementGameResultsThread("games_lose")
                 Results.updateGameResultHighscoreThread("number_order_game_score", score)
                 Results.incrementGameResultByDeltaThread("global_score", score)
-
                 return true
-
             }
-
             return false
-
         }
 
 
@@ -128,15 +117,14 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_numbers_order)
+        // setContentView(R.layout.activity_numbers_order)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_numbers_order)
 
         // Unity ads init
         UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
 
-
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(this@NumberOrderActivity))
+        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@NumberOrderActivity))
 
         // setup context
         context = this
@@ -158,8 +146,8 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         drawquiz_challenge.setSolutionView(solutionsView)
 
 
-        btnNewGame.visibility = View.INVISIBLE
-        result_tv.visibility = View.INVISIBLE
+        binding.btnNewGame.visibility = View.INVISIBLE
+        binding.resultTv.visibility = View.INVISIBLE
 
         // init lives led images
         livesValueIv = ArrayList()
@@ -177,11 +165,8 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
 
         // set first level
         updateLevel()
-
         hideStatusNavBars()
-
         showHighscore()
-
     }
 
 
@@ -201,27 +186,19 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set the highscore passed from main
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set the highscore passed from main
     private fun showHighscore() {
         val intent = intent
         if (intent.hasExtra(ChooseGameActivity.HIGHSCORE)) {
             val value = intent.getIntExtra(ChooseGameActivity.HIGHSCORE, -1)
-            highscore_value_tv.text = Integer.toString(value)
+            binding.highscoreValueTv.text = Integer.toString(value)
         } else {
-            highscore_value_tv.text = "0"
+            binding.highscoreValueTv.text = "0"
         }
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Make bottom navigation bar and status bar hide, without resize when reappearing
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
@@ -236,15 +213,11 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set up the button pressed listener and checking answers
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set up the button pressed listener and checking answers
     private fun setBtnPressedListener() {
-        btnNewGame.setOnClickListener { newChallenge() }
+        binding.btnNewGame.setOnClickListener { newChallenge() }
 
-        backhome_img.setOnClickListener {
+        binding.backhomeImg.setOnClickListener {
             // saves score
             isComingHome()
 
@@ -257,41 +230,26 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
 
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Check if player input is right/wrong and update score
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Check if player input is right/wrong and update score
     private fun checkPlayerResult(result: Int) {
-
         // disable touch for the markers
         drawquiz_challenge._isTouchMarkersEnable = false
-
         // hide markers with and without numbers
         hideAll()
 
         // check if result is ok...
         if (result == 1) {
-
             updateScore()
-
             countChallenge++
-
             // rise level after numChallengeEachLevel reached
             if (countChallenge > numChallengeEachLevel) {
                 // reset counter
                 countChallenge = 0
-
                 updateLevel()
             }
-
             showNewBtnAfterTimerLength(500, true)
-
-
             // ...otherwise a life will be lost
         } else if (result == 0) {
-
-
             // hideAnswerAfterTimerLength(1000);
             // lose a life, check if it's game over
             val gameover = isGameOver
@@ -299,61 +257,51 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
             // new number to double
             if (gameover == false) {
                 showNewBtnAfterTimerLength(500, false)
-
             }
-
         }
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show button when exiting pause state
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show button when exiting pause state
     private fun restartAfterPause(timerLength: Int) {
         val handler = Handler()
         hideAll()
         val runnable = Runnable {
             // it isn't show, but is essential for onPause/onResume sequence,
             // to show another quiz without loosing life
-            result_tv.text = resources.getString(R.string.quick_count_relaunch)
-            result_tv.setTextColor(Color.GREEN)
+            binding.resultTv.text = resources.getString(R.string.quick_count_relaunch)
+            binding.resultTv.setTextColor(Color.GREEN)
         }
         // execute runnable after a timerLength
         handler.postDelayed(runnable, timerLength.toLong())
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show button for new challenge after timerLength
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show button for new challenge after timerLength
     private fun showNewBtnAfterTimerLength(timerLength: Int, win: Boolean) {
         val handler = Handler()
         val runnable = Runnable {
-            btnNewGame.visibility = View.VISIBLE
-            quiz_instructions_tv.text = "   "
-            result_tv.visibility = View.VISIBLE
+            binding.btnNewGame.visibility = View.VISIBLE
+            binding.quizInstructionsTv.text = "   "
+            binding.resultTv.visibility = View.VISIBLE
             if (win == false) {
-                result_tv.text = resources.getString(R.string.wrong_str)
-                result_tv.setTextColor(Color.RED)
+                binding.resultTv.text = resources.getString(R.string.wrong_str)
+                binding.resultTv.setTextColor(Color.RED)
 
                 // statistics
                 Results.incrementGameResultsThread("operations_executed")
                 Results.incrementGameResultsThread("operations_ko")
 
             } else if (win == true) {
-                result_tv.text = resources.getString(R.string.ok_str)
-                result_tv.setTextColor(Color.GREEN)
+                binding.resultTv.text = resources.getString(R.string.ok_str)
+                binding.resultTv.setTextColor(Color.GREEN)
                 // statistics
                 Results.incrementGameResultsThread("operations_executed")
                 Results.incrementGameResultsThread("operations_ok")
                 Results.incrementGameResultByDeltaThread("numbers_in_order", itemsToCount)
             } else if (!win) {
-                result_tv.text = resources.getString(R.string.quick_count_relaunch)
-                result_tv.setTextColor(Color.GREEN)
+                binding.resultTv.text = resources.getString(R.string.quick_count_relaunch)
+                binding.resultTv.setTextColor(Color.GREEN)
             }
         }
         // execute runnable after a timerLength
@@ -361,27 +309,18 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Update score view
-     * ---------------------------------------------------------------------------------------------
-     */
+    //Update score view
     private fun updateScore() {
-        highscore_label_tv.visibility = View.INVISIBLE
-        highscore_value_tv.visibility = View.INVISIBLE
-        scoreLabel_tv.visibility = View.VISIBLE
-        scoreValue_tv.visibility = View.VISIBLE
-
+        binding.highscoreLabelTv.visibility = View.INVISIBLE
+        binding.highscoreValueTv.visibility = View.INVISIBLE
+        binding.scoreLabelTv.visibility = View.VISIBLE
+        binding.scoreValueTv.visibility = View.VISIBLE
         score += 25
-        scoreValue_tv.text = Integer.toString(score)
+        binding.scoreValueTv.text = Integer.toString(score)
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Saves the score and others game data if coming back home before reach game over condition
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Saves the score and others game data if coming back home before reach game over condition
     fun isComingHome() {
         Results.updateGameResultHighscoreThread("number_order_game_score", score)
         Results.incrementGameResultByDeltaThread("global_score", score)
@@ -397,11 +336,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set new challenge in view
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set new challenge in view
     override fun newChallenge() {
         // clear wrong answers list
         wrongAnswer.clear()
@@ -422,9 +357,9 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
 
         Log.d(TAG, "newChallenge: $countChallenge")
 
-        touchEventResInCostumView = drawquiz_challenge.touchResult
-        touchEventResInCostumView.observe(this, Observer {
-            val eventValue = touchEventResInCostumView.value
+        touchEventResInCustomView = drawquiz_challenge.touchResult
+        touchEventResInCustomView.observe(this, Observer {
+            val eventValue = touchEventResInCustomView.value
             // conditional necessary to exclude changes to -1
             if (eventValue == 1) {
                 checkPlayerResult(eventValue)
@@ -433,56 +368,36 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
                 checkPlayerResult(eventValue)
             }
         })
-
-
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show markers' order with number
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show markers' order with number
     private fun showQuiz() {
-        quiz_instructions_tv.text = resources.getString(R.string.click_order_instructions)
+        binding.quizInstructionsTv.text = resources.getString(R.string.click_order_instructions)
         solutionsView.visibility = View.INVISIBLE
-        btnNewGame.visibility = View.INVISIBLE
-        result_tv.visibility = View.INVISIBLE
+        binding.btnNewGame.visibility = View.INVISIBLE
+        binding.resultTv.visibility = View.INVISIBLE
         drawquiz.visibility = View.VISIBLE
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show markers to touch with no numbers
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show markers to touch with no numbers
     private fun hideQuiz() {
         // debug drawquiz.setVisibility(View.INVISIBLE);
-        quiz_instructions_tv.text = resources.getString(R.string.click_order_start)
+        binding.quizInstructionsTv.text = resources.getString(R.string.click_order_start)
         solutionsView.visibility = View.VISIBLE
         drawquiz_challenge.visibility = View.VISIBLE
-
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Hide all
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Hide all
     private fun hideAll() {
         drawquiz.visibility = View.INVISIBLE
         drawquiz_challenge.visibility = View.INVISIBLE
         solutionsView.visibility = View.INVISIBLE
-
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Hide items group after timerLength
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Hide items group after timerLength
     private fun hideQuizAfterTimerLength(timerLength: Int) {
         val handler = Handler()
         val runnable = Runnable { hideQuiz() }
@@ -491,128 +406,85 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show game over with delay
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show game over with delay
     private fun endGame() {
-
-        btnNewGame.visibility = View.INVISIBLE
-
-        result_tv.visibility = View.VISIBLE
-        result_tv.text = resources.getString(R.string.wrong_str)
-        result_tv.setTextColor(Color.RED)
-
+        binding.btnNewGame.visibility = View.INVISIBLE
+        binding.resultTv.visibility = View.VISIBLE
+        binding.resultTv.text = resources.getString(R.string.wrong_str)
+        binding.resultTv.setTextColor(Color.RED)
         val handler = Handler()
         val runnable = Runnable { showGameOverDialog() }
         handler.postDelayed(runnable, 500)
-
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show gameover dialog
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show gameover dialog
     private fun showGameOverDialog() {
         gameOverDialog = GameOverDialog(this,
                 this@NumberOrderActivity, this)
-
-        result_tv.visibility = View.INVISIBLE
-        quiz_instructions_tv.visibility = View.INVISIBLE
+        binding.resultTv.visibility = View.INVISIBLE
+        binding.quizInstructionsTv.visibility = View.INVISIBLE
         drawquiz.visibility = View.INVISIBLE
         drawquiz_challenge.visibility = View.INVISIBLE
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Updating level
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Updating level
     private fun updateLevel() {
         // increment level
         level++
-
-        levelValue_tv.text = Integer.toString(level)
-
+        binding.levelValueTv.text = level.toString()
         // increment level difficulty
-        if (level > 1 && level < 30) {
-
+        if (level in 2..29) {
             maxItemsToCount += 0.5f
-
             timerLength += 0.5f
-
             numChallengeEachLevel += 1
-
             Log.d(TAG, "updatingLevel: New Level! new min : " + min + " new max: "
                     + max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec.")
         }
-
         // statistics
         Results.incrementGameResultsThread("level_upgrades")
-
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Check state at countdown expired
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Check state at countdown expired
     override fun checkCountdownExpired() {
-
         // lose a life, check if it's game over
         val gameover = isGameOver
-
         // new number to double
-        if (gameover == false) {
+        if (!gameover) {
             // show result and start a new game session if allowed
             showNewBtnAfterTimerLength(500, false)
         }
-
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Unity ads listener
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Unity ads listener
     private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
-
         }
 
         override fun onUnityAdsStart(s: String) {
-
         }
 
         override fun onUnityAdsFinish(s: String, finishState: UnityAds.FinishState) {
-
         }
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
-
         }
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * MENU STUFF
-     * ---------------------------------------------------------------------------------------------
-     */
+
+    //---------------------------------------------------------------------------------------------
+    // MENU STUFF
+    //---------------------------------------------------------------------------------------------
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-
         // When the home button is pressed, take the user back to Home
         if (id == android.R.id.home) {
             onBackPressed()
         }
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -622,20 +494,10 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     // ---------------------------------------------------------------------------------------------
     override fun onBackPressed() {
         super.onBackPressed()
-
         // saves score
         isComingHome()
-
         // show unityads randomic
         MathBrainerUtility.showUnityAdsRandom(this)
-
     }
-
-    companion object {
-
-        private val TAG = CountObjectsActivity::class.java.simpleName
-    }
-
-
 }
 

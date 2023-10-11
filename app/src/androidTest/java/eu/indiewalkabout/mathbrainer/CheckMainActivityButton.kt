@@ -18,7 +18,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
-import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity
+import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
 import eu.indiewalkabout.mathbrainer.ui.GameCreditsActivity
 import eu.indiewalkabout.mathbrainer.ui.HighscoresActivity
 import org.junit.Before

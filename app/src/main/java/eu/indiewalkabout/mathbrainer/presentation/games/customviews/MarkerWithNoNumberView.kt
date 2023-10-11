@@ -16,8 +16,9 @@ import android.view.View
 import java.util.ArrayList
 
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.games.customviews.model.CircularImage
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
+import eu.indiewalkabout.mathbrainer.core.util.TAG
+import eu.indiewalkabout.mathbrainer.presentation.games.customviews.model.CircularImage
 
 class MarkerWithNoNumberView : View {
 
@@ -342,22 +343,12 @@ class MarkerWithNoNumberView : View {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Draw view on screen with a defined items number
-     *
-     * @param itemNumber
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Draw view on screen with a defined items number
+    // @param itemNumber
     fun redraw(itemNumber: Int) {
         // this.timerLength = timerLength;
         this.itemNumber = itemNumber
         this.invalidate()
     }
-
-    companion object {
-        private val TAG = MarkerWithNoNumberView::class.java.simpleName
-    }
-
 }
 

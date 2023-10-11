@@ -9,21 +9,14 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-
 import java.io.IOException
 import java.util.ArrayList
-
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import eu.indiewalkabout.mathbrainer.games.customviews.model.CircularImage
+import eu.indiewalkabout.mathbrainer.core.util.TAG
+import eu.indiewalkabout.mathbrainer.presentation.games.customviews.model.CircularImage
 
-/**
- * ---------------------------------------------------------------------------------------------
- * Visualizing  x items distributed all around the view, to guess their number
- * after disappearing
- * ---------------------------------------------------------------------------------------------
- */
+// Visualizing  x items distributed all around the view, to guess their number after disappearing
 class QuickCountItemDrawView : View {
-
     internal lateinit var context: Context
 
     private var mWidth: Float = 0.toFloat()                    // Custom view width
@@ -45,7 +38,6 @@ class QuickCountItemDrawView : View {
     // time length before returning
     // int timerLength = 0;
 
-
     constructor(context: Context) : super(context) {
         init(context)
     }
@@ -62,17 +54,11 @@ class QuickCountItemDrawView : View {
 
     private fun init(context: Context) {
         this.context = context
-
         imageScaleXY = 0.2f
-
         itemList = ArrayList()
-
         randX = (mWidth * 0.5).toInt()
         randY = (mHeight * 0.5).toInt()
-
         Log.d(TAG, "onCreate: mWidth : $mWidth mHeigth : $mHeight")
-
-
     }
 
 
@@ -137,16 +123,13 @@ class QuickCountItemDrawView : View {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Avoid overlapping objects
-     * NB : item origin is in left-top vertex
-     * @param x
-     * @param y
-     * @param size
-     * @return
-     * ---------------------------------------------------------------------------------------------
-     */
+
+    // Avoid overlapping objects
+    // NB : item origin is in left-top vertex
+    // @param x
+    // @param y
+    // @param size
+    // @return
     fun isOverlapping(x: Int, y: Int, size: Int): Boolean {
 
         for (circularImage in itemList) {
@@ -159,18 +142,14 @@ class QuickCountItemDrawView : View {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Called during layout when the size of this view has changed. If
-     * the view was just added to the view hierarchy, it is called with the initial
-     * values of 0. The code determines the drawing bounds for the custom view.
-     *
-     * @param w    Current width of this view
-     * @param h    Current height of this view
-     * @param oldw Initial width of this view
-     * @param oldh Initial height of this view
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Called during layout when the size of this view has changed. If
+    // the view was just added to the view hierarchy, it is called with the initial
+    // values of 0. The code determines the drawing bounds for the custom view.
+    //
+    // @param w    Current width of this view
+    // @param h    Current height of this view
+    // @param oldw Initial width of this view
+    // @param oldh Initial height of this view
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         // Calculate the radius from the width and height.
         mWidth = w.toFloat()
@@ -179,22 +158,13 @@ class QuickCountItemDrawView : View {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Draw view on screen with a defined items number
-     * @param itemNumber
-     * ---------------------------------------------------------------------------------------------
-     */
+
+    // Draw view on screen with a defined items number
+    // @param itemNumber
     fun redraw(itemNumber: Int) {
         // this.timerLength = timerLength;
         this.itemNumber = itemNumber
         this.invalidate()
     }
-
-    companion object {
-
-        private val TAG = QuickCountItemDrawView::class.java.simpleName
-    }
-
 
 }

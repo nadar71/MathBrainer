@@ -26,6 +26,7 @@ import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
+import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityMathOpChooseResultBinding
 
 
@@ -155,7 +156,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
 
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(this@Math_Op_Choose_Result_Activity))
+        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@Math_Op_Choose_Result_Activity))
 
         // Unity ads init
         UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
@@ -876,19 +877,9 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         super.onBackPressed()
         // reset and destroy counter
         countDownIndicator.countdownReset()
-
         // saves score
         isComingHome()
-
         // show unityads randomic
         MathBrainerUtility.showUnityAdsRandom(this)
-
     }
-
-    companion object {
-
-        private val TAG = Math_Op_Choose_Result_Activity::class.java.simpleName
-    }
-
-
 }

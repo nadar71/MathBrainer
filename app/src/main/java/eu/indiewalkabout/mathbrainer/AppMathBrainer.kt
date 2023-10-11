@@ -8,63 +8,30 @@ import eu.indiewalkabout.mathbrainer.data.repository.MathBrainerRepository
 import eu.indiewalkabout.mathbrainer.core.util.AppExecutors
 
 
-/**
- * -------------------------------------------------------------------------------------------------
- * Class used for access singletons and application context wherever in the app.
- * Just like repository is an interface for all data operations.
- * NB : register in manifest in <Application android:name=".AppMathBrainer">... </Application>
- * -------------------------------------------------------------------------------------------------
- */
+// Class used for access singletons and application context wherever in the app.
 class AppMathBrainer : Application() {
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Return AppExecutors singleton instance
-     * @return
-     * ---------------------------------------------------------------------------------------------
-     */
+    // AppExecutors singleton instance
     var appExecutorsInstance: AppExecutors? = null
         private set
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Return singleton db instance
-     * @return
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Singleton db instance
     val database: MathBrainerDatabase?
         get() = MathBrainerDatabase.getsDbInstance(this)
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Return depository singleton instance
-     * @return
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Repository singleton instance
     val repository: MathBrainerRepository?
         get() = database?.let { MathBrainerRepository.getInstance(it) }
 
     override fun onCreate() {
         super.onCreate()
         appExecutorsInstance = AppExecutors.instance
-
         sContext = applicationContext
-
-
     }
 
     companion object {
-
         private var sContext: Context? = null
-
-
-        /**
-         * ---------------------------------------------------------------------------------------------
-         * Return application context wherever we are in the app
-         * @return
-         * ---------------------------------------------------------------------------------------------
-         */
         fun getsContext(): Context? {
             return sContext
         }

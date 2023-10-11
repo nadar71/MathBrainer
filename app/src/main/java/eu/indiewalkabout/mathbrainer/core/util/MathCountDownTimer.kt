@@ -7,7 +7,6 @@ class MathCountDownTimer : CountDownTimer {
 
     // internal var timer: CountDownTimer? = null
 
-    private val TAG = MathCountDownTimer::class.java.simpleName
     lateinit var countdownBar: CountDownIndicator
 
     var millisInFuture: Long = 0

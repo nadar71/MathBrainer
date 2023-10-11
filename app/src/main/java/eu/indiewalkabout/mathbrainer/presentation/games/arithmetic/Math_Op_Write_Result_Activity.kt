@@ -15,9 +15,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
-
 import java.util.ArrayList
-
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
@@ -30,7 +28,9 @@ import eu.indiewalkabout.mathbrainer.core.util.MyKeyboard
 
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
+import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityMathOpWriteResultBinding
+import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
 
 
 class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
@@ -72,7 +72,13 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
 
     private lateinit var symbols: CharArray // = {'+','-','*','/'};
     private lateinit var scoreType: String
-    private val scoreTypeList = arrayOf("sum_write_result_game_score", "diff_write_result_game_score", "mult_write_result_game_score", "div_write_result_game_score", "mix_write_result_game_score")
+    private val scoreTypeList = arrayOf(
+        "sum_write_result_game_score",
+        "diff_write_result_game_score",
+        "mult_write_result_game_score",
+        "div_write_result_game_score",
+        "mix_write_result_game_score"
+    )
 
     // num of challenge to pass to next level
     // changing while level growing
@@ -97,7 +103,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     internal lateinit var gameOverDialog: GameOverDialog
 
 
-     
     // Update lives view and check if it's game over or not
     // @override of IGameFunctions isGameOver()
     // @return boolean  : return true/false in case of game over/game continuing
@@ -149,11 +154,11 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle
         // the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(this@Math_Op_Write_Result_Activity))
+        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@Math_Op_Write_Result_Activity))
 
 
         // store quiz text color for later use
-        quizDefaultTextColor = firstOperand_tv.textColors
+        quizDefaultTextColor = binding.firstOperandTv.textColors
 
 
         // init lives led images
@@ -167,8 +172,10 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         setupCustomKeyboard()
 
         // Create new count down indicator, without starting it
-        countDownIndicator = CountDownIndicator(this@Math_Op_Write_Result_Activity,
-            binding.countdownBar, this@Math_Op_Write_Result_Activity)
+        countDownIndicator = CountDownIndicator(
+            this@Math_Op_Write_Result_Activity,
+            binding.countdownBar, this@Math_Op_Write_Result_Activity
+        )
 
         // start with first challenge and countdown init
         newChallenge()
@@ -224,26 +231,18 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set the highscore passed from main
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set the highscore passed from main
     private fun showHighscore() {
         val intent = intent
         if (intent.hasExtra(ChooseGameActivity.HIGHSCORE)) {
             val value = intent.getIntExtra(ChooseGameActivity.HIGHSCORE, -1)
-            highscore_value_tv.text = Integer.toString(value)
+            binding.highscoreValueTv.text = Integer.toString(value)
         } else {
-            highscore_value_tv.text = "0"
+            binding.highscoreValueTv.text = "0"
         }
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Check and set the symbol of the operation from the caller intent
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Check and set the symbol of the operation from the caller intent
     private fun setOperationSymbol() {
         val intent = intent
         val operationSpec: CharArray
@@ -273,6 +272,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
                     symbols[0] = '/'
                     scoreType = scoreTypeList[3]
                 }
+
                 else -> {
                 }
             }
@@ -287,11 +287,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Make bottom navigation bar and status bar hide, without resize when reappearing
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
@@ -305,44 +301,35 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         decorView.systemUiVisibility = uiOptions
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Create  and setup customkeyboard
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Create  and setup customkeyboard
     private fun setupCustomKeyboard() {
         // init custom keyboard
         keyboard = findViewById<View>(R.id.keyboard) as MyKeyboard
 
 
         // prevent system keyboard from appearing when EditText is tapped
-        playerInput_et.setOnTouchListener { v, event ->
-            val inType = playerInput_et.inputType // backup the input type
-            playerInput_et.inputType = InputType.TYPE_NULL // disable soft input
-            playerInput_et.onTouchEvent(event) // call native handler
-            playerInput_et.inputType = inType // restore input type
-            playerInput_et.setTextIsSelectable(false)
+        binding.playerInputEt.setOnTouchListener { v, event ->
+            val inType = binding.playerInputEt.inputType // backup the input type
+            binding.playerInputEt.inputType = InputType.TYPE_NULL // disable soft input
+            binding.playerInputEt.onTouchEvent(event) // call native handler
+            binding.playerInputEt.inputType = inType // restore input type
+            binding.playerInputEt.setTextIsSelectable(false)
             true // consume touch even
         }
 
 
         // pass the InputConnection from the EditText to the keyboard
-        val ic = playerInput_et.onCreateInputConnection(EditorInfo())
+        val ic = binding.playerInputEt.onCreateInputConnection(EditorInfo())
         keyboard.setInputConnection(ic, this@Math_Op_Write_Result_Activity)
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Check if player input is right/wrong and update score
-     * ---------------------------------------------------------------------------------------------
-     */
-
+    // Check if player input is right/wrong and update score
     override fun checkPlayerInput() {
         var inputNum = 0
 
         // get the player input
-        val tmp = playerInput_et.text.toString()
+        val tmp = binding.playerInputEt.text.toString()
 
         // stop timer
         countDownIndicator.countdownReset()
@@ -380,7 +367,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
             // lose a life, check if it's game over
             val gameover = isGameOver
 
-            if (gameover == false) {
+            if (!gameover) {
                 // show result and start a new game session if allowed
                 showResult(false)
             }
@@ -389,18 +376,14 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Check state at countdown expired
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Check state at countdown expired
     override fun checkCountdownExpired() {
 
         // lose a life, check if it's game over
         val gameover = isGameOver
 
         // new number to double
-        if (gameover == false) {
+        if (!gameover) {
             // show result and start a new game session if allowed
             showResult(false)
         }
@@ -408,14 +391,10 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show the result of the game session
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show the result of the game session
     private fun showResult(win: Boolean) {
 
-        if (win == true) {
+        if (win) {
             showOkResult()
             newchallengeAfterTimerLength(1000)
 
@@ -428,19 +407,15 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show ok in case of game win
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show ok in case of game win
     private fun showOkResult() {
-        result_tv.visibility = View.VISIBLE
-        result_tv.text = resources.getString(R.string.ok_str)
-        result_tv.setTextColor(Color.GREEN)
-        firstOperand_tv.setTextColor(Color.GREEN)
-        secondOperand_tv.setTextColor(Color.GREEN)
-        operationSymbol_tv.setTextColor(Color.GREEN)
-        playerInput_et.setTextColor(Color.GREEN)
+        binding.resultTv.visibility = View.VISIBLE
+        binding.resultTv.text = resources.getString(R.string.ok_str)
+        binding.resultTv.setTextColor(Color.GREEN)
+        binding.firstOperandTv.setTextColor(Color.GREEN)
+        binding.secondOperandTv.setTextColor(Color.GREEN)
+        binding.operationSymbolTv.setTextColor(Color.GREEN)
+        binding.playerInputEt.setTextColor(Color.GREEN)
         // hide keyboard
         keyboard.visibility = View.INVISIBLE
 
@@ -450,19 +425,15 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show wrong in case of game lose
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show wrong in case of game lose
     private fun showWrongResult() {
-        result_tv.visibility = View.VISIBLE
-        result_tv.text = resources.getString(R.string.wrong_str) + " : " + answerOK
-        result_tv.setTextColor(Color.RED)
-        firstOperand_tv.setTextColor(Color.RED)
-        secondOperand_tv.setTextColor(Color.RED)
-        operationSymbol_tv.setTextColor(Color.RED)
-        playerInput_et.setTextColor(Color.RED)
+        binding.resultTv.visibility = View.VISIBLE
+        binding.resultTv.text = resources.getString(R.string.wrong_str) + " : " + answerOK
+        binding.resultTv.setTextColor(Color.RED)
+        binding.firstOperandTv.setTextColor(Color.RED)
+        binding.secondOperandTv.setTextColor(Color.RED)
+        binding.operationSymbolTv.setTextColor(Color.RED)
+        binding.playerInputEt.setTextColor(Color.RED)
         // hide keyboard
         keyboard.visibility = View.INVISIBLE
 
@@ -472,11 +443,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Launch new challenge after timerLength
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Launch new challenge after timerLength
     private fun newchallengeAfterTimerLength(timerLength: Int) {
         val handler = Handler()
         val runnable = Runnable {
@@ -488,72 +455,52 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Setup before new game session
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Setup before new game session
     private fun setupBeforeNewGame() {
-        result_tv.visibility = View.INVISIBLE
-        firstOperand_tv.setTextColor(quizDefaultTextColor)
-        secondOperand_tv.setTextColor(quizDefaultTextColor)
-        operationSymbol_tv.setTextColor(quizDefaultTextColor)
-        playerInput_et.setTextColor(quizDefaultTextColor)
+        binding.resultTv.visibility = View.INVISIBLE
+        binding.firstOperandTv.setTextColor(quizDefaultTextColor)
+        binding.secondOperandTv.setTextColor(quizDefaultTextColor)
+        binding.operationSymbolTv.setTextColor(quizDefaultTextColor)
+        binding.playerInputEt.setTextColor(quizDefaultTextColor)
         keyboard.visibility = View.VISIBLE
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Update score view
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Update score view
     private fun updateScore() {
-        highscore_label_tv.visibility = View.INVISIBLE
-        highscore_value_tv.visibility = View.INVISIBLE
-        scoreLabel_tv.visibility = View.VISIBLE
-        scoreValue_tv.visibility = View.VISIBLE
+        binding.highscoreLabelTv.visibility = View.INVISIBLE
+        binding.highscoreValueTv.visibility = View.INVISIBLE
+        binding.scoreLabelTv.visibility = View.VISIBLE
+        binding.scoreValueTv.visibility = View.VISIBLE
 
         score += 25
-        scoreValue_tv.text = Integer.toString(score)
+        binding.scoreValueTv.text = score.toString()
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Saves the score and others game data if coming back home before reach game over condition
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Saves the score and others game data if coming back home before reach game over condition
     fun isComingHome() {
         Results.updateGameResultHighscoreThread(scoreType, score)
         Results.incrementGameResultByDeltaThread("global_score", score)
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Update progress bar
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Update progress bar
     override fun updateProgressBar(progress: Int) {
-        countdownBar.progress = progress
+        binding.countdownBar.progress = progress
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set new challenge in view
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set new challenge in view
     override fun newChallenge() {
         // set operation to be processed; general case symbols.length-1 > 1
-        operation = symbols!![MathBrainerUtility.randRange_ApiCheck(0, symbols!!.size - 1)]
+        operation = symbols[MathBrainerUtility.randRange_ApiCheck(0, symbols.size - 1)]
 
         // calculate the quiz operation
         calculateOperation()
 
         // clean edit text field
-        playerInput_et.isFocused
-        playerInput_et.setText("")
+        binding.playerInputEt.isFocused
+        binding.playerInputEt.setText("")
         Log.d(TAG, "newChallenge: $countChallenge")
 
         // reset countdown if any and restart if
@@ -561,12 +508,8 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
 
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Choose the right operands based on based on operation symbol,update UI, do calculation ,
-     * and store the correct answer.
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Choose the right operands based on based on operation symbol,update UI, do calculation ,
+    // and store the correct answer.
     private fun calculateOperation() {
         when (operation) {
             '+' -> {
@@ -581,7 +524,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
                 // statistics
                 Results.incrementGameResultsThread("sums")
 
-                operationSymbol_tv.text = Character.toString(operation)
+                binding.operationSymbolTv.text = Character.toString(operation)
             }
 
             '-' -> {
@@ -593,7 +536,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
                 // store correct answer
                 answerOK = firstOperand - secondOperand
 
-                operationSymbol_tv.text = Character.toString(operation)
+                binding.operationSymbolTv.text = Character.toString(operation)
 
                 // statistics
                 Results.incrementGameResultsThread("differences")
@@ -614,7 +557,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
                 // store correct answer
                 answerOK = firstOperand * secondOperand
 
-                operationSymbol_tv.text = "X"
+                binding.operationSymbolTv.text = "X"
 
                 // statistics
                 Results.incrementGameResultsThread("multiplications")
@@ -628,27 +571,24 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
                 answerOK = MathBrainerUtility.randRange_ApiCheck(divMin, divLMax)
                 firstOperand = answerOK * secondOperand
 
-                operationSymbol_tv.text = Character.toString(operation)
+                binding.operationSymbolTv.text = Character.toString(operation)
 
                 // statistics
                 Results.incrementGameResultsThread("divisions")
             }
+
             else -> {
             }
         }
 
 
-        firstOperand_tv.text = Integer.toString(firstOperand)
-        secondOperand_tv.text = Integer.toString(secondOperand)
+        binding.firstOperandTv.text = firstOperand.toString()
+        binding.secondOperandTv.text = secondOperand.toString()
 
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show end game message
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show end game message
     private fun endGame() {
         val handler = Handler()
 
@@ -663,44 +603,34 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show gameover dialog
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show gameover dialog
     private fun showGameOverDialog() {
-        gameOverDialog = GameOverDialog(this,
-                this@Math_Op_Write_Result_Activity, this)
+        gameOverDialog = GameOverDialog(
+            this,
+            this@Math_Op_Write_Result_Activity, this
+        )
 
         hideLastQuiz()
 
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Hide quiz
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Hide quiz
     private fun hideLastQuiz() {
-        playerInput_et.visibility = View.INVISIBLE
-        firstOperand_tv.visibility = View.INVISIBLE
-        secondOperand_tv.visibility = View.INVISIBLE
-        operationSymbol_tv.visibility = View.INVISIBLE
-        result_tv.visibility = View.INVISIBLE
+        binding.playerInputEt.visibility = View.INVISIBLE
+        binding.firstOperandTv.visibility = View.INVISIBLE
+        binding.secondOperandTv.visibility = View.INVISIBLE
+        binding.operationSymbolTv.visibility = View.INVISIBLE
+        binding.resultTv.visibility = View.INVISIBLE
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Updating level
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Updating level
     private fun updateLevel() {
         // increment level
         level++
 
-        levelValue_tv.text = Integer.toString(level)
+        binding.levelValueTv.text = Integer.toString(level)
 
         // increment level difficulty
         if (level > 1) {
@@ -719,7 +649,10 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
 
             // increase time accordingly, but slightly
             timerLength = timerLength + 5000
-            Log.d(TAG, "updatingLevel: New Level! new min : " + min + " new max: " + max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec.")
+            Log.d(
+                TAG,
+                "updatingLevel: New Level! new min : " + min + " new max: " + max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec."
+            )
         }
 
         // statistics
@@ -728,11 +661,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Unity ads listener
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Unity ads listener
     private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
@@ -753,11 +682,9 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * MENU STUFF
-     * ---------------------------------------------------------------------------------------------
-     */
+    // ---------------------------------------------------------------------------------------------
+    // MENU STUFF
+    // ---------------------------------------------------------------------------------------------
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
@@ -779,18 +706,9 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         super.onBackPressed()
         // reset and destroy counter
         countDownIndicator.countdownReset()
-
         // saves score
         isComingHome()
-
         // show unityads randomic
         MathBrainerUtility.showUnityAdsRandom(this)
-
     }
-
-    companion object {
-
-        private val TAG = Math_Op_Write_Result_Activity::class.java.simpleName
-    }
-
 }

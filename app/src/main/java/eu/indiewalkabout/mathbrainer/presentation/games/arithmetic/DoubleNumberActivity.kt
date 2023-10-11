@@ -87,7 +87,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
             Results.incrementGameResultsThread("lives_missed")
 
             // Update UI
-            Log.d(eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.DoubleNumberActivity.Companion.TAG, "isGameOver: $lives")
+            Log.d(TAG, "isGameOver: $lives")
             if (lives > -1) {
                 livesValueIv[lives].visibility = View.INVISIBLE
             }
@@ -122,7 +122,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(this@DoubleNumberActivity))
+        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@DoubleNumberActivity))
 
         binding.highscoreValueTv.text = "-1" // debug init
 
@@ -256,7 +256,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
 
         inputNum = Integer.parseInt(tmp)
 
-        Log.d(eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.DoubleNumberActivity.Companion.TAG, "checkPlayerInput: inputNum : $inputNum")
+        Log.d(TAG, "checkPlayerInput: inputNum : $inputNum")
 
         // check if result is ok...
         if (inputNum != 0 && inputNum == 2 * numToBeDoubled) {
@@ -413,12 +413,12 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
     override fun newChallenge() {
         // set the number to be doubled
         numToBeDoubled = MathBrainerUtility.randRange_ApiCheck(min, max)
-        binding.numberToBeDoubledTv.text = Integer.toString(numToBeDoubled)
+        binding.numberToBeDoubledTv.text = numToBeDoubled.toString()
 
         // clean edit text field
         binding.playerInputEt.isFocused
         binding.playerInputEt.setText("")
-        Log.d(eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.DoubleNumberActivity.Companion.TAG, "newChallenge: $countChallenge")
+        Log.d(TAG, "newChallenge: $countChallenge")
 
         // reset countdown if any and restart if
         countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval)
@@ -472,8 +472,8 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
             max = 100 * level + 50 * (level - 1)
 
             // increase time accordingly, but slightly
-            timerLength = timerLength + 1000
-            Log.d(eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.DoubleNumberActivity.Companion.TAG, "updatingLevel: New Level! new min : " + min + " new max: " + max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec.")
+            timerLength += 1000
+            Log.d(TAG, "updatingLevel: New Level! new min : " + min + " new max: " + max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec.")
         }
 
         // statistics
@@ -484,21 +484,16 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
 
     // Unity ads listener
     private inner class UnityAdsListener : IUnityAdsListener {
-
         override fun onUnityAdsReady(s: String) {
-
         }
 
         override fun onUnityAdsStart(s: String) {
-
         }
 
         override fun onUnityAdsFinish(s: String, finishState: UnityAds.FinishState) {
-
         }
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
-
         }
     }
 
@@ -506,14 +501,10 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
     // MENU STUFF
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-
         // When the home button is pressed, take the user back to Home
         if (id == android.R.id.home) {
-
-
             onBackPressed()
         }
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -525,19 +516,9 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         super.onBackPressed()
         // reset and destroy counter
         countDownIndicator.countdownReset()
-
         // saves score
         isComingHome()
-
         // show unityads randomic
         MathBrainerUtility.showUnityAdsRandom(this)
-
     }
-
-    companion object {
-
-        private val TAG = eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.DoubleNumberActivity::class.java.simpleName
-    }
-
-
 }

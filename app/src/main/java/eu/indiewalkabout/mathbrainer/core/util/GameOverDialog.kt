@@ -8,13 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 
-import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity
+import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
 import eu.indiewalkabout.mathbrainer.R
-import kotlinx.android.synthetic.main.dialog_gameover.view.*
 
 class GameOverDialog(private val context: Context, private val caller: IGameFunctions, private val activity: Activity) {
-    internal var homeBtn :ImageView? = null
-    internal var restartBtn :ImageView? = null
+    private var homeBtn :ImageView? = null
+    private var restartBtn :ImageView? = null
     private var alertDialog: AlertDialog? = null
 
 

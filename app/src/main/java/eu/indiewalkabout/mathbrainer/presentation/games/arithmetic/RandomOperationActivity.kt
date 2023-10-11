@@ -10,10 +10,9 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-
+import androidx.databinding.DataBindingUtil
 import java.util.ArrayList
-
-import eu.indiewalkabout.mathbrainer.ui.ChooseGameActivity
+import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
@@ -22,14 +21,13 @@ import eu.indiewalkabout.mathbrainer.core.util.EndGameSessionDialog
 import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-
-
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
-import kotlinx.android.synthetic.main.activity_random_operation.*
+import eu.indiewalkabout.mathbrainer.core.util.TAG
+import eu.indiewalkabout.mathbrainer.databinding.ActivityRandomOperationBinding
 
 class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
-
+    private lateinit var binding: ActivityRandomOperationBinding
     private val unityAdsListener = UnityAdsListener()
 
     private lateinit var livesValueIv: ArrayList<ImageView>
@@ -99,7 +97,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     private lateinit var gameOverDialog: GameOverDialog
 
 
-
     // Update lives view and check if it's game over or not
     // @override of IGameFunctions isGameOver()
     // @return boolean  : return true/false in case of gameover/gamecontinuing
@@ -138,17 +135,19 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_random_operation)
+        // setContentView(R.layout.activity_random_operation)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_random_operation)
+
 
         // Unity ads init
         UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView.loadAd(ConsentSDK.getAdRequest(this@RandomOperationActivity))
+        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@RandomOperationActivity))
 
 
         // store quiz text color for later use
-        quizDefaultTextColor = firstOperand_tv.textColors
+        quizDefaultTextColor = binding.firstOperandTv.textColors
 
         // init lives led images
         livesValueIv = ArrayList()
@@ -161,8 +160,10 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         wrongAnswer = ArrayList()
 
         // Create new count down indicator, without starting it
-        countDownIndicator = CountDownIndicator(this@RandomOperationActivity,
-                countdownBar, this@RandomOperationActivity)
+        countDownIndicator = CountDownIndicator(
+            this@RandomOperationActivity,
+            binding.countdownBar, this@RandomOperationActivity
+        )
 
         // start with first challenge and countdown init
         newChallenge()
@@ -193,26 +194,18 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         countDownIndicator.countdownReset()
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set the highscore passed from main
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set the highscore passed from main
     private fun showHighscore() {
         val intent = intent
         if (intent.hasExtra(ChooseGameActivity.HIGHSCORE)) {
             val value = intent.getIntExtra(ChooseGameActivity.HIGHSCORE, -1)
-            highscore_value_tv.text = Integer.toString(value)
+            binding.highscoreValueTv.text = value.toString()
         } else {
-            highscore_value_tv.text = "0"
+            binding.highscoreValueTv.text = "0"
         }
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Make bottom navigation bar and status bar hide, without resize when reappearing
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
@@ -227,40 +220,36 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set up the button pressed listener and checking answers
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set up the button pressed listener and checking answers
     private fun setBtnPressedListener() {
-        answer_plus_Btn.setOnClickListener { view ->
+        binding.answerPlusBtn.setOnClickListener { view ->
             // val b = view as Button
             pressedBtnValue = "+"
             checkPlayerInput()
         }
 
 
-        answer_minus_Btn.setOnClickListener { view ->
+        binding.answerMinusBtn.setOnClickListener { view ->
             // val b = view as Button
             pressedBtnValue = "-"
             checkPlayerInput()
         }
 
 
-        answer_mult_Btn.setOnClickListener { view ->
+        binding.answerMultBtn.setOnClickListener { view ->
             // val b = view as Button
             pressedBtnValue = "*"
             checkPlayerInput()
         }
 
 
-        answer_div_Btn.setOnClickListener { view ->
+        binding.answerDivBtn.setOnClickListener { view ->
             // val b = view as Button
             pressedBtnValue = "/"
             checkPlayerInput()
         }
 
-        backhome_img.setOnClickListener {
+        binding.backhomeImg.setOnClickListener {
             // saves score
             isComingHome()
 
@@ -273,11 +262,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Check if player input is right/wrong and update score
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Check if player input is right/wrong and update score
     override fun checkPlayerInput() {
 
         Log.d(TAG, "checkPlayerInput: pressedBtnValue : $pressedBtnValue")
@@ -291,7 +276,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
             setOperationText()
 
-            operationSymbol_tv.visibility = View.VISIBLE
+            binding.operationSymbolTv.visibility = View.VISIBLE
 
             // rise level after numChallengeEachLevel reached
             if (countChallenge > numChallengeEachLevel) {
@@ -319,32 +304,24 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set the currect symbol operation for multiplication: X for *
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set the currect symbol operation for multiplication: X for *
     private fun setOperationText() {
         if (operationOK == "*") {
-            operationSymbol_tv.text = "X"
+            binding.operationSymbolTv.text = "X"
         } else {
-            operationSymbol_tv.text = operationOK
+            binding.operationSymbolTv.text = operationOK
         }
 
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Check state at countdown expired
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Check state at countdown expired
     override fun checkCountdownExpired() {
 
         // lose a life, check if it's game over
         val gameover = isGameOver
 
         // new number to double
-        if (gameover == false) {
+        if (!gameover) {
             // show result and start a new game session if allowed
             showResult(false)
         }
@@ -352,14 +329,10 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show the result of the
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show the result of the
     private fun showResult(win: Boolean) {
 
-        if (win == true) {
+        if (win) {
             showOkResult()
             newchallengeAfterTimerLength(1000)
 
@@ -372,27 +345,20 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show ok in case of game win
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show ok in case of game win
     private fun showOkResult() {
-        instruction_tv.visibility = View.INVISIBLE
-
-        result_tv.visibility = View.VISIBLE
-        result_tv.text = resources.getString(R.string.ok_str)
-        result_tv.setTextColor(Color.GREEN)
-        firstOperand_tv.setTextColor(Color.GREEN)
-        secondOperand_tv.setTextColor(Color.GREEN)
-
+        binding.instructionTv.visibility = View.INVISIBLE
+        binding.resultTv.visibility = View.VISIBLE
+        binding.resultTv.text = resources.getString(R.string.ok_str)
+        binding.resultTv.setTextColor(Color.GREEN)
+        binding.firstOperandTv.setTextColor(Color.GREEN)
+        binding.secondOperandTv.setTextColor(Color.GREEN)
         setOperationText()
         // operationSymbol_tv.setText(operationOK);
-        operationSymbol_tv.setTextColor(Color.GREEN)
-        operation_result_tv.setTextColor(Color.GREEN)
-        equals_sign_tv.setTextColor(Color.GREEN)
-        lifeGridLayout.visibility = View.INVISIBLE
-
+        binding.operationSymbolTv.setTextColor(Color.GREEN)
+        binding.operationResultTv.setTextColor(Color.GREEN)
+        binding.equalsSignTv.setTextColor(Color.GREEN)
+        binding.lifeGridLayout.visibility = View.INVISIBLE
 
         // statistics
         Results.incrementGameResultsThread("operations_executed")
@@ -400,26 +366,20 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show wrong in case of game lose
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show wrong in case of game lose
     private fun showWrongResult() {
-        instruction_tv.visibility = View.INVISIBLE
-
-        result_tv.visibility = View.VISIBLE
-        result_tv.text = resources.getString(R.string.wrong_str) + " : " + operationOK
-        result_tv.setTextColor(Color.RED)
-        firstOperand_tv.setTextColor(Color.RED)
-        secondOperand_tv.setTextColor(Color.RED)
-
+        binding.instructionTv.visibility = View.INVISIBLE
+        binding.resultTv.visibility = View.VISIBLE
+        binding.resultTv.text = resources.getString(R.string.wrong_str) + " : " + operationOK
+        binding.resultTv.setTextColor(Color.RED)
+        binding.firstOperandTv.setTextColor(Color.RED)
+        binding.secondOperandTv.setTextColor(Color.RED)
         setOperationText()
         // operationSymbol_tv.setText(operationOK);
-        operationSymbol_tv.setTextColor(Color.RED)
-        operation_result_tv.setTextColor(Color.RED)
-        equals_sign_tv.setTextColor(Color.RED)
-        lifeGridLayout.visibility = View.INVISIBLE
+        binding.operationSymbolTv.setTextColor(Color.RED)
+        binding.operationResultTv.setTextColor(Color.RED)
+        binding.equalsSignTv.setTextColor(Color.RED)
+        binding.lifeGridLayout.visibility = View.INVISIBLE
 
         // statistics
         Results.incrementGameResultsThread("operations_executed")
@@ -427,11 +387,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Launch new challenge after timerLength
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Launch new challenge after timerLength
     private fun newchallengeAfterTimerLength(timerLength: Int) {
         val handler = Handler()
         val runnable = Runnable {
@@ -442,64 +398,43 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         handler.postDelayed(runnable, timerLength.toLong())
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Setup before new game session
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Setup before new game session
     private fun setupBeforeNewGame() {
-        result_tv.visibility = View.INVISIBLE
-        instruction_tv.visibility = View.VISIBLE
-        firstOperand_tv.setTextColor(quizDefaultTextColor)
-        secondOperand_tv.setTextColor(quizDefaultTextColor)
-        operationSymbol_tv.setTextColor(quizDefaultTextColor)
-        operation_result_tv.setTextColor(quizDefaultTextColor)
-        equals_sign_tv.setTextColor(quizDefaultTextColor)
-        lifeGridLayout.visibility = View.VISIBLE
+        binding.resultTv.visibility = View.INVISIBLE
+        binding.instructionTv.visibility = View.VISIBLE
+        binding.firstOperandTv.setTextColor(quizDefaultTextColor)
+        binding.secondOperandTv.setTextColor(quizDefaultTextColor)
+        binding.operationSymbolTv.setTextColor(quizDefaultTextColor)
+        binding.operationResultTv.setTextColor(quizDefaultTextColor)
+        binding.equalsSignTv.setTextColor(quizDefaultTextColor)
+        binding.lifeGridLayout.visibility = View.VISIBLE
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Update score view
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Update score view
     private fun updateScore() {
-        highscore_label_tv.visibility = View.INVISIBLE
-        highscore_value_tv.visibility = View.INVISIBLE
-        scoreLabel_tv.visibility = View.VISIBLE
-        scoreValue_tv.visibility = View.VISIBLE
-
+        binding.highscoreLabelTv.visibility = View.INVISIBLE
+        binding.highscoreValueTv.visibility = View.INVISIBLE
+        binding.scoreLabelTv.visibility = View.VISIBLE
+        binding.scoreValueTv.visibility = View.VISIBLE
         score += 25
-        scoreValue_tv.text = Integer.toString(score)
+        binding.scoreValueTv.text = Integer.toString(score)
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Saves the score and others game data if coming back home before reach game over condition
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Saves the score and others game data if coming back home before reach game over condition
     fun isComingHome() {
         Results.updateGameResultHighscoreThread("random_op_game_score", score)
         Results.incrementGameResultByDeltaThread("global_score", score)
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Update progress bar
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Update progress bar
     override fun updateProgressBar(progress: Int) {
-        countdownBar.progress = progress
+        binding.countdownBar.progress = progress
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set new challenge in view
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set new challenge in view
     override fun newChallenge() {
         // clear wrong answers list
         wrongAnswer.clear()
@@ -521,12 +456,8 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Choose the right operands based on based on operation symbol,update UI, do calculation ,
-     * and store the correct answer.
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Choose the right operands based on based on operation symbol,update UI, do calculation ,
+    // and store the correct answer.
     private fun calculateOperation() {
         when (operation) {
             '+' -> {
@@ -581,6 +512,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
                 // statistics
                 Results.incrementGameResultsThread("divisions")
             }
+
             else -> {
             }
         }
@@ -589,25 +521,21 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         operationOK = Character.toString(operation)
 
         // set values in view
-        operation_result_tv.text = Integer.toString(answer)
+        binding.operationResultTv.text = answer.toString(answer)
 
         // hide correct operation
         // operationSymbol_tv.setText(operationOK);
         // operationSymbol_tv.setVisibility(View.INVISIBLE);
-        operationSymbol_tv.text = resources.getString(R.string.question_mark)
+        binding.operationSymbolTv.text = resources.getString(R.string.question_mark)
 
-        firstOperand_tv.text = Integer.toString(firstOperand)
-        secondOperand_tv.text = Integer.toString(secondOperand)
+        binding.firstOperandTv.text = firstOperand.toString(firstOperand)
+        binding.secondOperandTv.text = secondOperand.toString(secondOperand)
 
 
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show end game message
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show end game message
     private fun endGame() {
         val handler = Handler()
 
@@ -623,36 +551,30 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show gameover dialog
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Show gameover dialog
     private fun showGameOverDialog() {
-        gameOverDialog = GameOverDialog(this,
-                this@RandomOperationActivity, this)
+        gameOverDialog = GameOverDialog(
+            this,
+            this@RandomOperationActivity, this
+        )
 
 
         // hide input field
-        firstOperand_tv.visibility = View.INVISIBLE
-        secondOperand_tv.visibility = View.INVISIBLE
-        operationSymbol_tv.visibility = View.INVISIBLE
-        operation_result_tv.visibility = View.INVISIBLE
-        equals_sign_tv.visibility = View.INVISIBLE
-        result_tv.visibility = View.INVISIBLE
+        binding.firstOperandTv.visibility = View.INVISIBLE
+        binding.secondOperandTv.visibility = View.INVISIBLE
+        binding.operationSymbolTv.visibility = View.INVISIBLE
+        binding.operationResultTv.visibility = View.INVISIBLE
+        binding.equalsSignTv.visibility = View.INVISIBLE
+        binding.resultTv.visibility = View.INVISIBLE
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Updating level
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Updating level
     private fun updateLevel() {
         // increment level
         level++
 
-        levelValue_tv.text = Integer.toString(level)
+        binding.levelValueTv.text = Integer.toString(level)
 
         // increment level difficulty
         if (level > 1) {
@@ -674,7 +596,10 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
             // increase time accordingly, but slightly
             timerLength = timerLength + 5000
-            Log.d(TAG, "updatingLevel: New Level! new min : " + min + " new max: " + max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec.")
+            Log.d(
+                TAG,
+                "updatingLevel: New Level! new min : " + min + " new max: " + max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec."
+            )
         }
 
         // statistics
@@ -683,11 +608,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Unity ads listener
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Unity ads listener
     private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
@@ -708,11 +629,10 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * MENU STUFF
-     * ---------------------------------------------------------------------------------------------
-     */
+
+    // ---------------------------------------------------------------------------------------------
+    // MENU STUFF
+    // ---------------------------------------------------------------------------------------------
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
@@ -734,18 +654,9 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         super.onBackPressed()
         // reset and destroy counter
         countDownIndicator.countdownReset()
-
         // saves score
         isComingHome()
-
         // show unityads randomic
         MathBrainerUtility.showUnityAdsRandom(this)
-
-    }
-
-    companion object {
-
-        // tag for log
-        private val TAG = Math_Op_Choose_Result_Activity::class.java.simpleName
     }
 }

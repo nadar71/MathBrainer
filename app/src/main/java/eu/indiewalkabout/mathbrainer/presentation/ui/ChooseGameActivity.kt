@@ -12,21 +12,23 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
+import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
+import eu.indiewalkabout.mathbrainer.core.util.TAG
+import eu.indiewalkabout.mathbrainer.databinding.ActivityChooseGameNewBinding
+import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
+import eu.indiewalkabout.mathbrainer.domain.model.results.Results
+import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.DoubleNumberActivity
 import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.Math_Op_Choose_Result_Activity
 import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.Math_Op_Write_Result_Activity
 import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.RandomOperationActivity
 import eu.indiewalkabout.mathbrainer.presentation.games.othergames.CountObjectsActivity
 import eu.indiewalkabout.mathbrainer.presentation.games.othergames.NumberOrderActivity
-import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
-import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
-import eu.indiewalkabout.mathbrainer.domain.model.results.Results
-import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import eu.indiewalkabout.mathbrainer.core.util.TAG
-import eu.indiewalkabout.mathbrainer.databinding.ActivityHomeGameBinding
+
 
 // Choose the type of game
-class HomeGameActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityHomeGameBinding
+class ChooseGameActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityChooseGameNewBinding
 
     // highscores value
     private var totalHighScore_value: Int = 0
@@ -45,6 +47,7 @@ class HomeGameActivity : AppCompatActivity() {
     private var quickCountHighscore_value: Int = 0
     private var orderHighscore_value: Int = 0
 
+
     private lateinit var consentSDK: ConsentSDK
 
 
@@ -58,7 +61,7 @@ class HomeGameActivity : AppCompatActivity() {
      * Set if consent gdpr must be asked or not
      * ---------------------------------------------------------------------------------------------
      */
-    private var consentSDKNeed: Boolean
+    var consentSDKNeed: Boolean
         get() {
             val prefs = PreferenceManager.getDefaultSharedPreferences(this)
             return prefs.getBoolean(APP_CONSENT_NEED, DEFAULT_CONSENT_NEED)
@@ -77,22 +80,28 @@ class HomeGameActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // setContentView(R.layout.activity_home_game)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_home_game)
+        // setContentView(R.layout.activity_choose_game_new)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_choose_game_new)
 
         // init db with results to 0 where needed
         Results.initResultsThread()
+
         // keep scores to pass to games highscores visualization
         updateGamesScores()
+
         // activate all btn
         setBtnPressedListener()
+
         hideStatusNavBars()
+
     }
 
 
     override fun onStart() {
         super.onStart()
+
         checkConsentActive = consentSDKNeed
+
         if (checkConsentActive) {
             // Initialize ConsentSDK
             consentSDK = ConsentSDK.Builder(this)
@@ -103,6 +112,7 @@ class HomeGameActivity : AppCompatActivity() {
                 .addPublisherId("pub-8846176967909254") // Add your admob publisher id
                 .build()
 
+
             // To check the consent and load ads
             consentSDK.checkConsent(object : ConsentSDK.ConsentCallback() {
                 override fun onResult(isRequestLocationInEeaOrUnknown: Boolean) {
@@ -111,12 +121,13 @@ class HomeGameActivity : AppCompatActivity() {
                         "onResult: isRequestLocationInEeaOrUnknown : $isRequestLocationInEeaOrUnknown"
                     )
                     // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-                    binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@HomeGameActivity))
+                    binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@ChooseGameActivity))
                 }
             })
 
+
             // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-            binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@HomeGameActivity))
+            binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@ChooseGameActivity))
         }
     }
 
@@ -125,14 +136,14 @@ class HomeGameActivity : AppCompatActivity() {
 
 
         binding.sumChooseBtn.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, Math_Op_Choose_Result_Activity::class.java)
+            val intent = Intent(this@ChooseGameActivity, Math_Op_Choose_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "+")
             intent.putExtra(HIGHSCORE, sumChooseHighscore_value)
             startActivity(intent)
         }
 
         binding.diffChooseBtn.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, Math_Op_Choose_Result_Activity::class.java)
+            val intent = Intent(this@ChooseGameActivity, Math_Op_Choose_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "-")
             intent.putExtra(HIGHSCORE, diffChooseHighscore_value)
             startActivity(intent)
@@ -140,7 +151,7 @@ class HomeGameActivity : AppCompatActivity() {
 
 
         binding.multChooseBtn.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, Math_Op_Choose_Result_Activity::class.java)
+            val intent = Intent(this@ChooseGameActivity, Math_Op_Choose_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "*")
             intent.putExtra(HIGHSCORE, multChooseHighscore_value)
             startActivity(intent)
@@ -148,14 +159,14 @@ class HomeGameActivity : AppCompatActivity() {
 
 
         binding.divChooseBtn.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, Math_Op_Choose_Result_Activity::class.java)
+            val intent = Intent(this@ChooseGameActivity, Math_Op_Choose_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "/")
             intent.putExtra(HIGHSCORE, divChooseHighscore_value)
             startActivity(intent)
         }
 
         binding.sumWriteBtn.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, Math_Op_Write_Result_Activity::class.java)
+            val intent = Intent(this@ChooseGameActivity, Math_Op_Write_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "+")
             intent.putExtra(HIGHSCORE, sumWriteHighscore_value)
             startActivity(intent)
@@ -163,7 +174,7 @@ class HomeGameActivity : AppCompatActivity() {
 
 
         binding.diffWriteBtn.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, Math_Op_Write_Result_Activity::class.java)
+            val intent = Intent(this@ChooseGameActivity, Math_Op_Write_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "-")
             intent.putExtra(HIGHSCORE, diffWriteHighscore_value)
             startActivity(intent)
@@ -171,14 +182,14 @@ class HomeGameActivity : AppCompatActivity() {
 
 
         binding.multWriteBtn.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, Math_Op_Write_Result_Activity::class.java)
+            val intent = Intent(this@ChooseGameActivity, Math_Op_Write_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "*")
             intent.putExtra(HIGHSCORE, multWriteHighscore_value)
             startActivity(intent)
         }
 
         binding.divWriteBtn.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, Math_Op_Write_Result_Activity::class.java)
+            val intent = Intent(this@ChooseGameActivity, Math_Op_Write_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "/")
             intent.putExtra(HIGHSCORE, divWriteHighscore_value)
             startActivity(intent)
@@ -186,55 +197,52 @@ class HomeGameActivity : AppCompatActivity() {
 
 
         binding.resultWriteBtn.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, Math_Op_Write_Result_Activity::class.java)
+            val intent = Intent(this@ChooseGameActivity, Math_Op_Write_Result_Activity::class.java)
             intent.putExtra(HIGHSCORE, mixedOps_writeHighscore_value)
             startActivity(intent)
         }
 
         binding.resultChooseBtn.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, Math_Op_Choose_Result_Activity::class.java)
+            val intent = Intent(this@ChooseGameActivity, Math_Op_Choose_Result_Activity::class.java)
             intent.putExtra(HIGHSCORE, mixedOps_chooseHighscore_value)
             startActivity(intent)
         }
 
         binding.quickCountBtn.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, CountObjectsActivity::class.java)
+            val intent = Intent(this@ChooseGameActivity, CountObjectsActivity::class.java)
             intent.putExtra(HIGHSCORE, quickCountHighscore_value)
             startActivity(intent)
         }
 
 
         binding.doublingBtn.setOnClickListener {
-            val intent = Intent(
-                this@HomeGameActivity,
-                eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.DoubleNumberActivity::class.java
-            )
+            val intent = Intent(this@ChooseGameActivity, DoubleNumberActivity::class.java)
             intent.putExtra(HIGHSCORE, doublingHighscore_value)
             startActivity(intent)
         }
 
 
         binding.orderBtn.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, NumberOrderActivity::class.java)
+            val intent = Intent(this@ChooseGameActivity, NumberOrderActivity::class.java)
             intent.putExtra(HIGHSCORE, orderHighscore_value)
             startActivity(intent)
         }
 
         binding.randomOpsBtn.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, RandomOperationActivity::class.java)
+            val intent = Intent(this@ChooseGameActivity, RandomOperationActivity::class.java)
             intent.putExtra(HIGHSCORE, randomOpsHighscore_value)
             startActivity(intent)
         }
 
 
         binding.infoImg.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, GameCreditsActivity::class.java)
+            val intent = Intent(this@ChooseGameActivity, GameCreditsActivity::class.java)
             startActivity(intent)
         }
 
 
         binding.highscoreImg.setOnClickListener {
-            val intent = Intent(this@HomeGameActivity, HighscoresActivity::class.java)
+            val intent = Intent(this@ChooseGameActivity, HighscoresActivity::class.java)
             startActivity(intent)
         }
 
@@ -244,10 +252,13 @@ class HomeGameActivity : AppCompatActivity() {
     // Used to reload from db the tasks list and update the list view in screen
     private fun updateGamesScores() {
         val factory = HighscoresViewModelFactory()
+
         // keep updated with LiveData/ViewModel
         val viewModel = ViewModelProviders.of(this, factory).get(HighScoresViewModel::class.java)
+
         // retrieve data
         val gameResults = viewModel.gameResultsList
+
         // get data from observer, update view
         gameResults.observe(this, Observer { gameResultEntries ->
             Log.d(TAG, "LiveData : updated game results received. ")
@@ -258,6 +269,7 @@ class HomeGameActivity : AppCompatActivity() {
 
     // Put game result in textview
     private fun setGameResults(gameResults: List<GameResult>?) {
+
         this.gameResults = gameResults
 
         // set vars
@@ -298,12 +310,14 @@ class HomeGameActivity : AppCompatActivity() {
     }
 
 
-    // Make bottom navigation bar and status bar hide, without resize when reappearing
+    //  Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
         val uiOptions = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
+
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+
                 // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_FULLSCREEN) // // hide status bar
@@ -313,6 +327,7 @@ class HomeGameActivity : AppCompatActivity() {
     companion object {
         val OPERATION_KEY = "operation"
         val HIGHSCORE = "highscore"
+
         private val APP_CONSENT_NEED = "consent_requested"
         private val DEFAULT_CONSENT_NEED = true
 

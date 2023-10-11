@@ -9,16 +9,12 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.AppCompatEditText
 
 import eu.indiewalkabout.mathbrainer.R
 
-/**
- * Custom view that is an extension of EditText.
- * It provides a Clear ("x") button within the text field
- * that, when tapped, clears the text from the field.
- */
-
-class EditTextWithClear : androidx.appcompat.widget.AppCompatEditText {
+// Clear ("x") in text field to clear the text from the field.
+class EditTextWithClear : AppCompatEditText {
 
     internal var mClearButtonImage: Drawable? = null
 

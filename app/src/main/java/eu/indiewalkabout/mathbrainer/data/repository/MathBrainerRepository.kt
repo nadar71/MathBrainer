@@ -13,20 +13,17 @@ import java.util.ArrayList
  * -------------------------------------------------------------------------------------------------
  */
 class MathBrainerRepository private constructor(private val mathBrainerDB: MathBrainerDatabase) {
-
     val game_results_list = ArrayList<String>()
-
 
     //----------------------------------------------------------------------------------------------
     //  QUERY
     //----------------------------------------------------------------------------------------------
+
     // retrieve all games results
     val allGamesResults: LiveData<List<GameResult>>
         get() = mathBrainerDB.mathBrainerDbDao().loadAllGamesResults()
 
-
     init {
-
         game_results_list.add("operations_executed")
         game_results_list.add("operations_ok")
         game_results_list.add("operations_ko")
@@ -66,11 +63,7 @@ class MathBrainerRepository private constructor(private val mathBrainerDB: MathB
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Check if game results are initialized (present with  0, so ok), otherwise init them.
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Check if game results are initialized (present with  0, so ok), otherwise init them.
     fun initGameResults() {
         for (gameResultName in game_results_list) {
             if (getGameResult(gameResultName) < 0) {  // result not present, init
@@ -129,19 +122,11 @@ class MathBrainerRepository private constructor(private val mathBrainerDB: MathB
     }
 
     companion object {
-
-        private val TAG = MathBrainerRepository::class.java.simpleName
-
         private var sInstance: MathBrainerRepository? = null
 
-
-        /**
-         * ---------------------------------------------------------------------------------------------
-         * Get singleton instance
-         * @param database
-         * @return
-         * ---------------------------------------------------------------------------------------------
-         */
+        // Get singleton instance
+        // @param database
+        // @return
         fun getInstance(database: MathBrainerDatabase): MathBrainerRepository? {
             if (sInstance == null) {
                 synchronized(MathBrainerRepository::class.java) {

@@ -12,24 +12,18 @@ import android.view.View
 import java.util.ArrayList
 
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.games.customviews.model.CircularImage
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
+import eu.indiewalkabout.mathbrainer.presentation.games.customviews.model.CircularImage
 
 class SolutionsView : View {
-
     internal lateinit var context: Context
-
     // scaling items images
-    internal var imageScaleXY: Float = 0.toFloat()
-
-
+    private var imageScaleXY: Float = 0.toFloat()
     // list of marker with number upon
-    internal lateinit var localSolutionsList: MutableList<CircularImage>
-
+    private lateinit var localSolutionsList: MutableList<CircularImage>
 
     private var mWidth: Float = 0.toFloat()                    // Custom view width
     private var mHeight: Float = 0.toFloat()                   // Custom view height
-
 
     constructor(context: Context) : super(context) {
         init(context)
@@ -45,37 +39,22 @@ class SolutionsView : View {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Rest the view state
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Rest the view state
     private fun init(context: Context) {
         this.context = context
-
         imageScaleXY = 0.2f
-
         localSolutionsList = ArrayList()
-
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Start over new game
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Start over new game
     fun resetGame() {
         // clear from previous items
         localSolutionsList.clear()
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Set solution list from MarkerWithNoNumber to localSolutionsList
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Set solution list from MarkerWithNoNumber to localSolutionsList
     fun setSolutionList(localSolutionsList: MutableList<CircularImage>) {
         this.localSolutionsList = localSolutionsList
     }
@@ -123,35 +102,24 @@ class SolutionsView : View {
     }
 
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Called during layout when the size of this view has changed. If
-     * the view was just added to the view hierarchy, it is called with the initial
-     * values of 0. The code determines the drawing bounds for the custom view.
-     *
-     * @param w    Current width of this view
-     * @param h    Current height of this view
-     * @param oldw Initial width of this view
-     * @param oldh Initial height of this view
-     * ---------------------------------------------------------------------------------------------
-     */
+
+    // Called during layout when the size of this view has changed. If
+    // the view was just added to the view hierarchy, it is called with the initial
+    // values of 0. The code determines the drawing bounds for the custom view.
+    //
+    // @param w    Current width of this view
+    // @param h    Current height of this view
+    // @param oldw Initial width of this view
+    // @param oldh Initial height of this view
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         // Calculate the radius from the width and height.
         mWidth = w.toFloat()
         mHeight = h.toFloat()
     }
 
-
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Draw view on screen with a defined items number
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Draw view on screen with a defined items number
     fun redraw() {
         this.invalidate()
     }
 
-    companion object {
-        private val TAG = SolutionsView::class.java.simpleName
-    }
 }

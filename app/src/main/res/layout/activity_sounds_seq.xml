@@ -1,397 +1,402 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.games.othergames.SoundsSeqActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/backgroundImg"
-        android:layout_width="0dp"
-        android:layout_height="836dp"
-        android:contentDescription="@string/backgroundimg"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.126"
-        app:srcCompat="@drawable/summer" />
+    <data>
 
-    <ProgressBar
-        android:id="@+id/countdownBar"
-        style="@android:style/Widget.ProgressBar.Horizontal"
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:max="30"
-        android:progress="100"
-        android:progressDrawable="@drawable/horizontal_progress_drawable_green"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/level_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/level"
-        android:textAlignment="viewStart"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countdownBar"
-        android:layout_marginLeft="8dp"
-        android:gravity="start" />
-
-    <TextView
-        android:id="@+id/levelValue_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/_0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/level_tv"
-        android:layout_marginLeft="8dp" />
-
-    <TextView
-        android:id="@+id/scoreLabel_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/score"
-        android:textAlignment="viewStart"
-        app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
-        app:layout_constraintHorizontal_bias="0.556"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/level_tv"
-        app:layout_constraintTop_toBottomOf="@+id/countdownBar"
-        android:gravity="start" />
-
-    <TextView
-        android:id="@+id/scoreValue_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/_0"
-        app:layout_constraintEnd_toStartOf="@+id/gridLayout"
-        app:layout_constraintHorizontal_bias="0.542"
-        app:layout_constraintStart_toEndOf="@+id/levelValue_tv"
-        app:layout_constraintTop_toBottomOf="@+id/scoreLabel_tv" />
-
-    <TextView
-        android:id="@+id/lifeRemainText_tv"
-        android:layout_width="36dp"
-        android:layout_height="19dp"
-        android:layout_marginEnd="60dp"
-        android:gravity="center_vertical"
-        android:text="@string/lives"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countdownBar"
-        android:layout_marginRight="60dp" />
-
-
-
-    <GridLayout
-        android:id="@+id/gridLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
-        android:columnCount="3"
-        android:rowCount="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lifeRemainText_tv">
+        android:layout_height="match_parent"
+        tools:context=".presentation.games.othergames.SoundsSeqActivity">
 
         <ImageView
-            android:id="@+id/life_01_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/todo"
+            android:id="@+id/backgroundImg"
+            android:layout_width="0dp"
+            android:layout_height="836dp"
+            android:contentDescription="@string/backgroundimg"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/presence_online"
-            tools:layout_editor_absoluteX="301dp" />
+            app:layout_constraintVertical_bias="0.126"
+            app:srcCompat="@drawable/summer" />
 
-        <ImageView
-            android:id="@+id/life_02_iv"
+        <ProgressBar
+            android:id="@+id/countdownBar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:max="30"
+            android:progress="100"
+            android:progressDrawable="@drawable/horizontal_progress_drawable_green"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/level_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:contentDescription="@string/todo"
-            app:layout_constraintEnd_toStartOf="@+id/life_03_iv"
-            app:layout_constraintStart_toEndOf="@+id/life_01_iv"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/presence_online" />
+            android:text="@string/level"
+            android:textAlignment="viewStart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/countdownBar"
+            android:layout_marginLeft="8dp"
+            android:gravity="start" />
 
-        <ImageView
-            android:id="@+id/life_03_iv"
+        <TextView
+            android:id="@+id/levelValue_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/_0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/level_tv"
+            android:layout_marginLeft="8dp" />
+
+        <TextView
+            android:id="@+id/scoreLabel_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/score"
+            android:textAlignment="viewStart"
+            app:layout_constraintEnd_toStartOf="@+id/lifeRemainText_tv"
+            app:layout_constraintHorizontal_bias="0.556"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/level_tv"
+            app:layout_constraintTop_toBottomOf="@+id/countdownBar"
+            android:gravity="start" />
+
+        <TextView
+            android:id="@+id/scoreValue_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/_0"
+            app:layout_constraintEnd_toStartOf="@+id/gridLayout"
+            app:layout_constraintHorizontal_bias="0.542"
+            app:layout_constraintStart_toEndOf="@+id/levelValue_tv"
+            app:layout_constraintTop_toBottomOf="@+id/scoreLabel_tv" />
+
+        <TextView
+            android:id="@+id/lifeRemainText_tv"
+            android:layout_width="36dp"
+            android:layout_height="19dp"
+            android:layout_marginEnd="60dp"
+            android:gravity="center_vertical"
+            android:text="@string/lives"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/countdownBar"
+            android:layout_marginRight="60dp" />
+
+
+        <GridLayout
+            android:id="@+id/gridLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:contentDescription="@string/todo"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:columnCount="3"
+            android:rowCount="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lifeRemainText_tv">
+
+            <ImageView
+                android:id="@+id/life_01_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/todo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/presence_online"
+                tools:layout_editor_absoluteX="301dp" />
+
+            <ImageView
+                android:id="@+id/life_02_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@string/todo"
+                app:layout_constraintEnd_toStartOf="@+id/life_03_iv"
+                app:layout_constraintStart_toEndOf="@+id/life_01_iv"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/presence_online" />
+
+            <ImageView
+                android:id="@+id/life_03_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:contentDescription="@string/todo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/presence_online" />
+        </GridLayout>
+
+
+        <!-- - - - - QUIZ SECTION - - - - - - - - - - - - - - - - - - -->
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/presence_online" />
-    </GridLayout>
+            app:layout_constraintVertical_bias="0.526">
 
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
 
-    <!-- - - - - QUIZ SECTION - - - - - - - - - - - - - - - - - - -->
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
 
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.526">
+            <ImageButton
+                android:id="@+id/imageButton4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="2"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
 
-        <ImageButton
-            android:id="@+id/imageButton2"
+            <ImageButton
+                android:id="@+id/imageButton5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="3"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <ImageButton
+                android:id="@+id/imageButton7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="4"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <ImageButton
+                android:id="@+id/imageButton8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="5"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <ImageButton
+                android:id="@+id/imageButton9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="6"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+        </GridLayout>
+
+        <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.802"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.528">
 
-        <ImageButton
-            android:id="@+id/imageButton3"
+            <ImageButton
+                android:id="@+id/imageButton10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <ImageButton
+                android:id="@+id/imageButton11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <ImageButton
+                android:id="@+id/imageButton12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="2"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <ImageButton
+                android:id="@+id/imageButton13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="3"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <ImageButton
+                android:id="@+id/imageButton14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="4"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <ImageButton
+                android:id="@+id/imageButton15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="5"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <ImageButton
+                android:id="@+id/imageButton16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="6"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+        </GridLayout>
+
+
+        <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="1"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.154"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.528">
 
-        <ImageButton
-            android:id="@+id/imageButton4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="2"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            <ImageButton
+                android:id="@+id/imageButton18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
 
-        <ImageButton
-            android:id="@+id/imageButton5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="3"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            <ImageButton
+                android:id="@+id/imageButton19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
 
-        <ImageButton
-            android:id="@+id/imageButton7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="4"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            <ImageButton
+                android:id="@+id/imageButton20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="2"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
 
-        <ImageButton
-            android:id="@+id/imageButton8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="5"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            <ImageButton
+                android:id="@+id/imageButton21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="3"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
 
-        <ImageButton
-            android:id="@+id/imageButton9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="6"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            <ImageButton
+                android:id="@+id/imageButton22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="4"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
 
-    </GridLayout>
+            <ImageButton
+                android:id="@+id/imageButton23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="5"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
 
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.802"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.528">
+            <ImageButton
+                android:id="@+id/imageButton24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="6"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
 
-        <ImageButton
-            android:id="@+id/imageButton10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <ImageButton
-            android:id="@+id/imageButton11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="1"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <ImageButton
-            android:id="@+id/imageButton12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="2"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <ImageButton
-            android:id="@+id/imageButton13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="3"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <ImageButton
-            android:id="@+id/imageButton14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="4"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <ImageButton
-            android:id="@+id/imageButton15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="5"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <ImageButton
-            android:id="@+id/imageButton16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="6"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-    </GridLayout>
+        </GridLayout>
 
 
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.154"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.528">
-
-        <ImageButton
-            android:id="@+id/imageButton18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <ImageButton
-            android:id="@+id/imageButton19"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="1"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <ImageButton
-            android:id="@+id/imageButton20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="2"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <ImageButton
-            android:id="@+id/imageButton21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="3"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <ImageButton
-            android:id="@+id/imageButton22"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="4"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <ImageButton
-            android:id="@+id/imageButton23"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="5"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <ImageButton
-            android:id="@+id/imageButton24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="6"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-    </GridLayout>
+        <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->
+        <!-- THIS APP REAL AdMob banner ID: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/mAdView"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/admob_key_bottom_banner"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintHorizontal_bias="0.0"
+            ads:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
 
 
-    <!-- Sample AdMob banner ID       : ca-app-pub-3940256099942544/6300978111 -->
-    <!-- THIS APP REAL AdMob banner ID: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
-    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/mAdView"
-        android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/admob_key_bottom_banner"
-        ads:layout_constraintBottom_toBottomOf="parent"
-        ads:layout_constraintEnd_toEndOf="parent"
-        ads:layout_constraintHorizontal_bias="0.0"
-        ads:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
