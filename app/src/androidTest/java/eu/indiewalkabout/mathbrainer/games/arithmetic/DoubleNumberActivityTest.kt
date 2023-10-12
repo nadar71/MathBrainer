@@ -1,22 +1,20 @@
 package eu.indiewalkabout.mathbrainer.games.arithmetic
 
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
-
-import org.junit.Rule
-import org.junit.runner.RunWith
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
-// import androidx.test.runner.AndroidJUnit4
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 
 // TODO
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class DoubleNumberActivityTest {
 
-    lateinit var doubleNumberActivity : eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.DoubleNumberActivity
+    lateinit var doubleNumberActivity: eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.DoubleNumberActivity
 
     @get:Rule
     val activityRule = ActivityTestRule(eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.DoubleNumberActivity::class.java)
@@ -83,15 +81,12 @@ class DoubleNumberActivityTest {
 
  */
 
-
-
     @Test
     fun checkPlayerInput() {
     }
 
     @Test
     fun checkCountdownExpired() {
-
     }
 
     @Test

@@ -11,30 +11,29 @@ import android.graphics.Paint
 import android.graphics.Point
 import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import java.io.IOException
-import java.util.ArrayList
-import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
+import com.unity3d.ads.IUnityAdsListener
+import com.unity3d.ads.UnityAds
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
 import eu.indiewalkabout.mathbrainer.core.util.EndGameSessionDialog
 import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import com.unity3d.ads.IUnityAdsListener
-import com.unity3d.ads.UnityAds
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityCountObjectsBinding
+import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.QuickCountItemDrawView
-
+import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
+import java.io.IOException
+import java.util.ArrayList
 
 class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     private lateinit var binding: ActivityCountObjectsBinding
@@ -98,7 +97,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     // game over dialog
     internal lateinit var gameOverDialog: GameOverDialog
 
-
     // Update lives view and check if it's game over or not
     // @override of IGameFunctions isGameOver()
     // @return boolean  : return true/false in case of gameover/gamecontinuing
@@ -127,7 +125,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
             return false
         }
 
-
     // ---------------------------------------------------------------------------------------------
     //                                    UNUSED STUFF, just for debug
     // ---------------------------------------------------------------------------------------------
@@ -146,7 +143,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     val screenHeight: Int
         get() = Resources.getSystem().displayMetrics.heightPixels
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // setContentView(R.layout.activity_count_objects)
@@ -161,7 +157,7 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         // setup context
         context = this
 
-        //Get a reference to our ImageView in the layout
+        // Get a reference to our ImageView in the layout
         ourFrame = findViewById<View>(R.id.canvas_image_ref_img) as ImageView
 
         // get the items to count view, set inviisible at the moment
@@ -182,7 +178,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         // define wrong answers storage
         wrongAnswer = ArrayList()
 
-
         newChallenge()
 
         // activate clicks on answer buttons
@@ -194,9 +189,7 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         hideStatusNavBars()
 
         showHighscore()
-
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -204,7 +197,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         // make bottom navigation bar and status bar hide
         hideStatusNavBars()
     }
-
 
     // Set the highscore passed from main
     private fun showHighscore() {
@@ -217,21 +209,21 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         }
     }
 
-
     // Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
-        val uiOptions = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
+        val uiOptions = (
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide navigation bar
 
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // hide navigation bar
 
                 // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_FULLSCREEN) // // hide status bar
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+            ) // // hide status bar
         decorView.systemUiVisibility = uiOptions
     }
-
 
     // Set up the button pressed listener and checking answers
     private fun setBtnPressedListener() {
@@ -241,20 +233,17 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
             checkPlayerInput()
         }
 
-
         binding.answer02Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
 
-
         binding.answer03Btn.setOnClickListener { view ->
             val b = view as Button
             pressedBtnValue = Integer.parseInt(b.text as String)
             checkPlayerInput()
         }
-
 
         binding.answer04Btn.setOnClickListener { view ->
             val b = view as Button
@@ -272,7 +261,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
             val intent = Intent(this@CountObjectsActivity, ChooseGameActivity::class.java)
             startActivity(intent)
         }
-
     }
 
     // Check if player input is right/wrong and update score
@@ -297,10 +285,8 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
             if (!gameover) {
                 showNewBtnAfterTimerLength(100, false)
             }
-
         }
     }
-
 
     // Show button for new challenge after timerLength
     private fun showNewBtnAfterTimerLength(timerLength: Int, win: Boolean) {
@@ -319,7 +305,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
                 // statistics
                 Results.incrementGameResultsThread("operations_executed")
                 Results.incrementGameResultsThread("operations_ko")
-
             } else if (win == true) {
                 binding.resultTv.text = resources.getString(R.string.ok_str)
                 binding.resultTv.setTextColor(Color.GREEN)
@@ -334,7 +319,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         handler.postDelayed(runnable, timerLength.toLong())
     }
 
-
     // Hide answer as items group after timerLength
     private fun hideAnswerAfterTimerLength(timerLength: Int) {
         val handler = Handler()
@@ -342,7 +326,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         // execute runnable after a timerLength
         handler.postDelayed(runnable, timerLength.toLong())
     }
-
 
     // Launch new challenge after timerLength
     private fun newchallengeAfterTimerLength(timerLength: Int) {
@@ -356,7 +339,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         handler.postDelayed(runnable, timerLength.toLong())
     }
 
-
     // Update score view
     private fun updateScore() {
         binding.highscoreLabelTv.visibility = View.INVISIBLE
@@ -366,7 +348,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         score += 25
         binding.scoreValueTv.text = Integer.toString(score)
     }
-
 
     // Saves the score and others game data if coming back home before reach game over condition
     private fun isComingHome() {
@@ -379,9 +360,7 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     }
 
     override fun updateProgressBar(progress: Int) {
-
     }
-
 
     // Set new challenge in view
     override fun newChallenge() {
@@ -403,7 +382,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         setupAnswersBtn(itemsToCount)
     }
 
-
     // Show items to count, hide anserws buttons
     private fun showItems() {
         binding.btnNewGame.visibility = View.INVISIBLE
@@ -412,7 +390,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         drawquiz.visibility = View.VISIBLE
         binding.countObjInstructionsTv.visibility = View.VISIBLE
     }
-
 
     // Show items to count, hide anserws buttons
     private fun hideItems() {
@@ -423,7 +400,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         binding.countObjInstructionsTv.visibility = View.INVISIBLE
     }
 
-
     // Hide items group after timerLength
     private fun hideQuizAfterTimerLength(timerLength: Int) {
         val handler = Handler()
@@ -431,7 +407,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         // execute runnable after a timerLength
         handler.postDelayed(runnable, timerLength.toLong())
     }
-
 
     // Create setup correct answer and false answer on buttons
     private fun setupAnswersBtn(numItemsToCount: Int) {
@@ -457,7 +432,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         }
     }
 
-
     // Random answer for sum generator
     private fun randomOffsetSum(): Int {
         val result = MathBrainerUtility.randRange_ApiCheck(1, (offset * 1.0).toInt())
@@ -467,7 +441,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         }
         return answerOK + result
     }
-
 
     // Return the button based on number
     // @param num
@@ -484,7 +457,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         return null
     }
 
-
     // Show end game message
     private fun endGame() {
         val handler = Handler()
@@ -499,9 +471,7 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
 
         val runnable = Runnable { showGameOverDialog() }
         handler.postDelayed(runnable, 500)
-
     }
-
 
     // Show gameover dialog
     private fun showGameOverDialog() {
@@ -523,19 +493,18 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
             timerLength += 0.5f
             numChallengeEachLevel += 0
             Log.d(
-                TAG, "updatingLevel: New Level! new min : " + min + " new max: "
-                        + max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec."
+                TAG,
+                "updatingLevel: New Level! new min : " + min + " new max: " +
+                    max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec."
             )
         }
         // statistics
         Results.incrementGameResultsThread("level_upgrades")
     }
 
-
     // Check state at countdown expired
     override fun checkCountdownExpired() {
     }
-
 
     // Unity ads listener
     private inner class UnityAdsListener : IUnityAdsListener {
@@ -553,7 +522,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         }
     }
 
-
     // ---------------------------------------------------------------------------------------------
     // MENU STUFF
     // ---------------------------------------------------------------------------------------------
@@ -566,7 +534,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         return super.onOptionsItemSelected(item)
     }
 
-
     // ---------------------------------------------------------------------------------------------
     //                                  REVEALING FAB BTN STUFF
     // ---------------------------------------------------------------------------------------------
@@ -577,7 +544,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         // show unityads randomic
         MathBrainerUtility.showUnityAdsRandom(this)
     }
-
 
     // -------------------------------------------
     // UNUSED , just for debug
@@ -601,7 +567,7 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
 
         val imageScaleXY = 0.2f
 
-        //Create a bitmap object to use as our canvas
+        // Create a bitmap object to use as our canvas
         Log.d(
             TAG,
             "onCreate: validDrawAreaItemsWidth : $validDrawAreaItemsWidth validDrawAreaItemsHeight : $validDrawAreaItemsHeight"
@@ -610,16 +576,16 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         val ourBitmap =
             Bitmap.createBitmap(validDrawAreaWidth, validDrawAreaHeight, Bitmap.Config.ARGB_8888)
 
-        //Assign the bitmap to image = our frame
+        // Assign the bitmap to image = our frame
         ourFrame.setImageBitmap(ourBitmap)
         // Assign the bitmap to the canvas
         val ourCanvas = Canvas(ourBitmap)
-        //A paint object that does our drawing, on our canvas
+        // A paint object that does our drawing, on our canvas
         val paint = Paint()
-        //Set the background color
+        // Set the background color
         ourCanvas.drawColor(Color.TRANSPARENT)
         // ourCanvas.drawColor(Color.argb(0, 0, 0, 255));
-        //Change the color of the virtual paint brush
+        // Change the color of the virtual paint brush
         paint.color = Color.argb(255, 1, 255, 255)
 
         // draw 20 images
@@ -640,7 +606,6 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
                     MathBrainerUtility.resizeBitmapByScale(item, imageScaleXY),
                     randX.toFloat(), randY.toFloat(), paint
                 )
-
             } catch (e: IOException) {
                 Log.d(TAG, "drawGame: " + e.message)
             } finally {
@@ -660,5 +625,4 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
         // invalidate view for redrawing
         ourFrame.invalidate()
     }
-
 }

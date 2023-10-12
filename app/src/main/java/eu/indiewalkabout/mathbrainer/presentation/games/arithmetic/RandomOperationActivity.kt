@@ -5,26 +5,26 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import java.util.ArrayList
-import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
+import com.unity3d.ads.IUnityAdsListener
+import com.unity3d.ads.UnityAds
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
 import eu.indiewalkabout.mathbrainer.core.util.CountDownIndicator
 import eu.indiewalkabout.mathbrainer.core.util.EndGameSessionDialog
 import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import com.unity3d.ads.IUnityAdsListener
-import com.unity3d.ads.UnityAds
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityRandomOperationBinding
+import eu.indiewalkabout.mathbrainer.domain.model.results.Results
+import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
+import java.util.ArrayList
 
 class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     private lateinit var binding: ActivityRandomOperationBinding
@@ -34,7 +34,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
     // store initial text color
     private var quizDefaultTextColor: ColorStateList? = null
-
 
     // numbers to be processed
     private var firstOperand: Int = 0
@@ -66,7 +65,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     private var divHMax = 15
     private var divLMax = 11
 
-
     // store wring answer to avoid duplicates
     private lateinit var wrongAnswer: ArrayList<Int>
 
@@ -77,7 +75,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     // changing while level growing
     private var numChallengeEachLevel = 12
     private var countChallenge = 1
-
 
     // score var
     private var score = 0
@@ -95,7 +92,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
     // game over dialog
     private lateinit var gameOverDialog: GameOverDialog
-
 
     // Update lives view and check if it's game over or not
     // @override of IGameFunctions isGameOver()
@@ -124,27 +120,21 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
                 Results.incrementGameResultByDeltaThread("global_score", score)
 
                 return true
-
             } else {
                 return false
             }
-
-
         }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // setContentView(R.layout.activity_random_operation)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_random_operation)
 
-
         // Unity ads init
         UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
         binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@RandomOperationActivity))
-
 
         // store quiz text color for later use
         quizDefaultTextColor = binding.firstOperandTv.textColors
@@ -154,7 +144,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         livesValueIv.add(findViewById<View>(R.id.life_01_iv) as ImageView)
         livesValueIv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
         livesValueIv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
-
 
         // define wrong answers storage
         wrongAnswer = ArrayList()
@@ -177,9 +166,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         hideStatusNavBars()
 
         showHighscore()
-
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -187,7 +174,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         hideStatusNavBars()
         newChallenge()
     }
-
 
     override fun onPause() {
         super.onPause()
@@ -209,16 +195,17 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
-        val uiOptions = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
+        val uiOptions = (
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide navigation bar
 
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // hide navigation bar
 
                 // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_FULLSCREEN) // // hide status bar
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+            ) // // hide status bar
         decorView.systemUiVisibility = uiOptions
     }
-
 
     // Set up the button pressed listener and checking answers
     private fun setBtnPressedListener() {
@@ -228,20 +215,17 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
             checkPlayerInput()
         }
 
-
         binding.answerMinusBtn.setOnClickListener { view ->
             // val b = view as Button
             pressedBtnValue = "-"
             checkPlayerInput()
         }
 
-
         binding.answerMultBtn.setOnClickListener { view ->
             // val b = view as Button
             pressedBtnValue = "*"
             checkPlayerInput()
         }
-
 
         binding.answerDivBtn.setOnClickListener { view ->
             // val b = view as Button
@@ -259,7 +243,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
             val intent = Intent(this@RandomOperationActivity, ChooseGameActivity::class.java)
             startActivity(intent)
         }
-
     }
 
     // Check if player input is right/wrong and update score
@@ -299,10 +282,8 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
                 // show result and start a new game session if allowed
                 showResult(false)
             }
-
         }
     }
-
 
     // Set the currect symbol operation for multiplication: X for *
     private fun setOperationText() {
@@ -311,7 +292,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         } else {
             binding.operationSymbolTv.text = operationOK
         }
-
     }
 
     // Check state at countdown expired
@@ -325,9 +305,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
             // show result and start a new game session if allowed
             showResult(false)
         }
-
     }
-
 
     // Show the result of the
     private fun showResult(win: Boolean) {
@@ -335,15 +313,11 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         if (win) {
             showOkResult()
             newchallengeAfterTimerLength(1000)
-
-
         } else {
             showWrongResult()
             newchallengeAfterTimerLength(1000)
-
         }
     }
-
 
     // Show ok in case of game win
     private fun showOkResult() {
@@ -365,7 +339,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         Results.incrementGameResultsThread("operations_ok")
     }
 
-
     // Show wrong in case of game lose
     private fun showWrongResult() {
         binding.instructionTv.visibility = View.INVISIBLE
@@ -385,7 +358,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         Results.incrementGameResultsThread("operations_executed")
         Results.incrementGameResultsThread("operations_ko")
     }
-
 
     // Launch new challenge after timerLength
     private fun newchallengeAfterTimerLength(timerLength: Int) {
@@ -420,19 +392,16 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         binding.scoreValueTv.text = Integer.toString(score)
     }
 
-
     // Saves the score and others game data if coming back home before reach game over condition
     fun isComingHome() {
         Results.updateGameResultHighscoreThread("random_op_game_score", score)
         Results.incrementGameResultByDeltaThread("global_score", score)
     }
 
-
     // Update progress bar
     override fun updateProgressBar(progress: Int) {
         binding.countdownBar.progress = progress
     }
-
 
     // Set new challenge in view
     override fun newChallenge() {
@@ -453,7 +422,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
         // reset countdown if any and restart if
         countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval)
-
     }
 
     // Choose the right operands based on based on operation symbol,update UI, do calculation ,
@@ -530,10 +498,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
         binding.firstOperandTv.text = firstOperand.toString(firstOperand)
         binding.secondOperandTv.text = secondOperand.toString(secondOperand)
-
-
     }
-
 
     // Show end game message
     private fun endGame() {
@@ -546,10 +511,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
         val runnable = Runnable { showGameOverDialog() }
         handler.postDelayed(runnable, 500)
-
-
     }
-
 
     // Show gameover dialog
     private fun showGameOverDialog() {
@@ -557,7 +519,6 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
             this,
             this@RandomOperationActivity, this
         )
-
 
         // hide input field
         binding.firstOperandTv.visibility = View.INVISIBLE
@@ -568,13 +529,12 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         binding.resultTv.visibility = View.INVISIBLE
     }
 
-
     // Updating level
     private fun updateLevel() {
         // increment level
         level++
 
-        binding.levelValueTv.text = Integer.toString(level)
+        binding.levelValueTv.text = level.toString()
 
         // increment level difficulty
         if (level > 1) {
@@ -604,31 +564,23 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
         // statistics
         Results.incrementGameResultsThread("level_upgrades")
-
     }
-
 
     // Unity ads listener
     private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
-
         }
 
         override fun onUnityAdsStart(s: String) {
-
         }
 
         override fun onUnityAdsFinish(s: String, finishState: UnityAds.FinishState) {
-
         }
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
-
         }
     }
-
-
 
     // ---------------------------------------------------------------------------------------------
     // MENU STUFF
@@ -639,13 +591,11 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         // When the home button is pressed, take the user back to Home
         if (id == android.R.id.home) {
 
-
             onBackPressed()
         }
 
         return super.onOptionsItemSelected(item)
     }
-
 
     // ---------------------------------------------------------------------------------------------
     //                                  REVEALING FAB BTN STUFF

@@ -1,6 +1,5 @@
 package eu.indiewalkabout.mathbrainer.core.util
 
-
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
@@ -10,12 +9,10 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.os.Build
-
 import com.unity3d.ads.UnityAds
+import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
 import java.util.Random
 import java.util.concurrent.ThreadLocalRandom
-
-import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
 
 /**
  * ---------------------------------------------------------------------------------------------
@@ -42,7 +39,6 @@ object MathBrainerUtility {
         }
     }
 
-
     /**
      * ---------------------------------------------------------------------------------------------
      * Random answer for sum generator
@@ -56,14 +52,12 @@ object MathBrainerUtility {
             1
     }
 
-
     /**
      * ---------------------------------------------------------------------------------------------
      * Return a scaled bitmap resized by scale
      * ---------------------------------------------------------------------------------------------
      */
     fun resizeBitmapByScale(bitmap: Bitmap, scale: Float): Bitmap {
-
 
         // dimensions scaled
         val width = Math.round(bitmap.width * scale)
@@ -78,9 +72,7 @@ object MathBrainerUtility {
         var target = Bitmap.createScaledBitmap(bitmap, width, height, false)
         target = target.copy(Bitmap.Config.ARGB_8888, true)
         return target
-
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -91,9 +83,11 @@ object MathBrainerUtility {
      * @return
      * ---------------------------------------------------------------------------------------------
      */
-    fun drawTextToBitmap(gContext: Context,
-                         bitmap: Bitmap,
-                         gText: String): Bitmap {
+    fun drawTextToBitmap(
+        gContext: Context,
+        bitmap: Bitmap,
+        gText: String
+    ): Bitmap {
 
         val resources = gContext.resources
         val scale = resources.displayMetrics.density
@@ -145,7 +139,6 @@ object MathBrainerUtility {
         return bitmap
     }
 
-
     /**
      * ---------------------------------------------------------------------------------------------
      * Show unity ads with a defined random frequency
@@ -160,7 +153,6 @@ object MathBrainerUtility {
         }
     }
 
-
     /**
      * ---------------------------------------------------------------------------------------------
      * Return game result value for a given game result in list
@@ -174,7 +166,4 @@ object MathBrainerUtility {
         }
         return -1
     }
-
-
-
 }

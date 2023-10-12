@@ -7,12 +7,15 @@ import eu.indiewalkabout.mathbrainer.core.util.CountDownIndicator
 import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathCountDownTimer
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.mockito.Mockito.*
+import org.mockito.Mockito.spy
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 
 /*
 NB : needs testImplementation "org.robolectric:robolectric:4.3.1" to run
@@ -35,7 +38,6 @@ class CountDownIndicatorTest {
     // Context of the app under test.
     val appContext = InstrumentationRegistry.getInstrumentation().targetContext
 
-
     @Before
     fun setUp() {
         pbar = ProgressBar(appContext)
@@ -47,7 +49,6 @@ class CountDownIndicatorTest {
         gf = null
         countdown = null
     }
-
 
     // check count bar reset
     @Test
@@ -62,7 +63,6 @@ class CountDownIndicatorTest {
         countdownSpy!!.countdownReset()
         verify(countdownSpy, times(1))?.countdownReset()
     }
-
 
     // check countbar generation with default value and count down timer start
     @Test
@@ -85,9 +85,7 @@ class CountDownIndicatorTest {
         var mathCountDownTimerSpy = spy(countdown!!.mathCountDownTimer)
         mathCountDownTimerSpy!!.start()
         verify(mathCountDownTimerSpy, times(1))?.start()
-
     }
-
 
     // check countbar generation with 1-1 ratio, ending immediately: simulate finish call
     @Test
@@ -96,7 +94,6 @@ class CountDownIndicatorTest {
         var timerCountDownInterval: Long = 1000
 
         countdown!!.countdownBarStart(timerLength, timerCountDownInterval)
-
 
         assertEquals((timerLength.toInt() / 1000), pbar!!.max)
         assertEquals(((timerLength / 1000 * 0.30).toInt()), countdown!!.thirtyPercentToGo)
@@ -112,7 +109,6 @@ class CountDownIndicatorTest {
         verify(mathCountDownTimerSpy, times(1))?.onFinish()
     }
 
-
     // check onTicks calling working on standard value
     @Test
     fun CountDownIndicator_tickexecuted_correct() {
@@ -126,7 +122,6 @@ class CountDownIndicatorTest {
         mathCountDownTimerSpy!!.onTick(1000)
         verify(mathCountDownTimerSpy, times(1))?.onTick(1000)
     }
-
 
     // check updateCountDownIndicator
     @Test
@@ -142,7 +137,6 @@ class CountDownIndicatorTest {
         verify(countdownSpy, times(1))?.updateCountDownIndicator(100)
     }
 
-
     // check onTimeFinished
     @Test
     fun CountDownIndicator_onTimeFinished_correct() {
@@ -156,7 +150,6 @@ class CountDownIndicatorTest {
         countdownSpy!!.updateCountDownIndicator(100)
         verify(countdownSpy, times(1))?.updateCountDownIndicator(100)
     }
-
 
     // check updateCountDownIndicator on progress bar lower then 30%
     @Test
@@ -176,5 +169,4 @@ class CountDownIndicatorTest {
         countdownSpy!!.updateCountDownIndicator(prog)
         verify(countdownSpy, times(1))?.updateCountDownIndicator(prog)
     }
-
 }

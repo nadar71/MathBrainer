@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         // Initialize ConsentSDK
         val consentSDK = ConsentSDK.Builder(this)
             .addTestDeviceId("7DC1A1E8AEAD7908E42271D4B68FB270") // redminote 5 // Add your test device id "Remove addTestDeviceId on production!"
@@ -30,7 +29,6 @@ class MainActivity : AppCompatActivity() {
             .addPrivacyPolicy("http://www.indie-walkabout.eu/privacy-policy-app") // Add your privacy policy url
             .addPublisherId("pub-8846176967909254") // Add your admob publisher id
             .build()
-
 
         // To check the consent and load ads
         consentSDK.checkConsent(object : ConsentCallback() {
@@ -47,7 +45,6 @@ class MainActivity : AppCompatActivity() {
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
         mAdView?.loadAd(getAdRequest(this@MainActivity))
-
 
         // BEGIN Button management
         val playBtn = findViewById<Button>(R.id.playBtn)
@@ -70,7 +67,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, ChooseGameActivity::class.java)
             startActivity(intent)
         }
-
 
         // END Button management
     }

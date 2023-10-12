@@ -1,7 +1,5 @@
 package eu.indiewalkabout.mathbrainer.core.notused
 
-import eu.indiewalkabout.mathbrainer.core.notused.ResultsManager
-
 // Singletons class for storing and retrieving match data
 object ResultsManager {
     // singleton instantiation

@@ -9,18 +9,18 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-import java.io.IOException
-import java.util.ArrayList
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.model.CircularImage
+import java.io.IOException
+import java.util.ArrayList
 
 // Visualizing  x items distributed all around the view, to guess their number after disappearing
 class QuickCountItemDrawView : View {
     internal lateinit var context: Context
 
-    private var mWidth: Float = 0.toFloat()                    // Custom view width
-    private var mHeight: Float = 0.toFloat()                   // Custom view height
+    private var mWidth: Float = 0.toFloat() // Custom view width
+    private var mHeight: Float = 0.toFloat() // Custom view height
 
     // number of items to be drawn
     private var itemNumber = 5
@@ -46,11 +46,13 @@ class QuickCountItemDrawView : View {
         init(context)
     }
 
-    constructor(context: Context,
-                attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(
+        context: Context,
+        attrs: AttributeSet,
+        defStyleAttr: Int
+    ) : super(context, attrs, defStyleAttr) {
         init(context)
     }
-
 
     private fun init(context: Context) {
         this.context = context
@@ -61,18 +63,16 @@ class QuickCountItemDrawView : View {
         Log.d(TAG, "onCreate: mWidth : $mWidth mHeigth : $mHeight")
     }
 
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-
-        //A paint object that does our drawing, on our canvas
+        // A paint object that does our drawing, on our canvas
         val paint = Paint()
 
-        //Set the background color
+        // Set the background color
         canvas.drawColor(Color.TRANSPARENT)
 
-        //Change the color of the virtual paint brush
+        // Change the color of the virtual paint brush
         paint.color = Color.argb(255, 1, 255, 255)
 
         // clear from previous items
@@ -93,7 +93,6 @@ class QuickCountItemDrawView : View {
 
                 inputStream.close()
 
-
                 // make bitmap mutable
                 item = item.copy(Bitmap.Config.ARGB_8888, true)
                 var isOverlap = true
@@ -110,19 +109,15 @@ class QuickCountItemDrawView : View {
                 // draw on canvas
                 canvas.drawBitmap(
                     MathBrainerUtility.resizeBitmapByScale(item, imageScaleXY),
-                        randX.toFloat(), randY.toFloat(), paint)
-
+                    randX.toFloat(), randY.toFloat(), paint
+                )
             } catch (e: IOException) {
                 Log.d(TAG, "drawGame: " + e.message)
             } finally {
                 // we should really close our input streams here.
             }
         }
-
-
     }
-
-
 
     // Avoid overlapping objects
     // NB : item origin is in left-top vertex
@@ -138,9 +133,7 @@ class QuickCountItemDrawView : View {
             }
         }
         return false
-
     }
-
 
     // Called during layout when the size of this view has changed. If
     // the view was just added to the view hierarchy, it is called with the initial
@@ -157,8 +150,6 @@ class QuickCountItemDrawView : View {
         Log.d(TAG, "onCreate: mWidth : $mWidth mHeigth : $mHeight")
     }
 
-
-
     // Draw view on screen with a defined items number
     // @param itemNumber
     fun redraw(itemNumber: Int) {
@@ -166,5 +157,4 @@ class QuickCountItemDrawView : View {
         this.itemNumber = itemNumber
         this.invalidate()
     }
-
 }

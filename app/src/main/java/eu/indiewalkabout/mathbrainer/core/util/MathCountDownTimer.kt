@@ -12,19 +12,18 @@ class MathCountDownTimer : CountDownTimer {
     var millisInFuture: Long = 0
     var countDownInterval: Long = 0
 
-    constructor(millisInFuture: Long, countDownInterval: Long)
-            : super(millisInFuture, countDownInterval) {
-        this.millisInFuture = millisInFuture
-        this.countDownInterval = countDownInterval
-    }
+    constructor(millisInFuture: Long, countDownInterval: Long) :
+        super(millisInFuture, countDownInterval) {
+            this.millisInFuture = millisInFuture
+            this.countDownInterval = countDownInterval
+        }
 
-
-    constructor(millisInFuture: Long, countDownInterval: Long, countdownBar: CountDownIndicator)
-            : super(millisInFuture, countDownInterval) {
-        this.millisInFuture = millisInFuture
-        this.countDownInterval = countDownInterval
-        this.countdownBar = countdownBar
-    }
+    constructor(millisInFuture: Long, countDownInterval: Long, countdownBar: CountDownIndicator) :
+        super(millisInFuture, countDownInterval) {
+            this.millisInFuture = millisInFuture
+            this.countDownInterval = countDownInterval
+            this.countdownBar = countdownBar
+        }
 
     override fun onTick(millisUntilFinished: Long) {
         Log.d(TAG, "onTick: $millisUntilFinished")
@@ -36,9 +35,7 @@ class MathCountDownTimer : CountDownTimer {
         Log.d(TAG, "Time OVER !")
         countdownBar.updateCountDownIndicator(0)
 
-        //feedback to CountDown indicator
+        // feedback to CountDown indicator
         countdownBar.onTimeFinished()
     }
-
-
 }

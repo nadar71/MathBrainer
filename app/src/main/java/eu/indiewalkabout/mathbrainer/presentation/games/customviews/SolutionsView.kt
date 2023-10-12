@@ -8,12 +8,10 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
-
-import java.util.ArrayList
-
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.model.CircularImage
+import java.util.ArrayList
 
 class SolutionsView : View {
     internal lateinit var context: Context
@@ -22,8 +20,8 @@ class SolutionsView : View {
     // list of marker with number upon
     private lateinit var localSolutionsList: MutableList<CircularImage>
 
-    private var mWidth: Float = 0.toFloat()                    // Custom view width
-    private var mHeight: Float = 0.toFloat()                   // Custom view height
+    private var mWidth: Float = 0.toFloat() // Custom view width
+    private var mHeight: Float = 0.toFloat() // Custom view height
 
     constructor(context: Context) : super(context) {
         init(context)
@@ -33,11 +31,13 @@ class SolutionsView : View {
         init(context)
     }
 
-    constructor(context: Context,
-                attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(
+        context: Context,
+        attrs: AttributeSet,
+        defStyleAttr: Int
+    ) : super(context, attrs, defStyleAttr) {
         init(context)
     }
-
 
     // Rest the view state
     private fun init(context: Context) {
@@ -46,32 +46,29 @@ class SolutionsView : View {
         localSolutionsList = ArrayList()
     }
 
-
     // Start over new game
     fun resetGame() {
         // clear from previous items
         localSolutionsList.clear()
     }
 
-
     // Set solution list from MarkerWithNoNumber to localSolutionsList
     fun setSolutionList(localSolutionsList: MutableList<CircularImage>) {
         this.localSolutionsList = localSolutionsList
     }
-
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         // resetGame();
 
-        //A paint object that does our drawing, on our canvas
+        // A paint object that does our drawing, on our canvas
         val paint = Paint()
 
-        //Set the background color
+        // Set the background color
         canvas.drawColor(Color.TRANSPARENT)
 
-        //Change the color of the virtual paint brush
+        // Change the color of the virtual paint brush
         paint.color = Color.argb(255, 1, 255, 255)
 
         // draw solutions images currently discovered taken from MarkerWithNoNumber
@@ -88,20 +85,19 @@ class SolutionsView : View {
                 val bitmapWithNumber = marker.copy(Bitmap.Config.ARGB_8888, true)
 
                 // draw text on bitmap
-                MathBrainerUtility.drawTextToBitmap(context, bitmapWithNumber,
-                        Integer.toString(solutionImg._number))
-
+                MathBrainerUtility.drawTextToBitmap(
+                    context, bitmapWithNumber,
+                    Integer.toString(solutionImg._number)
+                )
 
                 // draw on canvas marker with  number on them
                 canvas.drawBitmap(
                     MathBrainerUtility.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
-                        solutionImg._x.toFloat(), solutionImg._y.toFloat(), paint)
+                    solutionImg._x.toFloat(), solutionImg._y.toFloat(), paint
+                )
             }
         }
-
     }
-
-
 
     // Called during layout when the size of this view has changed. If
     // the view was just added to the view hierarchy, it is called with the initial
@@ -121,5 +117,4 @@ class SolutionsView : View {
     fun redraw() {
         this.invalidate()
     }
-
 }

@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
 import android.text.InputType
 import android.util.Log
 import android.view.KeyEvent
@@ -14,16 +13,23 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import java.util.ArrayList
-import eu.indiewalkabout.mathbrainer.presentation.ui.HomeGameActivity
-import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
-import eu.indiewalkabout.mathbrainer.core.util.*
+import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
+import eu.indiewalkabout.mathbrainer.core.util.CountDownIndicator
+import eu.indiewalkabout.mathbrainer.core.util.EndGameSessionDialog
+import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
+import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
+import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
+import eu.indiewalkabout.mathbrainer.core.util.MyKeyboard
+import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityDoubleNumberBinding
-
+import eu.indiewalkabout.mathbrainer.domain.model.results.Results
+import eu.indiewalkabout.mathbrainer.presentation.ui.HomeGameActivity
+import java.util.ArrayList
 
 // Given a number, write its double
 class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
@@ -73,8 +79,6 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
     // game over dialog
     private lateinit var gameOverDialog: GameOverDialog
 
-
-
     // Update lives view and check if it's game over or not
     // @override of IGameFunctions isGameOver()
     // @return boolean  : return true/false in case of game over/game continuing
@@ -102,16 +106,12 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
                 Results.incrementGameResultByDeltaThread("global_score", score)
 
                 return true
-
             } else {
                 // lives remaining >0, restart a new counter
                 // countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval);
                 return false
             }
-
-
         }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,9 +139,10 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         setupCustomKeyboard()
 
         // Create new count down indicator, without starting it
-        countDownIndicator = CountDownIndicator(this@DoubleNumberActivity,
-            binding.countdownBar, this@DoubleNumberActivity)
-
+        countDownIndicator = CountDownIndicator(
+            this@DoubleNumberActivity,
+            binding.countdownBar, this@DoubleNumberActivity
+        )
 
         // start with first challenge and countdown init
         newChallenge()
@@ -174,9 +175,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         hideStatusNavBars()
 
         showHighscore()
-
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -185,14 +184,10 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         newChallenge()
     }
 
-
     override fun onPause() {
         super.onPause()
         countDownIndicator.countdownReset()
-
     }
-
-
 
     // Set the highscore passed from main
     private fun showHighscore() {
@@ -205,21 +200,21 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         }
     }
 
-
     // Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
-        val uiOptions = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
+        val uiOptions = (
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide navigation bar
 
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // hide navigation bar
 
                 // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_FULLSCREEN) // // hide status bar
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+            ) // // hide status bar
         decorView.systemUiVisibility = uiOptions
     }
-
 
     // Create  and setup customkeyboard
     private fun setupCustomKeyboard() {
@@ -240,7 +235,6 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         val ic = binding.playerInputEt.onCreateInputConnection(EditorInfo())
         keyboard.setInputConnection(ic, this@DoubleNumberActivity)
     }
-
 
     // Check if player input is right/wrong and update score
     override fun checkPlayerInput() {
@@ -287,10 +281,8 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
                 // show result and start a new game session if allowed
                 showResult(false)
             }
-
         }
     }
-
 
     // Check state at countdown expired
     override fun checkCountdownExpired() {
@@ -303,9 +295,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
             // show result and start a new game session if allowed
             showResult(false)
         }
-
     }
-
 
     // Show the result of the
     private fun showResult(win: Boolean) {
@@ -313,15 +303,11 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         if (win) {
             showOkResult()
             newchallengeAfterTimerLength(1000)
-
-
         } else {
             showWrongResult()
             newchallengeAfterTimerLength(1000)
-
         }
     }
-
 
     // Show ok in case of game win
     private fun showOkResult() {
@@ -340,9 +326,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
 
         Results.incrementGameResultsThread("doublings")
         Results.incrementGameResultsThread("multiplications")
-
     }
-
 
     // Show wrong in case of game lose
     private fun showWrongResult() {
@@ -363,7 +347,6 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         Results.incrementGameResultsThread("multiplications")
     }
 
-
     // Launch new challenge after timerLength
     private fun newchallengeAfterTimerLength(timerLength: Int) {
         val handler = Handler()
@@ -374,7 +357,6 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         // execute runnable after a timerLength
         handler.postDelayed(runnable, timerLength.toLong())
     }
-
 
     // Setup before new game session
     private fun setupBeforeNewGame() {
@@ -396,7 +378,6 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         binding.scoreValueTv.text = Integer.toString(score)
     }
 
-
     // Saves the score and others game data if coming back home before reach game over condition
     fun isComingHome() {
         Results.updateGameResultHighscoreThread("doublenumber_game_score", score)
@@ -407,7 +388,6 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
     override fun updateProgressBar(progress: Int) {
         binding.countdownBar.progress = progress
     }
-
 
     // Set new challenge in view
     override fun newChallenge() {
@@ -422,9 +402,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
 
         // reset countdown if any and restart if
         countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval)
-
     }
-
 
     // Show end game message
     private fun endGame() {
@@ -439,15 +417,15 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         handler.postDelayed(runnable, 500)
     }
 
-
     // Show gameover dialog
     private fun showGameOverDialog() {
-        gameOverDialog = GameOverDialog(this,
-                this@DoubleNumberActivity, this)
+        gameOverDialog = GameOverDialog(
+            this,
+            this@DoubleNumberActivity, this
+        )
 
         hideLastQuiz()
     }
-
 
     // Hide quiz
     private fun hideLastQuiz() {
@@ -457,7 +435,6 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         binding.operationSymbolTv.visibility = View.INVISIBLE
         binding.resultTv.visibility = View.INVISIBLE
     }
-
 
     // Updating level
     private fun updateLevel() {
@@ -478,9 +455,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
 
         // statistics
         Results.incrementGameResultsThread("level_upgrades")
-
     }
-
 
     // Unity ads listener
     private inner class UnityAdsListener : IUnityAdsListener {
@@ -497,7 +472,6 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         }
     }
 
-
     // MENU STUFF
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
@@ -507,7 +481,6 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         }
         return super.onOptionsItemSelected(item)
     }
-
 
     // ---------------------------------------------------------------------------------------------
     //                                  REVEALING FAB BTN STUFF

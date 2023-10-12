@@ -26,7 +26,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @LargeTest
 @RunWith(androidx.test.ext.junit.runners.AndroidJUnit4::class)
 class CheckMainActivityButton {
@@ -36,7 +35,6 @@ class CheckMainActivityButton {
     @JvmField
     var mActivityTestRule = ActivityTestRule(ChooseGameActivity::class.java)
 
-
     @Before
     fun setUp() {
         activity = mActivityTestRule.activity
@@ -44,12 +42,10 @@ class CheckMainActivityButton {
         // set consentSDK avoid showing consent banner
         activity.consentSDKNeed = false
 
-
         // Otherwise the workaround would be :
         // - delete preferences on device app
         // - launch one time and give admob consent
     }
-
 
     @Test
     fun checkInfoButton() {
@@ -59,10 +55,7 @@ class CheckMainActivityButton {
         intended(hasComponent(GameCreditsActivity::class.java.name))
         pressBack()
         Intents.release()
-
-
     }
-
 
     @Test
     fun checkHighscoreButton() {
@@ -113,6 +106,4 @@ class CheckMainActivityButton {
     }
 
  */
-
-
 }

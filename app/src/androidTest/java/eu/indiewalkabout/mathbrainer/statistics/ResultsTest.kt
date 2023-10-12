@@ -4,8 +4,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-import org.junit.Assert.*
-
 // TODO
 class ResultsTest {
 

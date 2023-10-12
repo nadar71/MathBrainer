@@ -2,11 +2,9 @@ package eu.indiewalkabout.mathbrainer
 
 import android.app.Application
 import android.content.Context
-
+import eu.indiewalkabout.mathbrainer.core.util.AppExecutors
 import eu.indiewalkabout.mathbrainer.data.local.db.MathBrainerDatabase
 import eu.indiewalkabout.mathbrainer.data.repository.MathBrainerRepository
-import eu.indiewalkabout.mathbrainer.core.util.AppExecutors
-
 
 // Class used for access singletons and application context wherever in the app.
 class AppMathBrainer : Application() {
@@ -18,7 +16,6 @@ class AppMathBrainer : Application() {
     // Singleton db instance
     val database: MathBrainerDatabase?
         get() = MathBrainerDatabase.getsDbInstance(this)
-
 
     // Repository singleton instance
     val repository: MathBrainerRepository?
@@ -36,5 +33,4 @@ class AppMathBrainer : Application() {
             return sContext
         }
     }
-
 }

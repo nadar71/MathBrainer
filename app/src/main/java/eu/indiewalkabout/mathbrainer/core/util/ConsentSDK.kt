@@ -1,15 +1,9 @@
 package eu.indiewalkabout.mathbrainer.core.util
 
-
-
-
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.util.Log
-import android.view.View
-
 import com.google.ads.consent.ConsentForm
 import com.google.ads.consent.ConsentFormListener
 import com.google.ads.consent.ConsentInfoUpdateListener
@@ -22,8 +16,6 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK.Companion.nonPersonalizedAdsBundle
-
 import java.net.MalformedURLException
 import java.net.URL
 
@@ -57,9 +49,8 @@ class ConsentSDK {
         abstract fun onResult(isRequestLocationInEeaOrUnknown: Boolean)
     }
 
-
     // Builder class
-    class Builder// Initialize Builder
+    class Builder // Initialize Builder
     (private val context: Context) {
         private var LOG_TAG = "ID_LOG"
         private var DEVICE_ID = ""
@@ -149,15 +140,18 @@ class ConsentSDK {
             consentInformation.debugGeography = DebugGeography.DEBUG_GEOGRAPHY_EEA
         }
         val publisherIds = arrayOf<String?>(publisherId)
-        consentInformation.requestConsentInfoUpdate(publisherIds, object : ConsentInfoUpdateListener {
-            override fun onConsentInfoUpdated(consentStatus: ConsentStatus) {
-                callback?.onResult(consentInformation, consentStatus)
-            }
+        consentInformation.requestConsentInfoUpdate(
+            publisherIds,
+            object : ConsentInfoUpdateListener {
+                override fun onConsentInfoUpdated(consentStatus: ConsentStatus) {
+                    callback?.onResult(consentInformation, consentStatus)
+                }
 
-            override fun onFailedToUpdateConsentInfo(reason: String) {
-                callback!!.onFailed(consentInformation, reason)
+                override fun onFailedToUpdateConsentInfo(reason: String) {
+                    callback!!.onFailed(consentInformation, reason)
+                }
             }
-        })
+        )
     }
 
     // Check if the location is EEA
@@ -237,63 +231,63 @@ class ConsentSDK {
         }
 
         form = ConsentForm.Builder(context, privacyUrl)
-                .withListener(object : ConsentFormListener() {
-                    override fun onConsentFormLoaded() {
-                        if (DEBUG) {
-                            Log.d(LOG_TAG, "Consent Form is loaded!")
-                        }
-                        form!!.show()
+            .withListener(object : ConsentFormListener() {
+                override fun onConsentFormLoaded() {
+                    if (DEBUG) {
+                        Log.d(LOG_TAG, "Consent Form is loaded!")
                     }
+                    form!!.show()
+                }
 
-                    override fun onConsentFormError(reason: String?) {
-                        if (DEBUG) {
-                            Log.d(LOG_TAG, "Consent Form ERROR: \$reason")
-                        }
-                        // Callback on Error
-                        if (callback != null) {
-                            consentSDK.isRequestLocationIsEeaOrUnknown(object : LocationIsEeaOrUnknownCallback() {
-                                override fun onResult(isRequestLocationInEeaOrUnknown: Boolean) {
-                                    callback.onResult(isRequestLocationInEeaOrUnknown, -1)
-                                }
-                            })
-                        }
+                override fun onConsentFormError(reason: String?) {
+                    if (DEBUG) {
+                        Log.d(LOG_TAG, "Consent Form ERROR: \$reason")
                     }
-
-                    override fun onConsentFormOpened() {
-                        if (DEBUG) {
-                            Log.d(LOG_TAG, "Consent Form is opened!")
-                        }
-                    }
-
-                    override fun onConsentFormClosed(consentStatus: ConsentStatus?, userPrefersAdFree: Boolean?) {
-                        if (DEBUG) {
-                            Log.d(LOG_TAG, "Consent Form Closed!")
-                        }
-                        val isConsentPersonalized: Int
-                        // Check the consent status and save it
-                        when (consentStatus) {
-                            ConsentStatus.NON_PERSONALIZED -> {
-                                consentIsNonPersonalized()
-                                isConsentPersonalized = 0
+                    // Callback on Error
+                    if (callback != null) {
+                        consentSDK.isRequestLocationIsEeaOrUnknown(object : LocationIsEeaOrUnknownCallback() {
+                            override fun onResult(isRequestLocationInEeaOrUnknown: Boolean) {
+                                callback.onResult(isRequestLocationInEeaOrUnknown, -1)
                             }
-                            else -> {
-                                consentIsPersonalized()
-                                isConsentPersonalized = 1
-                            }
+                        })
+                    }
+                }
+
+                override fun onConsentFormOpened() {
+                    if (DEBUG) {
+                        Log.d(LOG_TAG, "Consent Form is opened!")
+                    }
+                }
+
+                override fun onConsentFormClosed(consentStatus: ConsentStatus?, userPrefersAdFree: Boolean?) {
+                    if (DEBUG) {
+                        Log.d(LOG_TAG, "Consent Form Closed!")
+                    }
+                    val isConsentPersonalized: Int
+                    // Check the consent status and save it
+                    when (consentStatus) {
+                        ConsentStatus.NON_PERSONALIZED -> {
+                            consentIsNonPersonalized()
+                            isConsentPersonalized = 0
                         }
-                        // Callback
-                        if (callback != null) {
-                            consentSDK.isRequestLocationIsEeaOrUnknown(object : LocationIsEeaOrUnknownCallback() {
-                                override fun onResult(isRequestLocationInEeaOrUnknown: Boolean) {
-                                    callback.onResult(isRequestLocationInEeaOrUnknown, isConsentPersonalized)
-                                }
-                            })
+                        else -> {
+                            consentIsPersonalized()
+                            isConsentPersonalized = 1
                         }
                     }
-                })
-                .withPersonalizedAdsOption()
-                .withNonPersonalizedAdsOption()
-                .build()
+                    // Callback
+                    if (callback != null) {
+                        consentSDK.isRequestLocationIsEeaOrUnknown(object : LocationIsEeaOrUnknownCallback() {
+                            override fun onResult(isRequestLocationInEeaOrUnknown: Boolean) {
+                                callback.onResult(isRequestLocationInEeaOrUnknown, isConsentPersonalized)
+                            }
+                        })
+                    }
+                }
+            })
+            .withPersonalizedAdsOption()
+            .withNonPersonalizedAdsOption()
+            .build()
         form!!.load()
     }
 
@@ -310,7 +304,7 @@ class ConsentSDK {
 
         // Initialize dummy banner
         fun initDummyBanner(context: Context) {
-            val adView = AdView(context)
+            var adView = AdView(context)
             adView.adSize = AdSize.BANNER
             adView.adUnitId = DUMMY_BANNER
             adView.loadAd(AdRequest.Builder().build())
@@ -327,24 +321,22 @@ class ConsentSDK {
             return settings.getBoolean(ads_preference, PERSONALIZED)
         }
 
-
         // Get AdRequest, use App ID
         // TODO : delete test device before publishing
         fun getAdRequest(context: Context): AdRequest {
             if (isConsentPersonalized(context)) {
                 MobileAds.initialize(context, context.getString(R.string.admob_key_app_id))
                 return AdRequest.Builder()
-                        .addTestDevice("7DC1A1E8AEAD7908E42271D4B68FB270")
-                        .build()
+                    .addTestDevice("7DC1A1E8AEAD7908E42271D4B68FB270")
+                    .build()
             } else {
                 MobileAds.initialize(context, context.getString(R.string.admob_key_app_id))
                 return AdRequest.Builder()
-                        .addNetworkExtrasBundle(AdMobAdapter::class.java, nonPersonalizedAdsBundle)
-                        .addTestDevice("7DC1A1E8AEAD7908E42271D4B68FB270")
-                        .build()
+                    .addNetworkExtrasBundle(AdMobAdapter::class.java, nonPersonalizedAdsBundle)
+                    .addTestDevice("7DC1A1E8AEAD7908E42271D4B68FB270")
+                    .build()
             }
         }
-
 
         // Get Non Personalized Ads Bundle
         private val nonPersonalizedAdsBundle: Bundle
@@ -359,7 +351,4 @@ class ConsentSDK {
             return initPreferences(context).getBoolean(user_status, false)
         }
     }
-
 }
-
-

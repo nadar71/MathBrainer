@@ -1,14 +1,12 @@
 package eu.indiewalkabout.mathbrainer.presentation.ui
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import android.util.Log
-
-import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
-import eu.indiewalkabout.mathbrainer.data.repository.MathBrainerRepository
 import eu.indiewalkabout.mathbrainer.AppMathBrainer
 import eu.indiewalkabout.mathbrainer.core.util.TAG
-
+import eu.indiewalkabout.mathbrainer.data.repository.MathBrainerRepository
+import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
 
 // ViewModel Class for retrieving games results
 class HighScoresViewModel : ViewModel() {
@@ -21,5 +19,4 @@ class HighScoresViewModel : ViewModel() {
         repository = (AppMathBrainer.getsContext() as AppMathBrainer).repository!!
         gameResultsList = repository.allGamesResults
     }
-
 }

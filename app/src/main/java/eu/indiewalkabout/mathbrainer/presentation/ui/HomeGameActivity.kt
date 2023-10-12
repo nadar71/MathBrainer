@@ -1,28 +1,26 @@
 package eu.indiewalkabout.mathbrainer.presentation.ui
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
+import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
+import eu.indiewalkabout.mathbrainer.core.util.TAG
+import eu.indiewalkabout.mathbrainer.databinding.ActivityHomeGameBinding
+import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
+import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.Math_Op_Choose_Result_Activity
 import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.Math_Op_Write_Result_Activity
 import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.RandomOperationActivity
 import eu.indiewalkabout.mathbrainer.presentation.games.othergames.CountObjectsActivity
 import eu.indiewalkabout.mathbrainer.presentation.games.othergames.NumberOrderActivity
-import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
-import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
-import eu.indiewalkabout.mathbrainer.domain.model.results.Results
-import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import eu.indiewalkabout.mathbrainer.core.util.TAG
-import eu.indiewalkabout.mathbrainer.databinding.ActivityHomeGameBinding
 
 // Choose the type of game
 class HomeGameActivity : AppCompatActivity() {
@@ -47,7 +45,6 @@ class HomeGameActivity : AppCompatActivity() {
 
     private lateinit var consentSDK: ConsentSDK
 
-
     /**
      * ---------------------------------------------------------------------------------------------
      * Get if consent gdpr must be asked or not
@@ -70,10 +67,8 @@ class HomeGameActivity : AppCompatActivity() {
             editor.apply()
         }
 
-
     // game results list
     private var gameResults: List<GameResult>? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +83,6 @@ class HomeGameActivity : AppCompatActivity() {
         setBtnPressedListener()
         hideStatusNavBars()
     }
-
 
     override fun onStart() {
         super.onStart()
@@ -123,7 +117,6 @@ class HomeGameActivity : AppCompatActivity() {
     // Set up the button pressed listener and checking answers
     private fun setBtnPressedListener() {
 
-
         binding.sumChooseBtn.setOnClickListener {
             val intent = Intent(this@HomeGameActivity, Math_Op_Choose_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "+")
@@ -138,14 +131,12 @@ class HomeGameActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         binding.multChooseBtn.setOnClickListener {
             val intent = Intent(this@HomeGameActivity, Math_Op_Choose_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "*")
             intent.putExtra(HIGHSCORE, multChooseHighscore_value)
             startActivity(intent)
         }
-
 
         binding.divChooseBtn.setOnClickListener {
             val intent = Intent(this@HomeGameActivity, Math_Op_Choose_Result_Activity::class.java)
@@ -161,14 +152,12 @@ class HomeGameActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         binding.diffWriteBtn.setOnClickListener {
             val intent = Intent(this@HomeGameActivity, Math_Op_Write_Result_Activity::class.java)
             intent.putExtra(OPERATION_KEY, "-")
             intent.putExtra(HIGHSCORE, diffWriteHighscore_value)
             startActivity(intent)
         }
-
 
         binding.multWriteBtn.setOnClickListener {
             val intent = Intent(this@HomeGameActivity, Math_Op_Write_Result_Activity::class.java)
@@ -183,7 +172,6 @@ class HomeGameActivity : AppCompatActivity() {
             intent.putExtra(HIGHSCORE, divWriteHighscore_value)
             startActivity(intent)
         }
-
 
         binding.resultWriteBtn.setOnClickListener {
             val intent = Intent(this@HomeGameActivity, Math_Op_Write_Result_Activity::class.java)
@@ -203,7 +191,6 @@ class HomeGameActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         binding.doublingBtn.setOnClickListener {
             val intent = Intent(
                 this@HomeGameActivity,
@@ -212,7 +199,6 @@ class HomeGameActivity : AppCompatActivity() {
             intent.putExtra(HIGHSCORE, doublingHighscore_value)
             startActivity(intent)
         }
-
 
         binding.orderBtn.setOnClickListener {
             val intent = Intent(this@HomeGameActivity, NumberOrderActivity::class.java)
@@ -226,20 +212,16 @@ class HomeGameActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         binding.infoImg.setOnClickListener {
             val intent = Intent(this@HomeGameActivity, GameCreditsActivity::class.java)
             startActivity(intent)
         }
 
-
         binding.highscoreImg.setOnClickListener {
             val intent = Intent(this@HomeGameActivity, HighscoresActivity::class.java)
             startActivity(intent)
         }
-
     }
-
 
     // Used to reload from db the tasks list and update the list view in screen
     private fun updateGamesScores() {
@@ -249,12 +231,14 @@ class HomeGameActivity : AppCompatActivity() {
         // retrieve data
         val gameResults = viewModel.gameResultsList
         // get data from observer, update view
-        gameResults.observe(this, Observer { gameResultEntries ->
-            Log.d(TAG, "LiveData : updated game results received. ")
-            setGameResults(gameResultEntries)
-        })
+        gameResults.observe(
+            this,
+            Observer { gameResultEntries ->
+                Log.d(TAG, "LiveData : updated game results received. ")
+                setGameResults(gameResultEntries)
+            }
+        )
     }
-
 
     // Put game result in textview
     private fun setGameResults(gameResults: List<GameResult>?) {
@@ -297,16 +281,17 @@ class HomeGameActivity : AppCompatActivity() {
             MathBrainerUtility.getGameResultsFromList("number_order_game_score", gameResults)
     }
 
-
     // Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
-        val uiOptions = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+        val uiOptions = (
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide navigation bar
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // hide navigation bar
                 // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_FULLSCREEN) // // hide status bar
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+            ) // // hide status bar
         decorView.systemUiVisibility = uiOptions
     }
 
@@ -319,6 +304,4 @@ class HomeGameActivity : AppCompatActivity() {
         // Consent SDK vars
         private var checkConsentActive = true
     }
-
-
 }

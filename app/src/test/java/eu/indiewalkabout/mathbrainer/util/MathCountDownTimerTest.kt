@@ -28,14 +28,11 @@ class MathCountDownTimerTest {
             1
         }
          */
-
     }
 
     @After
     fun tearDown() {
-
     }
-
 
     // check the countdown start, cancel
     @Test
@@ -49,6 +46,5 @@ class MathCountDownTimerTest {
         mathCountDownTimerSpy.cancel()
         Mockito.verify(mathCountDownTimerSpy, Mockito.times(1))?.start()
         Mockito.verify(mathCountDownTimerSpy, Mockito.times(1))?.cancel()
-
     }
 }

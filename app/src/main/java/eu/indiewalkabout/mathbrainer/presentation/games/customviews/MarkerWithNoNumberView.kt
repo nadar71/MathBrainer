@@ -1,6 +1,5 @@
 package eu.indiewalkabout.mathbrainer.presentation.games.customviews
 
-import androidx.lifecycle.MutableLiveData
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -12,13 +11,12 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-
-import java.util.ArrayList
-
+import androidx.lifecycle.MutableLiveData
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.model.CircularImage
+import java.util.ArrayList
 
 class MarkerWithNoNumberView : View {
 
@@ -31,9 +29,7 @@ class MarkerWithNoNumberView : View {
     internal var randX: Int = 0
     internal var randY: Int = 0
 
-
     internal lateinit var show_solutions: SolutionsView
-
 
     // list of marker with number upon
     internal lateinit var imgNumberList: List<CircularImage>
@@ -43,7 +39,6 @@ class MarkerWithNoNumberView : View {
 
     // list of marker with solution upon, to be passed to SolutionsView
     internal lateinit var solutionsList: MutableList<CircularImage>
-
 
     // touch result :
     // -1 : no touch
@@ -57,9 +52,8 @@ class MarkerWithNoNumberView : View {
      */
     val touchResult = MutableLiveData<Int>()
 
-
-    private var mWidth: Float = 0.toFloat()                    // Custom view width
-    private var mHeight: Float = 0.toFloat()                   // Custom view height
+    private var mWidth: Float = 0.toFloat() // Custom view width
+    private var mHeight: Float = 0.toFloat() // Custom view height
 
     // number of items to be drawn
     private var itemNumber = 5
@@ -71,10 +65,8 @@ class MarkerWithNoNumberView : View {
     // Setters/ getters for touch enabling flag
     var _isTouchMarkersEnable = true
 
-
     val _solutionList: List<CircularImage>
         get() = solutionsList
-
 
     constructor(context: Context) : super(context) {
         init(context)
@@ -84,11 +76,13 @@ class MarkerWithNoNumberView : View {
         init(context)
     }
 
-    constructor(context: Context,
-                attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(
+        context: Context,
+        attrs: AttributeSet,
+        defStyleAttr: Int
+    ) : super(context, attrs, defStyleAttr) {
         init(context)
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -109,9 +103,7 @@ class MarkerWithNoNumberView : View {
 
         randX = (mWidth * 0.5).toInt()
         randY = (mHeight * 0.5).toInt()
-
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -138,7 +130,6 @@ class MarkerWithNoNumberView : View {
         show_solutions.resetGame()
     }
 
-
     /**
      * ----------------------------------------------------------------------------------------------
      * Touch result setter
@@ -148,7 +139,6 @@ class MarkerWithNoNumberView : View {
     fun setTouchResult(value: Int) {
         touchResult.value = value
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -160,7 +150,6 @@ class MarkerWithNoNumberView : View {
         this.imgNumberList = imgNumberList
     }
 
-
     /**
      * ---------------------------------------------------------------------------------------------
      * Get the SolutionsView instance
@@ -169,9 +158,7 @@ class MarkerWithNoNumberView : View {
      */
     fun setSolutionView(show_solutions: SolutionsView) {
         this.show_solutions = show_solutions
-
     }
-
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -179,15 +166,14 @@ class MarkerWithNoNumberView : View {
         // start a game as new
         resetGame()
 
-        //A paint object that does our drawing, on our canvas
+        // A paint object that does our drawing, on our canvas
         val paint = Paint()
 
-        //Set the background color
+        // Set the background color
         canvas.drawColor(Color.TRANSPARENT)
 
-        //Change the color of the virtual paint brush
+        // Change the color of the virtual paint brush
         paint.color = Color.argb(255, 1, 255, 255)
-
 
         // draw itemNumber images to count for
         for (img in imgNumberList) {
@@ -209,12 +195,10 @@ class MarkerWithNoNumberView : View {
             // draw on canvas marker with no number on them
             canvas.drawBitmap(
                 MathBrainerUtility.resizeBitmapByScale(bitmapWithNoNumber, imageScaleXY),
-                    x.toFloat(), y.toFloat(), paint)
+                x.toFloat(), y.toFloat(), paint
+            )
         }
-
-
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -233,10 +217,11 @@ class MarkerWithNoNumberView : View {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 for (img in imgNoNumberList) {
-                    //Check if the x and y position of the touch is inside the bitmap
+                    // Check if the x and y position of the touch is inside the bitmap
                     if (x > img._x && x < img._x + img.size &&
-                            y > img._y && y < img._y + img.size &&
-                            !img._touched) {
+                        y > img._y && y < img._y + img.size &&
+                        !img._touched
+                    ) {
 
                         val indx = imgNoNumberList.indexOf(img)
                         img._touched = true // marked image as touched
@@ -252,7 +237,6 @@ class MarkerWithNoNumberView : View {
                                 sendLevelCompleted() // set level completed correctly with delay
                             }
                             touchCounter++
-
                         } else {
                             // marked image has NOT touched: unnecessary, but make win condition check more robust
                             img._touched = false
@@ -265,7 +249,6 @@ class MarkerWithNoNumberView : View {
         }
         return false
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -303,9 +286,7 @@ class MarkerWithNoNumberView : View {
 
         // make SolutionsView aware of solutions list images
         show_solutions.setSolutionList(solutionsList)
-
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -321,7 +302,6 @@ class MarkerWithNoNumberView : View {
         }
         return true
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -342,7 +322,6 @@ class MarkerWithNoNumberView : View {
         Log.d(TAG, "onCreate: mWidth : $mWidth mHeigth : $mHeight")
     }
 
-
     // Draw view on screen with a defined items number
     // @param itemNumber
     fun redraw(itemNumber: Int) {
@@ -351,4 +330,3 @@ class MarkerWithNoNumberView : View {
         this.invalidate()
     }
 }
-

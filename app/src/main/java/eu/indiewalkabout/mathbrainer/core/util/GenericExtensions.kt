@@ -1,7 +1,5 @@
 package eu.indiewalkabout.mathbrainer.core.util
 
-
-
 val Any.TAG: String
     get() {
         return if (!javaClass.isAnonymousClass) {
@@ -14,5 +12,3 @@ val Any.TAG: String
             if (name.length <= 23) name else name.substring(name.length - 23, name.length)
         }
     }
-
-

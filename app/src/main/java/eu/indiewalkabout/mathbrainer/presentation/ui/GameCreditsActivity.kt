@@ -2,16 +2,14 @@ package eu.indiewalkabout.mathbrainer.presentation.ui
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
-
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
@@ -31,7 +29,6 @@ class GameCreditsActivity : AppCompatActivity() {
         // setContentView(R.layout.activity_credits)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_credits)
 
-
         // Unity ads init
         UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
 
@@ -48,10 +45,11 @@ class GameCreditsActivity : AppCompatActivity() {
                 // Check Consent SDK
                 // Request the consent without callback
                 // consentSDK.requestConsent(null);
-                //To get the result of the consent
+                // To get the result of the consent
                 consentSDK.requestConsent(object : ConsentSDK.ConsentStatusCallback() {
                     override fun onResult(
-                        isRequestLocationInEeaOrUnknown: Boolean, isConsentPersonalized: Int
+                        isRequestLocationInEeaOrUnknown: Boolean,
+                        isConsentPersonalized: Int
                     ) {
                         var choice = ""
                         when (isConsentPersonalized) {
@@ -68,10 +66,8 @@ class GameCreditsActivity : AppCompatActivity() {
             binding.gdprConsentTv.visibility = View.INVISIBLE
         }
 
-
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
         binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@GameCreditsActivity))
-
 
         binding.backhomeImg.setOnClickListener {
             // show unityads randomic
@@ -83,19 +79,19 @@ class GameCreditsActivity : AppCompatActivity() {
         hideStatusNavBars()
     }
 
-
     // Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
-        val uiOptions = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+        val uiOptions = (
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide navigation bar
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // hide navigation bar
                 // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_FULLSCREEN) // // hide status bar
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+            ) // // hide status bar
         decorView.systemUiVisibility = uiOptions
     }
-
 
     // Initialize consent
     // @param context
@@ -108,7 +104,6 @@ class GameCreditsActivity : AppCompatActivity() {
             .addPublisherId("pub-8846176967909254") // Add your admob publisher id
             .build()!!
     }
-
 
     // Unity ads listener
     private inner class UnityAdsListener : IUnityAdsListener {
@@ -126,8 +121,6 @@ class GameCreditsActivity : AppCompatActivity() {
         }
     }
 
-
-
     // ---------------------------------------------------------------------------------------------
     // MENU STUFF
     // ---------------------------------------------------------------------------------------------
@@ -140,7 +133,6 @@ class GameCreditsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
     // ---------------------------------------------------------------------------------------------
     //                                  REVEALING FAB BTN STUFF
     // ---------------------------------------------------------------------------------------------
@@ -149,5 +141,4 @@ class GameCreditsActivity : AppCompatActivity() {
         // show unityads randomic
         MathBrainerUtility.showUnityAdsRandom(this)
     }
-
 }

@@ -9,14 +9,11 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-
-import java.util.ArrayList
-
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.model.CircularImage
-
+import java.util.ArrayList
 
 class MarkerWithNumberView : View {
 
@@ -32,13 +29,11 @@ class MarkerWithNumberView : View {
     // list of marker with number upon
     internal lateinit var imgNumberList: MutableList<CircularImage>
 
-
-    private var mWidth: Float = 0.toFloat()                    // Custom view width
-    private var mHeight: Float = 0.toFloat()                   // Custom view height
+    private var mWidth: Float = 0.toFloat() // Custom view width
+    private var mHeight: Float = 0.toFloat() // Custom view height
 
     // number of items to be drawn, modificed in redrawn function
     private var itemNumber = 5
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -49,7 +44,6 @@ class MarkerWithNumberView : View {
     val imgwithNUmberList: List<CircularImage>
         get() = imgNumberList
 
-
     constructor(context: Context) : super(context) {
         init(context)
     }
@@ -58,11 +52,13 @@ class MarkerWithNumberView : View {
         init(context)
     }
 
-    constructor(context: Context,
-                attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(
+        context: Context,
+        attrs: AttributeSet,
+        defStyleAttr: Int
+    ) : super(context, attrs, defStyleAttr) {
         init(context)
     }
-
 
     private fun init(context: Context) {
         this.context = context
@@ -75,25 +71,22 @@ class MarkerWithNumberView : View {
         randY = (mHeight * 0.5).toInt()
 
         Log.d(TAG, "onCreate: mWidth : $mWidth mHeigth : $mHeight")
-
     }
-
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        //A paint object that does our drawing, on our canvas
+        // A paint object that does our drawing, on our canvas
         val paint = Paint()
 
-        //Set the background color
+        // Set the background color
         canvas.drawColor(Color.TRANSPARENT)
 
-        //Change the color of the virtual paint brush
+        // Change the color of the virtual paint brush
         paint.color = Color.argb(255, 1, 255, 255)
 
         // clear from previous items
         imgNumberList.clear()
-
 
         // draw itemNumber images to count for
         for (i in 0 until itemNumber) {
@@ -128,13 +121,11 @@ class MarkerWithNumberView : View {
             // draw on canvas marker with  number on them
             canvas.drawBitmap(
                 MathBrainerUtility.resizeBitmapByScale(bitmapWithNumber, imageScaleXY),
-                    randX.toFloat(), randY.toFloat(), paint)
-
+                randX.toFloat(), randY.toFloat(), paint
+            )
         }
         Log.d(TAG, "onDraw: ")
-
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -155,9 +146,7 @@ class MarkerWithNumberView : View {
             }
         }
         return false
-
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -177,7 +166,6 @@ class MarkerWithNumberView : View {
         mHeight = h.toFloat()
         Log.d(TAG, "onCreate: mWidth : $mWidth mHeigth : $mHeight")
     }
-
 
     // Draw view on screen with a defined items number
     // @param itemNumber

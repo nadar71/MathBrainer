@@ -3,7 +3,6 @@ package eu.indiewalkabout.mathbrainer.presentation.games.othergames
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.google.android.gms.ads.AdView
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK.Companion.getAdRequest
 import eu.indiewalkabout.mathbrainer.databinding.ActivityFallingOperationsBinding

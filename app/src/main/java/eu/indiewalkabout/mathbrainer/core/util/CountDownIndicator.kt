@@ -1,18 +1,18 @@
 package eu.indiewalkabout.mathbrainer.core.util
 
-
 // import eu.indiewalkabout.mathbrainer.MathCountDownTimer;
 
 import android.content.Context
 import android.view.View
 import android.widget.ProgressBar
-
 import eu.indiewalkabout.mathbrainer.R
 
-class CountDownIndicator(context: Context, var countdownBar: ProgressBar?,
-                         private val caller: IGameFunctions
-)
-    : ProgressBar(context) {
+class CountDownIndicator(
+    context: Context,
+    var countdownBar: ProgressBar?,
+    private val caller: IGameFunctions
+) :
+    ProgressBar(context) {
 
     // this.mathCountDownTimer = new MathCountDownTimer(DEFAULT_MILLISINFUTURE, DEFAULT_COUNTDOWNINTERVAL, this);;
     // TODO : detect configuration changes and update this fields with setCaller to avoid error !!
@@ -20,7 +20,6 @@ class CountDownIndicator(context: Context, var countdownBar: ProgressBar?,
     // ---------------------------------------------------------------------------------------------
     // Getter and setter stuff
     // ---------------------------------------------------------------------------------------------
-
 
     var mathCountDownTimer: MathCountDownTimer? = null
     var thirtyPercentToGo: Int = 0
@@ -45,7 +44,6 @@ class CountDownIndicator(context: Context, var countdownBar: ProgressBar?,
         mathCountDownTimer!!.start()
     }
 
-
     /**
      * ---------------------------------------------------------------------------------------------
      * Reset and destroy countdown bar
@@ -60,7 +58,6 @@ class CountDownIndicator(context: Context, var countdownBar: ProgressBar?,
 
         countdownBar!!.progressDrawable = resources.getDrawable(R.drawable.horizontal_progress_drawable_green)
     }
-
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -82,7 +79,6 @@ class CountDownIndicator(context: Context, var countdownBar: ProgressBar?,
         caller.checkCountdownExpired()
     }
 
-
     /**
      * ---------------------------------------------------------------------------------------------
      * Called by MathCountDownTimer when a progress bar update is needed
@@ -101,6 +97,4 @@ class CountDownIndicator(context: Context, var countdownBar: ProgressBar?,
         val DEFAULT_MILLISINFUTURE: Long = 30000
         val DEFAULT_COUNTDOWNINTERVAL: Long = 1000
     }
-
-
 }

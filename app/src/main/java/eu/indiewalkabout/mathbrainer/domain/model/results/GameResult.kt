@@ -1,9 +1,7 @@
 package eu.indiewalkabout.mathbrainer.domain.model.results
 
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
-
 
 /**
  * -------------------------------------------------------------------------------------------------
@@ -44,6 +42,8 @@ import androidx.room.PrimaryKey
  * -------------------------------------------------------------------------------------------------
  */
 @Entity(tableName = "GAMERESULTS_LIST")
-class GameResult(@field:PrimaryKey
-                 var result_name: String, var result_value: Int)
-
+class GameResult(
+    @field:PrimaryKey
+    var result_name: String,
+    var result_value: Int
+)

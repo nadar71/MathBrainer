@@ -10,12 +10,10 @@ class CircularImage : AppCompatImageView {
     var _y: Int = 0
     var size: Int = 0
     lateinit var _bitmap: Bitmap
-    var _number: Int = 0   //number associated with image/bitmap
+    var _number: Int = 0 // number associated with image/bitmap
     var _touched = false
 
-
     constructor(context: Context) : super(context) {
-
     }
 
     constructor(context: Context, x: Int, y: Int, size: Int) : super(context) {
@@ -26,7 +24,5 @@ class CircularImage : AppCompatImageView {
 
     private fun init(context: Context) {
         this.context = context
-
     }
-
 }

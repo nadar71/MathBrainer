@@ -3,9 +3,8 @@ package eu.indiewalkabout.mathbrainer.presentation.games.arithmetic
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.InputType
 import android.util.Log
 import android.view.KeyEvent
@@ -14,24 +13,22 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import java.util.ArrayList
+import com.unity3d.ads.IUnityAdsListener
+import com.unity3d.ads.UnityAds
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
 import eu.indiewalkabout.mathbrainer.core.util.CountDownIndicator
 import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.MyKeyboard
-
-
-import com.unity3d.ads.IUnityAdsListener
-import com.unity3d.ads.UnityAds
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityMathOpWriteResultBinding
+import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
-
+import java.util.ArrayList
 
 class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     private lateinit var binding: ActivityMathOpWriteResultBinding
@@ -41,7 +38,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
 
     // store initial text color
     private var quizDefaultTextColor: ColorStateList? = null
-
 
     // numbers to be processed
     private var firstOperand: Int = 0
@@ -60,7 +56,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     // random range of number to be processed
     private var min = 1
     private var max = 100
-
 
     private val multMin = 1
     private var multHMax = 30
@@ -102,7 +97,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     // game over dialog
     internal lateinit var gameOverDialog: GameOverDialog
 
-
     // Update lives view and check if it's game over or not
     // @override of IGameFunctions isGameOver()
     // @return boolean  : return true/false in case of game over/game continuing
@@ -130,20 +124,15 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
                 Results.incrementGameResultByDeltaThread("global_score", score)
 
                 return true
-
             } else {
                 return false
             }
-
-
         }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // setContentView(R.layout.activity_math_op_write_result)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_math_op_write_result)
-
 
         // Unity ads init
         UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
@@ -151,22 +140,18 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         // Check if it's mixed op or single specific operation
         setOperationSymbol()
 
-
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle
         // the right way to load the ad
         binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@Math_Op_Write_Result_Activity))
 
-
         // store quiz text color for later use
         quizDefaultTextColor = binding.firstOperandTv.textColors
-
 
         // init lives led images
         livesValueIv = ArrayList()
         livesValueIv.add(findViewById<View>(R.id.life_01_iv) as ImageView)
         livesValueIv.add(findViewById<View>(R.id.life_02_iv) as ImageView)
         livesValueIv.add(findViewById<View>(R.id.life_03_iv) as ImageView)
-
 
         // keyboard
         setupCustomKeyboard()
@@ -191,7 +176,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
                     checkPlayerInput()
 
                     return true
-
                 }
                 return false
             }
@@ -208,13 +192,10 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
             startActivity(intent)
         }
 
-
         hideStatusNavBars()
 
         showHighscore()
-
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -223,13 +204,10 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         newChallenge()
     }
 
-
     override fun onPause() {
         super.onPause()
         countDownIndicator.countdownReset()
-
     }
-
 
     // Set the highscore passed from main
     private fun showHighscore() {
@@ -247,7 +225,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         val intent = intent
         val operationSpec: CharArray
         if (intent.hasExtra(ChooseGameActivity.OPERATION_KEY)) {
-            operationSpec = intent.getStringExtra(ChooseGameActivity.OPERATION_KEY).toCharArray()
+            operationSpec = intent.getStringExtra(ChooseGameActivity.OPERATION_KEY)!!.toCharArray()
             when (operationSpec[0]) {
                 '+' -> {
                     symbols = CharArray(1)
@@ -286,18 +264,19 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         }
     }
 
-
     // Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
-        val uiOptions = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
+        val uiOptions = (
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide navigation bar
 
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // hide navigation bar
 
                 // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_FULLSCREEN) // // hide status bar
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+            ) // // hide status bar
         decorView.systemUiVisibility = uiOptions
     }
 
@@ -305,7 +284,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     private fun setupCustomKeyboard() {
         // init custom keyboard
         keyboard = findViewById<View>(R.id.keyboard) as MyKeyboard
-
 
         // prevent system keyboard from appearing when EditText is tapped
         binding.playerInputEt.setOnTouchListener { v, event ->
@@ -317,12 +295,10 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
             true // consume touch even
         }
 
-
         // pass the InputConnection from the EditText to the keyboard
         val ic = binding.playerInputEt.onCreateInputConnection(EditorInfo())
         keyboard.setInputConnection(ic, this@Math_Op_Write_Result_Activity)
     }
-
 
     // Check if player input is right/wrong and update score
     override fun checkPlayerInput() {
@@ -371,10 +347,8 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
                 // show result and start a new game session if allowed
                 showResult(false)
             }
-
         }
     }
-
 
     // Check state at countdown expired
     override fun checkCountdownExpired() {
@@ -387,9 +361,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
             // show result and start a new game session if allowed
             showResult(false)
         }
-
     }
-
 
     // Show the result of the game session
     private fun showResult(win: Boolean) {
@@ -397,15 +369,11 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         if (win) {
             showOkResult()
             newchallengeAfterTimerLength(1000)
-
-
         } else {
             showWrongResult()
             newchallengeAfterTimerLength(1000)
-
         }
     }
-
 
     // Show ok in case of game win
     private fun showOkResult() {
@@ -424,7 +392,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         Results.incrementGameResultsThread("operations_ok")
     }
 
-
     // Show wrong in case of game lose
     private fun showWrongResult() {
         binding.resultTv.visibility = View.VISIBLE
@@ -442,7 +409,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         Results.incrementGameResultsThread("operations_ko")
     }
 
-
     // Launch new challenge after timerLength
     private fun newchallengeAfterTimerLength(timerLength: Int) {
         val handler = Handler()
@@ -454,7 +420,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         handler.postDelayed(runnable, timerLength.toLong())
     }
 
-
     // Setup before new game session
     private fun setupBeforeNewGame() {
         binding.resultTv.visibility = View.INVISIBLE
@@ -464,7 +429,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         binding.playerInputEt.setTextColor(quizDefaultTextColor)
         keyboard.visibility = View.VISIBLE
     }
-
 
     // Update score view
     private fun updateScore() {
@@ -477,7 +441,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         binding.scoreValueTv.text = score.toString()
     }
 
-
     // Saves the score and others game data if coming back home before reach game over condition
     fun isComingHome() {
         Results.updateGameResultHighscoreThread(scoreType, score)
@@ -488,7 +451,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     override fun updateProgressBar(progress: Int) {
         binding.countdownBar.progress = progress
     }
-
 
     // Set new challenge in view
     override fun newChallenge() {
@@ -505,7 +467,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
 
         // reset countdown if any and restart if
         countDownIndicator.countdownBarStart(timerLength, timerCountDownInterval)
-
     }
 
     // Choose the right operands based on based on operation symbol,update UI, do calculation ,
@@ -513,7 +474,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     private fun calculateOperation() {
         when (operation) {
             '+' -> {
-                //operationSymbol_tv.setText("+");
+                // operationSymbol_tv.setText("+");
                 // set operands to be processed
                 firstOperand = MathBrainerUtility.randRange_ApiCheck(min, max)
                 secondOperand = MathBrainerUtility.randRange_ApiCheck(min, max)
@@ -528,7 +489,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
             }
 
             '-' -> {
-                //operationSymbol_tv.setText("-");
+                // operationSymbol_tv.setText("-");
                 // set operands to be processed
                 firstOperand = MathBrainerUtility.randRange_ApiCheck(min, max)
                 secondOperand = MathBrainerUtility.randRange_ApiCheck(min, firstOperand)
@@ -543,7 +504,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
             }
 
             '*' -> {
-                //operationSymbol_tv.setText("*");
+                // operationSymbol_tv.setText("*");
                 // set operands to be processed
                 val guess = MathBrainerUtility.randRange_ApiCheck(1, 2)
                 if (guess == 1) {
@@ -564,7 +525,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
             }
 
             '/' -> {
-                //operationSymbol_tv.setText("/");
+                // operationSymbol_tv.setText("/");
                 // set operands to be processed
                 secondOperand = MathBrainerUtility.randRange_ApiCheck(divMin, divHMax)
                 // store correct answer
@@ -581,12 +542,9 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
             }
         }
 
-
         binding.firstOperandTv.text = firstOperand.toString()
         binding.secondOperandTv.text = secondOperand.toString()
-
     }
-
 
     // Show end game message
     private fun endGame() {
@@ -599,9 +557,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
 
         val runnable = Runnable { showGameOverDialog() }
         handler.postDelayed(runnable, 500)
-
     }
-
 
     // Show gameover dialog
     private fun showGameOverDialog() {
@@ -611,9 +567,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         )
 
         hideLastQuiz()
-
     }
-
 
     // Hide quiz
     private fun hideLastQuiz() {
@@ -623,7 +577,6 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         binding.operationSymbolTv.visibility = View.INVISIBLE
         binding.resultTv.visibility = View.INVISIBLE
     }
-
 
     // Updating level
     private fun updateLevel() {
@@ -657,30 +610,23 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
 
         // statistics
         Results.incrementGameResultsThread("level_upgrades")
-
     }
-
 
     // Unity ads listener
     private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
-
         }
 
         override fun onUnityAdsStart(s: String) {
-
         }
 
         override fun onUnityAdsFinish(s: String, finishState: UnityAds.FinishState) {
-
         }
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
-
         }
     }
-
 
     // ---------------------------------------------------------------------------------------------
     // MENU STUFF
@@ -691,13 +637,11 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         // When the home button is pressed, take the user back to Home
         if (id == android.R.id.home) {
 
-
             onBackPressed()
         }
 
         return super.onOptionsItemSelected(item)
     }
-
 
     // ---------------------------------------------------------------------------------------------
     //                                  REVEALING FAB BTN STUFF

@@ -1,36 +1,34 @@
 package eu.indiewalkabout.mathbrainer.presentation.games.othergames
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import java.util.ArrayList
-import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import com.unity3d.ads.IUnityAdsListener
+import com.unity3d.ads.UnityAds
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
 import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import com.unity3d.ads.IUnityAdsListener
-import com.unity3d.ads.UnityAds
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityNumbersOrderBinding
+import eu.indiewalkabout.mathbrainer.domain.model.results.Results
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNoNumberView
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNumberView
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.SolutionsView
-
-
+import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
+import java.util.ArrayList
 
 class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     private lateinit var binding: ActivityNumbersOrderBinding
@@ -82,8 +80,6 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     // game over dialog
     private lateinit var gameOverDialog: GameOverDialog
 
-
-
     // Update lives view and check if it's game over or not
     // @override of IGameFunctions isGameOver()
     // @return boolean  : return true/false in case of gameover/gamecontinuing
@@ -111,9 +107,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
             return false
         }
 
-
     override fun checkPlayerInput() {}
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,10 +124,9 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         context = this
 
         // get the items to count view, set invisible at the moment
-        solutionsView      = findViewById(R.id.solutionsShowing_v)
+        solutionsView = findViewById(R.id.solutionsShowing_v)
         drawquiz_challenge = findViewById(R.id.itemDrawingNoNumber_v)
-        drawquiz           = findViewById(R.id.itemDrawing_v)
-
+        drawquiz = findViewById(R.id.itemDrawing_v)
 
         // set quiz with and without number invisible, not already in the game
         drawquiz.visibility = View.INVISIBLE
@@ -144,7 +137,6 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
 
         // put the SolutionView instance into drawquiz_challenge to draw solutions
         drawquiz_challenge.setSolutionView(solutionsView)
-
 
         binding.btnNewGame.visibility = View.INVISIBLE
         binding.resultTv.visibility = View.INVISIBLE
@@ -169,22 +161,18 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         showHighscore()
     }
 
-
     override fun onResume() {
         super.onResume()
         // make bottom navigation bar and status bar hide
         hideStatusNavBars()
         newChallenge()
-
     }
-
 
     override fun onPause() {
         super.onPause()
         // essential to show another quiz without loosing lives in case of onPause
         restartAfterPause(1)
     }
-
 
     // Set the highscore passed from main
     private fun showHighscore() {
@@ -197,21 +185,21 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         }
     }
 
-
     // Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
         val decorView = window.decorView
-        val uiOptions = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION     // hide navigation bar
+        val uiOptions = (
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide navigation bar
 
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  // hide navigation bar
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // hide navigation bar
 
                 // View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 // View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_FULLSCREEN) // // hide status bar
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+            ) // // hide status bar
         decorView.systemUiVisibility = uiOptions
     }
-
 
     // Set up the button pressed listener and checking answers
     private fun setBtnPressedListener() {
@@ -227,7 +215,6 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
             val intent = Intent(this@NumberOrderActivity, ChooseGameActivity::class.java)
             startActivity(intent)
         }
-
     }
 
     // Check if player input is right/wrong and update score
@@ -261,7 +248,6 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         }
     }
 
-
     // Show button when exiting pause state
     private fun restartAfterPause(timerLength: Int) {
         val handler = Handler()
@@ -275,7 +261,6 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         // execute runnable after a timerLength
         handler.postDelayed(runnable, timerLength.toLong())
     }
-
 
     // Show button for new challenge after timerLength
     private fun showNewBtnAfterTimerLength(timerLength: Int, win: Boolean) {
@@ -291,7 +276,6 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
                 // statistics
                 Results.incrementGameResultsThread("operations_executed")
                 Results.incrementGameResultsThread("operations_ko")
-
             } else if (win == true) {
                 binding.resultTv.text = resources.getString(R.string.ok_str)
                 binding.resultTv.setTextColor(Color.GREEN)
@@ -308,8 +292,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         handler.postDelayed(runnable, timerLength.toLong())
     }
 
-
-    //Update score view
+    // Update score view
     private fun updateScore() {
         binding.highscoreLabelTv.visibility = View.INVISIBLE
         binding.highscoreValueTv.visibility = View.INVISIBLE
@@ -319,22 +302,18 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         binding.scoreValueTv.text = Integer.toString(score)
     }
 
-
     // Saves the score and others game data if coming back home before reach game over condition
     fun isComingHome() {
         Results.updateGameResultHighscoreThread("number_order_game_score", score)
         Results.incrementGameResultByDeltaThread("global_score", score)
     }
 
-
     override fun addContentView(view: View, params: ViewGroup.LayoutParams) {
         super.addContentView(view, params)
     }
 
     override fun updateProgressBar(progress: Int) {
-
     }
-
 
     // Set new challenge in view
     override fun newChallenge() {
@@ -358,18 +337,20 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         Log.d(TAG, "newChallenge: $countChallenge")
 
         touchEventResInCustomView = drawquiz_challenge.touchResult
-        touchEventResInCustomView.observe(this, Observer {
-            val eventValue = touchEventResInCustomView.value
-            // conditional necessary to exclude changes to -1
-            if (eventValue == 1) {
-                checkPlayerResult(eventValue)
-            } else if (eventValue == 0) {
-                drawquiz_challenge.setTouchResult(-1)
-                checkPlayerResult(eventValue)
+        touchEventResInCustomView.observe(
+            this,
+            Observer {
+                val eventValue = touchEventResInCustomView.value
+                // conditional necessary to exclude changes to -1
+                if (eventValue == 1) {
+                    checkPlayerResult(eventValue)
+                } else if (eventValue == 0) {
+                    drawquiz_challenge.setTouchResult(-1)
+                    checkPlayerResult(eventValue)
+                }
             }
-        })
+        )
     }
-
 
     // Show markers' order with number
     private fun showQuiz() {
@@ -380,7 +361,6 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         drawquiz.visibility = View.VISIBLE
     }
 
-
     // Show markers to touch with no numbers
     private fun hideQuiz() {
         // debug drawquiz.setVisibility(View.INVISIBLE);
@@ -388,7 +368,6 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         solutionsView.visibility = View.VISIBLE
         drawquiz_challenge.visibility = View.VISIBLE
     }
-
 
     // Hide all
     private fun hideAll() {
@@ -405,7 +384,6 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         handler.postDelayed(runnable, timerLength.toLong())
     }
 
-
     // Show game over with delay
     private fun endGame() {
         binding.btnNewGame.visibility = View.INVISIBLE
@@ -417,11 +395,12 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         handler.postDelayed(runnable, 500)
     }
 
-
     // Show gameover dialog
     private fun showGameOverDialog() {
-        gameOverDialog = GameOverDialog(this,
-                this@NumberOrderActivity, this)
+        gameOverDialog = GameOverDialog(
+            this,
+            this@NumberOrderActivity, this
+        )
         binding.resultTv.visibility = View.INVISIBLE
         binding.quizInstructionsTv.visibility = View.INVISIBLE
         drawquiz.visibility = View.INVISIBLE
@@ -438,13 +417,15 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
             maxItemsToCount += 0.5f
             timerLength += 0.5f
             numChallengeEachLevel += 1
-            Log.d(TAG, "updatingLevel: New Level! new min : " + min + " new max: "
-                    + max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec.")
+            Log.d(
+                TAG,
+                "updatingLevel: New Level! new min : " + min + " new max: " +
+                    max + " new level : " + level + " Timer now at : " + timerLength / 1000 + " sec."
+            )
         }
         // statistics
         Results.incrementGameResultsThread("level_upgrades")
     }
-
 
     // Check state at countdown expired
     override fun checkCountdownExpired() {
@@ -456,7 +437,6 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
             showNewBtnAfterTimerLength(500, false)
         }
     }
-
 
     // Unity ads listener
     private inner class UnityAdsListener : IUnityAdsListener {
@@ -474,11 +454,9 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         }
     }
 
-
-
-    //---------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------
     // MENU STUFF
-    //---------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         // When the home button is pressed, take the user back to Home
@@ -487,7 +465,6 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         }
         return super.onOptionsItemSelected(item)
     }
-
 
     // ---------------------------------------------------------------------------------------------
     //                                  REVEALING FAB BTN STUFF
@@ -500,4 +477,3 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         MathBrainerUtility.showUnityAdsRandom(this)
     }
 }
-

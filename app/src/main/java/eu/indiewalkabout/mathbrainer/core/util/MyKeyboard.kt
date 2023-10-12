@@ -7,35 +7,61 @@ import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputConnection
+import android.widget.Button
 import android.widget.LinearLayout
-
 import eu.indiewalkabout.mathbrainer.R
-import kotlinx.android.synthetic.main.keyboard.view.*
 
-class MyKeyboard @JvmOverloads constructor(context: Context,
-                                           attrs: AttributeSet? = null,
-                                           defStyleAttr: Int = 0) : LinearLayout(context,
-                                           attrs, defStyleAttr),
-        View.OnClickListener {
+class MyKeyboard @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : LinearLayout(
+    context,
+    attrs, defStyleAttr
+),
+    View.OnClickListener {
 
-    internal var caller: IGameFunctions? = null
-
+    private var caller: IGameFunctions? = null
 
     // This will map the button resource id to the String value that we want to
     // input when that button is clicked.
-    internal var keyValues = SparseArray<String>()
+    private var keyValues = SparseArray<String>()
 
     // Our communication link to the EditText
-    internal var inputConnection: InputConnection? = null
+    private var inputConnection: InputConnection? = null
+
+    lateinit var button_1 : Button
+    lateinit var button_2 : Button
+    lateinit var button_3 : Button
+    lateinit var button_4 : Button
+    lateinit var button_5 : Button
+    lateinit var button_6 : Button
+    lateinit var button_7 : Button
+    lateinit var button_8 : Button
+    lateinit var button_9 : Button
+    lateinit var button_0 : Button
+    lateinit var button_delete : Button
+    lateinit var button_enter : Button
 
     init {
         init(context, attrs)
     }
 
     private fun init(context: Context, attrs: AttributeSet?) {
-
         LayoutInflater.from(context).inflate(R.layout.keyboard, this, true)
 
+        button_1 = findViewById(R.id.button_1)
+        button_2 = findViewById(R.id.button_2)
+        button_3 = findViewById(R.id.button_3)
+        button_4 = findViewById(R.id.button_4)
+        button_5 = findViewById(R.id.button_5)
+        button_6 = findViewById(R.id.button_6)
+        button_7 = findViewById(R.id.button_7)
+        button_8 = findViewById(R.id.button_8)
+        button_9 = findViewById(R.id.button_9)
+        button_0 = findViewById(R.id.button_0)
+        button_delete = findViewById(R.id.button_delete)
+        button_enter = findViewById(R.id.button_enter)
 
         // set button click listeners
         button_1.setOnClickListener(this)
@@ -66,14 +92,11 @@ class MyKeyboard @JvmOverloads constructor(context: Context,
     }
 
     override fun onClick(v: View) {
-
         // do nothing if the InputConnection has not been set yet
         if (inputConnection == null) return
-
         // Delete text or input key value
         // All communication goes through the InputConnection
         if (v.id == R.id.button_delete) {
-
             val selectedText = inputConnection!!.getSelectedText(0)
             if (TextUtils.isEmpty(selectedText)) {
                 // no selection, so delete previous character
@@ -82,7 +105,6 @@ class MyKeyboard @JvmOverloads constructor(context: Context,
                 // delete the selection
                 inputConnection!!.commitText("", 1)
             }
-
             // delete all text
             // inputConnection.commitText("", 1);
         } else if (v.id == R.id.button_enter) {
@@ -99,4 +121,4 @@ class MyKeyboard @JvmOverloads constructor(context: Context,
         this.inputConnection = ic
         this.caller = caller
     }
-}// constructors
+} // constructors

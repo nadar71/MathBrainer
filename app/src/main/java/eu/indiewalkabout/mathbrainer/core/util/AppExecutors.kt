@@ -2,7 +2,6 @@ package eu.indiewalkabout.mathbrainer.core.util
 
 import android.os.Handler
 import android.os.Looper
-
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -12,9 +11,8 @@ import java.util.concurrent.Executors
  * Used to run threads outside main thread.
  * --------------------------------------------------------------------------------
  */
-class AppExecutors// singleton constructor
+class AppExecutors // singleton constructor
 private constructor(private val diskIO: Executor, private val mainThread: Executor, private val networkIO: Executor) {
-
 
     fun diskIO(): Executor {
         return diskIO
@@ -27,7 +25,6 @@ private constructor(private val diskIO: Executor, private val mainThread: Execut
     fun networkIO(): Executor {
         return networkIO
     }
-
 
     private class MainThreadExecutor : Executor {
         private val mainThreadHandler = Handler(Looper.getMainLooper())
@@ -48,15 +45,13 @@ private constructor(private val diskIO: Executor, private val mainThread: Execut
                 if (singleInstance == null) {
                     synchronized(LOCK) {
                         singleInstance = AppExecutors(
-                                Executors.newSingleThreadExecutor(),
-                                Executors.newFixedThreadPool(3),
-                                MainThreadExecutor()
+                            Executors.newSingleThreadExecutor(),
+                            Executors.newFixedThreadPool(3),
+                            MainThreadExecutor()
                         )
                     }
                 }
                 return singleInstance
             }
     }
-
-
 }
