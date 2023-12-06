@@ -135,7 +135,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_math_op_write_result)
 
         // Unity ads init
-        UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
+        UnityAds.initialize(this, resources.getString(R.string.unityads_id), unityAdsListener)
 
         // Check if it's mixed op or single specific operation
         setOperationSymbol()

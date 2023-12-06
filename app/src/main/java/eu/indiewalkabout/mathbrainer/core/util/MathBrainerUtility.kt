@@ -14,22 +14,11 @@ import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
 import java.util.Random
 import java.util.concurrent.ThreadLocalRandom
 
-/**
- * ---------------------------------------------------------------------------------------------
- * Helper class for utilities
- * ---------------------------------------------------------------------------------------------
- */
+// Helper class for utilities
 object MathBrainerUtility {
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Return a pseudo- random int based on api level, for retrocompat;
-     * I return random value in the interval, margins included.
-     * @param min
-     * @param max
-     * @return
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Return a pseudo- random int based on api level, for retrocompat;
+    // Return random value in the interval, margins included.
     fun randRange_ApiCheck(min: Int, max: Int): Int {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             return ThreadLocalRandom.current().nextInt(min, max + 1)
@@ -39,11 +28,7 @@ object MathBrainerUtility {
         }
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Random answer for sum generator
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Random answer for sum generator
     fun randomSignChooser(): Int {
         val result = randRange_ApiCheck(1, 2)
         return if (result == 1)
@@ -52,11 +37,7 @@ object MathBrainerUtility {
             1
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Return a scaled bitmap resized by scale
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Return a scaled bitmap resized by scale
     fun resizeBitmapByScale(bitmap: Bitmap, scale: Float): Bitmap {
 
         // dimensions scaled
@@ -74,15 +55,7 @@ object MathBrainerUtility {
         return target
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Draw text on a bitmap
-     * @param gContext
-     * @param bitmap
-     * @param gText
-     * @return
-     * ---------------------------------------------------------------------------------------------
-     */
+    // Draw text on a bitmap
     fun drawTextToBitmap(
         gContext: Context,
         bitmap: Bitmap,
@@ -139,25 +112,9 @@ object MathBrainerUtility {
         return bitmap
     }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Show unity ads with a defined random frequency
-     * ---------------------------------------------------------------------------------------------
-     */
-    fun showUnityAdsRandom(activity: Activity) {
-        val guess = randRange_ApiCheck(1, 10)
-        if (guess <= 4) {
-            if (UnityAds.isReady()) {
-                UnityAds.show(activity)
-            }
-        }
-    }
 
-    /**
-     * ---------------------------------------------------------------------------------------------
-     * Return game result value for a given game result in list
-     * ---------------------------------------------------------------------------------------------
-     */
+
+    // Return game result value for a given game result in list
     fun getGameResultsFromList(gameResultKey: String, resultsList: List<GameResult>): Int {
         for (g in resultsList) {
             if (g.result_name == gameResultKey) {

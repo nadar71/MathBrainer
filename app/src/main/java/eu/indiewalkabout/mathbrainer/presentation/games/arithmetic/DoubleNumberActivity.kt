@@ -15,9 +15,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
+import com.unity3d.services.banners.BannerView
+import com.unity3d.services.banners.UnityBannerSize
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.unityads.UnityUtility
+import eu.indiewalkabout.mathbrainer.core.unityads.bannerListener
 import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
 import eu.indiewalkabout.mathbrainer.core.util.CountDownIndicator
 import eu.indiewalkabout.mathbrainer.core.util.EndGameSessionDialog
@@ -35,7 +38,7 @@ import java.util.ArrayList
 class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
     private lateinit var binding: ActivityDoubleNumberBinding
 
-    private val unityAdsListener = UnityAdsListener()
+    // private val unityAdsListener = UnityAdsListener()
 
     private lateinit var livesValueIv: ArrayList<ImageView>
 
@@ -79,6 +82,9 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
     // game over dialog
     private lateinit var gameOverDialog: GameOverDialog
 
+    // unity bottom ads
+    private var bottomBanner: BannerView? = null
+
     // Update lives view and check if it's game over or not
     // @override of IGameFunctions isGameOver()
     // @return boolean  : return true/false in case of game over/game continuing
@@ -115,14 +121,13 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // setContentView(R.layout.activity_double_number)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_double_number)
 
         // Unity ads init
-        UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
+        // UnityAds.initialize(this, resources.getString(R.string.unityads_id), unityAdsListener)
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@DoubleNumberActivity))
+        // binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@DoubleNumberActivity))
 
         binding.highscoreValueTv.text = "-1" // debug init
 
@@ -166,7 +171,8 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
             isComingHome()
 
             // show unityads randomic
-            MathBrainerUtility.showUnityAdsRandom(this@DoubleNumberActivity)
+            // UnityUtility.showUnityAdsRandom(this@DoubleNumberActivity)
+            // TODO: Show unity ads interstitial
 
             val intent = Intent(this@DoubleNumberActivity, HomeGameActivity::class.java)
             startActivity(intent)
@@ -175,6 +181,12 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         hideStatusNavBars()
 
         showHighscore()
+
+        // test unity ads
+        bottomBanner = BannerView(this, "banner", UnityBannerSize(320, 50))
+        bottomBanner?.listener = bannerListener
+        bottomBanner?.load()
+        binding.bannerLayout.addView(bottomBanner)
     }
 
     override fun onResume() {
@@ -458,7 +470,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
     }
 
     // Unity ads listener
-    private inner class UnityAdsListener : IUnityAdsListener {
+    /*private inner class UnityAdsListener : IUnityAdsListener {
         override fun onUnityAdsReady(s: String) {
         }
 
@@ -470,7 +482,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
         }
-    }
+    }*/
 
     // MENU STUFF
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -492,6 +504,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         // saves score
         isComingHome()
         // show unityads randomic
-        MathBrainerUtility.showUnityAdsRandom(this)
+        // MathBrainerUtility.showUnityAdsRandom(this)
+        // TODO: Show unity ads interstitial
     }
 }

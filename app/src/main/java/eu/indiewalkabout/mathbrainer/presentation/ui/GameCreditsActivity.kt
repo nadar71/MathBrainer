@@ -30,7 +30,7 @@ class GameCreditsActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_credits)
 
         // Unity ads init
-        UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
+        UnityAds.initialize(this, resources.getString(R.string.unityads_id), unityAdsListener)
 
         // Initialize ConsentSDK
         initConsentSDK(this)

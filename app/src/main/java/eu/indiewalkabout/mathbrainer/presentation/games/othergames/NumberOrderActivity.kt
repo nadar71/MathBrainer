@@ -115,7 +115,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_numbers_order)
 
         // Unity ads init
-        UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
+        UnityAds.initialize(this, resources.getString(R.string.unityads_id), unityAdsListener)
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
         binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@NumberOrderActivity))

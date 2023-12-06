@@ -139,7 +139,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_math_op_choose_result)
 
         // Unity ads init
-        UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
+        UnityAds.initialize(this, resources.getString(R.string.unityads_id), unityAdsListener)
 
         // Check if it's mixed op or single specific operation
         setOperationSymbol()
@@ -148,7 +148,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@Math_Op_Choose_Result_Activity))
 
         // Unity ads init
-        UnityAds.initialize(this, resources.getString(R.string.unityads_key), unityAdsListener)
+        UnityAds.initialize(this, resources.getString(R.string.unityads_id), unityAdsListener)
 
         // store quiz text color for later use
         quizDefaultTextColor = binding.firstOperandTv.textColors

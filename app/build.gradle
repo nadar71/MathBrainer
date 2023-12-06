@@ -109,12 +109,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_vers"
     kapt "androidx.room:room-compiler:$room_vers"
     implementation "androidx.room:room-ktx:$room_vers"
-    // test helpers
-    testImplementation "androidx.room:room-testing:$room_vers"
+        testImplementation "androidx.room:room-testing:$room_vers"
 
-    // unity ads
-    // compile (name:'unity-ads', ext: 'aar')
-    implementation project(':unity-ads')
+    // Unity
+    implementation 'com.unity3d.ads:unity-ads:4.7.0'
 
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_vers"
