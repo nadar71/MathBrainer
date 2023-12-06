@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="eu.indiewalkabout.mathbrainer">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 
     <application
-        android:name=".util.SingletonProvider"
+        android:name=".AppMathBrainer"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -11,66 +12,76 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.GameCreditsActivity"></activity>
+        <activity android:name=".presentation.ui.GameCreditsActivity"></activity>
         <!-- ADMOB -->
         <!-- Sample AdMob App ID:        ca-app-pub-3940256099942544~3347511713 -->
-        <!-- THIS APP REAL AdMob App ID: -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_key_app_id" />
 
         <activity
-            android:name=".notused.MainActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".ui.ChooseGameActivity"
+            android:name=".core.notused.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".presentation.ui.HomeGameActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".ui.HighscoresActivity"
+            android:name=".presentation.ui.HighscoresActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
 
         <activity
-            android:name=".aritmetic.Math_Op_Write_Result_Activity"
+            android:name=".presentation.games.arithmetic.Math_Op_Write_Result_Activity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".othergames.CountObjectsActivity"
+            android:name=".presentation.games.othergames.CountObjectsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".aritmetic.DoubleNumberActivity"
+            android:name=".presentation.games.arithmetic.DoubleNumberActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".othergames.FallingOperationsActivity"
+            android:name=".presentation.games.othergames.FallingOperationsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".othergames.NumberOrderActivity"
+            android:name=".presentation.games.othergames.NumberOrderActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".aritmetic.RandomOperationActivity"
+            android:name=".presentation.games.arithmetic.RandomOperationActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".othergames.SoundsSeqActivity"
+            android:name=".presentation.games.othergames.SoundsSeqActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-        <activity android:name=".aritmetic.Math_Op_Choose_Result_Activity" />
+        <activity android:name=".presentation.games.arithmetic.Math_Op_Choose_Result_Activity" />
+
+
+        <!-- test lib -->
+        <uses-library android:name="android.test.runner"
+            android:required="false" />
+        <uses-library android:name="android.test.base"
+            android:required="false" />
+        <uses-library android:name="android.test.mock"
+            android:required="false" />
     </application>
 
 </manifest>

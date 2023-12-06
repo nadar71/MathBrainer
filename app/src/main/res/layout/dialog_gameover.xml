@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/gameover_dialog"
@@ -25,13 +25,13 @@
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/restart_iv"
+        app:layout_constraintBottom_toTopOf="@+id/restartBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/restart_iv"
+        android:id="@+id/restartBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -39,15 +39,15 @@
         android:layout_marginEnd="8dp"
         android:background="@drawable/rounded_rect_simplekeyboard_btn"
         android:padding="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/home_iv"
+        app:layout_constraintBottom_toTopOf="@+id/homeBtn"
         app:layout_constraintEnd_toEndOf="@+id/gameover_msg_tv"
-        app:layout_constraintStart_toEndOf="@+id/home_iv"
-        app:layout_constraintTop_toBottomOf="@+id/home_iv"
+        app:layout_constraintStart_toEndOf="@+id/homeBtn"
+        app:layout_constraintTop_toBottomOf="@+id/homeBtn"
         app:layout_constraintVertical_bias="0.552"
         app:srcCompat="@drawable/ic_refresh_white_24dp" />
 
     <ImageView
-        android:id="@+id/home_iv"
+        android:id="@+id/homeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -57,11 +57,11 @@
         android:background="@drawable/rounded_rect_simplekeyboard_btn"
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/restart_iv"
+        app:layout_constraintEnd_toStartOf="@+id/restartBtn"
         app:layout_constraintStart_toStartOf="@+id/gameover_msg_tv"
         app:layout_constraintTop_toBottomOf="@+id/gameover_msg_tv"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_home_white_24dp" />
 
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
