@@ -14,10 +14,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.unity3d.ads.IUnityAdsListener
-import com.unity3d.ads.UnityAds
+import com.unity3d.services.banners.BannerView
+import com.unity3d.services.banners.UnityBannerSize
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
+import eu.indiewalkabout.mathbrainer.core.unityads.bannerListener
 import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
@@ -28,11 +28,10 @@ import eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNo
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNumberView
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.SolutionsView
 import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
-import java.util.ArrayList
 
 class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     private lateinit var binding: ActivityNumbersOrderBinding
-    private val unityAdsListener = UnityAdsListener()
+    // private val unityAdsListener = UnityAdsListener()
 
     // Custom views drawing items to count
     private lateinit var drawquiz_challenge: MarkerWithNoNumberView
@@ -80,6 +79,9 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     // game over dialog
     private lateinit var gameOverDialog: GameOverDialog
 
+    private var bottomBanner: BannerView? = null
+
+
     // Update lives view and check if it's game over or not
     // @override of IGameFunctions isGameOver()
     // @return boolean  : return true/false in case of gameover/gamecontinuing
@@ -115,10 +117,10 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_numbers_order)
 
         // Unity ads init
-        UnityAds.initialize(this, resources.getString(R.string.unityads_id), unityAdsListener)
+        // UnityAds.initialize(this, resources.getString(R.string.unityads_id), unityAdsListener)
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@NumberOrderActivity))
+        // binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@NumberOrderActivity))
 
         // setup context
         context = this
@@ -159,6 +161,10 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         updateLevel()
         hideStatusNavBars()
         showHighscore()
+        bottomBanner = BannerView(this, "banner", UnityBannerSize(320, 50))
+        bottomBanner?.listener = bannerListener
+        bottomBanner?.load()
+        binding.bannerLayout.addView(bottomBanner)
     }
 
     override fun onResume() {
@@ -210,7 +216,8 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
             isComingHome()
 
             // show unityads randomic
-            MathBrainerUtility.showUnityAdsRandom(this@NumberOrderActivity)
+            // MathBrainerUtility.showUnityAdsRandom(this@NumberOrderActivity)
+            // TODO: Show unity ads interstitial
 
             val intent = Intent(this@NumberOrderActivity, ChooseGameActivity::class.java)
             startActivity(intent)
@@ -439,7 +446,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     }
 
     // Unity ads listener
-    private inner class UnityAdsListener : IUnityAdsListener {
+    /*private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
         }
@@ -452,7 +459,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
         }
-    }
+    }*/
 
     // ---------------------------------------------------------------------------------------------
     // MENU STUFF
@@ -474,6 +481,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         // saves score
         isComingHome()
         // show unityads randomic
-        MathBrainerUtility.showUnityAdsRandom(this)
+        // MathBrainerUtility.showUnityAdsRandom(this)
+        // TODO: Show unity ads interstitial
     }
 }

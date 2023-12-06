@@ -8,8 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.unity3d.services.banners.BannerView
+import com.unity3d.services.banners.UnityBannerSize
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
+import eu.indiewalkabout.mathbrainer.core.unityads.bannerListener
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityHighscoresBinding
@@ -42,13 +44,16 @@ class HighscoresActivity : AppCompatActivity() {
     private var quickCountHighscore_value: Int = 0
     private var orderHighscore_value: Int = 0
 
+    // unity bottom ads
+    private var bottomBanner: BannerView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // setContentView(R.layout.activity_highscores)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_highscores)
 
         // Initialize ConsentSDK
-        val consentSDK = ConsentSDK.Builder(this)
+        /*val consentSDK = ConsentSDK.Builder(this)
             .addTestDeviceId("7DC1A1E8AEAD7908E42271D4B68FB270") // redminote 5 // Add your test device id "Remove addTestDeviceId on production!"
             // .addTestDeviceId("9978A5F791A259430A0156313ED9C6A2")
             .addCustomLogTag("gdpr_TAG") // Add custom tag default: ID_LOG
@@ -66,7 +71,7 @@ class HighscoresActivity : AppCompatActivity() {
         })
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@HighscoresActivity))
+        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@HighscoresActivity))*/
 
         // show updated scores
         showGamesScores()
@@ -76,6 +81,11 @@ class HighscoresActivity : AppCompatActivity() {
 
         // make bottom navigation bar and status bar hide
         hideStatusNavBars()
+
+        bottomBanner = BannerView(this, "banner", UnityBannerSize(320, 50))
+        bottomBanner?.listener = bannerListener
+        bottomBanner?.load()
+        binding.bannerLayout.addView(bottomBanner)
     }
 
     // Set up the button pressed listener and checking answers
@@ -178,6 +188,7 @@ class HighscoresActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 
     // Used to reload from db the tasks list and update the list view in screen
     private fun showGamesScores() {

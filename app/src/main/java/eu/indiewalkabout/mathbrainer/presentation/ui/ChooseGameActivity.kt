@@ -2,15 +2,16 @@ package eu.indiewalkabout.mathbrainer.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.unity3d.services.banners.BannerView
+import com.unity3d.services.banners.UnityBannerSize
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
+import eu.indiewalkabout.mathbrainer.core.unityads.bannerListener
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityChooseGameNewBinding
@@ -44,7 +45,8 @@ class ChooseGameActivity : AppCompatActivity() {
     private var quickCountHighscore_value: Int = 0
     private var orderHighscore_value: Int = 0
 
-    private lateinit var consentSDK: ConsentSDK
+    // private lateinit var consentSDK: ConsentSDK
+    private var bottomBanner: BannerView? = null
 
     /**
      * ---------------------------------------------------------------------------------------------
@@ -56,7 +58,7 @@ class ChooseGameActivity : AppCompatActivity() {
      * Set if consent gdpr must be asked or not
      * ---------------------------------------------------------------------------------------------
      */
-    var consentSDKNeed: Boolean
+    /*var consentSDKNeed: Boolean
         get() {
             val prefs = PreferenceManager.getDefaultSharedPreferences(this)
             return prefs.getBoolean(APP_CONSENT_NEED, DEFAULT_CONSENT_NEED)
@@ -66,7 +68,7 @@ class ChooseGameActivity : AppCompatActivity() {
             val editor = prefs.edit()
             editor.putBoolean(APP_CONSENT_NEED, isNeeded)
             editor.apply()
-        }
+        }*/
 
     // game results list
     private var gameResults: List<GameResult>? = null
@@ -86,12 +88,18 @@ class ChooseGameActivity : AppCompatActivity() {
         setBtnPressedListener()
 
         hideStatusNavBars()
+
+        // test unity ads
+        bottomBanner = BannerView(this, "banner", UnityBannerSize(320, 50))
+        bottomBanner?.listener = bannerListener
+        bottomBanner?.load()
+        binding.bannerLayout.addView(bottomBanner)
     }
 
     override fun onStart() {
         super.onStart()
 
-        checkConsentActive = consentSDKNeed
+        /*checkConsentActive = consentSDKNeed
 
         if (checkConsentActive) {
             // Initialize ConsentSDK
@@ -117,7 +125,7 @@ class ChooseGameActivity : AppCompatActivity() {
 
             // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
             binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@ChooseGameActivity))
-        }
+        }*/
     }
 
     // Set up the button pressed listener and checking answers
@@ -288,6 +296,7 @@ class ChooseGameActivity : AppCompatActivity() {
             MathBrainerUtility.getGameResultsFromList("number_order_game_score", gameResults)
     }
 
+
     //  Make bottom navigation bar and status bar hide, without resize when reappearing
     private fun hideStatusNavBars() {
         // minsdk version is 19, no need code for lower api
@@ -312,6 +321,6 @@ class ChooseGameActivity : AppCompatActivity() {
         private val DEFAULT_CONSENT_NEED = true
 
         // Consent SDK vars
-        private var checkConsentActive = true
+        // private var checkConsentActive = true
     }
 }

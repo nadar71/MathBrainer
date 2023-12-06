@@ -218,7 +218,7 @@
             app:srcCompat="@drawable/ic_home_white_24dp" />
 
 
-        <eu.indiewalkabout.mathbrainer.games.customviews.QuickCountItemDrawView
+        <eu.indiewalkabout.mathbrainer.presentation.games.customviews.QuickCountItemDrawView
             android:id="@+id/itemDrawing_v"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -321,7 +321,7 @@
             android:textColor="@color/colorAccent"
             android:textSize="26sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/mAdView"
+            app:layout_constraintBottom_toTopOf="@+id/bannerLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/itemDrawing_v" />
@@ -420,7 +420,7 @@
         </GridLayout>
 
 
-        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        <!--<com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/mAdView"
             android:layout_width="match_parent"
             android:layout_height="49dp"
@@ -433,7 +433,22 @@
             ads:layout_constraintBottom_toBottomOf="parent"
             ads:layout_constraintEnd_toEndOf="parent"
             ads:layout_constraintHorizontal_bias="0.0"
-            ads:layout_constraintStart_toStartOf="parent" />
+            ads:layout_constraintStart_toStartOf="parent" />-->
+
+
+
+        <RelativeLayout
+            android:id="@+id/bannerLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

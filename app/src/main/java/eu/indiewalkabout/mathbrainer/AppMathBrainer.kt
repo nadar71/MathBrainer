@@ -5,11 +5,11 @@ import android.content.Context
 import android.util.Log
 import com.unity3d.ads.IUnityAdsInitializationListener
 import com.unity3d.ads.UnityAds
+import eu.indiewalkabout.mathbrainer.core.unityads.UNITYTAG
+import eu.indiewalkabout.mathbrainer.core.unityads.testMode
 import eu.indiewalkabout.mathbrainer.core.util.AppExecutors
 import eu.indiewalkabout.mathbrainer.data.local.db.MathBrainerDatabase
 import eu.indiewalkabout.mathbrainer.data.repository.MathBrainerRepository
-import eu.indiewalkabout.mathbrainer.core.unityads.UNITYTAG
-import eu.indiewalkabout.mathbrainer.core.unityads.testMode
 
 // Class used for access singletons and application context wherever in the app.
 class AppMathBrainer : Application(), IUnityAdsInitializationListener {
@@ -51,7 +51,6 @@ class AppMathBrainer : Application(), IUnityAdsInitializationListener {
     // unity ads init failed
     override fun onInitializationFailed(p0: UnityAds.UnityAdsInitializationError?, p1: String?) {
         Log.v(UNITYTAG, "UnityAds init FAILED")
-
     }
 
 

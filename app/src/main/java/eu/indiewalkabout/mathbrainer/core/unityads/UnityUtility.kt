@@ -2,7 +2,6 @@ package eu.indiewalkabout.mathbrainer.core.unityads
 
 import android.app.Activity
 import android.util.Log
-import com.unity3d.ads.UnityAds
 import com.unity3d.services.banners.BannerErrorInfo
 import com.unity3d.services.banners.BannerView
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility

@@ -303,12 +303,12 @@ class ConsentSDK {
         private val DUMMY_BANNER = "ca-app-pub-3940256099942544/6300978111"
 
         // Initialize dummy banner
-        fun initDummyBanner(context: Context) {
+        /*fun initDummyBanner(context: Context) {
             var adView = AdView(context)
             adView.adSize = AdSize.BANNER
             adView.adUnitId = DUMMY_BANNER
             adView.loadAd(AdRequest.Builder().build())
-        }
+        }*/
 
         // Initialize SharedPreferences
         private fun initPreferences(context: Context): SharedPreferences {
@@ -323,7 +323,7 @@ class ConsentSDK {
 
         // Get AdRequest, use App ID
         // TODO : delete test device before publishing
-        fun getAdRequest(context: Context): AdRequest {
+        /*fun getAdRequest(context: Context): AdRequest {
             if (isConsentPersonalized(context)) {
                 MobileAds.initialize(context, context.getString(R.string.admob_key_app_id))
                 return AdRequest.Builder()
@@ -336,7 +336,7 @@ class ConsentSDK {
                     .addTestDevice("7DC1A1E8AEAD7908E42271D4B68FB270")
                     .build()
             }
-        }
+        }*/
 
         // Get Non Personalized Ads Bundle
         private val nonPersonalizedAdsBundle: Bundle

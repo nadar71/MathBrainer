@@ -215,7 +215,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/scoreValue_tv">
 
-            <eu.indiewalkabout.mathbrainer.games.customviews.MarkerWithNoNumberView
+            <eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNoNumberView
                 android:id="@+id/itemDrawingNoNumber_v"
                 android:layout_width="357dp"
                 android:layout_height="603dp"
@@ -227,7 +227,7 @@
                 app:layout_constraintStart_toStartOf="@+id/drawing_container"
                 app:layout_constraintTop_toTopOf="@+id/drawing_container" />
 
-            <eu.indiewalkabout.mathbrainer.games.customviews.MarkerWithNumberView
+            <eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNumberView
                 android:id="@+id/itemDrawing_v"
                 android:layout_width="357dp"
                 android:layout_height="603dp"
@@ -242,7 +242,7 @@
                 app:layout_constraintTop_toTopOf="@+id/drawing_container"
                 app:layout_constraintVertical_bias="0.506" />
 
-            <eu.indiewalkabout.mathbrainer.games.customviews.SolutionsView
+            <eu.indiewalkabout.mathbrainer.presentation.games.customviews.SolutionsView
                 android:id="@+id/solutionsShowing_v"
                 android:layout_width="357dp"
                 android:layout_height="603dp"
@@ -290,7 +290,7 @@
             android:textColor="@color/colorAccent"
             android:textStyle="bold"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/mAdView"
+            app:layout_constraintBottom_toTopOf="@+id/bannerLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -325,12 +325,12 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/mAdView"
+            app:layout_constraintBottom_toTopOf="@+id/bannerLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        <!--<com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/mAdView"
             android:layout_width="match_parent"
             android:layout_height="43dp"
@@ -343,7 +343,20 @@
             ads:layout_constraintBottom_toBottomOf="parent"
             ads:layout_constraintEnd_toEndOf="parent"
             ads:layout_constraintHorizontal_bias="0.0"
-            ads:layout_constraintStart_toStartOf="parent" />
+            ads:layout_constraintStart_toStartOf="parent" />-->
+
+        <RelativeLayout
+            android:id="@+id/bannerLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

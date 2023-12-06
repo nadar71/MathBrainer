@@ -1,28 +1,26 @@
 package eu.indiewalkabout.mathbrainer.presentation.ui
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.unity3d.ads.IUnityAdsListener
-import com.unity3d.ads.UnityAds
+import com.unity3d.services.banners.BannerView
+import com.unity3d.services.banners.UnityBannerSize
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
-import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import eu.indiewalkabout.mathbrainer.core.util.TAG
+import eu.indiewalkabout.mathbrainer.core.unityads.bannerListener
 import eu.indiewalkabout.mathbrainer.databinding.ActivityCreditsBinding
 
 class GameCreditsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreditsBinding
-    private val unityAdsListener = UnityAdsListener()
+    // private val unityAdsListener = UnityAdsListener()
 
     // internal var gdprConsent_tv: TextView? = null
     // internal var backhome_img:  ImageView? = null
-    private lateinit var consentSDK: ConsentSDK
+    // private lateinit var consentSDK: ConsentSDK
+
+    private var bottomBanner: BannerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,13 +28,13 @@ class GameCreditsActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_credits)
 
         // Unity ads init
-        UnityAds.initialize(this, resources.getString(R.string.unityads_id), unityAdsListener)
+        // UnityAds.initialize(this, resources.getString(R.string.unityads_id), unityAdsListener)
 
         // Initialize ConsentSDK
-        initConsentSDK(this)
+        // initConsentSDK(this)
 
         // Checking the status of the user
-        if (ConsentSDK.isUserLocationWithinEea(this)) {
+        /*if (ConsentSDK.isUserLocationWithinEea(this)) {
             val choice =
                 if (ConsentSDK.isConsentPersonalized(this)) "Personalize" else "Non-Personalize"
             Log.i(TAG, "onCreate: consent choice : $choice")
@@ -64,19 +62,28 @@ class GameCreditsActivity : AppCompatActivity() {
             }
         } else {
             binding.gdprConsentTv.visibility = View.INVISIBLE
-        }
+        }*/
+
+        // binding.gdprConsentTv.visibility = View.INVISIBLE
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@GameCreditsActivity))
+        // binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@GameCreditsActivity))
 
         binding.backhomeImg.setOnClickListener {
             // show unityads randomic
-            MathBrainerUtility.showUnityAdsRandom(this@GameCreditsActivity)
+            // MathBrainerUtility.showUnityAdsRandom(this@GameCreditsActivity)
+            // TODO: Show unity ads interstitial
+
             val intent = Intent(this@GameCreditsActivity, HomeGameActivity::class.java)
             startActivity(intent)
         }
 
         hideStatusNavBars()
+
+        bottomBanner = BannerView(this, "banner", UnityBannerSize(320, 50))
+        bottomBanner?.listener = bannerListener
+        bottomBanner?.load()
+        binding.bannerLayout.addView(bottomBanner)
     }
 
     // Make bottom navigation bar and status bar hide, without resize when reappearing
@@ -95,7 +102,7 @@ class GameCreditsActivity : AppCompatActivity() {
 
     // Initialize consent
     // @param context
-    private fun initConsentSDK(context: Context) {
+    /*private fun initConsentSDK(context: Context) {
         // Initialize ConsentSDK
         consentSDK = ConsentSDK.Builder(context)
             .addTestDeviceId("7DC1A1E8AEAD7908E42271D4B68FB270") // Add your test device id "Remove addTestDeviceId on production!"
@@ -103,10 +110,10 @@ class GameCreditsActivity : AppCompatActivity() {
             .addPrivacyPolicy("http://www.indie-walkabout.eu/privacy-policy-app") // Add your privacy policy url
             .addPublisherId("pub-8846176967909254") // Add your admob publisher id
             .build()!!
-    }
+    }*/
 
     // Unity ads listener
-    private inner class UnityAdsListener : IUnityAdsListener {
+    /*private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
         }
@@ -119,7 +126,7 @@ class GameCreditsActivity : AppCompatActivity() {
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
         }
-    }
+    }*/
 
     // ---------------------------------------------------------------------------------------------
     // MENU STUFF
@@ -139,6 +146,7 @@ class GameCreditsActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         // show unityads randomic
-        MathBrainerUtility.showUnityAdsRandom(this)
+        // MathBrainerUtility.showUnityAdsRandom(this)
+        // TODO: Show unity ads interstitial
     }
 }

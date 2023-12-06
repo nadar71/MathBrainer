@@ -2,27 +2,31 @@ package eu.indiewalkabout.mathbrainer.core.notused
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.ads.AdView
+import androidx.databinding.DataBindingUtil
+import com.unity3d.services.banners.BannerView
+import com.unity3d.services.banners.UnityBannerSize
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK
-import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK.Companion.getAdRequest
-import eu.indiewalkabout.mathbrainer.core.util.ConsentSDK.ConsentCallback
+import eu.indiewalkabout.mathbrainer.core.unityads.bannerListener
+import eu.indiewalkabout.mathbrainer.databinding.ActivityMainBinding
 import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
 
 class MainActivity : AppCompatActivity() {
+    lateinit var binding: ActivityMainBinding
     // admob banner ref
-    var mAdView: AdView? = null
+    // var mAdView: AdView? = null
+    private var bottomBanner: BannerView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        // setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         // Initialize ConsentSDK
-        val consentSDK = ConsentSDK.Builder(this)
+        /*val consentSDK = ConsentSDK.Builder(this)
             .addTestDeviceId("7DC1A1E8AEAD7908E42271D4B68FB270") // redminote 5 // Add your test device id "Remove addTestDeviceId on production!"
             // .addTestDeviceId("9978A5F791A259430A0156313ED9C6A2")
             .addCustomLogTag("gdpr_TAG") // Add custom tag default: ID_LOG
@@ -44,7 +48,13 @@ class MainActivity : AppCompatActivity() {
         mAdView = findViewById(R.id.mAdView)
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        mAdView?.loadAd(getAdRequest(this@MainActivity))
+        mAdView?.loadAd(getAdRequest(this@MainActivity))*/
+
+        // test unity ads
+        bottomBanner = BannerView(this, "banner", UnityBannerSize(320, 50))
+        bottomBanner?.listener = bannerListener
+        bottomBanner?.load()
+        binding.bannerLayout.addView(bottomBanner)
 
         // BEGIN Button management
         val playBtn = findViewById<Button>(R.id.playBtn)
