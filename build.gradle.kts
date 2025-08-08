@@ -1,6 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.hilt.android) apply false
+}
 
-buildscript {
+/*buildscript {
     ext{
         kotlin_vers            = '1.8.0'
         appcompat_vers         = '1.6.1'
@@ -36,6 +44,6 @@ allprojects {
 
 tasks.register('clean', Delete) {
     delete rootProject.buildDir
-}
+}*/
 
 
