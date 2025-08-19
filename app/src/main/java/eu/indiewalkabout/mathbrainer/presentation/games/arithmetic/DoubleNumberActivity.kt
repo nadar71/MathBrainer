@@ -30,7 +30,7 @@ import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.MyKeyboard
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityDoubleNumberBinding
-import eu.indiewalkabout.mathbrainer.domain.model.results.Results
+import eu.indiewalkabout.mathbrainer.domain.model.results.OLD.Results
 import eu.indiewalkabout.mathbrainer.presentation.ui.HomeGameActivity
 import java.util.ArrayList
 

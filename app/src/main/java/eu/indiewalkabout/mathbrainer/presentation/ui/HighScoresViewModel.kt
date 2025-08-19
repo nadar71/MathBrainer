@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import eu.indiewalkabout.mathbrainer.AppMathBrainer
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.data.repository.MathBrainerRepository
-import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
+import eu.indiewalkabout.mathbrainer.domain.model.results.OLD.GameResult
 
 // ViewModel Class for retrieving games results
 class HighScoresViewModel : ViewModel() {

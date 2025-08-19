@@ -7,7 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
+import eu.indiewalkabout.mathbrainer.domain.model.results.OLD.GameResult
 
 @Dao
 interface MathBrainerDbDao {

@@ -26,7 +26,7 @@ import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.MyKeyboard
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityMathOpWriteResultBinding
-import eu.indiewalkabout.mathbrainer.domain.model.results.Results
+import eu.indiewalkabout.mathbrainer.domain.model.results.OLD.Results
 import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
 
 class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {

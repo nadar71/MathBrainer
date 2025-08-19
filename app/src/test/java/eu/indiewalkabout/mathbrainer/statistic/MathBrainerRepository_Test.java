@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult;
+import eu.indiewalkabout.mathbrainer.domain.model.results.OLD.GameResult;
 import eu.indiewalkabout.mathbrainer.data.local.db.MathBrainerDatabase;
 import eu.indiewalkabout.mathbrainer.data.local.db.MathBrainerDbDao;
 import eu.indiewalkabout.mathbrainer.data.repository.MathBrainerRepository;

@@ -2,7 +2,7 @@ package eu.indiewalkabout.mathbrainer.data.repository
 
 import androidx.lifecycle.LiveData
 import eu.indiewalkabout.mathbrainer.data.local.db.MathBrainerDatabase
-import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
+import eu.indiewalkabout.mathbrainer.domain.model.results.OLD.GameResult
 import java.util.ArrayList
 
 /**

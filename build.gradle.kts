@@ -38,8 +38,6 @@ allprojects {
         jcenter()
         maven{url 'https://jitpack.io'}
     }
-
-
 }
 
 tasks.register('clean', Delete) {

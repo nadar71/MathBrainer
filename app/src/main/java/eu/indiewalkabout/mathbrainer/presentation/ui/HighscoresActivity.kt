@@ -15,7 +15,7 @@ import eu.indiewalkabout.mathbrainer.core.unityads.bannerListener
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityHighscoresBinding
-import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
+import eu.indiewalkabout.mathbrainer.domain.model.results.OLD.GameResult
 import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.Math_Op_Choose_Result_Activity
 import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.Math_Op_Write_Result_Activity
 import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.RandomOperationActivity

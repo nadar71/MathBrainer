@@ -27,7 +27,7 @@ class AppMathBrainer : Application(), IUnityAdsInitializationListener {
 
     // Singleton db instance
     val database: MathBrainerDatabase?
-        get() = MathBrainerDatabase.getsDbInstance(this)
+        get() = MathBrainerDatabase.getDbInstance(this)
 
     // Repository singleton instance
     val repository: MathBrainerRepository?

@@ -23,7 +23,7 @@ import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityNumbersOrderBinding
-import eu.indiewalkabout.mathbrainer.domain.model.results.Results
+import eu.indiewalkabout.mathbrainer.domain.model.results.OLD.Results
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNoNumberView
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNumberView
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.SolutionsView

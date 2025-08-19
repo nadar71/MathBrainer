@@ -6,7 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import eu.indiewalkabout.mathbrainer.data.local.db.MathBrainerDatabase
 import eu.indiewalkabout.mathbrainer.data.local.db.MathBrainerDbDao
-import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
+import eu.indiewalkabout.mathbrainer.domain.model.results.OLD.GameResult
 import junit.framework.Assert.assertEquals
 import org.junit.After
 import org.junit.Before

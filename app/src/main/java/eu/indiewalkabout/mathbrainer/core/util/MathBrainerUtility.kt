@@ -1,6 +1,5 @@
 package eu.indiewalkabout.mathbrainer.core.util
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -9,8 +8,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.os.Build
-import com.unity3d.ads.UnityAds
-import eu.indiewalkabout.mathbrainer.domain.model.results.GameResult
+import eu.indiewalkabout.mathbrainer.domain.model.results.OLD.GameResult
 import java.util.Random
 import java.util.concurrent.ThreadLocalRandom
 

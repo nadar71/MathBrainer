@@ -22,7 +22,7 @@ import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityMathOpChooseResultBinding
-import eu.indiewalkabout.mathbrainer.domain.model.results.Results
+import eu.indiewalkabout.mathbrainer.domain.model.results.OLD.Results
 import eu.indiewalkabout.mathbrainer.presentation.ui.HomeGameActivity
 
 class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {

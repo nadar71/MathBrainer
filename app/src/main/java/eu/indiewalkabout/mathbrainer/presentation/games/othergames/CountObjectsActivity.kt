@@ -29,7 +29,7 @@ import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.databinding.ActivityCountObjectsBinding
-import eu.indiewalkabout.mathbrainer.domain.model.results.Results
+import eu.indiewalkabout.mathbrainer.domain.model.results.OLD.Results
 import eu.indiewalkabout.mathbrainer.presentation.games.customviews.QuickCountItemDrawView
 import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
 import java.io.IOException
