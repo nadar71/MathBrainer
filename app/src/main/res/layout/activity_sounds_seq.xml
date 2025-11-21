@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.games.othergames.SoundsSeqActivity">
+        tools:context=".feat_games.feat_sound_seq.presentation.ui.SoundsSeqActivity">
 
         <ImageView
             android:id="@+id/backgroundImg"

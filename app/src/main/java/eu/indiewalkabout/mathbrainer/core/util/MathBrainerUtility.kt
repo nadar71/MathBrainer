@@ -8,7 +8,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.os.Build
-import eu.indiewalkabout.mathbrainer.domain.model.results.OLD.GameResult
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.OLD.GameResult
 import java.util.Random
 import java.util.concurrent.ThreadLocalRandom
 

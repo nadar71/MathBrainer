@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.presentation.ui.ChooseGameActivity
+import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.ChooseGameActivity
 
 class GameOverDialog(private val context: Context, private val caller: IGameFunctions, private val activity: Activity) {
     private var homeBtn: ImageView? = null
