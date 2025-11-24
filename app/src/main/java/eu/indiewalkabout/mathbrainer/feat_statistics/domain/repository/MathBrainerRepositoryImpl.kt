@@ -4,6 +4,7 @@ import eu.indiewalkabout.mathbrainer.feat_statistics.data.local.db.MathBrainerDb
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStatistics
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 class MathBrainerRepositoryImpl @Inject constructor(
     private val mathBrainerDbDao: MathBrainerDbDao
@@ -11,9 +12,7 @@ class MathBrainerRepositoryImpl @Inject constructor(
 
     // ---------------------------------------- QUERY ----------------------------------------------
 
-    override suspend fun loadGameScores(): GameScores {
-        return mathBrainerDbDao.loadGameScores()
-    }
+    override fun observeGameScores(): Flow<GameScores?> = mathBrainerDbDao.loadGameScores()
 
     override suspend fun loadGameStatistics(): GameStatistics {
         return mathBrainerDbDao.loadGameStatistics()

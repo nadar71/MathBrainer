@@ -6,8 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStatistics
-
-
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MathBrainerDbDao {
@@ -16,8 +15,8 @@ interface MathBrainerDbDao {
     //  QUERY
     // ----------------------------------------------------------------------------------------------
 
-    @Query("SELECT * FROM GameScores ")
-    suspend fun loadGameScores(): GameScores
+    @Query("SELECT * FROM GameScores ORDER BY id DESC LIMIT 1")
+    fun loadGameScores(): Flow<GameScores?>
 
     @Query("SELECT * FROM GameStatistics")
     suspend fun loadGameStatistics(): GameStatistics
@@ -29,27 +28,27 @@ interface MathBrainerDbDao {
     // TODO : to be removed
 
     @Insert
-    fun insertGameScores(gameScores: GameScores)
+    suspend fun insertGameScores(gameScores: GameScores)
 
     @Insert
-    fun insertGameStatistics(gameStatistics: GameStatistics)
+    suspend fun insertGameStatistics(gameStatistics: GameStatistics)
 
     // ----------------------------------------------------------------------------------------------
     //  UPDATE
     // ----------------------------------------------------------------------------------------------
 
     @Delete
-    fun deleteGameScores(gameScores: GameScores)
+    suspend fun deleteGameScores(gameScores: GameScores)
     @Delete
-    fun deleteGameStatistics(gameStatistics: GameStatistics)
+    suspend fun deleteGameStatistics(gameStatistics: GameStatistics)
 
     // ----------------------------------------------------------------------------------------------
     //  DROPS
     // ----------------------------------------------------------------------------------------------
 
     @Query("DELETE FROM GameScores")
-    fun dropTableGameScores()
+    suspend fun dropTableGameScores()
 
     @Query("DELETE FROM GameStatistics")
-    fun dropTableGameStatistics()
+    suspend fun dropTableGameStatistics()
 }

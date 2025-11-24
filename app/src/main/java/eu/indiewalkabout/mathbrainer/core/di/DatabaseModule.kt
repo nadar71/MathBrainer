@@ -1,4 +1,4 @@
-package eu.indiewalkabout.fridgemanager.core.di
+package eu.indiewalkabout.mathbrainer.core.di
 
 import android.content.Context
 import dagger.Module
@@ -15,7 +15,7 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideFoodDatabase(
+    fun provideMathBrainerDatabase(
         @ApplicationContext context: Context
     ): MathBrainerDatabase {
         return MathBrainerDatabase.getDbInstance(context)

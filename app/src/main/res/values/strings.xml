@@ -161,5 +161,45 @@
     <string name="gdpr_btn_summary">GDPR Consent Withdraw.</string>
     <string name="question_mark">\?</string>
 
+    <!-- Compose home screen strings -->
+    <string name="home_tagline">Choose your next brain training.</string>
+    <string name="home_progress_title">Track your progress</string>
+    <string name="home_progress_body">Check highscores or read the credits.</string>
+    <string name="highscores_title">Highscores</string>
+    <string name="credits_title_short">Credits</string>
+    <string name="highscore_with_value">Highscore: %1$d</string>
+
+    <string name="sum_choose_title">Sum - Choose</string>
+    <string name="sum_choose_description">Pick the right result for the sum.</string>
+    <string name="diff_choose_title">Diff - Choose</string>
+    <string name="diff_choose_description">Pick the right result for the difference.</string>
+    <string name="mult_choose_title">Multiplication - Choose</string>
+    <string name="mult_choose_description">Pick the right result for the multiplication.</string>
+    <string name="div_choose_title">Division - Choose</string>
+    <string name="div_choose_description">Pick the right result for the division.</string>
+
+    <string name="sum_write_title">Sum - Write</string>
+    <string name="sum_write_description">Write the right result for the sum.</string>
+    <string name="diff_write_title">Diff - Write</string>
+    <string name="diff_write_description">Write the right result for the difference.</string>
+    <string name="mult_write_title">Multiplication - Write</string>
+    <string name="mult_write_description">Write the right result for the multiplication.</string>
+    <string name="div_write_title">Division - Write</string>
+    <string name="div_write_description">Write the right result for the division.</string>
+
+    <string name="mix_choose_title">Mixed Ops - Choose</string>
+    <string name="mix_choose_description">Choose results for mixed operations.</string>
+    <string name="mix_write_title">Mixed Ops - Write</string>
+    <string name="mix_write_description">Write results for mixed operations.</string>
+
+    <string name="quick_count_title">Quick Count</string>
+    <string name="quick_count_description">Count the objects before time runs out.</string>
+    <string name="double_number_title">Double Number</string>
+    <string name="double_number_description">Double the number as quickly as you can.</string>
+    <string name="number_order_title">Number Order</string>
+    <string name="number_order_description">Order the numbers correctly.</string>
+    <string name="random_operations_title">Random Operations</string>
+    <string name="random_operations_description">Solve random math operations.</string>
+
 
 </resources>

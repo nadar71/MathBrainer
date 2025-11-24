@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_tagline">Scegli il tuo prossimo allenamento mentale.</string>
+    <string name="home_progress_title">Tieni traccia dei progressi</string>
+    <string name="home_progress_body">Controlla i punteggi migliori o leggi i crediti.</string>
+    <string name="highscores_title">Punteggi migliori</string>
+    <string name="credits_title_short">Crediti</string>
+    <string name="highscore_with_value">Record: %1$d</string>
+
+    <string name="sum_choose_title">Somma - Scelta</string>
+    <string name="sum_choose_description">Scegli il risultato corretto della somma.</string>
+    <string name="diff_choose_title">Differenza - Scelta</string>
+    <string name="diff_choose_description">Scegli il risultato corretto della sottrazione.</string>
+    <string name="mult_choose_title">Moltiplicazione - Scelta</string>
+    <string name="mult_choose_description">Scegli il risultato corretto della moltiplicazione.</string>
+    <string name="div_choose_title">Divisione - Scelta</string>
+    <string name="div_choose_description">Scegli il risultato corretto della divisione.</string>
+
+    <string name="sum_write_title">Somma - Scrivi</string>
+    <string name="sum_write_description">Scrivi il risultato corretto della somma.</string>
+    <string name="diff_write_title">Differenza - Scrivi</string>
+    <string name="diff_write_description">Scrivi il risultato corretto della sottrazione.</string>
+    <string name="mult_write_title">Moltiplicazione - Scrivi</string>
+    <string name="mult_write_description">Scrivi il risultato corretto della moltiplicazione.</string>
+    <string name="div_write_title">Divisione - Scrivi</string>
+    <string name="div_write_description">Scrivi il risultato corretto della divisione.</string>
+
+    <string name="mix_choose_title">Operazioni miste - Scelta</string>
+    <string name="mix_choose_description">Scegli i risultati per le operazioni miste.</string>
+    <string name="mix_write_title">Operazioni miste - Scrivi</string>
+    <string name="mix_write_description">Scrivi i risultati per le operazioni miste.</string>
+
+    <string name="quick_count_title">Conto rapido</string>
+    <string name="quick_count_description">Conta gli oggetti prima che il tempo finisca.</string>
+    <string name="double_number_title">Raddoppia il numero</string>
+    <string name="double_number_description">Raddoppia il numero il più velocemente possibile.</string>
+    <string name="number_order_title">Ordina i numeri</string>
+    <string name="number_order_description">Metti i numeri nell'ordine corretto.</string>
+    <string name="random_operations_title">Operazioni casuali</string>
+    <string name="random_operations_description">Risolvi operazioni matematiche casuali.</string>
+</resources>
