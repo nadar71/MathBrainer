@@ -1,0 +1,43 @@
+package eu.indiewalkabout.mathbrainer.feat_home.domain.use_cases
+
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository.MathBrainerRepository
+import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+
+class GetGameScoresUseCase @Inject constructor(
+    private val repository: MathBrainerRepository
+) {
+    private val emptyScores = GameScores(
+        global_score = 0,
+        doublenumber_game_score = 0,
+        sum_choose_result_game_score = 0,
+        diff_choose_result_game_score = 0,
+        mult_choose_result_game_score = 0,
+        div_choose_result_game_score = 0,
+        mix_choose_result_game_score = 0,
+        sum_write_result_game_score = 0,
+        diff_write_result_game_score = 0,
+        mult_write_result_game_score = 0,
+        div_write_result_game_score = 0,
+        mix_write_result_game_score = 0,
+        random_op_game_score = 0,
+        count_objects_game_score = 0,
+        number_order_game_score = 0
+    )
+
+    operator fun invoke(): Flow<GameScores> {
+        return repository.observeGameScores()
+            .map { scores ->
+                scores ?: run {
+                    repository.insertGameScores(emptyScores)
+                    emptyScores
+                }
+            }
+            .catch {
+                emit(emptyScores)
+            }
+    }
+}

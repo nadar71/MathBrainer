@@ -1,11 +1,12 @@
-package eu.indiewalkabout.fridgemanager.core.di
+package eu.indiewalkabout.mathbrainer.feat_statistics.di
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import eu.indiewalkabout.mathbrainer.feat_statistics.data.local.db.MathBrainerDbDao
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository.MathBrainerRepositoryImpl
+import eu.indiewalkabout.mathbrainer.feat_statistics.data.repository.MathBrainerRepositoryImpl
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository.MathBrainerRepository
 import javax.inject.Singleton
 
 @Module
@@ -16,7 +17,7 @@ object RepositoryModule {
     @Singleton
     fun provideMathBrainerRepository(
         mathBrainerDao: MathBrainerDbDao
-    ): MathBrainerRepositoryImpl {
+    ): MathBrainerRepository {
         return MathBrainerRepositoryImpl(mathBrainerDao)
     }
 }

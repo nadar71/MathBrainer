@@ -6,50 +6,36 @@ import androidx.room.Insert
 import androidx.room.Query
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStatistics
-
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface MathBrainerDbDao {
 
-    // ----------------------------------------------------------------------------------------------
-    //  QUERY
-    // ----------------------------------------------------------------------------------------------
-
-    @Query("SELECT * FROM GameScores ")
-    suspend fun loadGameScores(): GameScores
+    // --- QUERY ---
+    @Query("SELECT * FROM GameScores LIMIT 1")
+    fun observeGameScores(): Flow<GameScores?>
 
     @Query("SELECT * FROM GameStatistics")
     suspend fun loadGameStatistics(): GameStatistics
 
-
-    // ----------------------------------------------------------------------------------------------
-    //  INSERT
-    // ----------------------------------------------------------------------------------------------
-    // TODO : to be removed
+    // --- INSERT ---
+    @Insert
+    suspend fun insertGameScores(gameScores: GameScores)
 
     @Insert
-    fun insertGameScores(gameScores: GameScores)
+    suspend fun insertGameStatistics(gameStatistics: GameStatistics)
 
-    @Insert
-    fun insertGameStatistics(gameStatistics: GameStatistics)
-
-    // ----------------------------------------------------------------------------------------------
-    //  UPDATE
-    // ----------------------------------------------------------------------------------------------
-
+    // --- UPDATE ---
     @Delete
-    fun deleteGameScores(gameScores: GameScores)
+    suspend fun deleteGameScores(gameScores: GameScores)
     @Delete
-    fun deleteGameStatistics(gameStatistics: GameStatistics)
+    suspend fun deleteGameStatistics(gameStatistics: GameStatistics)
 
-    // ----------------------------------------------------------------------------------------------
-    //  DROPS
-    // ----------------------------------------------------------------------------------------------
-
+    // --- DROPS ---
     @Query("DELETE FROM GameScores")
-    fun dropTableGameScores()
+    suspend fun dropTableGameScores()
 
     @Query("DELETE FROM GameStatistics")
-    fun dropTableGameStatistics()
+    suspend fun dropTableGameStatistics()
 }

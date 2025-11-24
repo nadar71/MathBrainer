@@ -24,7 +24,7 @@ import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.MyKeyboard
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.OLD.Results
-import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.ChooseGameActivity
+import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
 
 class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     private lateinit var binding: ActivityMathOpWriteResultBinding
@@ -188,7 +188,7 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
             // MathBrainerUtility.showUnityAdsRandom(this@Math_Op_Write_Result_Activity)
             // TODO: Show unity ads interstitial
 
-            val intent = Intent(this@Math_Op_Write_Result_Activity, ChooseGameActivity::class.java)
+            val intent = Intent(this@Math_Op_Write_Result_Activity, HomeGameActivity::class.java)
             startActivity(intent)
         }
 
@@ -218,8 +218,8 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     // Set the highscore passed from main
     private fun showHighscore() {
         val intent = intent
-        if (intent.hasExtra(ChooseGameActivity.Companion.HIGHSCORE)) {
-            val value = intent.getIntExtra(ChooseGameActivity.Companion.HIGHSCORE, -1)
+        if (intent.hasExtra(HomeGameActivity.Companion.HIGHSCORE)) {
+            val value = intent.getIntExtra(HomeGameActivity.Companion.HIGHSCORE, -1)
             binding.highscoreValueTv.text = Integer.toString(value)
         } else {
             binding.highscoreValueTv.text = "0"
@@ -230,8 +230,8 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     private fun setOperationSymbol() {
         val intent = intent
         val operationSpec: CharArray
-        if (intent.hasExtra(ChooseGameActivity.Companion.OPERATION_KEY)) {
-            operationSpec = intent.getStringExtra(ChooseGameActivity.Companion.OPERATION_KEY)!!.toCharArray()
+        if (intent.hasExtra(HomeGameActivity.Companion.OPERATION_KEY)) {
+            operationSpec = intent.getStringExtra(HomeGameActivity.Companion.OPERATION_KEY)!!.toCharArray()
             when (operationSpec[0]) {
                 '+' -> {
                     symbols = CharArray(1)

@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -23,7 +24,7 @@ import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.OLD.Results
-import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.ChooseGameActivity
+import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
 
 class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     private lateinit var binding: ActivityNumbersOrderBinding
@@ -179,8 +180,8 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     // Set the highscore passed from main
     private fun showHighscore() {
         val intent = intent
-        if (intent.hasExtra(ChooseGameActivity.Companion.HIGHSCORE)) {
-            val value = intent.getIntExtra(ChooseGameActivity.Companion.HIGHSCORE, -1)
+        if (intent.hasExtra(HomeGameActivity.Companion.HIGHSCORE)) {
+            val value = intent.getIntExtra(HomeGameActivity.Companion.HIGHSCORE, -1)
             binding.highscoreValueTv.text = Integer.toString(value)
         } else {
             binding.highscoreValueTv.text = "0"
@@ -215,7 +216,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
             // MathBrainerUtility.showUnityAdsRandom(this@NumberOrderActivity)
             // TODO: Show unity ads interstitial
 
-            val intent = Intent(this@NumberOrderActivity, ChooseGameActivity::class.java)
+            val intent = Intent(this@NumberOrderActivity, HomeGameActivity::class.java)
             ContextCompat.startActivity(intent)
         }
     }

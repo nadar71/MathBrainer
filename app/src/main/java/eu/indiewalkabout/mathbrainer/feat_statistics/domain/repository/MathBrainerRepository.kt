@@ -2,15 +2,18 @@ package eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository
 
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStatistics
+import kotlinx.coroutines.flow.Flow
 
 interface MathBrainerRepository {
-    //----------------------------------- QUERY ----------------------------------------------------
-    suspend fun loadGameScores(): GameScores
+    // --- QUERY ---
+    suspend fun observeGameScores(): Flow<GameScores?>
     suspend fun loadGameStatistics(): GameStatistics
-    //----------------------------------------- INSERT ---------------------------------------------
+
+    // --- INSERT ---
     suspend fun insertGameScores(gameScores: GameScores)
     suspend fun insertGameStatistics(gameStatistics: GameStatistics)
-    //------------------------------------------- DROPS --------------------------------------------
+
+    // --- DROPS ---
     suspend fun dropTableGameScores()
     suspend fun dropTableGameStatistics()
 }

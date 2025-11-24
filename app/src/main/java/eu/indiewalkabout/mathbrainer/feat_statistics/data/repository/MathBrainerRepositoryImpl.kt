@@ -1,8 +1,10 @@
-package eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository
+package eu.indiewalkabout.mathbrainer.feat_statistics.data.repository
 
 import eu.indiewalkabout.mathbrainer.feat_statistics.data.local.db.MathBrainerDbDao
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStatistics
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository.MathBrainerRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MathBrainerRepositoryImpl @Inject constructor(
@@ -11,8 +13,8 @@ class MathBrainerRepositoryImpl @Inject constructor(
 
     // ---------------------------------------- QUERY ----------------------------------------------
 
-    override suspend fun loadGameScores(): GameScores {
-        return mathBrainerDbDao.loadGameScores()
+    override suspend fun observeGameScores(): Flow<GameScores?> {
+        return mathBrainerDbDao.observeGameScores()
     }
 
     override suspend fun loadGameStatistics(): GameStatistics {

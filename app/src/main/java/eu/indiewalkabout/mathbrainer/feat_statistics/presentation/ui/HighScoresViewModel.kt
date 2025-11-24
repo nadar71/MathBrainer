@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import eu.indiewalkabout.mathbrainer.AppMathBrainer
 import eu.indiewalkabout.mathbrainer.core.util.TAG
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository.MathBrainerRepositoryImpl
+import eu.indiewalkabout.mathbrainer.feat_statistics.data.repository.MathBrainerRepositoryImpl
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.OLD.GameResult
 
 // ViewModel Class for retrieving games results

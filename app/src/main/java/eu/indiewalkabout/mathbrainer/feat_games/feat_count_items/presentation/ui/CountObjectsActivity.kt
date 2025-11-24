@@ -16,6 +16,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import com.unity3d.services.banners.BannerView
 import com.unity3d.services.banners.UnityBannerSize
 import eu.indiewalkabout.mathbrainer.R
@@ -26,7 +28,7 @@ import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
 import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
 import eu.indiewalkabout.mathbrainer.core.util.TAG
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.OLD.Results
-import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.ChooseGameActivity
+import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
 import java.io.IOException
 
 class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
@@ -203,8 +205,8 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
     // Set the highscore passed from main
     private fun showHighscore() {
         val intent = intent
-        if (intent.hasExtra(ChooseGameActivity.Companion.HIGHSCORE)) {
-            val value = intent.getIntExtra(ChooseGameActivity.Companion.HIGHSCORE, -1)
+        if (intent.hasExtra(HomeGameActivity.Companion.HIGHSCORE)) {
+            val value = intent.getIntExtra(HomeGameActivity.Companion.HIGHSCORE, -1)
             binding.highscoreValueTv.text = value.toString()
         } else {
             binding.highscoreValueTv.text = "0"
@@ -260,7 +262,7 @@ class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
             // MathBrainerUtility.showUnityAdsRandom(this@CountObjectsActivity)
             // TODO: Show unity ads interstitial
 
-            val intent = Intent(this@CountObjectsActivity, ChooseGameActivity::class.java)
+            val intent = Intent(this@CountObjectsActivity, HomeGameActivity::class.java)
             startActivity(intent)
         }
     }
