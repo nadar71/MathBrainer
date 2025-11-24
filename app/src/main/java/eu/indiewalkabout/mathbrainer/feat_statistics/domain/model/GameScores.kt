@@ -22,4 +22,24 @@ data class GameScores(
     val random_op_game_score: Int,
     val count_objects_game_score: Int,
     val number_order_game_score: Int
-)
+){
+    companion object {
+        val emptyScores = GameScores(
+            global_score = 0,
+            doublenumber_game_score = 0,
+            sum_choose_result_game_score = 0,
+            diff_choose_result_game_score = 0,
+            mult_choose_result_game_score = 0,
+            div_choose_result_game_score = 0,
+            mix_choose_result_game_score = 0,
+            sum_write_result_game_score = 0,
+            diff_write_result_game_score = 0,
+            mult_write_result_game_score = 0,
+            div_write_result_game_score = 0,
+            mix_write_result_game_score = 0,
+            random_op_game_score = 0,
+            count_objects_game_score = 0,
+            number_order_game_score = 0
+        )
+    }
+}

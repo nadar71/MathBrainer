@@ -1,5 +1,42 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui
 
+import MathOpWriteResultViewModel
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import dagger.hilt.android.AndroidEntryPoint
+import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
+
+@AndroidEntryPoint
+class Math_Op_Write_Result_Activity : ComponentActivity() {
+    private val viewModel: MathOpWriteResultViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MathBrainerTheme {
+                MathWriteGameScreen(
+                    viewModel = viewModel,
+                    onExit = {
+                        viewModel.onQuitGame()
+                        finish()
+                    }
+                )
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        viewModel.onQuitGame()
+        super.onDestroy()
+    }
+}
+
+
+/*
+package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui
+
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -619,7 +656,8 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
     // Unity ads listener
-    /*private inner class UnityAdsListener : IUnityAdsListener {
+    */
+/*private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
         }
@@ -632,7 +670,8 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
         }
-    }*/
+    }*//*
+
 
     // ---------------------------------------------------------------------------------------------
     // MENU STUFF
@@ -662,4 +701,4 @@ class Math_Op_Write_Result_Activity : AppCompatActivity(), IGameFunctions {
         // MathBrainerUtility.showUnityAdsRandom(this)
         // TODO: Show unity ads interstitial
     }
-}
+}*/

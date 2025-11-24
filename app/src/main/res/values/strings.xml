@@ -40,6 +40,20 @@
     <string name="random_operations_title">Random Operations</string>
     <string name="random_operations_description">Solve random math operations.</string>
 
+    <string name="navigate_back">Back</string>
+    <string name="math_write_title">Write the result</string>
+    <string name="math_write_subtitle">Solve the operation before time runs out</string>
+    <string name="write_result_placeholder">Type your answer</string>
+    <string name="wrong_answer">Wrong answer</string>
+    <string name="delete_label">Delete</string>
+    <string name="submit_label">Submit</string>
+    <string name="current_input">Current input: %1$s</string>
+    <string name="game_over_title">Game over</string>
+    <string name="game_over_body">You have finished all available lives.</string>
+    <string name="lives_with_value">Lives: %1$d</string>
+    <string name="score_with_value">Score: %1$d</string>
+    <string name="level_with_value">Level %1$d</string>
+
 
     <!---->
 
