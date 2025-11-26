@@ -1,35 +1,10 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation.ui
 
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.os.Bundle
-import android.os.Handler
-import android.text.InputType
-import android.util.Log
-import android.view.KeyEvent
-import android.view.MenuItem
-import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
-import com.unity3d.services.banners.BannerView
-import com.unity3d.services.banners.UnityBannerSize
-import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.core.util.CountDownIndicator
-import eu.indiewalkabout.mathbrainer.core.util.EndGameSessionDialog
-import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
-import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
-import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import eu.indiewalkabout.mathbrainer.core.util.MyKeyboard
-import eu.indiewalkabout.mathbrainer.core.util.TAG
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.OLD.Results
-import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
 
 // Given a number, write its double
-class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
-    private lateinit var binding: ActivityDoubleNumberBinding
+class DoubleNumberActivity : AppCompatActivity()/*, IGameFunctions*/ {
+    /*private lateinit var binding: ActivityDoubleNumberBinding
 
     // private val unityAdsListener = UnityAdsListener()
 
@@ -463,7 +438,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
     }
 
     // Unity ads listener
-    /*private inner class UnityAdsListener : IUnityAdsListener {
+    *//*private inner class UnityAdsListener : IUnityAdsListener {
         override fun onUnityAdsReady(s: String) {
         }
 
@@ -475,7 +450,7 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
         }
-    }*/
+    }*//*
 
     // MENU STUFF
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -499,5 +474,5 @@ class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
         // show unityads randomic
         // MathBrainerUtility.showUnityAdsRandom(this)
         // TODO: Show unity ads interstitial
-    }
+    }*/
 }

@@ -1,32 +1,10 @@
 package eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui
 
-import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.unity3d.services.banners.BannerView
-import com.unity3d.services.banners.UnityBannerSize
-import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.core.unityads.bannerListener
-import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import eu.indiewalkabout.mathbrainer.core.util.TAG
-import eu.indiewalkabout.mathbrainer.databinding.ActivityHighscoresBinding
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.OLD.GameResult
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation.ui.DoubleNumberActivity
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation.ui.Math_Op_Choose_Result_Activity
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui.Math_Op_Write_Result_Activity
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.presentation.ui.RandomOperationActivity
-import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.ui.CountObjectsActivity
-import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.presentation.ui.NumberOrderActivity
-import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
 
 // Choose the type of game
 class HighscoresActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityHighscoresBinding
+    /*private lateinit var binding: ActivityHighscoresBinding
     // game results list
     private var gameResults: List<GameResult>? = null
     // highscores value
@@ -55,7 +33,7 @@ class HighscoresActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_highscores)
 
         // Initialize ConsentSDK
-        /*val consentSDK = ConsentSDK.Builder(this)
+        *//*val consentSDK = ConsentSDK.Builder(this)
             .addTestDeviceId("7DC1A1E8AEAD7908E42271D4B68FB270") // redminote 5 // Add your test device id "Remove addTestDeviceId on production!"
             // .addTestDeviceId("9978A5F791A259430A0156313ED9C6A2")
             .addCustomLogTag("gdpr_TAG") // Add custom tag default: ID_LOG
@@ -73,7 +51,7 @@ class HighscoresActivity : AppCompatActivity() {
         })
 
         // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
-        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@HighscoresActivity))*/
+        binding.mAdView.loadAd(ConsentSDK.getAdRequest(this@HighscoresActivity))*//*
 
         // show updated scores
         showGamesScores()
@@ -277,5 +255,5 @@ class HighscoresActivity : AppCompatActivity() {
     companion object {
         val OPERATION_KEY = "operation"
         val HIGHSCORE = "highscore"
-    }
+    }*/
 }

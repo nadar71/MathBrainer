@@ -215,7 +215,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/scoreValue_tv">
 
-            <eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNoNumberView
+            <!--<eu.indiewalkabout.mathbrainer.presentation.games.customviews.MarkerWithNoNumberView
                 android:id="@+id/itemDrawingNoNumber_v"
                 android:layout_width="357dp"
                 android:layout_height="603dp"
@@ -253,7 +253,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/drawing_container"
                 app:layout_constraintHorizontal_bias="0.494"
                 app:layout_constraintStart_toStartOf="@+id/drawing_container"
-                app:layout_constraintTop_toTopOf="@+id/drawing_container" />
+                app:layout_constraintTop_toTopOf="@+id/drawing_container" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

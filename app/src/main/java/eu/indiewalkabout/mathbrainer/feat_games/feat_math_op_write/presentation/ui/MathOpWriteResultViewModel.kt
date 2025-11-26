@@ -1,3 +1,6 @@
+package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui
+
+
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,6 +26,7 @@ class MathOpWriteResultViewModel @Inject constructor(
     private val updateWriteResultScoreUseCase: UpdateWriteResultScoreUseCase
 ) : ViewModel() {
 
+    // get game type and highscore
     private val operationParam: Char? = savedStateHandle.get<String>(HomeGameActivity.OPERATION_KEY)?.firstOrNull()
     private val initialHighScore: Int? = savedStateHandle[HomeGameActivity.HIGHSCORE]
 
@@ -47,7 +51,9 @@ class MathOpWriteResultViewModel @Inject constructor(
     val uiState: StateFlow<MathWriteUiState> = _uiState
 
     init {
-        launchNewChallenge(resetTimer = true)
+        viewModelScope.launch {
+            launchNewChallenge(resetTimer = true)
+        }
     }
 
     fun onDigitPressed(digit: Int) {
@@ -79,7 +85,7 @@ class MathOpWriteResultViewModel @Inject constructor(
         persistScoreIfNeeded()
     }
 
-    private fun launchNewChallenge(resetTimer: Boolean) {
+    private suspend fun launchNewChallenge(resetTimer: Boolean) {
         val symbols = scoreCategory.operationSymbol?.let { listOf(it) } ?: listOf('+', '-', '*', '/')
         val challenge = generateMathWriteChallengeUseCase(
             MathWriteConfig(

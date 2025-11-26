@@ -1,33 +1,9 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.presentation.ui
 
-import android.content.Context
-import android.graphics.Color
-import android.os.Bundle
-import android.os.Handler
-import android.util.Log
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import com.unity3d.services.banners.BannerView
-import com.unity3d.services.banners.UnityBannerSize
-import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.core.presentation.customviews.MarkerWithNoNumberView
-import eu.indiewalkabout.mathbrainer.core.presentation.customviews.MarkerWithNumberView
-import eu.indiewalkabout.mathbrainer.core.presentation.customviews.SolutionsView
-import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
-import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
-import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import eu.indiewalkabout.mathbrainer.core.util.TAG
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.OLD.Results
-import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
 
-class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
-    private lateinit var binding: ActivityNumbersOrderBinding
+class NumberOrderActivity : AppCompatActivity()/*, IGameFunctions*/ {
+    /*private lateinit var binding: ActivityNumbersOrderBinding
     // private val unityAdsListener = UnityAdsListener()
 
     // Custom views drawing items to count
@@ -443,7 +419,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
     }
 
     // Unity ads listener
-    /*private inner class UnityAdsListener : IUnityAdsListener {
+    *//*private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
         }
@@ -456,7 +432,7 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
         }
-    }*/
+    }*//*
 
     // ---------------------------------------------------------------------------------------------
     // MENU STUFF
@@ -480,5 +456,5 @@ class NumberOrderActivity : AppCompatActivity(), IGameFunctions {
         // show unityads randomic
         // MathBrainerUtility.showUnityAdsRandom(this)
         // TODO: Show unity ads interstitial
-    }
+    }*/
 }

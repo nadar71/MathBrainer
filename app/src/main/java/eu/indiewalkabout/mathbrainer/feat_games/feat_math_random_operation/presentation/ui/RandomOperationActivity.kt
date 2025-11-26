@@ -1,29 +1,9 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.presentation.ui
 
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.os.Bundle
-import android.os.Handler
-import android.util.Log
-import android.view.MenuItem
-import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
-import com.unity3d.services.banners.BannerView
-import com.unity3d.services.banners.UnityBannerSize
-import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.core.util.CountDownIndicator
-import eu.indiewalkabout.mathbrainer.core.util.EndGameSessionDialog
-import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
-import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
-import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import eu.indiewalkabout.mathbrainer.core.util.TAG
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.OLD.Results
-import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
 
-class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
-    private lateinit var binding: ActivityRandomOperationBinding
+class RandomOperationActivity : AppCompatActivity()/*, IGameFunctions*/ {
+    /*private lateinit var binding: ActivityRandomOperationBinding
     // private val unityAdsListener = UnityAdsListener()
 
     private lateinit var livesValueIv: ArrayList<ImageView>
@@ -573,7 +553,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
     }
 
     // Unity ads listener
-    /*private inner class UnityAdsListener : IUnityAdsListener {
+    *//*private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
         }
@@ -586,7 +566,7 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
         }
-    }*/
+    }*//*
 
     // ---------------------------------------------------------------------------------------------
     // MENU STUFF
@@ -615,5 +595,5 @@ class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
         // show unityads randomic
         // MathBrainerUtility.showUnityAdsRandom(this)
         // TODO: Show unity ads interstitial
-    }
+    }*/
 }

@@ -1,14 +1,10 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.ui
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.unity3d.services.banners.BannerView
-import com.unity3d.services.banners.UnityBannerSize
-import eu.indiewalkabout.mathbrainer.R
 
 // TODO : to be implemented
 class FallingOperationsActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityFallingOperationsBinding
+    /*private lateinit var binding: ActivityFallingOperationsBinding
     private var bottomBanner: BannerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,5 +19,5 @@ class FallingOperationsActivity : AppCompatActivity() {
         bottomBanner?.listener = bannerListener
         bottomBanner?.load()
         binding.bannerLayout.addView(bottomBanner)
-    }
+    }*/
 }

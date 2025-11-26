@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -21,15 +22,12 @@ import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.GameGrid
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.LoadingContent
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.buildIntentForGame
 import eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui.HighscoresActivity
-import androidx.compose.runtime.getValue
 
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
-
+fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
     val context = LocalContext.current
-
-    val state by viewModel.uiState.collectAsState()
+    val state by homeViewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {

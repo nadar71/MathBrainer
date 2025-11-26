@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.android)
 }
 
@@ -38,6 +39,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        dataBinding = true  // TODO : OLD, to delete
         compose = true
     }
 }
@@ -77,7 +79,8 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.common)
     implementation(libs.androidx.hilt.navigation.compose)
-    ksp(libs.hilt.android.compiler)
+    // ksp(libs.hilt.android.compiler)
+    kapt(libs.hilt.android.compiler)
 
     // Accompanist lib for compose integration
     implementation(libs.accompanist.pager)
@@ -141,6 +144,9 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // TODO : OLD, to delete
+    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
 
 }
 

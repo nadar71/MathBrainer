@@ -218,7 +218,7 @@
             app:srcCompat="@drawable/ic_home_white_24dp" />
 
 
-        <eu.indiewalkabout.mathbrainer.presentation.games.customviews.QuickCountItemDrawView
+        <!--<eu.indiewalkabout.mathbrainer.presentation.games.customviews.QuickCountItemDrawView
             android:id="@+id/itemDrawing_v"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -230,7 +230,7 @@
             app:layout_constraintBottom_toTopOf="@+id/count_obj_instructions_tv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/canvas_image_ref_img" />
+            app:layout_constraintTop_toTopOf="@id/canvas_image_ref_img" />-->
 
         <ImageView
             android:id="@+id/canvas_image_ref_img"
@@ -323,8 +323,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/bannerLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/itemDrawing_v" />
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <GridLayout
             android:id="@+id/gridLayout"
@@ -337,11 +336,7 @@
             android:padding="3dp"
             android:rowCount="1"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/itemDrawing_v"
-            app:layout_constraintEnd_toEndOf="@+id/itemDrawing_v"
             app:layout_constraintHorizontal_bias="0.83"
-            app:layout_constraintStart_toStartOf="@+id/itemDrawing_v"
-            app:layout_constraintTop_toTopOf="@+id/itemDrawing_v"
             app:layout_constraintVertical_bias="0.84000003">
 
             <LinearLayout

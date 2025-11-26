@@ -1,6 +1,5 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui
 
-import MathOpWriteResultViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent

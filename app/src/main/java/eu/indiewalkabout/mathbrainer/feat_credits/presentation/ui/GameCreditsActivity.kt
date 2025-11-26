@@ -1,17 +1,9 @@
 package eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui
 
-import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
-import com.unity3d.services.banners.BannerView
-import com.unity3d.services.banners.UnityBannerSize
-import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
 
 class GameCreditsActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityCreditsBinding
+    /*private lateinit var binding: ActivityCreditsBinding
     // private val unityAdsListener = UnityAdsListener()
 
     // internal var gdprConsent_tv: TextView? = null
@@ -32,7 +24,7 @@ class GameCreditsActivity : AppCompatActivity() {
         // initConsentSDK(this)
 
         // Checking the status of the user
-        /*if (ConsentSDK.isUserLocationWithinEea(this)) {
+        *//*if (ConsentSDK.isUserLocationWithinEea(this)) {
             val choice =
                 if (ConsentSDK.isConsentPersonalized(this)) "Personalize" else "Non-Personalize"
             Log.i(TAG, "onCreate: consent choice : $choice")
@@ -60,7 +52,7 @@ class GameCreditsActivity : AppCompatActivity() {
             }
         } else {
             binding.gdprConsentTv.visibility = View.INVISIBLE
-        }*/
+        }*//*
 
         // binding.gdprConsentTv.visibility = View.INVISIBLE
 
@@ -100,7 +92,7 @@ class GameCreditsActivity : AppCompatActivity() {
 
     // Initialize consent
     // @param context
-    /*private fun initConsentSDK(context: Context) {
+    *//*private fun initConsentSDK(context: Context) {
         // Initialize ConsentSDK
         consentSDK = ConsentSDK.Builder(context)
             .addTestDeviceId("7DC1A1E8AEAD7908E42271D4B68FB270") // Add your test device id "Remove addTestDeviceId on production!"
@@ -108,10 +100,10 @@ class GameCreditsActivity : AppCompatActivity() {
             .addPrivacyPolicy("http://www.indie-walkabout.eu/privacy-policy-app") // Add your privacy policy url
             .addPublisherId("pub-8846176967909254") // Add your admob publisher id
             .build()!!
-    }*/
+    }*//*
 
     // Unity ads listener
-    /*private inner class UnityAdsListener : IUnityAdsListener {
+    *//*private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
         }
@@ -124,7 +116,7 @@ class GameCreditsActivity : AppCompatActivity() {
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
         }
-    }*/
+    }*//*
 
     // ---------------------------------------------------------------------------------------------
     // MENU STUFF
@@ -146,5 +138,5 @@ class GameCreditsActivity : AppCompatActivity() {
         // show unityads randomic
         // MathBrainerUtility.showUnityAdsRandom(this)
         // TODO: Show unity ads interstitial
-    }
+    }*/
 }

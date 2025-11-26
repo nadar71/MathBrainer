@@ -1,14 +1,10 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_sound_seq.presentation.ui
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.unity3d.services.banners.BannerView
-import com.unity3d.services.banners.UnityBannerSize
-import eu.indiewalkabout.mathbrainer.R
 
 // TODO  : to be implemented
 class SoundsSeqActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySoundsSeqBinding
+    /*private lateinit var binding: ActivitySoundsSeqBinding
     private var bottomBanner: BannerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,5 +18,5 @@ class SoundsSeqActivity : AppCompatActivity() {
         bottomBanner?.listener = bannerListener
         bottomBanner?.load()
         binding.bannerLayout.addView(bottomBanner)
-    }
+    }*/
 }

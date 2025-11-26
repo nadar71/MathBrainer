@@ -1,29 +1,9 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation.ui
 
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.os.Bundle
-import android.os.Handler
-import android.util.Log
-import android.view.MenuItem
-import android.view.View
-import android.widget.Button
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
-import com.unity3d.services.banners.BannerView
-import com.unity3d.services.banners.UnityBannerSize
-import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.core.util.CountDownIndicator
-import eu.indiewalkabout.mathbrainer.core.util.GameOverDialog
-import eu.indiewalkabout.mathbrainer.core.util.IGameFunctions
-import eu.indiewalkabout.mathbrainer.core.util.MathBrainerUtility
-import eu.indiewalkabout.mathbrainer.core.util.TAG
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.OLD.Results
-import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
 
-class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
-    private lateinit var binding: ActivityMathOpChooseResultBinding
+class Math_Op_Choose_Result_Activity : AppCompatActivity()/*, IGameFunctions*/ {
+    /*private lateinit var binding: ActivityMathOpChooseResultBinding
     // private val unityAdsListener = UnityAdsListener()
 
     private lateinit var livesValueIv: ArrayList<ImageView>
@@ -780,7 +760,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
     }
 
     // Unity ads listener
-    /*private inner class UnityAdsListener : IUnityAdsListener {
+    *//*private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
         }
@@ -793,7 +773,7 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
 
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
         }
-    }*/
+    }*//*
 
     // ---------------------------------------------------------------------------------------------
     // MENU STUFF
@@ -822,5 +802,5 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
         // show unityads randomic
         // MathBrainerUtility.showUnityAdsRandom(this)
         // TODO: Show unity ads interstitial
-    }
+    }*/
 }
