@@ -44,6 +44,7 @@ fun GameGrid(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item(span = { GridItemSpan(maxLineSpan) }) {
+            // Titling spanned card
             Card(
                 modifier = Modifier.Companion.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
@@ -80,7 +81,7 @@ fun GameGrid(
             }
         }
 
-
+        // games card on 3 columns
         items(games) { game ->
             GameCard(gameUiModel = game, onGameSelected = onGameSelected)
         }

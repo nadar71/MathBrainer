@@ -57,6 +57,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                 padding = padding,
                 games = state.games,
                 onGameSelected = { game ->
+                    // launch game activity
                     val intent = buildIntentForGame(game, context)
                     context.startActivity(intent)
                 },
