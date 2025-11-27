@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
 
 @AndroidEntryPoint
 class Math_Op_Write_Result_Activity : ComponentActivity() {
@@ -14,15 +13,11 @@ class Math_Op_Write_Result_Activity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MathBrainerTheme {
+            /*MathBrainerTheme {
                 MathWriteGameScreen(
-                    viewModel = viewModel,
-                    onExit = {
-                        viewModel.onQuitGame()
-                        finish()
-                    }
+
                 )
-            }
+            }*/
         }
     }
 

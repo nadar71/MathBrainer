@@ -1,7 +1,6 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui
 
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,7 +9,6 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.GenerateMathWriteChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.usecase.UpdateWriteResultScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.state.MathWriteUiState
-import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,14 +19,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MathOpWriteResultViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val generateMathWriteChallengeUseCase: GenerateMathWriteChallengeUseCase,
     private val updateWriteResultScoreUseCase: UpdateWriteResultScoreUseCase
 ) : ViewModel() {
 
-    // get game type and highscore
-    private val operationParam: Char? = savedStateHandle.get<String>(HomeGameActivity.OPERATION_KEY)?.firstOrNull()
-    private val initialHighScore: Int? = savedStateHandle[HomeGameActivity.HIGHSCORE]
+    // Game state
+    private var operationParam: Char? = null
+    private var initialHighScore: Int? = null
 
     private val scoreCategory = WriteResultScoreCategory.fromOperation(operationParam)
 
@@ -50,7 +47,9 @@ class MathOpWriteResultViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MathWriteUiState(highScore = initialHighScore))
     val uiState: StateFlow<MathWriteUiState> = _uiState
 
-    init {
+    fun setOperation(operation: String, highScore: Int = 0) {
+        operationParam = operation.firstOrNull()
+        initialHighScore = highScore.takeIf { it > 0 }
         viewModelScope.launch {
             launchNewChallenge(resetTimer = true)
         }
