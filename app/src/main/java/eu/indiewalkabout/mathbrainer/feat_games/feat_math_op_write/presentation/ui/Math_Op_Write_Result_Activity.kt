@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class Math_Op_Write_Result_Activity : ComponentActivity() {
     private val viewModel: MathOpWriteResultViewModel by viewModels()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

@@ -14,7 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
 
 @Composable
 fun KeypadButton(
@@ -29,9 +31,10 @@ fun KeypadButton(
             .padding(6.dp)
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = if (highlight) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
+            containerColor = if (highlight) MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.surfaceVariant
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         onClick = onClick
     ) {
         Box(
@@ -56,4 +59,17 @@ fun KeypadButton(
         }
     }
 
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun KeypadButtonPreview() {
+    MathBrainerTheme {
+        KeypadButton(
+            text = "1",
+            highlight = true,
+            onClick = {}
+        )
+    }
 }

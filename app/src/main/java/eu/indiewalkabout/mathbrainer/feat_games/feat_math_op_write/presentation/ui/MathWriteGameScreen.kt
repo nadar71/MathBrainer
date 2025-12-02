@@ -37,12 +37,16 @@ fun MathWriteGameScreen(
     onBack: () -> Unit,
     viewModel: MathOpWriteResultViewModel = hiltViewModel()
 ) {
+
+    // ----------------------------------------- LOGIC -------------------------------------------
     LaunchedEffect(operation) {
         viewModel.setOperation(operation)
     }
 
+    // --- game state
     val state by viewModel.uiState.collectAsState()
 
+    // ----------------------------------------- UI ------------------------------------------------
     Scaffold(
         topBar = {
             Row(
@@ -103,3 +107,5 @@ fun MathWriteGameScreen(
         })
     }
 }
+
+

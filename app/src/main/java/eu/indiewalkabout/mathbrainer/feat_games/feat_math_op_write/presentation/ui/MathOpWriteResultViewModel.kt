@@ -29,14 +29,18 @@ class MathOpWriteResultViewModel @Inject constructor(
 
     private val scoreCategory = WriteResultScoreCategory.fromOperation(operationParam)
 
+    // random range of number to be processed
     private var min = 1
     private var max = 100
+
     private val multMin = 1
     private var multHighMax = 30
     private var multLowMax = 15
+
     private val divMin = 1
     private var divHighMax = 15
     private var divLowMax = 11
+
     private var levelChallengesTarget = 12
     private var levelChallengesCount = 0
     private var timerLength = MathWriteUiState.INITIAL_TIMER_LENGTH
@@ -186,6 +190,7 @@ class MathOpWriteResultViewModel @Inject constructor(
         }
     }
 
+    // Increases the current level by 1 and updates the game parameters accordingly.
     private fun promoteLevel() {
         _uiState.update { it.copy(level = it.level + 1) }
         min = max
