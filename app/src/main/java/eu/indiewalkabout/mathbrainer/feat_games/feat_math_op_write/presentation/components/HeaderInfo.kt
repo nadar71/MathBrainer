@@ -26,7 +26,7 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.
 @Composable
 fun HeaderInfo(
     state: MathWriteUiState,
-    levelChallengesCompleted: Int = state.levelChallengesCompleted,
+    levelChallengesCompleted: Int = state.challengesCompleted,
     levelChallengesTarget: Int = 10
     ) {
     Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
@@ -45,8 +45,8 @@ fun HeaderInfo(
 
                 // Level progress bar
                 LevelProgressBar(
-                    currentProgress = state.levelChallengesCompleted,
-                    totalSegments = state.levelChallengesTarget,
+                    currentProgress = state.challengesCompleted,
+                    totalSegments = state.challengesPerLevel,
                     segmentColor = MaterialTheme.colorScheme.primary,
                     backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
                     modifier = Modifier

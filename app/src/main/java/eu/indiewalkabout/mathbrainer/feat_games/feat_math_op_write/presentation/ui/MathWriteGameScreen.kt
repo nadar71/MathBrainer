@@ -88,8 +88,8 @@ fun MathWriteGameScreen(
         ) {
             HeaderInfo(
                 state = state,
-                levelChallengesCompleted = state.levelChallengesCompleted,
-                levelChallengesTarget = state.levelChallengesTarget
+                levelChallengesCompleted = state.challengesCompleted,
+                levelChallengesTarget = state.challengesPerLevel
                 )
             ChallengeCard(state = state)
             Keypad(

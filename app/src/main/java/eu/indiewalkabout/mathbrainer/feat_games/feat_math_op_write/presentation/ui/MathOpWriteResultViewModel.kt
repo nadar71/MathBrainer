@@ -4,6 +4,7 @@ package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.indiewalkabout.mathbrainer.core.model.OperationConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.WriteResultScoreCategory
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.GenerateMathWriteChallengeUseCase
@@ -31,25 +32,27 @@ class MathOpWriteResultViewModel @Inject constructor(
     private val scoreCategory = WriteResultScoreCategory.fromOperation(operationParam)
 
     // random range of number to be processed
-    private var min = 1
-    private var max = 100
+    private var operandRangeMin = 1
+    private var operandRangeMax = 100
+    // multiplication data range
+    private val multiplicationConfig = OperationConfig(
+        minOperand = 1,
+        maxOperandLow = 15,
+        maxOperandHigh = 30
+    )
+    // division data range
+    private val divisionConfig = OperationConfig(
+        minOperand = 1,
+        maxOperandLow = 11,
+        maxOperandHigh = 15
+    )
 
-    private val multMin = 1
-    private var multHighMax = 30
-    private var multLowMax = 15
-
-    private val divMin = 1
-    private var divHighMax = 15
-    private var divLowMax = 11
-
-    private var levelChallengesTarget: Int = 10 // num. levels to complete before next level
-    private var levelChallengesCompletedCount = 0
-
+    private var challengesPerLevel: Int = 10 // num. levels to complete before next level
+    private var challengesCompleted = 0
 
     private var timerLength = MathWriteUiState.INITIAL_TIMER_LENGTH
-
     private var timerJob: Job? = null
-    private var scorePersisted = false
+    private var isScorePersisted = false
 
     private val _uiState = MutableStateFlow(MathWriteUiState(highScore = initialHighScore))
     val uiState: StateFlow<MathWriteUiState> = _uiState.asStateFlow()
@@ -96,14 +99,14 @@ class MathOpWriteResultViewModel @Inject constructor(
         val challenge = generateMathWriteChallengeUseCase(
             MathWriteConfig(
                 symbols = symbols,
-                min = min,
-                max = max,
-                multMin = multMin,
-                multLowMax = multLowMax,
-                multHighMax = multHighMax,
-                divMin = divMin,
-                divLowMax = divLowMax,
-                divHighMax = divHighMax
+                min = operandRangeMin,
+                max = operandRangeMax,
+                multMin = multiplicationConfig.minOperand,
+                multLowMax = multiplicationConfig.maxOperandLow,
+                multHighMax = multiplicationConfig.maxOperandHigh,
+                divMin = divisionConfig.minOperand,
+                divLowMax = divisionConfig.maxOperandLow,
+                divHighMax = divisionConfig.maxOperandHigh
             )
         )
 
@@ -136,12 +139,12 @@ class MathOpWriteResultViewModel @Inject constructor(
     }
 
     private fun handleSuccess() {
-        levelChallengesCompletedCount++
+        challengesCompleted++
         val newScore = _uiState.value.score + SCORE_INCREMENT
         var updatedTimer = timerLength
 
-        if (levelChallengesCompletedCount > levelChallengesTarget) {
-            levelChallengesCompletedCount = 0
+        if (challengesCompleted > challengesPerLevel) {
+            challengesCompleted = 0
             promoteLevel()
             updatedTimer = timerLength
         }
@@ -151,8 +154,8 @@ class MathOpWriteResultViewModel @Inject constructor(
                 feedback = MathWriteUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = maxOf(it.highScore ?: 0, newScore),
-                levelChallengesCompleted = levelChallengesCompletedCount,
-                levelChallengesTarget = levelChallengesTarget,
+                challengesCompleted = challengesCompleted,
+                challengesPerLevel = challengesPerLevel,
                 timeRemaining = updatedTimer,
                 totalTime = updatedTimer
             )
@@ -198,14 +201,14 @@ class MathOpWriteResultViewModel @Inject constructor(
     // Increases the current level by 1 and updates the game parameters accordingly.
     private fun promoteLevel() {
         _uiState.update { it.copy(level = it.level + 1) }
-        min = max
-        max = 100 * _uiState.value.level + 50 * (_uiState.value.level - 1)
-        multHighMax += 5
-        multLowMax += 1
-        divHighMax += 2
-        divLowMax += 1
-        levelChallengesTarget += 2
-        levelChallengesCompletedCount = 0
+        operandRangeMin = operandRangeMax
+        operandRangeMax = 100 * _uiState.value.level + 50 * (_uiState.value.level - 1)
+        multiplicationConfig.maxOperandHigh += 5
+        multiplicationConfig.maxOperandLow  += 1
+        divisionConfig.maxOperandHigh       += 2
+        divisionConfig.maxOperandLow        += 1
+        challengesPerLevel += 2
+        challengesCompleted = 0
         timerLength += 1_000 * _uiState.value.level
     }
 
@@ -216,8 +219,8 @@ class MathOpWriteResultViewModel @Inject constructor(
     }
 
     private fun persistScoreIfNeeded() {
-        if (scorePersisted) return
-        scorePersisted = true
+        if (isScorePersisted) return
+        isScorePersisted = true
         val finalScore = _uiState.value.score
         if (finalScore <= 0) return
         viewModelScope.launch {
