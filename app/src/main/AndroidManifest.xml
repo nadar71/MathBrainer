@@ -12,18 +12,7 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".feat_credits.presentation.ui.GameCreditsActivity"></activity>
-        <!-- ADMOB -->
-        <!-- Sample AdMob App ID:        ca-app-pub-3940256099942544~3347511713 -->
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_key_app_id" />
 
-        <activity
-            android:name=".core.notused.MainActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait">
-        </activity>
         <activity
             android:name=".feat_home.presentation.ui.HomeGameActivity"
             android:configChanges="orientation"
@@ -33,6 +22,9 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".feat_credits.presentation.ui.GameCreditsActivity">
         </activity>
 
         <activity
@@ -73,6 +65,12 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity android:name=".feat_games.feat_math_op_choose.presentation.ui.Math_Op_Choose_Result_Activity" />
+
+        <!-- ADMOB -->
+        <!-- Sample AdMob App ID:        ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_key_app_id" />
 
 
         <!-- test lib -->
