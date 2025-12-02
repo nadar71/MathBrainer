@@ -13,20 +13,10 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeScreen
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeViewModel
 
-sealed class Screen(val route: String) {
-    object Home : Screen("home")
-    object MathWriteGame : Screen("math_write_game/{operation}/{highScore}") {
-        fun createRoute(operation: String, highScore: Int = 0): String {
-            val encodedOperation = java.net.URLEncoder.encode(operation, "UTF-8")
-            return "math_write_game/$encodedOperation/$highScore"
-        }
-    }
-}
-
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    startDestination: String = Screen.Home.route
+    startDestination: String = ScreenRoutes.Home.route
 ) {
     // Log navigation events
     LaunchedEffect(navController) {
@@ -39,7 +29,7 @@ fun NavGraph(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(Screen.Home.route) {
+        composable(ScreenRoutes.Home.route) {
             val viewModel = hiltViewModel<HomeViewModel>()
             HomeScreen(
                 navController = navController,
@@ -48,7 +38,7 @@ fun NavGraph(
         }
         
         composable(
-            route = Screen.MathWriteGame.route,
+            route = ScreenRoutes.MathWriteGame.route,
             arguments = listOf(
                 navArgument("operation") { type = NavType.StringType },
                 navArgument("highScore") { type = NavType.IntType }

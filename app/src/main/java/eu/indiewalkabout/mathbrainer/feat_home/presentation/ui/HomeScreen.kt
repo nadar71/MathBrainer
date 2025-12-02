@@ -22,7 +22,7 @@ import eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui.GameCreditsAct
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.GameGrid
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.LoadingContent
 import eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui.HighscoresActivity
-import eu.indiewalkabout.mathbrainer.navigation.Screen
+import eu.indiewalkabout.mathbrainer.navigation.ScreenRoutes
 
 @Composable
 fun HomeScreen(
@@ -61,10 +61,10 @@ fun HomeScreen(
                 games = state.games,
                 onGameSelected = { game ->
                     when (game.definition.id) {
-                        "sum_write", "diff_write", "mult_write", "div_write" -> {
+                        "sum_write", "diff_write", "mult_write", "div_write", "mix_write" -> {
                             navController.navigate(
-                                Screen.MathWriteGame.createRoute(
-                                    operation = game.definition.operation ?: "+",
+                                ScreenRoutes.MathWriteGame.createRoute(
+                                    operation = game.definition.id,
                                     highScore = game.highScore ?: 0
                                 )
                             )

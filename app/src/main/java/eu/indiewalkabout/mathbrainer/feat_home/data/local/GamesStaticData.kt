@@ -17,56 +17,48 @@ val gamesDefinitionsList = listOf(
         titleRes = R.string.sum_choose_title,
         descriptionRes = R.string.sum_choose_description,
         target = Math_Op_Choose_Result_Activity::class,
-        operation = "+"
     ),
     GameDefinition(
         id = "diff_choose",
         titleRes = R.string.diff_choose_title,
         descriptionRes = R.string.diff_choose_description,
         target = Math_Op_Choose_Result_Activity::class,
-        operation = "-"
     ),
     GameDefinition(
         id = "mult_choose",
         titleRes = R.string.mult_choose_title,
         descriptionRes = R.string.mult_choose_description,
         target = Math_Op_Choose_Result_Activity::class,
-        operation = "*"
     ),
     GameDefinition(
         id = "div_choose",
         titleRes = R.string.div_choose_title,
         descriptionRes = R.string.div_choose_description,
         target = Math_Op_Choose_Result_Activity::class,
-        operation = "/"
     ),
     GameDefinition(
         id = "sum_write",
         titleRes = R.string.sum_write_title,
         descriptionRes = R.string.sum_write_description,
         target = Math_Op_Write_Result_Activity::class,
-        operation = "+"
     ),
     GameDefinition(
         id = "diff_write",
         titleRes = R.string.diff_write_title,
         descriptionRes = R.string.diff_write_description,
         target = Math_Op_Write_Result_Activity::class,
-        operation = "-"
     ),
     GameDefinition(
         id = "mult_write",
         titleRes = R.string.mult_write_title,
         descriptionRes = R.string.mult_write_description,
         target = Math_Op_Write_Result_Activity::class,
-        operation = "*"
     ),
     GameDefinition(
         id = "div_write",
         titleRes = R.string.div_write_title,
         descriptionRes = R.string.div_write_description,
         target = Math_Op_Write_Result_Activity::class,
-        operation = "/"
     ),
     GameDefinition(
         id = "mix_choose",

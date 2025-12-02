@@ -25,11 +25,12 @@ class MathOpWriteResultViewModel @Inject constructor(
     private val updateWriteResultScoreUseCase: UpdateWriteResultScoreUseCase
 ) : ViewModel() {
 
-    // Game state
-    private var operationParam: Char? = null
+    private var operationParam: String = ""
     private var initialHighScore: Int? = null
 
-    private val scoreCategory = WriteResultScoreCategory.fromOperation(operationParam)
+    // score category for saving score
+    private val scoreCategory = WriteResultScoreCategory.fromOperation(operationParam.toString())
+
 
     // random range of number to be processed
     private var operandRangeMin = 1
@@ -54,11 +55,12 @@ class MathOpWriteResultViewModel @Inject constructor(
     private var timerJob: Job? = null
     private var isScorePersisted = false
 
+    // game state
     private val _uiState = MutableStateFlow(MathWriteUiState(highScore = initialHighScore))
     val uiState: StateFlow<MathWriteUiState> = _uiState.asStateFlow()
 
     fun setOperation(operation: String, highScore: Int = 0) {
-        operationParam = operation.firstOrNull()
+        operationParam = operation
         initialHighScore = highScore.takeIf { it > 0 }
         viewModelScope.launch {
             launchNewChallenge(resetTimer = true)
@@ -95,10 +97,9 @@ class MathOpWriteResultViewModel @Inject constructor(
     }
 
     private suspend fun launchNewChallenge(resetTimer: Boolean) {
-        val symbols = scoreCategory.operationSymbol?.let { listOf(it) } ?: listOf('+', '-', '*', '/')
         val challenge = generateMathWriteChallengeUseCase(
             MathWriteConfig(
-                symbols = symbols,
+                operationCode = operationParam,
                 min = operandRangeMin,
                 max = operandRangeMax,
                 multMin = multiplicationConfig.minOperand,

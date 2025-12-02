@@ -39,6 +39,7 @@ fun ChallengeCard(state: MathWriteUiState) {
             horizontalAlignment = Alignment.Companion.CenterHorizontally
         ) {
             Row(verticalAlignment = Alignment.Companion.CenterVertically) {
+                // challenge text
                 Text(
                     text = state.challenge?.firstOperand?.toString().orEmpty(),
                     style = MaterialTheme.typography.displaySmall,

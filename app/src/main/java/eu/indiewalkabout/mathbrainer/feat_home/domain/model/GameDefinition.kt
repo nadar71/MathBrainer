@@ -9,6 +9,6 @@ data class GameDefinition(
     @StringRes val titleRes: Int,
     @StringRes val descriptionRes: Int,
     val target: KClass<out Activity>,
-    val operation: String? = null,
+    // val operation: String? = null,
     val requiresHighScore: Boolean = false
 )
