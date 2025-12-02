@@ -54,3 +54,19 @@ fun GameCard(
         }
     }
 }
+
+/*@Preview(showBackground = true)
+@Composable
+fun GameCardPreview() {
+    GameCard(
+        gameUiModel = GameUiModel(
+            definition = GameDefinition(
+                titleRes = R.string.game_title,
+                descriptionRes = R.string.game_description,
+                highScore = 100
+            ),
+            highScore = 100
+        ),
+        onGameSelected = {}
+    )
+}*/

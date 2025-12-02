@@ -1,6 +1,5 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui
 
-import MathOpWriteResultViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,12 +16,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.ChallengeCard
@@ -31,11 +32,21 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.
 
 @Composable
 fun MathWriteGameScreen(
-    viewModel: MathOpWriteResultViewModel,
-    onExit: () -> Unit
+    operation: String,
+    initialHighScore: Int = 0,
+    onBack: () -> Unit,
+    viewModel: MathOpWriteResultViewModel = hiltViewModel()
 ) {
+
+    // ----------------------------------------- LOGIC -------------------------------------------
+    LaunchedEffect(operation) {
+        viewModel.setOperation(operation)
+    }
+
+    // --- game state
     val state by viewModel.uiState.collectAsState()
 
+    // ----------------------------------------- UI ------------------------------------------------
     Scaffold(
         topBar = {
             Row(
@@ -45,7 +56,7 @@ fun MathWriteGameScreen(
                     .padding(horizontal = 12.dp, vertical = 16.dp),
                 verticalAlignment = Alignment.Companion.CenterVertically
             ) {
-                IconButton(onClick = { onExit() }) {
+                IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = stringResource(id = R.string.navigate_back),
@@ -75,7 +86,11 @@ fun MathWriteGameScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            HeaderInfo(state = state)
+            HeaderInfo(
+                state = state,
+                levelChallengesCompleted = state.challengesCompleted,
+                levelChallengesTarget = state.challengesPerLevel
+                )
             ChallengeCard(state = state)
             Keypad(
                 inputValue = state.inputValue,
@@ -87,6 +102,14 @@ fun MathWriteGameScreen(
     }
 
     if (state.isGameOver) {
-        GameOverDialog(onDismiss = onExit)
+        LaunchedEffect(operation, initialHighScore) {
+            viewModel.setOperation(operation, initialHighScore)
+        }
+        GameOverDialog(onDismiss = {
+            viewModel.onQuitGame()
+            onBack()
+        })
     }
 }
+
+

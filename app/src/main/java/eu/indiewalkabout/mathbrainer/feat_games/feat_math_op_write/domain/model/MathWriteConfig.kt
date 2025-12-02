@@ -1,7 +1,7 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model
 
 data class MathWriteConfig(
-    val symbols: List<Char>,
+    val operationCode: String,
     val min: Int,
     val max: Int,
     val multMin: Int,

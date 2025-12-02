@@ -10,26 +10,27 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui.GameCreditsActivity
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.GameGrid
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.LoadingContent
-import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.buildIntentForGame
 import eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui.HighscoresActivity
-import androidx.compose.runtime.getValue
-
+import eu.indiewalkabout.mathbrainer.navigation.ScreenRoutes
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
-
+fun HomeScreen(
+    navController: NavHostController,
+    homeViewModel: HomeViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
-
-    val state by viewModel.uiState.collectAsState()
+    val state by homeViewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -59,8 +60,21 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                 padding = padding,
                 games = state.games,
                 onGameSelected = { game ->
-                    val intent = buildIntentForGame(game, context)
-                    context.startActivity(intent)
+                    when (game.definition.id) {
+                        "sum_write", "diff_write", "mult_write", "div_write", "mix_write" -> {
+                            navController.navigate(
+                                ScreenRoutes.MathWriteGame.createRoute(
+                                    operation = game.definition.id,
+                                    highScore = game.highScore ?: 0
+                                )
+                            )
+                        }
+                        else -> {
+                            // Fallback for other game types that haven't been migrated yet
+                            val intent = Intent(context, game.definition.target.java)
+                            context.startActivity(intent)
+                        }
+                    }
                 },
                 onHighscoresSelected = {
                     context.startActivity(Intent(context, HighscoresActivity::class.java))

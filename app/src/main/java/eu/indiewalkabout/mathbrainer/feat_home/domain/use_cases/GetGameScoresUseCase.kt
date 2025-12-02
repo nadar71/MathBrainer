@@ -2,10 +2,10 @@ package eu.indiewalkabout.mathbrainer.feat_home.domain.use_cases
 
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository.MathBrainerRepository
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class GetGameScoresUseCase @Inject constructor(
     private val repository: MathBrainerRepository
@@ -28,7 +28,7 @@ class GetGameScoresUseCase @Inject constructor(
         number_order_game_score = 0
     )
 
-    operator fun invoke(): Flow<GameScores> {
+    suspend operator fun invoke(): Flow<GameScores> {
         return repository.observeGameScores()
             .map { scores ->
                 scores ?: run {

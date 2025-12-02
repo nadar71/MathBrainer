@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -15,11 +16,16 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteChallenge
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.state.MathWriteUiState
 
 @Composable
@@ -33,6 +39,7 @@ fun ChallengeCard(state: MathWriteUiState) {
             horizontalAlignment = Alignment.Companion.CenterHorizontally
         ) {
             Row(verticalAlignment = Alignment.Companion.CenterVertically) {
+                // challenge text
                 Text(
                     text = state.challenge?.firstOperand?.toString().orEmpty(),
                     style = MaterialTheme.typography.displaySmall,
@@ -60,9 +67,26 @@ fun ChallengeCard(state: MathWriteUiState) {
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.background,
                     unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                    disabledContainerColor = MaterialTheme.colorScheme.background
+                    disabledContainerColor = MaterialTheme.colorScheme.background,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    cursorColor = Color.Transparent
                 ),
-                label = { Text(stringResource(id = R.string.write_result_placeholder)) },
+                visualTransformation = VisualTransformation.None,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.None
+                ),
+                placeholder = { 
+                    if (state.inputValue.isBlank()) {
+                        Text(
+                            text = stringResource(id = R.string.write_result_placeholder),
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                            )
+                        )
+                    }
+                },
                 singleLine = true
             )
 
@@ -81,4 +105,17 @@ fun ChallengeCard(state: MathWriteUiState) {
             }
         }
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun ChallengeCardPreview() {
+    ChallengeCard(
+        state = MathWriteUiState(
+            challenge = MathWriteChallenge(2, 3, '*', 6),
+            inputValue = "4",
+            feedback = MathWriteUiState.Feedback.SUCCESS
+        )
+    )
 }
