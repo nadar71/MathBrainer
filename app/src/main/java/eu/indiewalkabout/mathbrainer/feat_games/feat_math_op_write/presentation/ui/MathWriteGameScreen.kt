@@ -86,7 +86,11 @@ fun MathWriteGameScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            HeaderInfo(state = state)
+            HeaderInfo(
+                state = state,
+                levelChallengesCompleted = state.levelChallengesCompleted,
+                levelChallengesTarget = state.levelChallengesTarget
+                )
             ChallengeCard(state = state)
             Keypad(
                 inputValue = state.inputValue,

@@ -13,6 +13,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,15 +42,17 @@ class MathOpWriteResultViewModel @Inject constructor(
     private var divHighMax = 15
     private var divLowMax = 11
 
-    private var levelChallengesTarget = 10 // num. levels to complete before next level
-    private var levelChallengesCount = 0
+    private var levelChallengesTarget: Int = 10 // num. levels to complete before next level
+    private var levelChallengesCompletedCount = 0
+
+
     private var timerLength = MathWriteUiState.INITIAL_TIMER_LENGTH
 
     private var timerJob: Job? = null
     private var scorePersisted = false
 
     private val _uiState = MutableStateFlow(MathWriteUiState(highScore = initialHighScore))
-    val uiState: StateFlow<MathWriteUiState> = _uiState
+    val uiState: StateFlow<MathWriteUiState> = _uiState.asStateFlow()
 
     fun setOperation(operation: String, highScore: Int = 0) {
         operationParam = operation.firstOrNull()
@@ -133,12 +136,12 @@ class MathOpWriteResultViewModel @Inject constructor(
     }
 
     private fun handleSuccess() {
-        levelChallengesCount++
+        levelChallengesCompletedCount++
         val newScore = _uiState.value.score + SCORE_INCREMENT
         var updatedTimer = timerLength
 
-        if (levelChallengesCount > levelChallengesTarget) {
-            levelChallengesCount = 0
+        if (levelChallengesCompletedCount > levelChallengesTarget) {
+            levelChallengesCompletedCount = 0
             promoteLevel()
             updatedTimer = timerLength
         }
@@ -148,6 +151,8 @@ class MathOpWriteResultViewModel @Inject constructor(
                 feedback = MathWriteUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = maxOf(it.highScore ?: 0, newScore),
+                levelChallengesCompleted = levelChallengesCompletedCount,
+                levelChallengesTarget = levelChallengesTarget,
                 timeRemaining = updatedTimer,
                 totalTime = updatedTimer
             )
@@ -199,7 +204,8 @@ class MathOpWriteResultViewModel @Inject constructor(
         multLowMax += 1
         divHighMax += 2
         divLowMax += 1
-        levelChallengesTarget += 5
+        levelChallengesTarget += 2
+        levelChallengesCompletedCount = 0
         timerLength += 1_000 * _uiState.value.level
     }
 

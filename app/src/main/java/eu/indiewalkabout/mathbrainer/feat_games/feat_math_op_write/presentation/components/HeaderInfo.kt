@@ -13,6 +13,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,12 +24,18 @@ import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.state.MathWriteUiState
 
 @Composable
-fun HeaderInfo(state: MathWriteUiState) {
+fun HeaderInfo(
+    state: MathWriteUiState,
+    levelChallengesCompleted: Int = state.levelChallengesCompleted,
+    levelChallengesTarget: Int = 10
+    ) {
     Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
         Column(modifier = Modifier.Companion.padding(16.dp)) {
+            // First row with level and lives
             Row(
                 modifier = Modifier.Companion.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = stringResource(id = R.string.level_with_value, state.level),
@@ -36,12 +43,23 @@ fun HeaderInfo(state: MathWriteUiState) {
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
+                // Level progress bar
+                LevelProgressBar(
+                    currentProgress = state.levelChallengesCompleted,
+                    totalSegments = state.levelChallengesTarget,
+                    segmentColor = MaterialTheme.colorScheme.primary,
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 16.dp)
+                        .height(8.dp)
+                )
+
                 Text(
                     text = stringResource(id = R.string.lives_with_value, state.lives),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-
             }
             Spacer(modifier = Modifier.Companion.height(8.dp))
 
@@ -64,6 +82,7 @@ fun HeaderInfo(state: MathWriteUiState) {
                 }
             }
             Spacer(modifier = Modifier.Companion.height(12.dp))
+            // Timer progress bar (unchanged)
             LinearProgressIndicator(
                 progress = state.timerProgress,
                 modifier = Modifier.Companion.fillMaxWidth(),
