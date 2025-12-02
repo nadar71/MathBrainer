@@ -41,7 +41,7 @@ class MathOpWriteResultViewModel @Inject constructor(
     private var divHighMax = 15
     private var divLowMax = 11
 
-    private var levelChallengesTarget = 12
+    private var levelChallengesTarget = 10 // num. levels to complete before next level
     private var levelChallengesCount = 0
     private var timerLength = MathWriteUiState.INITIAL_TIMER_LENGTH
 
@@ -200,7 +200,7 @@ class MathOpWriteResultViewModel @Inject constructor(
         divHighMax += 2
         divLowMax += 1
         levelChallengesTarget += 5
-        timerLength += 5_000
+        timerLength += 1_000 * _uiState.value.level
     }
 
     private fun onGameOver() {

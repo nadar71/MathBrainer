@@ -16,8 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.state.MathWriteUiState
 
 @Composable
@@ -33,22 +35,25 @@ fun HeaderInfo(state: MathWriteUiState) {
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
+
                 Text(
-                    text = stringResource(id = R.string.score_with_value, state.score),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Companion.Bold
+                    text = stringResource(id = R.string.lives_with_value, state.lives),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
+
             }
             Spacer(modifier = Modifier.Companion.height(8.dp))
+
             Row(
                 modifier = Modifier.Companion.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(id = R.string.lives_with_value, state.lives),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface
+                    text = stringResource(id = R.string.score_with_value, state.score),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Companion.Bold
                 )
                 state.highScore?.let { highScore ->
                     Text(
@@ -65,5 +70,20 @@ fun HeaderInfo(state: MathWriteUiState) {
                 color = MaterialTheme.colorScheme.primary
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HeaderInfoPreview() {
+    MathBrainerTheme {
+        HeaderInfo(
+            state = MathWriteUiState(
+                level = 1,
+                score = 0,
+                lives = 3,
+                highScore = 100
+            )
+        )
     }
 }
