@@ -77,6 +77,13 @@ fun HomeScreen(
                                 )
                             )
                         }
+                        "double" -> {
+                            navController.navigate(
+                                ScreenRoutes.DoubleNumberGame.createRoute(
+                                    highScore = game.highScore ?: 0
+                                )
+                            )
+                        }
                         else -> {
                             // Fallback for other game types that haven't been migrated yet
                             val intent = Intent(context, game.definition.target.java)

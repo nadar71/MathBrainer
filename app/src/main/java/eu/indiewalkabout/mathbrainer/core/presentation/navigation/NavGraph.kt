@@ -10,6 +10,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation.ui.DoubleNumberGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui.MathWriteGameScreen
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeScreen
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeViewModel
@@ -74,6 +75,22 @@ fun NavGraph(
 
             MathChooseGameScreen(
                 operation = operation,
+                initialHighScore = highScore,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+
+        // --- Double Number Game ---
+        composable(
+            route = ScreenRoutes.DoubleNumberGame.route,
+            arguments = listOf(
+                navArgument("highScore") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
+
+            DoubleNumberGameScreen(
                 initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )

@@ -1,10 +1,42 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation.ui
 
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import dagger.hilt.android.AndroidEntryPoint
+import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
+import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
+
+
+@AndroidEntryPoint
+class DoubleNumberActivity : ComponentActivity() {
+
+    private val viewModel: DoubleNumberViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val initialHighScore = intent?.getIntExtra(HomeGameActivity.HIGHSCORE, 0) ?: 0
+        setContent {
+            MathBrainerTheme {
+                DoubleNumberGameScreen(
+                    initialHighScore = initialHighScore,
+                    onBack = { finish() },
+                    viewModel = viewModel
+                )
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        viewModel.onQuitGame()
+        super.onDestroy()
+    }
+}
 
 // Given a number, write its double
-class DoubleNumberActivity : AppCompatActivity()/*, IGameFunctions*/ {
-    /*private lateinit var binding: ActivityDoubleNumberBinding
+/*class DoubleNumberActivity : AppCompatActivity(), IGameFunctions {
+    private lateinit var binding: ActivityDoubleNumberBinding
 
     // private val unityAdsListener = UnityAdsListener()
 
@@ -474,5 +506,5 @@ class DoubleNumberActivity : AppCompatActivity()/*, IGameFunctions*/ {
         // show unityads randomic
         // MathBrainerUtility.showUnityAdsRandom(this)
         // TODO: Show unity ads interstitial
-    }*/
-}
+    }
+}*/
