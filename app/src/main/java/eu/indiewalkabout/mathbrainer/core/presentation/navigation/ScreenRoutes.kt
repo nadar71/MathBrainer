@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer.navigation
+package eu.indiewalkabout.mathbrainer.core.presentation.navigation
 
 import java.net.URLEncoder
 
@@ -10,4 +10,11 @@ sealed class ScreenRoutes(val route: String) {
             return "math_write_game/$encodedOperation/$highScore"
         }
     }
+    object MathChooseGame : ScreenRoutes("math_choose_game/{operation}/{highScore}") {
+        fun createRoute(operation: String, highScore: Int = 0): String {
+            val encodedOperation = URLEncoder.encode(operation, "UTF-8")
+            return "math_choose_game/$encodedOperation/$highScore"
+        }
+    }
+
 }

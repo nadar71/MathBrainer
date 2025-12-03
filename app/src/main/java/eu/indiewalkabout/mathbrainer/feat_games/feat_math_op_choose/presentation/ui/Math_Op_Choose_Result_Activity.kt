@@ -1,9 +1,44 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation.ui
 
-import androidx.appcompat.app.AppCompatActivity
+import MathChooseGameScreen
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import dagger.hilt.android.AndroidEntryPoint
+import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
+import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
 
-class Math_Op_Choose_Result_Activity : AppCompatActivity()/*, IGameFunctions*/ {
-    /*private lateinit var binding: ActivityMathOpChooseResultBinding
+@AndroidEntryPoint
+class Math_Op_Choose_Result_Activity : ComponentActivity() {
+
+    private val viewModel: MathOpChooseResultViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val operation = intent.getStringExtra(HomeGameActivity.OPERATION_KEY) ?: "mix_choose"
+        val highScore = intent.getIntExtra(HomeGameActivity.HIGHSCORE, 0)
+
+        setContent {
+            MathBrainerTheme {
+                MathChooseGameScreen(
+                    operation = operation,
+                    initialHighScore = highScore,
+                    onBack = { finish() },
+                    viewModel = viewModel
+                )
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        viewModel.onQuitGame()
+        super.onDestroy()
+    }
+}
+
+/*class Math_Op_Choose_Result_Activity : AppCompatActivity(), IGameFunctions {
+    private lateinit var binding: ActivityMathOpChooseResultBinding
     // private val unityAdsListener = UnityAdsListener()
 
     private lateinit var livesValueIv: ArrayList<ImageView>
@@ -803,4 +838,5 @@ class Math_Op_Choose_Result_Activity : AppCompatActivity()/*, IGameFunctions*/ {
         // MathBrainerUtility.showUnityAdsRandom(this)
         // TODO: Show unity ads interstitial
     }*/
-}
+/*
+}*/
