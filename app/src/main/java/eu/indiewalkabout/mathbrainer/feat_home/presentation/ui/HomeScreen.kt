@@ -18,11 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.presentation.navigation.ScreenRoutes
 import eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui.GameCreditsActivity
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.GameGrid
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.LoadingContent
 import eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui.HighscoresActivity
-import eu.indiewalkabout.mathbrainer.navigation.ScreenRoutes
 
 @Composable
 fun HomeScreen(
@@ -64,6 +64,14 @@ fun HomeScreen(
                         "sum_write", "diff_write", "mult_write", "div_write", "mix_write" -> {
                             navController.navigate(
                                 ScreenRoutes.MathWriteGame.createRoute(
+                                    operation = game.definition.id,
+                                    highScore = game.highScore ?: 0
+                                )
+                            )
+                        }
+                        "sum_choose", "diff_choose", "mult_choose", "div_choose", "mix_choose" -> {
+                            navController.navigate(
+                                ScreenRoutes.MathChooseGame.createRoute(
                                     operation = game.definition.id,
                                     highScore = game.highScore ?: 0
                                 )

@@ -43,6 +43,8 @@
     <string name="navigate_back">Back</string>
     <string name="math_write_title">Write the result</string>
     <string name="math_write_subtitle">Solve the operation before time runs out</string>
+    <string name="math_choose_title">Choose the result</string>
+    <string name="math_choose_subtitle">Pick the correct answer before time runs out</string>
     <string name="write_result_placeholder">Type your answer</string>
     <string name="wrong_answer">Wrong answer</string>
     <string name="delete_label">Delete</string>
