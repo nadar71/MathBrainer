@@ -1,9 +1,43 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.presentation.ui
 
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import dagger.hilt.android.AndroidEntryPoint
+import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
+import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
 
-class RandomOperationActivity : AppCompatActivity()/*, IGameFunctions*/ {
-    /*private lateinit var binding: ActivityRandomOperationBinding
+
+@AndroidEntryPoint
+class RandomOperationActivity : ComponentActivity() {
+    private val viewModel: RandomOperationViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val initialHighScore = intent.getIntExtra(HomeGameActivity.HIGHSCORE, 0)
+
+        setContent {
+            MathBrainerTheme {
+                RandomOperationGameScreen(
+                    initialHighScore = initialHighScore,
+                    onBack = { finish() },
+                    viewModel = viewModel
+                )
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        viewModel.onQuitGame()
+        super.onDestroy()
+    }
+}
+
+
+
+/*class RandomOperationActivity : AppCompatActivity(), IGameFunctions {
+    private lateinit var binding: ActivityRandomOperationBinding
     // private val unityAdsListener = UnityAdsListener()
 
     private lateinit var livesValueIv: ArrayList<ImageView>
@@ -595,5 +629,5 @@ class RandomOperationActivity : AppCompatActivity()/*, IGameFunctions*/ {
         // show unityads randomic
         // MathBrainerUtility.showUnityAdsRandom(this)
         // TODO: Show unity ads interstitial
-    }*/
-}
+    }
+}*/

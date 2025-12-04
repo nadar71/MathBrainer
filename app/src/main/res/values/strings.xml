@@ -39,12 +39,15 @@
     <string name="number_order_description">Order the numbers correctly.</string>
     <string name="random_operations_title">Random Operations</string>
     <string name="random_operations_description">Solve random math operations.</string>
+    <string name="random_operations_subtitle">Choose the operation that makes the equation true.</string>
+
 
     <string name="navigate_back">Back</string>
     <string name="math_write_title">Write the result</string>
     <string name="math_write_subtitle">Solve the operation before time runs out</string>
     <string name="math_choose_title">Choose the result</string>
     <string name="math_choose_subtitle">Pick the correct answer before time runs out</string>
+    <string name="random_operations_instruction">Which operation makes this equation true?</string>
     <string name="write_result_placeholder">Type your answer</string>
     <string name="wrong_answer">Wrong answer</string>
     <string name="delete_label">Delete</string>
