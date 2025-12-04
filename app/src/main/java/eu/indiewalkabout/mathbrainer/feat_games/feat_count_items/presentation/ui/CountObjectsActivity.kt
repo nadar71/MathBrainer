@@ -1,9 +1,45 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.ui
 
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import dagger.hilt.android.AndroidEntryPoint
+import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
+import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
 
-class CountObjectsActivity : AppCompatActivity()/*, IGameFunctions*/ {
-    /*private lateinit var binding: ActivityCountObjectsBinding
+@AndroidEntryPoint
+class CountObjectsActivity : ComponentActivity() {
+
+    private val viewModel: CountObjectsViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val highScore = intent?.getIntExtra(HomeGameActivity.HIGHSCORE, 0) ?: 0
+
+        setContent {
+            MathBrainerTheme {
+                CountObjectsGameScreen(
+                    initialHighScore = highScore,
+                    onBack = { finish() },
+                    viewModel = viewModel
+                )
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        viewModel.onQuitGame()
+        super.onDestroy()
+    }
+}
+
+
+
+/*
+class CountObjectsActivity : AppCompatActivity(), IGameFunctions {
+    private lateinit var binding: ActivityCountObjectsBinding
     // private val unityAdsListener = UnityAdsListener()
 
     private lateinit var livesValueIv: ArrayList<ImageView>
@@ -482,7 +518,8 @@ class CountObjectsActivity : AppCompatActivity()/*, IGameFunctions*/ {
     }
 
     // Unity ads listener
-    *//*private inner class UnityAdsListener : IUnityAdsListener {
+    */
+/*private inner class UnityAdsListener : IUnityAdsListener {
 
         override fun onUnityAdsReady(s: String) {
         }
@@ -496,6 +533,7 @@ class CountObjectsActivity : AppCompatActivity()/*, IGameFunctions*/ {
         override fun onUnityAdsError(unityAdsError: UnityAds.UnityAdsError, s: String) {
         }
     }*//*
+
 
     // ---------------------------------------------------------------------------------------------
     // MENU STUFF
@@ -589,7 +627,8 @@ class CountObjectsActivity : AppCompatActivity()/*, IGameFunctions*/ {
             }
         }
 
-        *//*
+        */
+/*
         // dummy check from drawable
         Bitmap a = BitmapFactory.decodeResource(getResources(), R.drawable.memo101);
         a = a.copy(Bitmap.Config.ARGB_8888, true);
@@ -598,7 +637,8 @@ class CountObjectsActivity : AppCompatActivity()/*, IGameFunctions*/ {
         ourCanvas.drawBitmap(MathBrainerUtility.resizeBitmapByScale(a, imageScaleXY, false, 100, 100), randX, randY, paint);
         *//*
 
+
         // invalidate view for redrawing
         ourFrame.invalidate()
-    }*/
-}
+    }
+}*/

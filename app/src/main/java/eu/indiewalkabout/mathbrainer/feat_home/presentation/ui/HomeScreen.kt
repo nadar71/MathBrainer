@@ -77,9 +77,9 @@ fun HomeScreen(
                                 )
                             )
                         }
-                        "double" -> {
+                        "quick_count" -> {
                             navController.navigate(
-                                ScreenRoutes.DoubleNumberGame.createRoute(
+                                ScreenRoutes.CountObjectsGame.createRoute(
                                     highScore = game.highScore ?: 0
                                 )
                             )
