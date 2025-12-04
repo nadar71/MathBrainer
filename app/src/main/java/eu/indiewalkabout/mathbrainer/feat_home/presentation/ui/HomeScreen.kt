@@ -77,6 +77,13 @@ fun HomeScreen(
                                 )
                             )
                         }
+                        "quick_count" -> {
+                            navController.navigate(
+                                ScreenRoutes.CountObjectsGame.createRoute(
+                                    highScore = game.highScore ?: 0
+                                )
+                            )
+                        }
                         else -> {
                             // Fallback for other game types that haven't been migrated yet
                             val intent = Intent(context, game.definition.target.java)

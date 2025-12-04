@@ -16,5 +16,10 @@ sealed class ScreenRoutes(val route: String) {
             return "math_choose_game/$encodedOperation/$highScore"
         }
     }
+    object CountObjectsGame : ScreenRoutes("count_objects_game/{highScore}") {
+        fun createRoute(highScore: Int = 0): String {
+            return "count_objects_game/$highScore"
+        }
+    }
 
 }
