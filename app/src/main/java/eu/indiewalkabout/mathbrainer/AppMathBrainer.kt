@@ -10,7 +10,6 @@ class AppMathBrainer : Application() {
         lateinit var appContext: Application
     }
 
-
     override fun onCreate() {
         super.onCreate()
         appContext = this

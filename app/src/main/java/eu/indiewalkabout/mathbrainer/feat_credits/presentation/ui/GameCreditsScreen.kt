@@ -1,6 +1,5 @@
-package eu.indiewalkabout.mathbrainer.feat_settings.presentation.ui
+package eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +13,6 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,17 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.feat_settings.presentation.components.GameSettingsHeaderLogo
-import eu.indiewalkabout.mathbrainer.feat_settings.presentation.components.SettingsCard
+import eu.indiewalkabout.mathbrainer.feat_credits.presentation.components.CreditsCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameSettingsScreen(
-    onBack: () -> Unit,
-    onCreditsClick: () -> Unit
-) {
-    val scrollState = rememberScrollState()
-
+fun GameCreditsScreen(onBack: () -> Unit) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -52,25 +44,19 @@ fun GameSettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .verticalScroll(scrollState)
                 .padding(padding)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            GameSettingsHeaderLogo()
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            SettingsCard(
+            CreditsCard(
                 title = stringResource(id = R.string.credits_title),
-                description = "",
-                onClick = onCreditsClick
+                description = stringResource(id = R.string.credits_text)
             )
+            
+            Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            SettingsCard(
+            CreditsCard(
                 title = stringResource(id = R.string.gdpr_title),
                 description = stringResource(id = R.string.gdpr_text)
             )

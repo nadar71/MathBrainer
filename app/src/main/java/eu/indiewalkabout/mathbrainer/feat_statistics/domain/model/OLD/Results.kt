@@ -1,11 +1,9 @@
 package eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.OLD
 
-import eu.indiewalkabout.mathbrainer.AppMathBrainer
-
 // TODO : to be deleted
 object Results {
 
-    // Init game results in db
+    /*// Init game results in db
     fun initResultsThread() {
         val executorsInstance = (AppMathBrainer.Companion.getsContext() as AppMathBrainer).appExecutorsInstance
         executorsInstance!!.diskIO().execute {
@@ -39,5 +37,5 @@ object Results {
             val repository = (AppMathBrainer.Companion.getsContext() as AppMathBrainer).repository
             repository?.updateGameResultHighscore(gameResultsName, lastScore)
         }
-    }
+    }*/
 }
