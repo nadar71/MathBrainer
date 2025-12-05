@@ -21,5 +21,6 @@ sealed class ScreenRoutes(val route: String) {
             return "count_objects_game/$highScore"
         }
     }
+    object GameSettings : ScreenRoutes("game_settings")
 
 }

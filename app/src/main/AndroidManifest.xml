@@ -24,8 +24,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".feat_credits.presentation.ui.GameCreditsActivity">
-        </activity>
+
 
         <activity
             android:name=".feat_statistics.presentation.ui.HighscoresActivity"

@@ -19,7 +19,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.navigation.ScreenRoutes
-import eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui.GameCreditsActivity
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.GameGrid
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.LoadingContent
 import eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui.HighscoresActivity
@@ -95,7 +94,7 @@ fun HomeScreen(
                     context.startActivity(Intent(context, HighscoresActivity::class.java))
                 },
                 onCreditsSelected = {
-                    context.startActivity(Intent(context, GameCreditsActivity::class.java))
+                    navController.navigate(ScreenRoutes.GameSettings.route)
                 }
             )
 

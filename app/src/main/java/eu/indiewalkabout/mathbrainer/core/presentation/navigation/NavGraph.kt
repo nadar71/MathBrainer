@@ -10,6 +10,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import eu.indiewalkabout.mathbrainer.feat_settings.presentation.ui.GameSettingsScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.ui.CountObjectsGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui.MathWriteGameScreen
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeScreen
@@ -92,6 +93,11 @@ fun NavGraph(
                 initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )
+        }
+
+        // --- Settings / Credits ---
+        composable(ScreenRoutes.GameSettings.route) {
+            GameSettingsScreen(onBack = { navController.popBackStack() })
         }
     }
 }

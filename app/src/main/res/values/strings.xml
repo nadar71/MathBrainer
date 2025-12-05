@@ -60,7 +60,24 @@
     <string name="level_with_value">Level %1$d</string>
 
 
-    <!---->
+
+    <!-- - - - - - - - - - - - - - - - - - - - Credits - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="credits_title">Credits &amp; GDPR </string>
+    <string name="credits_subtitle">Thanks for playing and supporting MathBrainer.</string>
+    <string name="credits_text" translatable="false">
+        <b>CREDITS</b>\n\n
+        <b>Idea, Development and Design</b>\n\n Simone Mapelli\n
+        <a href='http://www.indie-walkabout.eu/'>www.indie-walkabout.eu </a>\n\n
+
+    </string>
+
+    <string name="gdpr_text" translatable="false">
+        <b>GDPR</b>\n\n Touch here for GDPR Consent Withdraw.
+    </string>
+    <string name="gdpr_title">GDPR &amp; Privacy</string>
+
+
+    <!-- OLD -->
 
 
 
@@ -165,18 +182,8 @@
     <string name="write_result_allop_text">+ - x / </string>
 
 
-    <!-- - - - - - - - - - - - - - - - - - - - Credits - - - - - - - - - - - - - - - - - - - - - -->
-    <string name="credits_title">Credits &amp; GDPR </string>
-    <string name="credits_text" translatable="false">
-        <b>CREDITS</b>\n\n
-        <b>Idea, Development and Design</b>\n\n Simone Mapelli\n
-        <a href='http://www.indie-walkabout.eu/'>www.indie-walkabout.eu </a>\n\n
 
-    </string>
 
-    <string name="gdpr_text" translatable="false">
-        <b>GDPR</b>\n\n Touch here for GDPR Consent Withdraw.
-    </string>
 
 
 
