@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.navigation.ScreenRoutes
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.GameGrid
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.LoadingContent
 import eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui.HighscoresActivity
@@ -59,8 +60,8 @@ fun HomeScreen(
                 padding = padding,
                 games = state.games,
                 onGameSelected = { game ->
-                    when (game.definition.id) {
-                        "sum_write", "diff_write", "mult_write", "div_write", "mix_write" -> {
+                    when (val gameType = GameTypes.fromId(game.definition.id)) {
+                        GameTypes.SUM_WRITE, GameTypes.DIFF_WRITE, GameTypes.MULT_WRITE, GameTypes.DIV_WRITE, GameTypes.MIX_WRITE -> {
                             navController.navigate(
                                 ScreenRoutes.MathWriteGame.createRoute(
                                     operation = game.definition.id,
@@ -68,7 +69,7 @@ fun HomeScreen(
                                 )
                             )
                         }
-                        "sum_choose", "diff_choose", "mult_choose", "div_choose", "mix_choose" -> {
+                        GameTypes.SUM_CHOOSE, GameTypes.DIFF_CHOOSE, GameTypes.MULT_CHOOSE, GameTypes.DIV_CHOOSE, GameTypes.MIX_CHOOSE -> {
                             navController.navigate(
                                 ScreenRoutes.MathChooseGame.createRoute(
                                     operation = game.definition.id,
@@ -76,16 +77,35 @@ fun HomeScreen(
                                 )
                             )
                         }
-                        "quick_count" -> {
+                        GameTypes.QUICK_COUNT -> {
                             navController.navigate(
                                 ScreenRoutes.CountObjectsGame.createRoute(
                                     highScore = game.highScore ?: 0
                                 )
                             )
                         }
-                        else -> {
-                            navController.navigate(ScreenRoutes.Home.route)
+                        GameTypes.DOUBLE_NUMBER -> {
+                            navController.navigate(
+                                ScreenRoutes.DoubleNumberGame.createRoute(
+                                    highScore = game.highScore ?: 0
+                                )
+                            )
                         }
+                        GameTypes.NUMBER_ORDER -> {
+                            navController.navigate(
+                                ScreenRoutes.NumberOrderGame.createRoute(
+                                    highScore = game.highScore ?: 0
+                                )
+                            )
+                        }
+                        GameTypes.RANDOM_OPERATION -> {
+                            navController.navigate(
+                                ScreenRoutes.RandomOperationGame.createRoute(
+                                    highScore = game.highScore ?: 0
+                                )
+                            )
+                        }
+                        null -> navController.navigate(ScreenRoutes.Home.route)
                     }
                 },
                 onHighscoresSelected = {

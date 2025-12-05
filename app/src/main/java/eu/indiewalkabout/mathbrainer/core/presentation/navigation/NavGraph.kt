@@ -10,12 +10,15 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import eu.indiewalkabout.mathbrainer.feat_settings.presentation.ui.GameSettingsScreen
 import eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui.GameCreditsScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.ui.CountObjectsGameScreen
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation.ui.DoubleNumberGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui.MathWriteGameScreen
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.presentation.ui.RandomOperationGameScreen
+import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.presentation.ui.NumberOrderGameScreen
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeScreen
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeViewModel
+import eu.indiewalkabout.mathbrainer.feat_settings.presentation.ui.GameSettingsScreen
 import java.net.URLDecoder
 
 @Composable
@@ -77,6 +80,51 @@ fun NavGraph(
 
             MathChooseGameScreen(
                 operation = operation,
+                initialHighScore = highScore,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // --- Double Number Game ---
+        composable(
+            route = ScreenRoutes.DoubleNumberGame.route,
+            arguments = listOf(
+                navArgument("highScore") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
+
+            DoubleNumberGameScreen(
+                initialHighScore = highScore,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // --- Random Operation Game ---
+        composable(
+            route = ScreenRoutes.RandomOperationGame.route,
+            arguments = listOf(
+                navArgument("highScore") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
+
+            RandomOperationGameScreen(
+                initialHighScore = highScore,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // --- Number Order Game ---
+        composable(
+            route = ScreenRoutes.NumberOrderGame.route,
+            arguments = listOf(
+                navArgument("highScore") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
+
+            NumberOrderGameScreen(
                 initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )
