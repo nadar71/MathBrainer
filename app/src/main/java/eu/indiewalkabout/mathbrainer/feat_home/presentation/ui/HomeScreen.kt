@@ -84,9 +84,7 @@ fun HomeScreen(
                             )
                         }
                         else -> {
-                            // Fallback for other game types that haven't been migrated yet
-                            val intent = Intent(context, game.definition.target.java)
-                            context.startActivity(intent)
+                            navController.navigate(ScreenRoutes.Home.route)
                         }
                     }
                 },
