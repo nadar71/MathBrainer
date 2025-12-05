@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.indiewalkabout.mathbrainer.feat_home.data.local.gamesDefinitionsList
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameDefinition
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameUiModel
 import eu.indiewalkabout.mathbrainer.feat_home.domain.use_cases.GetGameScoresUseCase
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.state.HomeUiState
@@ -46,22 +47,6 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getHighScore(definition: GameDefinition, scores: GameScores): Int? {
-        return when (definition.id) {
-            "sum_choose" -> scores.sum_choose_result_game_score
-            "diff_choose" -> scores.diff_choose_result_game_score
-            "mult_choose" -> scores.mult_choose_result_game_score
-            "div_choose" -> scores.div_choose_result_game_score
-            "sum_write" -> scores.sum_write_result_game_score
-            "diff_write" -> scores.diff_write_result_game_score
-            "mult_write" -> scores.mult_write_result_game_score
-            "div_write" -> scores.div_write_result_game_score
-            "mix_choose" -> scores.mix_choose_result_game_score
-            "mix_write" -> scores.mix_write_result_game_score
-            "quick_count" -> scores.count_objects_game_score
-            "double" -> scores.doublenumber_game_score
-            "order" -> scores.number_order_game_score
-            "random" -> scores.random_op_game_score
-            else -> null
-        }
+        return GameTypes.fromId(definition.id)?.scoreField?.invoke(scores)
     }
 }

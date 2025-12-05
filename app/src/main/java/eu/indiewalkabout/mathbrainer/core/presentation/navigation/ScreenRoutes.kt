@@ -16,10 +16,19 @@ sealed class ScreenRoutes(val route: String) {
             return "math_choose_game/$encodedOperation/$highScore"
         }
     }
+    object DoubleNumberGame : ScreenRoutes("double_game/{highScore}") {
+        fun createRoute(highScore: Int = 0): String = "double_game/$highScore"
+    }
+    object RandomOperationGame : ScreenRoutes("random_op_game/{highScore}") {
+        fun createRoute(highScore: Int = 0): String = "random_op_game/$highScore"
+    }
     object CountObjectsGame : ScreenRoutes("count_objects_game/{highScore}") {
         fun createRoute(highScore: Int = 0): String {
             return "count_objects_game/$highScore"
         }
+    }
+    object NumberOrderGame : ScreenRoutes("number_order_game/{highScore}") {
+        fun createRoute(highScore: Int = 0): String = "number_order_game/$highScore"
     }
     object GameSettings : ScreenRoutes("game_settings")
     object GameCredits : ScreenRoutes("game_credits")
