@@ -22,5 +22,6 @@ sealed class ScreenRoutes(val route: String) {
         }
     }
     object GameSettings : ScreenRoutes("game_settings")
+    object GameCredits : ScreenRoutes("game_credits")
 
 }

@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import eu.indiewalkabout.mathbrainer.feat_settings.presentation.ui.GameSettingsScreen
+import eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui.GameCreditsScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.ui.CountObjectsGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui.MathWriteGameScreen
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeScreen
@@ -95,9 +96,17 @@ fun NavGraph(
             )
         }
 
-        // --- Settings / Credits ---
+        // --- Settings ---
         composable(ScreenRoutes.GameSettings.route) {
-            GameSettingsScreen(onBack = { navController.popBackStack() })
+            GameSettingsScreen(
+                onBack = { navController.popBackStack() },
+                onCreditsClick = { navController.navigate(ScreenRoutes.GameCredits.route) }
+            )
+        }
+        
+        // --- Credits ---
+        composable(ScreenRoutes.GameCredits.route) {
+            GameCreditsScreen(onBack = { navController.popBackStack() })
         }
     }
 }
