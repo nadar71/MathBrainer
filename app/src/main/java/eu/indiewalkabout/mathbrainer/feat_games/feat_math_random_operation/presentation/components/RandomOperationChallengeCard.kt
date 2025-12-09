@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.util.OperationFormatter
 
 @Composable
 fun RandomOperationChallengeCard(
@@ -57,7 +58,7 @@ fun RandomOperationChallengeCard(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = " ? ",
+                    text = " ${OperationFormatter.format(challenge.correctOperation)} ",
                     style = MaterialTheme.typography.displaySmall,
                     color = feedbackColor,
                     fontWeight = FontWeight.Bold
@@ -88,13 +89,13 @@ fun RandomOperationChallengeCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                listOf('+', '-', '*', '/').forEach { operation ->
+                listOf('+', '-', '×', '/').map { op -> op to (if (op == '×') '*' else op) }.forEach { (displayOp, internalOp) ->
                     Button(
-                        onClick = { onOperationSelected(operation) },
+                        onClick = { onOperationSelected(internalOp) },
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = operation.toString(),
+                            text = displayOp.toString(),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )

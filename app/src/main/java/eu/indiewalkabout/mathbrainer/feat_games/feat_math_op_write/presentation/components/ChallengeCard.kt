@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
+import eu.indiewalkabout.mathbrainer.core.util.OperationFormatter
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteChallenge
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.state.MathWriteUiState
 
@@ -47,7 +48,7 @@ fun ChallengeCard(state: MathWriteUiState) {
                 )
                 Spacer(modifier = Modifier.Companion.padding(horizontal = 8.dp))
                 Text(
-                    text = state.challenge?.operation?.toString().orEmpty(),
+                    text = state.challenge?.operation?.let { OperationFormatter.format(it) }.orEmpty(),
                     style = MaterialTheme.typography.displaySmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
