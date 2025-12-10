@@ -7,6 +7,7 @@
     <string name="highscores_title">Highscores</string>
     <string name="credits_title_short">Credits</string>
     <string name="highscore_with_value">Highscore: %1$d</string>
+    <string name="no_high_score">No high score yet</string>
 
     <string name="sum_choose_title">Sum - Choose</string>
     <string name="sum_choose_description">Pick the right result for the sum.</string>

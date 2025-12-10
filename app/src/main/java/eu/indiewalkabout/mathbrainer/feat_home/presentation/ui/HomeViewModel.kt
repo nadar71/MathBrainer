@@ -1,5 +1,6 @@
 package eu.indiewalkabout.mathbrainer.feat_home.presentation.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,31 +23,65 @@ class HomeViewModel @Inject constructor(
     private val getGameScoresUseCase: GetGameScoresUseCase
 ) : ViewModel() {
 
+    private val TAG = "HomeViewModel"
     private val _uiState = MutableStateFlow(HomeUiState(isLoading = true))
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
     private var scoresJob: Job? = null
 
     init {
+        Log.d(TAG, "Initializing HomeViewModel")
         refresh()
     }
 
     fun refresh() {
+        Log.d(TAG, "Refreshing game scores")
         scoresJob?.cancel()
         scoresJob = viewModelScope.launch {
             _uiState.value = HomeUiState(isLoading = true)
-            getGameScoresUseCase().collect { scores ->
-                val games = gamesDefinitionsList.map { definition ->
-                    GameUiModel(
-                        definition = definition,
-                        highScore = getHighScore(definition, scores)
-                    )
+            try{
+                getGameScoresUseCase().collect { scores ->
+                    Log.d(TAG, "Received game scores: $scores")
+                    val games = gamesDefinitionsList.map { definition ->
+                        val highScore = getHighScore(definition, scores)
+                        Log.d(TAG, "Game: ${definition.id}, High Score: $highScore")
+                        GameUiModel(
+                            definition = definition,
+                            highScore = highScore
+                        )
+                    }
+                    _uiState.value = HomeUiState(isLoading = false, games = games)
                 }
-                _uiState.value = HomeUiState(isLoading = false, games = games)
-            }
+            } catch (e: Exception) {
+            Log.e(TAG, "Error loading game scores", e)
+            _uiState.value = HomeUiState(
+                isLoading = false,
+                error = e.message ?: "Unknown error"
+            )
+        }
         }
     }
 
     private fun getHighScore(definition: GameDefinition, scores: GameScores): Int? {
-        return GameTypes.fromId(definition.id)?.scoreField?.invoke(scores)
+        return try {
+            val gameType = GameTypes.fromId(definition.id)
+            Log.d(TAG, "Getting high score for game: ${definition.id}")
+            Log.d(TAG, "GameType found: ${gameType?.name ?: "null"}")
+
+            if (gameType == null) {
+                Log.e(TAG, "No GameType found for game ID: ${definition.id}")
+                return null
+            }
+
+            val score = gameType.scoreField.invoke(scores)
+            Log.d(TAG, "High score for ${gameType.name}: $score")
+
+            // Log all scores for debugging
+            Log.d(TAG, "All scores: $scores")
+
+            score
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting high score for ${definition.id}", e)
+            null
+        }
     }
 }

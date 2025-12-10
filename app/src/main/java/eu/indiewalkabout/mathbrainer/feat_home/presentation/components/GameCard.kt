@@ -42,14 +42,30 @@ fun GameCard(
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
-            gameUiModel.highScore?.let { score ->
-                Spacer(modifier = Modifier.Companion.height(8.dp))
-                Text(
-                    text = stringResource(id = R.string.highscore_with_value, score),
-                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Companion.Bold),
-                    color = MaterialTheme.colorScheme.primary
-                )
+            Spacer(modifier = Modifier.Companion.height(8.dp))
+            // Always show the score, even if it's 0
+            val hasHighScore = gameUiModel.highScore != null
+            val scoreText = if (hasHighScore) {
+                stringResource(id = R.string.highscore_with_value, gameUiModel.highScore!!)
+            } else {
+                stringResource(id = R.string.no_high_score)
             }
+            
+            Text(
+                text = scoreText,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = if (hasHighScore) FontWeight.Bold else FontWeight.Normal
+                ),
+                color = if (hasHighScore) {
+                    if (gameUiModel.highScore!! > 0) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    }
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                }
+            )
 
         }
     }

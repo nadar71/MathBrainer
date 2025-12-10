@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface MathBrainerDbDao {
 
     // --- QUERY ---
-    @Query("SELECT * FROM GameScores LIMIT 1")
+    @Query("SELECT * FROM GameScores ORDER BY id DESC LIMIT 1")
     fun observeGameScores(): Flow<GameScores?>
 
     @Query("SELECT * FROM GameStatistics")

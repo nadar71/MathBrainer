@@ -1,5 +1,6 @@
 package eu.indiewalkabout.mathbrainer.feat_home.domain.use_cases
 
+import android.util.Log
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository.MathBrainerRepository
 import kotlinx.coroutines.flow.Flow
@@ -29,14 +30,20 @@ class GetGameScoresUseCase @Inject constructor(
     )
 
     suspend operator fun invoke(): Flow<GameScores> {
+        Log.d("GetGameScoresUseCase", "Starting to observe game scores")
         return repository.observeGameScores()
             .map { scores ->
-                scores ?: run {
+                if (scores == null) {
+                    Log.d("GetGameScoresUseCase", "No scores found in database, initializing with empty scores")
                     repository.insertGameScores(emptyScores)
                     emptyScores
+                } else {
+                    Log.d("GetGameScoresUseCase", "Retrieved scores from database: $scores")
+                    scores
                 }
             }
-            .catch {
+            .catch { e ->
+                Log.e("GetGameScoresUseCase", "Error while getting game scores", e)
                 emit(emptyScores)
             }
     }
