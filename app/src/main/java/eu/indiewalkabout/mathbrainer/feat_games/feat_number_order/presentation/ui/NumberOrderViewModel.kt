@@ -27,7 +27,7 @@ class NumberOrderViewModel @Inject constructor(
     private var challengesPerLevel = INITIAL_CHALLENGES_PER_LEVEL
     private var challengesCompleted = 0
     private var timerJob: Job? = null
-    private var isScorePersisted = false
+    private var isScorePersisted = false // flag to prevent double writes to the DB
 
     private val _uiState = MutableStateFlow(NumberOrderUiState())
     val uiState: StateFlow<NumberOrderUiState> = _uiState.asStateFlow()

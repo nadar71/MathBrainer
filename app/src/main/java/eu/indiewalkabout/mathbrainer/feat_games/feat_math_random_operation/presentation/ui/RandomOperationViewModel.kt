@@ -46,7 +46,7 @@ class RandomOperationViewModel @Inject constructor(
 
     private var timerLength = RandomOperationUiState.INITIAL_TIMER_LENGTH
     private var timerJob: Job? = null
-    private var isScorePersisted = false
+    private var isScorePersisted = false // flag to prevent double writes to the DB
 
     private val _uiState = MutableStateFlow(RandomOperationUiState())
     val uiState: StateFlow<RandomOperationUiState> = _uiState.asStateFlow()

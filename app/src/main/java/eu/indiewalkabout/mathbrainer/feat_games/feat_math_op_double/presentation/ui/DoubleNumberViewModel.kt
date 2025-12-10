@@ -28,7 +28,7 @@ class DoubleNumberViewModel @Inject constructor(
     private var timerLength = DoubleNumberUiState.INITIAL_TIMER_LENGTH
     private var timerJob: Job? = null
     private var challengesCompleted = 0
-    private var isScorePersisted = false
+    private var isScorePersisted = false // flag to prevent double writes to the DB
 
     private val _uiState = MutableStateFlow(DoubleNumberUiState())
     val uiState: StateFlow<DoubleNumberUiState> = _uiState.asStateFlow()

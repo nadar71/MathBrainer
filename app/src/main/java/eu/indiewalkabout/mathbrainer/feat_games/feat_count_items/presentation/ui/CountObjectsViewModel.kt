@@ -26,7 +26,7 @@ class CountObjectsViewModel @Inject constructor(
     private var memorizeDuration = CountObjectsUiState.INITIAL_MEMORIZE_DURATION
     private var timerJob: Job? = null
     private var challengesCompleted = 0
-    private var isScorePersisted = false
+    private var isScorePersisted = false // flag to prevent double writes to the DB
 
     private val _uiState = MutableStateFlow(CountObjectsUiState())
     val uiState: StateFlow<CountObjectsUiState> = _uiState.asStateFlow()
