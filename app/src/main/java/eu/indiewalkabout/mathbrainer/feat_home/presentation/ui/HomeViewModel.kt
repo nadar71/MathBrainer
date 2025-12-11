@@ -9,18 +9,22 @@ import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameDefinition
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameUiModel
 import eu.indiewalkabout.mathbrainer.feat_home.domain.use_cases.GetGameScoresUseCase
+import eu.indiewalkabout.mathbrainer.feat_home.domain.use_cases.GetMathWriteGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.state.HomeUiState
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteGameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getGameScoresUseCase: GetGameScoresUseCase
+    private val getGameScoresUseCase: GetGameScoresUseCase,
+    private val getMathWriteGameStatsUseCase: GetMathWriteGameStatsUseCase
 ) : ViewModel() {
 
     private val TAG = "HomeViewModel"
@@ -39,14 +43,21 @@ class HomeViewModel @Inject constructor(
         scoresJob = viewModelScope.launch {
             _uiState.value = HomeUiState(isLoading = true)
             try{
-                getGameScoresUseCase().collect { scores ->
+                combine(
+                    getGameScoresUseCase(),
+                    getMathWriteGameStatsUseCase()
+                ) { scores, stats ->
+                    Pair(scores, stats)
+                }.collect { (scores, stats) ->
                     Log.d(TAG, "Received game scores: $scores")
                     val games = gamesDefinitionsList.map { definition ->
                         val highScore = getHighScore(definition, scores)
+                        val mathWriteStats = getMathWriteStats(definition, stats)
                         Log.d(TAG, "Game: ${definition.id}, High Score: $highScore")
                         GameUiModel(
                             definition = definition,
-                            highScore = highScore
+                            highScore = highScore,
+                            mathWriteStats = mathWriteStats
                         )
                     }
                     _uiState.value = HomeUiState(isLoading = false, games = games)
@@ -83,5 +94,12 @@ class HomeViewModel @Inject constructor(
             Log.e(TAG, "Error getting high score for ${definition.id}", e)
             null
         }
+    }
+
+    private fun getMathWriteStats(
+        definition: GameDefinition,
+        stats: Map<String, MathWriteGameStats>
+    ): MathWriteGameStats? {
+        return stats[definition.id]
     }
 }

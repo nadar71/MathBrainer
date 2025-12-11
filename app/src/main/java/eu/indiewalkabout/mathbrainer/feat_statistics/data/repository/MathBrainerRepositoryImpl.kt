@@ -1,5 +1,6 @@
 package eu.indiewalkabout.mathbrainer.feat_statistics.data.repository
 
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteGameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.data.local.db.MathBrainerDbDao
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStatistics
@@ -15,6 +16,14 @@ class MathBrainerRepositoryImpl @Inject constructor(
 
     override suspend fun observeGameScores(): Flow<GameScores?> {
         return mathBrainerDbDao.observeGameScores()
+    }
+
+    override suspend fun observeMathWriteGameStats(): Flow<List<MathWriteGameStats>> {
+        return mathBrainerDbDao.observeMathWriteGameStats()
+    }
+
+    override suspend fun getMathWriteGameStats(operationId: String): MathWriteGameStats? {
+        return mathBrainerDbDao.getMathWriteGameStats(operationId)
     }
 
     override suspend fun loadGameStatistics(): GameStatistics {
@@ -92,6 +101,10 @@ class MathBrainerRepositoryImpl @Inject constructor(
         mathBrainerDbDao.insertGameStatistics(gameStatistics)
     }
 
+    override suspend fun insertMathWriteGameStats(mathWriteGameStats: MathWriteGameStats) {
+        mathBrainerDbDao.insertMathWriteGameStats(mathWriteGameStats)
+    }
+
     //------------------------------------------- DROPS --------------------------------------------
 
     override suspend fun dropTableGameScores() {
@@ -100,6 +113,10 @@ class MathBrainerRepositoryImpl @Inject constructor(
 
     override suspend fun dropTableGameStatistics() {
         mathBrainerDbDao.dropTableGameStatistics()
+    }
+
+    override suspend fun dropTableMathWriteGameStats() {
+        mathBrainerDbDao.dropTableMathWriteGameStats()
     }
 
     /*

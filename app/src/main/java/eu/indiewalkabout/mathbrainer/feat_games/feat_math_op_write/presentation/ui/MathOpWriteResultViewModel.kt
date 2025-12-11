@@ -8,6 +8,7 @@ import eu.indiewalkabout.mathbrainer.core.model.OperationConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.WriteResultScoreCategory
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.GenerateMathWriteChallengeUseCase
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.UpdateMathWriteGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.usecase.UpdateWriteResultScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.state.MathWriteUiState
 import kotlinx.coroutines.Job
@@ -22,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MathOpWriteResultViewModel @Inject constructor(
     private val generateMathWriteChallengeUseCase: GenerateMathWriteChallengeUseCase,
+    private val updateMathWriteGameStatsUseCase: UpdateMathWriteGameStatsUseCase,
     private val updateWriteResultScoreUseCase: UpdateWriteResultScoreUseCase
 ) : ViewModel() {
 
@@ -29,7 +31,8 @@ class MathOpWriteResultViewModel @Inject constructor(
     private var initialHighScore: Int? = null
 
     // score category for saving score
-    private val scoreCategory = WriteResultScoreCategory.fromOperation(operationParam.toString())
+    private val scoreCategory: WriteResultScoreCategory
+        get() = WriteResultScoreCategory.fromOperation(operationParam)
 
 
     // random range of number to be processed
@@ -62,7 +65,9 @@ class MathOpWriteResultViewModel @Inject constructor(
     fun setOperation(operation: String, highScore: Int = 0) {
         operationParam = operation
         initialHighScore = highScore.takeIf { it > 0 }
+        isScorePersisted = false
         viewModelScope.launch {
+            _uiState.update { it.copy(highScore = initialHighScore) }
             launchNewChallenge(resetTimer = true)
         }
     }
@@ -223,9 +228,15 @@ class MathOpWriteResultViewModel @Inject constructor(
         if (isScorePersisted) return
         isScorePersisted = true
         val finalScore = _uiState.value.score
-        if (finalScore <= 0) return
         viewModelScope.launch {
-            updateWriteResultScoreUseCase(scoreCategory, finalScore)
+            updateMathWriteGameStatsUseCase(
+                operation = operationParam,
+                sessionScore = finalScore,
+                isWin = finalScore > 0
+            )
+            if (finalScore > 0) {
+                updateWriteResultScoreUseCase(scoreCategory, finalScore)
+            }
         }
     }
 

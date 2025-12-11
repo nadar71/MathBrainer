@@ -40,7 +40,7 @@ fun MathWriteGameScreen(
 
     // ----------------------------------------- LOGIC -------------------------------------------
     LaunchedEffect(operation) {
-        viewModel.setOperation(operation)
+        viewModel.setOperation(operation, initialHighScore)
     }
 
     // --- game state

@@ -66,7 +66,19 @@ fun GameCard(
                     MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                 }
             )
-
+            gameUiModel.mathWriteStats?.let { stats ->
+                Spacer(modifier = Modifier.Companion.height(4.dp))
+                Text(
+                    text = stringResource(id = R.string.math_write_played_count, stats.gamesPlayed),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = stringResource(id = R.string.math_write_win_loss, stats.gamesWon, stats.gamesLost),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
     }
 }
