@@ -79,6 +79,19 @@ fun GameCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+                if (stats.gamesPlayed > 0) {
+                    val winPercentage = if (stats.gamesWon > 0) {
+                        // Calculate percentage and round up to nearest integer
+                        ((stats.gamesWon.toDouble() / stats.gamesPlayed) * 100).toInt()
+                    } else {
+                        0
+                    }
+                    Text(
+                        text = stringResource(id = R.string.math_write_win_percentage, winPercentage),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
                 Text(
                     text = stringResource(id = R.string.math_write_best_level, stats.lastLevel),
                     style = MaterialTheme.typography.bodyMedium,

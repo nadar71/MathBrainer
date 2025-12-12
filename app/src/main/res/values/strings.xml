@@ -10,6 +10,7 @@
     <string name="no_high_score">No high score yet</string>
     <string name="math_write_played_count">Played: %1$d</string>
     <string name="math_write_win_loss">Wins: %1$d \nLosses: %2$d</string>
+    <string name="math_write_win_percentage">Win %%: %1$d</string>
     <string name="math_write_best_level">Best level: %1$d</string>
 
     <string name="sum_choose_title">Sum - Choose</string>
