@@ -5,6 +5,6 @@ import androidx.annotation.StringRes
 data class GameDefinition(
     val id: String,
     @StringRes val titleRes: Int,
-    @StringRes val descriptionRes: Int,
+    // @StringRes val descriptionRes: Int,
     val requiresHighScore: Boolean = false
 )

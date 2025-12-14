@@ -38,7 +38,7 @@ fun GameGrid(
         modifier = Modifier.Companion
             .fillMaxSize()
             .padding(padding),
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(4),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)

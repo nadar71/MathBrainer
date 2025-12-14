@@ -14,8 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameDefinition
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameUiModel
 
 @Composable
@@ -30,19 +35,23 @@ fun GameCard(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column(modifier = Modifier.Companion.padding(16.dp)) {
+        Column(modifier = Modifier.Companion.padding(8.dp)) {
             Text(
                 text = stringResource(id = gameUiModel.definition.titleRes),
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurface
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.Companion.height(4.dp))
+            /*Spacer(modifier = Modifier.Companion.height(4.dp))
             Text(
                 text = stringResource(id = gameUiModel.definition.descriptionRes),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.Companion.height(8.dp))
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )*/
+            Spacer(modifier = Modifier.Companion.height(4.dp))
             // Always show the score, even if it's 0
             val hasHighScore = gameUiModel.highScore != null
             val scoreText = if (hasHighScore) {
@@ -103,18 +112,190 @@ fun GameCard(
     }
 }
 
-/*@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun GameCardPreview() {
-    GameCard(
-        gameUiModel = GameUiModel(
-            definition = GameDefinition(
-                titleRes = R.string.game_title,
-                descriptionRes = R.string.game_description,
+    MathBrainerTheme {
+        GameCard(
+            gameUiModel = GameUiModel(
+                definition = GameDefinition(
+                    titleRes = R.string.game_card_write_result_mult_text,
+                    id = GameTypes.MULT_WRITE.id,
+                ),
                 highScore = 100
             ),
-            highScore = 100
-        ),
-        onGameSelected = {}
-    )
-}*/
+            onGameSelected = {}
+        )
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun SumWriteGameCardPreview() {
+    MathBrainerTheme {
+        GameCard(
+            gameUiModel = GameUiModel(
+                definition = GameDefinition(
+                    titleRes = R.string.game_card_write_result_sum_text,
+                    id = GameTypes.SUM_WRITE.id,
+                ),
+                highScore = 100
+            ),
+            onGameSelected = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DiffWriteGameCardPreview() {
+    MathBrainerTheme {
+        GameCard(
+            gameUiModel = GameUiModel(
+                definition = GameDefinition(
+                    titleRes = R.string.game_card_write_result_diff_text,
+                    id = GameTypes.DIFF_WRITE.id,
+                ),
+                highScore = 100
+            ),
+            onGameSelected = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MultWriteGameCardPreview() {
+    MathBrainerTheme {
+        GameCard(
+            gameUiModel = GameUiModel(
+                definition = GameDefinition(
+                    titleRes = R.string.game_card_write_result_mult_text,
+                    id = GameTypes.MULT_WRITE.id,
+                ),
+                highScore = 100
+            ),
+            onGameSelected = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DivWriteGameCardPreview() {
+    MathBrainerTheme {
+        GameCard(
+            gameUiModel = GameUiModel(
+                definition = GameDefinition(
+                    titleRes = R.string.game_card_write_result_div_text,
+                    id = GameTypes.DIV_WRITE.id,
+                ),
+                highScore = 100
+            ),
+            onGameSelected = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MixChooseGameCardPreview() {
+    MathBrainerTheme {
+        GameCard(
+            gameUiModel = GameUiModel(
+                definition = GameDefinition(
+                    titleRes = R.string.game_card_choose_result_allop_text,
+                    id = GameTypes.MIX_CHOOSE.id,
+                ),
+                highScore = 100
+            ),
+            onGameSelected = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MixWriteGameCardPreview() {
+    MathBrainerTheme {
+        GameCard(
+            gameUiModel = GameUiModel(
+                definition = GameDefinition(
+                    titleRes = R.string.game_card_write_result_allop_text,
+                    id = GameTypes.MIX_WRITE.id,
+                ),
+                highScore = 100
+            ),
+            onGameSelected = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuickCountGameCardPreview() {
+    MathBrainerTheme {
+        GameCard(
+            gameUiModel = GameUiModel(
+                definition = GameDefinition(
+                    titleRes = R.string.quick_count_title,
+                    id = GameTypes.QUICK_COUNT.id,
+                ),
+                highScore = 100
+            ),
+            onGameSelected = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DoubleNumberGameCardPreview() {
+    MathBrainerTheme {
+        GameCard(
+            gameUiModel = GameUiModel(
+                definition = GameDefinition(
+                    titleRes = R.string.game_card_double_number_title,
+                    id = GameTypes.DOUBLE_NUMBER.id,
+                ),
+                highScore = 100
+            ),
+            onGameSelected = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OrderGameCardPreview() {
+    MathBrainerTheme {
+        GameCard(
+            gameUiModel = GameUiModel(
+                definition = GameDefinition(
+                    titleRes = R.string.number_order_title,
+                    id = GameTypes.NUMBER_ORDER.id,
+                ),
+                highScore = 100
+            ),
+            onGameSelected = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RandomOperationGameCardPreview() {
+    MathBrainerTheme {
+        GameCard(
+            gameUiModel = GameUiModel(
+                definition = GameDefinition(
+                    titleRes = R.string.game_card_choose_random_operation_text,
+                    id = GameTypes.RANDOM_OPERATION.id,
+                ),
+                highScore = 100
+            ),
+            onGameSelected = {}
+        )
+    }
+}

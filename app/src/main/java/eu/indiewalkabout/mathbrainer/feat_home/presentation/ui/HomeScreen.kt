@@ -108,9 +108,9 @@ fun HomeScreen(
                                 )
                             )
                         }
-                        GameTypes.QUICK_COUNT -> {
+                        GameTypes.RANDOM_OPERATION -> {
                             navController.navigate(
-                                ScreenRoutes.CountObjectsGame.createRoute(
+                                ScreenRoutes.RandomOperationGame.createRoute(
                                     highScore = game.highScore ?: 0
                                 )
                             )
@@ -122,6 +122,13 @@ fun HomeScreen(
                                 )
                             )
                         }
+                        GameTypes.QUICK_COUNT -> {
+                            navController.navigate(
+                                ScreenRoutes.CountObjectsGame.createRoute(
+                                    highScore = game.highScore ?: 0
+                                )
+                            )
+                        }
                         GameTypes.NUMBER_ORDER -> {
                             navController.navigate(
                                 ScreenRoutes.NumberOrderGame.createRoute(
@@ -129,13 +136,7 @@ fun HomeScreen(
                                 )
                             )
                         }
-                        GameTypes.RANDOM_OPERATION -> {
-                            navController.navigate(
-                                ScreenRoutes.RandomOperationGame.createRoute(
-                                    highScore = game.highScore ?: 0
-                                )
-                            )
-                        }
+
                         null -> navController.navigate(ScreenRoutes.Home.route)
                     }
                 },
@@ -153,3 +154,6 @@ fun HomeScreen(
         }
     }
 }
+
+
+

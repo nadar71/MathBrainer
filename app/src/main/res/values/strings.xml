@@ -177,17 +177,21 @@
     <string name="highscore_label">Highscore</string>
     <string name="highscore_plural_label">Highscores</string>
 
-    <!-- - - - - - - - - - - - - - - - - Choose game btn - - - - - - - - - - - - - - - - - - - - -->
-    <string name="choose_result_allop_text"> + - x / \n_ _ _ _</string>
-    <string name="choose_ops_allop_text"> A ? B \n_ _ _ _</string>
-    <string name="choose_result_sum_text">   +   \n_ _ _ _ </string>
-    <string name="choose_result_diff_text">   -   \n_ _ _ _ </string>
-    <string name="choose_result_mult_text">   x   \n_ _ _ _ </string>
-    <string name="choose_result_div_text">   /   \n_ _ _ _ </string>
-    <string name="write_result_allop_text">+ - x / </string>
+    <!-- - - - - - - - - - - - - - - - -  Games btn logo - - - - - - - - - - - - - - - - - - - - -->
+    <string name="game_card_empty_descr">""</string>
+    <string name="game_card_choose_result_allop_text"    > + - x /\n_ _ _ _</string>
+    <string name="game_card_choose_random_operation_text"> A ? B  \n_ _ _ _</string>
+    <string name="game_card_choose_result_sum_text"      >   +    \n_ _ _ _ </string>
+    <string name="game_card_choose_result_diff_text"     >   -    \n_ _ _ _ </string>
+    <string name="game_card_choose_result_mult_text"     >   x    \n_ _ _ _ </string>
+    <string name="game_card_choose_result_div_text"      >   /    \n_ _ _ _ </string>
 
-
-
+    <string name="game_card_write_result_allop_text">+ - x / </string>
+    <string name="game_card_write_result_sum_text"  >   +    \n        </string>
+    <string name="game_card_write_result_diff_text" >   -    \n        </string>
+    <string name="game_card_write_result_mult_text" >   x    \n        </string>
+    <string name="game_card_write_result_div_text"  >   /    \n        </string>
+    <string name="game_card_double_number_title"    >   2x   \n        </string>
 
 
 
