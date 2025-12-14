@@ -28,6 +28,12 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation
 
 @Composable
 fun DoubleNumberChallengeCard(state: DoubleNumberUiState) {
+    val feedbackColor = when (state.feedback) {
+        DoubleNumberUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
+        DoubleNumberUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
+        else -> MaterialTheme.colorScheme.onSecondaryContainer
+    }
+    
     Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)) {
         Column(
             modifier = Modifier.Companion
@@ -40,19 +46,19 @@ fun DoubleNumberChallengeCard(state: DoubleNumberUiState) {
                 Text(
                     text = state.challenge?.value?.toString().orEmpty(),
                     style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                    color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSecondaryContainer
                 )
                 Spacer(modifier = Modifier.Companion.padding(horizontal = 8.dp))
                 Text(
                     text = "x 2",
                     style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                    color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSecondaryContainer
                 )
                 Spacer(modifier = Modifier.Companion.padding(horizontal = 8.dp))
                 Text(
                     text = "=",
                     style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                    color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
             TextField(

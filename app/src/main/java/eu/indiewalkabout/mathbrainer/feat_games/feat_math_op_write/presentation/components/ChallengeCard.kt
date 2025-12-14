@@ -31,6 +31,12 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.
 
 @Composable
 fun ChallengeCard(state: MathWriteUiState) {
+    val feedbackColor = when (state.feedback) {
+        MathWriteUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
+        MathWriteUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
+        else -> MaterialTheme.colorScheme.onSecondaryContainer
+    }
+    
     Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)) {
         Column(
             modifier = Modifier.Companion
@@ -44,19 +50,19 @@ fun ChallengeCard(state: MathWriteUiState) {
                 Text(
                     text = state.challenge?.firstOperand?.toString().orEmpty(),
                     style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                    color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSecondaryContainer
                 )
                 Spacer(modifier = Modifier.Companion.padding(horizontal = 8.dp))
                 Text(
                     text = state.challenge?.operation?.let { OperationFormatter.format(it) }.orEmpty(),
                     style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                    color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSecondaryContainer
                 )
                 Spacer(modifier = Modifier.Companion.padding(horizontal = 8.dp))
                 Text(
                     text = state.challenge?.secondOperand?.toString().orEmpty(),
                     style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                    color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
             TextField(

@@ -26,6 +26,12 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation
 
 @Composable
 fun ChooseChallengeCard(state: MathChooseUiState, onOptionSelected: (Int) -> Unit) {
+    val feedbackColor = when (state.feedback) {
+        MathChooseUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
+        MathChooseUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
+        else -> MaterialTheme.colorScheme.onSecondaryContainer
+    }
+    
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,25 +53,25 @@ fun ChooseChallengeCard(state: MathChooseUiState, onOptionSelected: (Int) -> Uni
                     Text(
                         text = state.challenge?.firstOperand?.toString().orEmpty(),
                         style = MaterialTheme.typography.displaySmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSecondaryContainer
                     )
                     Spacer(modifier = Modifier.padding(horizontal = 8.dp))
                     Text(
                         text = state.challenge?.operation?.let { OperationFormatter.format(it) }.orEmpty(),
                         style = MaterialTheme.typography.displaySmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSecondaryContainer
                     )
                     Spacer(modifier = Modifier.padding(horizontal = 8.dp))
                     Text(
                         text = state.challenge?.secondOperand?.toString().orEmpty(),
                         style = MaterialTheme.typography.displaySmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSecondaryContainer
                     )
                     Spacer(modifier = Modifier.padding(horizontal = 8.dp))
                     Text(
                         text = "=?",
                         style = MaterialTheme.typography.displaySmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
             }
