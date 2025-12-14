@@ -51,35 +51,52 @@ fun RandomOperationChallengeCard(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // First operand - always visible
                 Text(
-                    text = challenge.firstOperand.toString(),
+                    text = state.challenge.firstOperand.toString(),
                     style = MaterialTheme.typography.displaySmall,
-                    color = feedbackColor,
-                    fontWeight = FontWeight.Bold
+                    color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSurface,
+                    fontWeight = if (state.feedback != null) FontWeight.Bold else FontWeight.Normal
                 )
+                
+                // Operation symbol - only shown after feedback
+                if (state.feedback != null) {
+                    Text(
+                        text = " ${OperationFormatter.format(challenge.correctOperation)} ",
+                        style = MaterialTheme.typography.displaySmall,
+                        color = feedbackColor,
+                        fontWeight = FontWeight.Bold
+                    )
+                } else {
+                    // Show question mark before answer
+                    Text(
+                        text = " ? ",
+                        style = MaterialTheme.typography.displaySmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                
+                // Second operand - always visible
                 Text(
-                    text = " ${OperationFormatter.format(challenge.correctOperation)} ",
+                    text = state.challenge.secondOperand.toString(),
                     style = MaterialTheme.typography.displaySmall,
-                    color = feedbackColor,
-                    fontWeight = FontWeight.Bold
+                    color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSurface,
+                    fontWeight = if (state.feedback != null) FontWeight.Bold else FontWeight.Normal
                 )
-                Text(
-                    text = challenge.secondOperand.toString(),
-                    style = MaterialTheme.typography.displaySmall,
-                    color = feedbackColor,
-                    fontWeight = FontWeight.Bold
-                )
+                
+                // Equals and result - always visible
                 Text(
                     text = " = ",
                     style = MaterialTheme.typography.displaySmall,
-                    color = feedbackColor,
-                    fontWeight = FontWeight.Bold
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Normal
                 )
                 Text(
                     text = challenge.result.toString(),
                     style = MaterialTheme.typography.displaySmall,
-                    color = feedbackColor,
-                    fontWeight = FontWeight.Bold
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Normal
                 )
             }
 
