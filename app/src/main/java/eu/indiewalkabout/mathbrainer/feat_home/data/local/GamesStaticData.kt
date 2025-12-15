@@ -70,12 +70,14 @@ val gamesDefinitionsList = listOf(
     ),
     GameDefinition(
         id = "quick_count",
-        titleRes = R.string.quick_count_title,
+        imageResId = R.drawable.ic_objs_count,
+        titleRes = null,
         // descriptionRes = R.string.quick_count_description,
     ),
     GameDefinition(
         id = "order",
-        titleRes = R.string.number_order_title,
+        imageResId = R.drawable.ic_number_order,
+        titleRes = null,
         // descriptionRes = R.string.number_order_description,
     ),
 

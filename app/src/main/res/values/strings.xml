@@ -1,6 +1,7 @@
 <resources>
 
     <!-- - - - - - - - - - - - - - - - - Home Screen - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="math_brainer_title">Math Brainer</string>
     <string name="home_tagline">Choose your next brain training.</string>
     <string name="home_progress_title">Track your progress</string>
     <string name="home_progress_body">Check highscores or read the credits.</string>
@@ -88,7 +89,6 @@
 
     <string name="app_name">MathBrainer</string>
     <string name="play">Play</string>
-    <string name="math_brainer">Math Brainer</string>
     <string name="_2">2</string>
     <string name="_1">1</string>
     <string name="op">op</string>
@@ -179,18 +179,18 @@
 
     <!-- - - - - - - - - - - - - - - - -  Games btn logo - - - - - - - - - - - - - - - - - - - - -->
     <string name="game_card_empty_descr">""</string>
-    <string name="game_card_choose_result_allop_text"    > + - x /\n_ _ _ _</string>
-    <string name="game_card_choose_random_operation_text"> A ? B  \n_ _ _ _</string>
-    <string name="game_card_choose_result_sum_text"      >   +    \n_ _ _ _ </string>
-    <string name="game_card_choose_result_diff_text"     >   -    \n_ _ _ _ </string>
-    <string name="game_card_choose_result_mult_text"     >   x    \n_ _ _ _ </string>
-    <string name="game_card_choose_result_div_text"      >   /    \n_ _ _ _ </string>
+    <string name="game_card_choose_result_allop_text"    > +  –  x  :\n– – – – </string>
+    <string name="game_card_choose_random_operation_text"> A  ?  B  \n– – – – </string>
+    <string name="game_card_choose_result_sum_text"      >   +    \n– – – – </string>
+    <string name="game_card_choose_result_diff_text"     >   –    \n– – – – </string>
+    <string name="game_card_choose_result_mult_text"     >   x    \n– – – – </string>
+    <string name="game_card_choose_result_div_text"      >   :    \n– – – – </string>
 
-    <string name="game_card_write_result_allop_text">+ - x / </string>
+    <string name="game_card_write_result_allop_text">+  –  x  : \n        </string>
     <string name="game_card_write_result_sum_text"  >   +    \n        </string>
-    <string name="game_card_write_result_diff_text" >   -    \n        </string>
+    <string name="game_card_write_result_diff_text" >   –    \n        </string>
     <string name="game_card_write_result_mult_text" >   x    \n        </string>
-    <string name="game_card_write_result_div_text"  >   /    \n        </string>
+    <string name="game_card_write_result_div_text"  >   :    \n        </string>
     <string name="game_card_double_number_title"    >   2x   \n        </string>
 
 

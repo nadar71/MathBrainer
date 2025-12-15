@@ -11,12 +11,16 @@ private val DarkColors = darkColorScheme(
     onSecondary = ColorAccent,
     secondaryContainer = BackgroundGray01,
     onSecondaryContainer = ColorAccent,
+    tertiary = ColorPrimarySemiTransparent,
+    onTertiary = ColorAccent,
     background = BackgroundGray02,
     onBackground = ColorAccent,
     surface = BackgroundGray03,
     onSurface = ColorAccent,
     surfaceVariant = TransparentGray,
-    onSurfaceVariant = ColorAccent
+    onSurfaceVariant = ColorAccent,
+    error = Error,
+    onError = ColorAccent
 )
 
 @Composable
