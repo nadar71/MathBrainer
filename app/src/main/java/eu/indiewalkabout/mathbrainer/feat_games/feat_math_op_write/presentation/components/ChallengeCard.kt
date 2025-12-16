@@ -107,7 +107,6 @@ fun ChallengeCard(state: MathWriteUiState) {
                     text = stringResource(id = R.string.wrong_answer),
                     color = MaterialTheme.colorScheme.error
                 )
-
                 null -> Unit
             }
         }

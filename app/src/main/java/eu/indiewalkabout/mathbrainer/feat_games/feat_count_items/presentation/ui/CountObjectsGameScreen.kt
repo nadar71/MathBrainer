@@ -35,7 +35,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
@@ -48,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
+import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.state.CountObjectsUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -117,9 +117,20 @@ fun CountObjectsGameScreen(
                 challengeKey = state.challengeId
             )
 
-            FeedbackText(state = state)
+            when (state.feedback) {
+                CountObjectsUiState.Feedback.SUCCESS -> ResultBanner(
+                    text = stringResource(id = R.string.ok_str),
+                    color = MaterialTheme.colorScheme.primary
+                )
 
-            AnswersGrid(
+                CountObjectsUiState.Feedback.FAILURE -> ResultBanner(
+                    text = stringResource(id = R.string.wrong_answer),
+                    color = MaterialTheme.colorScheme.error
+                )
+                null -> Unit
+            }
+
+            AnswersGrid (
                 options = state.challenge?.answerOptions.orEmpty(),
                 enabled = !state.isShowingItems && !state.isGameOver,
                 onOptionSelected = { viewModel.submitAnswer(it) }
@@ -249,29 +260,6 @@ private fun MemorizeCanvas(
     }
 }
 
-@Composable
-private fun FeedbackText(state: CountObjectsUiState) {
-    val feedbackColor = when (state.feedback) {
-        CountObjectsUiState.Feedback.SUCCESS -> Color.Green
-        CountObjectsUiState.Feedback.FAILURE -> Color.Red
-        else -> MaterialTheme.colorScheme.onSurface
-    }
-
-    val feedbackText = when (state.feedback) {
-        CountObjectsUiState.Feedback.SUCCESS -> stringResource(id = R.string.ok_str)
-        CountObjectsUiState.Feedback.FAILURE -> stringResource(id = R.string.wrong_str)
-        else -> null
-    }
-
-    feedbackText?.let {
-        Text(
-            text = it,
-            style = MaterialTheme.typography.titleMedium,
-            color = feedbackColor,
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
 
 @Composable
 private fun AnswersGrid(

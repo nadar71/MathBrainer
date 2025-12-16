@@ -4,7 +4,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -38,15 +37,13 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
+import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.presentation.state.NumberOrderUiState
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -123,7 +120,28 @@ fun NumberOrderGameScreen(
                 defaultColor = onSecondaryColor
             )
 
-            FeedbackText(state = state)
+
+            when (state.feedback) {
+                NumberOrderUiState.Feedback.SUCCESS -> ResultBanner(
+                    text = stringResource(id = R.string.ok_str),
+                    color = MaterialTheme.colorScheme.primary
+                )
+
+                NumberOrderUiState.Feedback.FAILURE -> ResultBanner(
+                    text = stringResource(id = R.string.wrong_answer),
+                    color = MaterialTheme.colorScheme.error
+                )
+                null -> if (state.isMemorizing)
+                    ResultBanner(
+                        text = stringResource(id = R.string.click_order_instructions),
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                else
+                    ResultBanner(
+                        text = stringResource(id = R.string.click_order_start),
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+            }
 
             if (state.showNextButton && !state.isGameOver) {
                 Button(
@@ -265,35 +283,6 @@ private fun NumberOrderCanvas(
     }
 }
 
-@Composable
-private fun FeedbackText(state: NumberOrderUiState) {
-    val feedbackColor = when (state.feedback) {
-        NumberOrderUiState.Feedback.SUCCESS -> Color.Green
-        NumberOrderUiState.Feedback.FAILURE -> Color.Red
-        null -> MaterialTheme.colorScheme.onBackground
-    }
-    val text = when (state.feedback) {
-        NumberOrderUiState.Feedback.SUCCESS -> stringResource(id = R.string.ok_str)
-        NumberOrderUiState.Feedback.FAILURE -> stringResource(id = R.string.wrong_str)
-        null -> if (state.isMemorizing) stringResource(id = R.string.click_order_instructions) else stringResource(
-            id = R.string.click_order_start
-        )
-    }
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp))
-            .padding(vertical = 12.dp, horizontal = 16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Medium),
-            color = feedbackColor,
-            textAlign = TextAlign.Center
-        )
-    }
-}
 
 private data class NumberMarker(
     val index: Int,

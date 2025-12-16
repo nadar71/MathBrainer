@@ -1,6 +1,5 @@
 package eu.indiewalkabout.mathbrainer.feat_home.presentation.ui
 
-import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -37,7 +36,6 @@ import eu.indiewalkabout.mathbrainer.core.presentation.navigation.ScreenRoutes
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.GameGrid
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.LoadingContent
-import eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui.HighscoresActivity
 
 @Composable
 fun HomeScreen(
@@ -70,12 +68,12 @@ fun HomeScreen(
                         .clickable(
                             onClick = {
                                 Log.d("HomeScreen", "Highscores selected")
-                                context.startActivity(
+                                /*context.startActivity(
                                     Intent(
                                         context,
                                         HighscoresActivity::class.java
                                     )
-                                )
+                                )*/
                             }
                         ),
                     contentScale = ContentScale.Fit
@@ -99,7 +97,6 @@ fun HomeScreen(
         }
 
     ) { padding ->
-
         Column(
             modifier = Modifier
                 .fillMaxSize()

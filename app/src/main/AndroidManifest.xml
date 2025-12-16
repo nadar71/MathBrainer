@@ -23,14 +23,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".feat_credits.presentation.ui.GameCreditsActivity">
-        </activity>
-
-        <activity
-            android:name=".feat_statistics.presentation.ui.HighscoresActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait">
-        </activity>
 
         <activity
             android:name=".feat_games.feat_falling_op.presentation.ui.FallingOperationsActivity"
