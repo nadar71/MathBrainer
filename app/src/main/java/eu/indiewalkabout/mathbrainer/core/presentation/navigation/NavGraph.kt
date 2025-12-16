@@ -19,6 +19,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.presentation.u
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeScreen
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeViewModel
 import eu.indiewalkabout.mathbrainer.feat_settings.presentation.ui.GameSettingsScreen
+import eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui.StatisticScreen
+import eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui.StatisticViewModel
 import java.net.URLDecoder
 
 @Composable
@@ -155,6 +157,12 @@ fun NavGraph(
         // --- Credits ---
         composable(ScreenRoutes.GameCredits.route) {
             GameCreditsScreen(onBack = { navController.popBackStack() })
+        }
+
+        // --- Statistics ---
+        composable(ScreenRoutes.Statistics.route) {
+            val viewModel = hiltViewModel<StatisticViewModel>()
+            StatisticScreen(navController = navController, statisticViewModel = viewModel)
         }
     }
 }

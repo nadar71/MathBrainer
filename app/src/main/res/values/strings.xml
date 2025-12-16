@@ -6,7 +6,7 @@
     <string name="home_tagline">Choose your next brain training.</string>
     <string name="home_progress_title">Track your progress</string>
     <string name="home_progress_body">Check highscores or read the credits.</string>
-    <string name="highscores_title">Highscores</string>
+    <string name="statistics_title">Your numbers !</string>
     <string name="credits_title_short">Credits</string>
     <string name="highscore_with_value">Highscore: %1$d</string>
     <string name="no_high_score">No high score yet</string>

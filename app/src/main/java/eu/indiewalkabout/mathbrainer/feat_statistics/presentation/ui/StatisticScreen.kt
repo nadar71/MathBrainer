@@ -1,7 +1,6 @@
-package eu.indiewalkabout.mathbrainer.feat_home.presentation.ui
+package eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,8 +26,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,15 +37,11 @@ import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.GameGrid
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.LoadingContent
 
 @Composable
-fun HomeScreen(
+fun StatisticScreen(
     navController: NavHostController,
-    homeViewModel: HomeViewModel = hiltViewModel()
+    statisticViewModel: StatisticViewModel = hiltViewModel()
 ) {
-    val state by homeViewModel.uiState.collectAsState()
-    Log.d(
-        "HomeScreen",
-        "uiState changed: isLoading=${'$'}{state.isLoading}, games=${'$'}{state.games.size}"
-    )
+    val state by statisticViewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -57,39 +53,19 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_chart),
-                    contentDescription = "Statistics",
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = stringResource(id = R.string.navigate_back),
                     modifier = Modifier
                         .size(32.dp)
                         .padding(4.dp)
-                        .clickable(
-                            onClick = {
-                                Log.d("HomeScreen", "Statistics selected")
-                                navController.navigate(ScreenRoutes.Statistics.route)
-                            }
-                        ),
-                    contentScale = ContentScale.Fit
-                )
-
-                Image(
-                    painter = painterResource(id = R.drawable.ic_info),
-                    contentDescription = "Settings",
-                    modifier = Modifier
-                        .size(32.dp)
-                        .padding(4.dp)
-                        .clickable(
-                            onClick = {
-                                Log.d("HomeScreen", "Credits selected")
-                                navController.navigate(ScreenRoutes.GameSettings.route)
-                            }
-                        ),
-                    contentScale = ContentScale.Fit
+                        .clickable(onClick = { navController.popBackStack() })
                 )
             }
-        }
+        },
 
-    ) { padding ->
+        ) { padding ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -97,7 +73,7 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(id = R.string.math_brainer_title),
+                text = stringResource(id = R.string.statistics_title),
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 modifier = Modifier
@@ -105,13 +81,10 @@ fun HomeScreen(
             )
             when {
                 state.isLoading -> {
-                    Log.d("HomeScreen", "Showing LoadingContent")
                     LoadingContent(padding)
                 }
 
                 !state.error.isNullOrEmpty() -> {
-                    Log.e("HomeScreen", "Error state: ${state.error}")
-                    // Show error UI
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -121,21 +94,20 @@ fun HomeScreen(
                     ) {
                         Text("Error loading scores: ${state.error}")
                         Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = { homeViewModel.refresh() }) {
+                        Button(onClick = { statisticViewModel.refresh() }) {
                             Text("Retry")
                         }
                     }
                 }
 
                 else -> {
-                    Log.d("HomeScreen", "Showing GameGrid with ${'$'}{state.games.size} games")
                     GameGrid(
                         modifier = Modifier.padding(top = 16.dp),
                         paddingValues = padding,
                         games = state.games,
-                        showMinimal = true,
+                        showMinimal = false,
                         onGameSelected = { game ->
-                            Log.d("HomeScreen", "Game selected: ${game.definition.id}")
+                            Log.d("StatisticScreen", "Game selected: ${game.definition.id}")
                             when (val gameType = GameTypes.fromId(game.definition.id)) {
                                 GameTypes.SUM_WRITE, GameTypes.DIFF_WRITE, GameTypes.MULT_WRITE, GameTypes.DIV_WRITE, GameTypes.MIX_WRITE -> {
                                     navController.navigate(
@@ -189,7 +161,7 @@ fun HomeScreen(
 
                                 null -> navController.navigate(ScreenRoutes.Home.route)
                             }
-                        },
+                        }
                     )
                 }
 
@@ -197,6 +169,3 @@ fun HomeScreen(
         }
     }
 }
-
-
-
