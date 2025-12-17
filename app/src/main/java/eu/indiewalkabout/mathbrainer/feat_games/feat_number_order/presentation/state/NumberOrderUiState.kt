@@ -13,7 +13,9 @@ data class NumberOrderUiState(
     val showNextButton: Boolean = false,
     val revealedCount: Int = 0,
     val challengeId: Int = 0,
-    val isGameOver: Boolean = false
+    val isGameOver: Boolean = false,
+    val challengesCompleted: Int = 0,
+    val challengesPerLevel: Int = 5
 ) {
     enum class Feedback { SUCCESS, FAILURE }
 

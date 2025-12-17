@@ -33,7 +33,19 @@ class NumberOrderViewModel @Inject constructor(
     val uiState: StateFlow<NumberOrderUiState> = _uiState.asStateFlow()
 
     fun startGame(initialHighScore: Int = 0) {
-        _uiState.update { it.copy(highScore = initialHighScore.takeIf { score -> score > 0 }) }
+        _uiState.update { 
+            it.copy(
+                highScore = initialHighScore.takeIf { score -> score > 0 },
+                challengesPerLevel = INITIAL_CHALLENGES_PER_LEVEL,
+                challengesCompleted = 0,
+                level = 1,
+                score = 0,
+                lives = 3,
+                isGameOver = false,
+                showNextButton = false,
+                isMemorizing = false
+            ) 
+        }
         viewModelScope.launch { launchNewChallenge(resetTimer = true) }
     }
 
@@ -97,21 +109,37 @@ class NumberOrderViewModel @Inject constructor(
     }
 
     private fun handleSuccess() {
-        challengesCompleted++
-        val newScore = _uiState.value.score + SCORE_INCREMENT
-
-        if (challengesCompleted >= challengesPerLevel) {
+        // Get current state values
+        val currentState = _uiState.value
+        val newChallengesCompleted = currentState.challengesCompleted + 1
+        val newScore = currentState.score + SCORE_INCREMENT
+        var newLevel = currentState.level
+        
+        // Check if we should level up
+        val shouldLevelUp = newChallengesCompleted >= currentState.challengesPerLevel
+        
+        // Update local state first
+        if (shouldLevelUp) {
+            newLevel++
             challengesCompleted = 0
+            challengesPerLevel = (challengesPerLevel + 1).coerceAtMost(20) // Cap at 20 challenges per level
+            maxItemsToCount = (maxItemsToCount + 0.5f).coerceAtMost(10f) // Increase difficulty
             promoteLevel()
+        } else {
+            challengesCompleted = newChallengesCompleted
         }
 
+        // Update UI state
         _uiState.update {
             it.copy(
                 feedback = NumberOrderUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = maxOf(it.highScore ?: 0, newScore),
+                revealedCount = it.challenge?.itemCount ?: it.revealedCount,
+                challengesCompleted = if (shouldLevelUp) 0 else newChallengesCompleted,
                 showNextButton = true,
-                revealedCount = it.challenge?.itemCount ?: it.revealedCount
+                level = newLevel,
+                challengesPerLevel = challengesPerLevel
             )
         }
     }
@@ -132,7 +160,12 @@ class NumberOrderViewModel @Inject constructor(
     }
 
     private fun promoteLevel() {
-        _uiState.update { it.copy(level = it.level + 1) }
+        _uiState.update { 
+            it.copy(
+                level = it.level + 1,
+                challengesCompleted = 0  // Reset challenges completed when leveling up
+            ) 
+        }
         if (_uiState.value.level in 2..LEVEL_CAP) {
             maxItemsToCount += ITEMS_INCREMENT
             memorizeDuration = (memorizeDuration + MEMORIZE_INCREMENT).coerceAtMost(MAX_MEMORIZE_DURATION)
@@ -163,6 +196,6 @@ class NumberOrderViewModel @Inject constructor(
         private const val MEMORIZE_INCREMENT = 500L
         private const val MAX_MEMORIZE_DURATION = 5_000L
         private const val SCORE_INCREMENT = 25
-        private const val INITIAL_CHALLENGES_PER_LEVEL = 2
+        private const val INITIAL_CHALLENGES_PER_LEVEL = 10
     }
 }

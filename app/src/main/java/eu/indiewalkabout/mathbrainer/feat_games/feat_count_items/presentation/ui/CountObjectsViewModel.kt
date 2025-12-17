@@ -32,7 +32,16 @@ class CountObjectsViewModel @Inject constructor(
     val uiState: StateFlow<CountObjectsUiState> = _uiState.asStateFlow()
 
     fun startGame(initialHighScore: Int = 0) {
-        _uiState.update { it.copy(highScore = initialHighScore.takeIf { score -> score > 0 }) }
+        _uiState.update { 
+            it.copy(
+                highScore = initialHighScore.takeIf { score -> score > 0 },
+                challengesPerLevel = INITIAL_CHALLENGES_PER_LEVEL,
+                challengesCompleted = 0,
+                level = 1,
+                score = 0,
+                lives = 3
+            ) 
+        }
         viewModelScope.launch { launchNewChallenge(resetTimer = true) }
     }
 
@@ -89,12 +98,14 @@ class CountObjectsViewModel @Inject constructor(
     }
 
     private fun handleSuccess() {
-        challengesCompleted++
+        val newChallengesCompleted = _uiState.value.challengesCompleted + 1
         val newScore = _uiState.value.score + SCORE_INCREMENT
+        var newLevel = _uiState.value.level
         var updatedMemorizeDuration = memorizeDuration
 
-        if (challengesCompleted >= _uiState.value.challengesPerLevel) {
-            challengesCompleted = 0
+        // Check if we should level up
+        if (newChallengesCompleted >= _uiState.value.challengesPerLevel) {
+            newLevel++
             promoteLevel()
             updatedMemorizeDuration = memorizeDuration
         }
@@ -104,10 +115,18 @@ class CountObjectsViewModel @Inject constructor(
                 feedback = CountObjectsUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = maxOf(it.highScore ?: 0, newScore),
-                challengesCompleted = challengesCompleted,
+                challengesCompleted = if (newChallengesCompleted >= it.challengesPerLevel) 0 else newChallengesCompleted,
                 memorizeDurationMs = updatedMemorizeDuration,
-                showNextButton = true
+                showNextButton = true,
+                level = newLevel
             )
+        }
+        
+        // Update the local challengesCompleted for the next level
+        if (newChallengesCompleted >= _uiState.value.challengesPerLevel) {
+            challengesCompleted = 0
+        } else {
+            challengesCompleted = newChallengesCompleted
         }
     }
 
@@ -158,5 +177,6 @@ class CountObjectsViewModel @Inject constructor(
         private const val MAX_MEMORIZE_DURATION = 5_000L
         private const val SCORE_INCREMENT = 25
         private const val ANSWER_OFFSET = 10
+        private const val INITIAL_CHALLENGES_PER_LEVEL = 10
     }
 }

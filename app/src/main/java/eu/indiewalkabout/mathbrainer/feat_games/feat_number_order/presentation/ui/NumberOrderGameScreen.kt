@@ -15,8 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,13 +35,14 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
+import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.domain.model.NumberMarker
+import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.presentation.components.NumberOrderHeader
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.presentation.state.NumberOrderUiState
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -162,7 +161,7 @@ fun NumberOrderGameScreen(
     }
 }
 
-@Composable
+/*@Composable
 private fun NumberOrderHeader(state: NumberOrderUiState) {
     Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -212,7 +211,7 @@ private fun NumberOrderHeader(state: NumberOrderUiState) {
             )
         }
     }
-}
+}*/
 
 @Composable
 private fun NumberOrderCanvas(
@@ -284,12 +283,6 @@ private fun NumberOrderCanvas(
 }
 
 
-private data class NumberMarker(
-    val index: Int,
-    val center: Offset,
-    val radius: Float
-)
-
 private fun generateMarkerPlacements(
     itemCount: Int,
     canvasSize: IntSize,
@@ -324,6 +317,7 @@ private fun isOverlapping(center: Offset, radius: Float, markers: List<NumberMar
     return false
 }
 
+/*
 private fun Offset.minus(other: Offset): Offset {
     return Offset(x - other.x, y - other.y)
-}
+}*/
