@@ -66,6 +66,10 @@ enum class GameTypes(
     RANDOM_OPERATION(
         id = "random",
         scoreField = { it.random_op_game_score }
+    ),
+    SEQUENCE_COMPLETE(
+        id = "sequence_complete",
+        scoreField = { it.sequence_complete_game_score }
     );
 
     companion object {

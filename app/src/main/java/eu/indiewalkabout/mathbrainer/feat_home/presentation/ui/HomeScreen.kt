@@ -187,6 +187,14 @@ fun HomeScreen(
                                     )
                                 }
 
+                                GameTypes.SEQUENCE_COMPLETE -> {
+                                    navController.navigate(
+                                        ScreenRoutes.SequenceCompleteGame.createRoute(
+                                            highScore = game.highScore ?: 0
+                                        )
+                                    )
+                                }
+
                                 null -> navController.navigate(ScreenRoutes.Home.route)
                             }
                         },
@@ -197,6 +205,5 @@ fun HomeScreen(
         }
     }
 }
-
 
 

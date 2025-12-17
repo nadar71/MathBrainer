@@ -1,0 +1,134 @@
+package eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.ui
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
+import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.keyboard.Keypad
+import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.components.SequenceChallengeCard
+import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.components.SequenceCompleteHeader
+import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.state.SequenceCompleteUiState
+
+@Composable
+fun SequenceCompleteGameScreen(
+    initialHighScore: Int = 0,
+    onBack: () -> Unit,
+    viewModel: SequenceCompleteViewModel = hiltViewModel()
+) {
+    LaunchedEffect(initialHighScore) {
+        viewModel.startGame(initialHighScore)
+    }
+
+    val state by viewModel.uiState.collectAsState()
+
+    Scaffold(
+        topBar = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primary)
+                    .padding(horizontal = 12.dp, vertical = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = {
+                    viewModel.onQuitGame()
+                    onBack()
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = stringResource(id = R.string.navigate_back),
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+                Spacer(modifier = Modifier.padding(4.dp))
+                Column {
+                    Text(
+                        text = stringResource(id = R.string.sequence_complete_title),
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                    Text(
+                        text = stringResource(id = R.string.sequence_complete_description),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            }
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            SequenceCompleteHeader(state = state)
+            SequenceChallengeCard(state = state)
+
+            when (state.feedback) {
+                SequenceCompleteUiState.Feedback.SUCCESS -> ResultBanner(
+                    text = stringResource(id = R.string.sequence_feedback_success),
+                    color = MaterialTheme.colorScheme.primary
+                )
+
+                SequenceCompleteUiState.Feedback.FAILURE -> ResultBanner(
+                    text = stringResource(id = R.string.sequence_feedback_failure),
+                    color = MaterialTheme.colorScheme.error
+                )
+
+                null -> ResultBanner(
+                    text = stringResource(id = R.string.sequence_prompt),
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
+
+            if (state.isReadyForNext && !state.isGameOver) {
+                Button(
+                    onClick = { viewModel.onNextChallenge() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = stringResource(id = R.string.sequence_again))
+                }
+            }
+
+            Keypad(
+                inputValue = state.inputValue,
+                onDigitPressed = { digit -> viewModel.onDigitPressed(digit) },
+                onDelete = { viewModel.onDelete() },
+                onSubmit = { viewModel.submitAnswer() }
+            )
+        }
+    }
+
+    if (state.isGameOver) {
+        GameOverDialog(onDismiss = {
+            viewModel.onQuitGame()
+            onBack()
+        })
+    }
+}
