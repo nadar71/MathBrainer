@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -74,7 +73,7 @@ fun SequenceCompleteHeader(state: SequenceCompleteUiState) {
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }
-            }
+            }/*
 
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -82,7 +81,7 @@ fun SequenceCompleteHeader(state: SequenceCompleteUiState) {
                 progress = state.timerProgress,
                 modifier = Modifier.fillMaxWidth(),
                 color = MaterialTheme.colorScheme.primary
-            )
+            )*/
         }
     }
 }

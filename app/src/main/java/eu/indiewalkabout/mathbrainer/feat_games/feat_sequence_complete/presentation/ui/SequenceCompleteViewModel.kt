@@ -8,15 +8,13 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.domain.mo
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.domain.use_cases.GenerateSequenceChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.domain.use_cases.UpdateSequenceCompleteScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.state.SequenceCompleteUiState
-import javax.inject.Inject
-import kotlin.math.max
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.math.max
 
 @HiltViewModel
 class SequenceCompleteViewModel @Inject constructor(
@@ -24,8 +22,6 @@ class SequenceCompleteViewModel @Inject constructor(
     private val updateSequenceCompleteScoreUseCase: UpdateSequenceCompleteScoreUseCase
 ) : ViewModel() {
 
-    private var timerJob: Job? = null
-    private var timerLength: Long = SequenceCompleteUiState.INITIAL_TIMER_LENGTH
     private var challengesCompletedInternal = 0
     private var challengesPerLevelInternal = SequenceCompleteUiState.INITIAL_CHALLENGES_PER_LEVEL
     private var isScorePersisted = false
@@ -38,7 +34,6 @@ class SequenceCompleteViewModel @Inject constructor(
         isScorePersisted = false
         challengesCompletedInternal = 0
         challengesPerLevelInternal = SequenceCompleteUiState.INITIAL_CHALLENGES_PER_LEVEL
-        timerLength = SequenceCompleteUiState.INITIAL_TIMER_LENGTH
 
         _uiState.update {
             it.copy(
@@ -52,13 +47,11 @@ class SequenceCompleteViewModel @Inject constructor(
                 challengesPerLevel = SequenceCompleteUiState.INITIAL_CHALLENGES_PER_LEVEL,
                 ruleDescription = null,
                 revealedAnswer = null,
-                isReadyForNext = false,
-                timeRemaining = timerLength,
-                totalTime = timerLength
+                isReadyForNext = false
             )
         }
 
-        viewModelScope.launch { launchNewChallenge(resetTimer = true) }
+        viewModelScope.launch { launchNewChallenge() }
     }
 
     fun onDigitPressed(digit: Int) {
@@ -78,7 +71,6 @@ class SequenceCompleteViewModel @Inject constructor(
         if (_uiState.value.isGameOver || _uiState.value.isReadyForNext) return
         val challenge = currentChallenge ?: return
         val attempt = _uiState.value.inputValue.toIntOrNull() ?: return
-        timerJob?.cancel()
 
         if (attempt == challenge.answer) {
             handleSuccess(challenge)
@@ -89,14 +81,14 @@ class SequenceCompleteViewModel @Inject constructor(
 
     fun onNextChallenge() {
         if (_uiState.value.isGameOver || !_uiState.value.isReadyForNext) return
-        viewModelScope.launch { launchNewChallenge(resetTimer = true) }
+        viewModelScope.launch { launchNewChallenge() }
     }
 
     fun onQuitGame() {
         persistScoreIfNeeded()
     }
 
-    private suspend fun launchNewChallenge(resetTimer: Boolean) {
+    private fun launchNewChallenge() {
         val config = buildConfig()
         val challenge = generateSequenceChallengeUseCase(config)
         currentChallenge = challenge
@@ -108,29 +100,8 @@ class SequenceCompleteViewModel @Inject constructor(
                 feedback = null,
                 ruleDescription = null,
                 revealedAnswer = null,
-                isReadyForNext = false,
-                timeRemaining = timerLength,
-                totalTime = timerLength
+                isReadyForNext = false
             )
-        }
-
-        if (resetTimer) {
-            startTimer()
-        }
-    }
-
-    private fun startTimer() {
-        timerJob?.cancel()
-        timerJob = viewModelScope.launch {
-            var remaining = timerLength
-            while (remaining > 0 && !_uiState.value.isReadyForNext && !_uiState.value.isGameOver) {
-                delay(COUNTDOWN_STEP)
-                remaining -= COUNTDOWN_STEP
-                _uiState.update { it.copy(timeRemaining = remaining) }
-            }
-            if (!_uiState.value.isReadyForNext && !_uiState.value.isGameOver) {
-                currentChallenge?.let { handleFailure(it) }
-            }
         }
     }
 
@@ -157,15 +128,12 @@ class SequenceCompleteViewModel @Inject constructor(
                 ruleDescription = challenge.ruleDescription,
                 revealedAnswer = challenge.answer,
                 visibleSequence = revealSequence(challenge),
-                isReadyForNext = true,
-                timeRemaining = timerLength,
-                totalTime = timerLength
+                isReadyForNext = true
             )
         }
     }
 
     private fun handleFailure(challenge: SequenceChallenge) {
-        timerJob?.cancel()
         val remainingLives = _uiState.value.lives - 1
         _uiState.update {
             it.copy(
@@ -174,8 +142,7 @@ class SequenceCompleteViewModel @Inject constructor(
                 ruleDescription = challenge.ruleDescription,
                 revealedAnswer = challenge.answer,
                 visibleSequence = revealSequence(challenge),
-                isReadyForNext = remainingLives > 0,
-                timeRemaining = 0L
+                isReadyForNext = remainingLives > 0
             )
         }
 
@@ -188,12 +155,10 @@ class SequenceCompleteViewModel @Inject constructor(
         val nextLevel = currentLevel + 1
         val nextChallengesPerLevel = (SequenceCompleteUiState.INITIAL_CHALLENGES_PER_LEVEL + (nextLevel / 2)).coerceAtMost(MAX_CHALLENGES_PER_LEVEL)
         challengesPerLevelInternal = nextChallengesPerLevel
-        timerLength = (SequenceCompleteUiState.INITIAL_TIMER_LENGTH - nextLevel * TIMER_DECREASE_PER_LEVEL).coerceAtLeast(MIN_TIMER_LENGTH)
         return nextLevel to nextChallengesPerLevel
     }
 
     private fun onGameOver() {
-        timerJob?.cancel()
         _uiState.update { it.copy(isGameOver = true, isReadyForNext = false) }
         persistScoreIfNeeded()
     }
@@ -229,10 +194,7 @@ class SequenceCompleteViewModel @Inject constructor(
     }
 
     companion object {
-        private const val SCORE_INCREMENT = 25
-        private const val COUNTDOWN_STEP = 1_000L
-        private const val TIMER_DECREASE_PER_LEVEL = 500L
-        private const val MIN_TIMER_LENGTH = 12_000L
+        private const val SCORE_INCREMENT = 10
         private const val MAX_VALUE = 9_999
         private const val BASE_SEQUENCE_LENGTH = 4
         private const val MAX_SEQUENCE_LENGTH = 6
@@ -242,6 +204,6 @@ class SequenceCompleteViewModel @Inject constructor(
         private const val BASE_START_MAX = 15
         private const val START_GROWTH = 12
         private const val MAX_START_VALUE = 5_000
-        private const val MAX_CHALLENGES_PER_LEVEL = 12
+        private const val MAX_CHALLENGES_PER_LEVEL = 10
     }
 }

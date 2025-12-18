@@ -1,7 +1,9 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.keyboard
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -24,22 +26,44 @@ fun Keypad(
     inputValue: String,
     onDigitPressed: (Int) -> Unit,
     onDelete: () -> Unit,
-    onSubmit: () -> Unit
+    onSubmit: () -> Unit,
+    isCompact: Boolean = false
 ) {
-    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
-        Column(modifier = Modifier.Companion.padding(16.dp)) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = if (isCompact) 4.dp else 8.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(if (isCompact) 4.dp else 8.dp)
+        ) {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
-                contentPadding = PaddingValues(4.dp)
+                contentPadding = PaddingValues(if (isCompact) 2.dp else 4.dp),
+                verticalArrangement = Arrangement.spacedBy(if (isCompact) 2.dp else 4.dp),
+                horizontalArrangement = Arrangement.spacedBy(if (isCompact) 2.dp else 4.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 items((1..9).toList()) { digit ->
-                    KeypadButton(text = digit.toString()) { onDigitPressed(digit) }
+                    KeypadButton(
+                        text = digit.toString(),
+                        isCompact = isCompact
+                    ) { onDigitPressed(digit) }
                 }
-                item { KeypadButton(text = "0") { onDigitPressed(0) } }
+                item { 
+                    KeypadButton(
+                        text = "0",
+                        isCompact = isCompact
+                    ) { onDigitPressed(0) } 
+                }
                 item {
                     KeypadButton(
                         icon = Icons.Default.Backspace,
-                        contentDescription = R.string.delete_label
+                        contentDescription = R.string.delete_label,
+                        isCompact = isCompact
                     ) {
                         onDelete()
                     }
@@ -47,7 +71,8 @@ fun Keypad(
                 item {
                     KeypadButton(
                         text = stringResource(id = R.string.submit_label),
-                        highlight = true
+                        highlight = true,
+                        isCompact = isCompact
                     ) {
                         onSubmit()
                     }

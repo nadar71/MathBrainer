@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -84,7 +85,7 @@ fun SequenceCompleteGameScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             SequenceCompleteHeader(state = state)
@@ -101,10 +102,7 @@ fun SequenceCompleteGameScreen(
                     color = MaterialTheme.colorScheme.error
                 )
 
-                null -> ResultBanner(
-                    text = stringResource(id = R.string.sequence_prompt),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                null -> Spacer(modifier = Modifier.height(0.dp))
             }
 
             if (state.isReadyForNext && !state.isGameOver) {
@@ -114,14 +112,18 @@ fun SequenceCompleteGameScreen(
                 ) {
                     Text(text = stringResource(id = R.string.sequence_again))
                 }
+            } else {
+                Spacer(modifier = Modifier.height(0.dp))
             }
 
-            Keypad(
+Keypad(
                 inputValue = state.inputValue,
                 onDigitPressed = { digit -> viewModel.onDigitPressed(digit) },
                 onDelete = { viewModel.onDelete() },
-                onSubmit = { viewModel.submitAnswer() }
+                onSubmit = { viewModel.submitAnswer() },
+                isCompact = true
             )
+            Spacer(modifier = Modifier.padding(bottom = 8.dp))
         }
     }
 
