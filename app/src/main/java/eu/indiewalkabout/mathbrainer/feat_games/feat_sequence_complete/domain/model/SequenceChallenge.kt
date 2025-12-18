@@ -4,7 +4,8 @@ data class SequenceChallenge(
     val displaySequence: List<Int?>,
     val fullSequence: List<Int>,
     val ruleSteps: List<SequenceRuleStep>,
-    val ruleDescription: String
+    val ruleDescription: String,
+    val missingPosition: Int
 ) {
-    val answer: Int = fullSequence.last()
+    val answer: Int = fullSequence[missingPosition]
 }

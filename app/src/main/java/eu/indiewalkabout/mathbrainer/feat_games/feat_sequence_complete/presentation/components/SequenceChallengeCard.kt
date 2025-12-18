@@ -53,10 +53,20 @@ fun SequenceChallengeCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 state.visibleSequence.forEachIndexed { index, number ->
+                    val isMissingNumber = number == null
+                    val isRevealed = state.revealedAnswer != null && isMissingNumber
                     SequenceNumberChip(
-                        text = number?.toString() ?: "?",
-                        highlighted = index == state.visibleSequence.lastIndex && state.revealedAnswer != null,
-                        textColor = if (state.feedback != null) feedbackColor else null
+                        text = when {
+                            isRevealed -> state.revealedAnswer?.toString() ?: "?"
+                            isMissingNumber -> "?"
+                            else -> number.toString()
+                        },
+                        highlighted = isMissingNumber && state.revealedAnswer != null,
+                        textColor = when {
+                            isRevealed -> feedbackColor
+                            isMissingNumber && state.feedback != null -> feedbackColor
+                            else -> null
+                        }
                     )
                 }
             }

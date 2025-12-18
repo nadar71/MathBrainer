@@ -28,27 +28,33 @@ class GenerateSequenceChallengeUseCase @Inject constructor() {
 
             if (isValid && numbers.size == config.length) {
                 val ruleDescription = formatRuleDescription(steps)
+                // Randomly select a position to hide (excluding the first number to ensure solvability)
+                val missingPosition = Random.nextInt(1, numbers.size)
                 val displaySequence = numbers.mapIndexed { index, value ->
-                    if (index == numbers.lastIndex) null else value
+                    if (index == missingPosition) null else value
                 }
                 return SequenceChallenge(
                     displaySequence = displaySequence,
                     fullSequence = numbers,
                     ruleSteps = steps,
-                    ruleDescription = ruleDescription
+                    ruleDescription = ruleDescription,
+                    missingPosition = missingPosition
                 )
             }
         }
 
         val fallbackNumbers = (config.minStart until (config.minStart + config.length)).toList()
         val fallbackSteps = listOf(SequenceRuleStep(SequenceOperation.ADD, 1))
+        // For fallback, hide the last number
+        val missingPosition = fallbackNumbers.lastIndex
         return SequenceChallenge(
             displaySequence = fallbackNumbers.mapIndexed { index, value ->
-                if (index == fallbackNumbers.lastIndex) null else value
+                if (index == missingPosition) null else value
             },
             fullSequence = fallbackNumbers,
             ruleSteps = fallbackSteps,
-            ruleDescription = formatRuleDescription(fallbackSteps)
+            ruleDescription = formatRuleDescription(fallbackSteps),
+            missingPosition = missingPosition
         )
     }
 
