@@ -64,6 +64,10 @@ val gamesDefinitionsList = listOf(
         // descriptionRes = R.string.random_operations_description,
     ),
     GameDefinition(
+        id = "sequence_complete",
+        titleRes = R.string.game_card_sequence_complete_text,
+    ),
+    GameDefinition(
         id = "double",
         titleRes = R.string.game_card_double_number_title , // R.string.double_number_title,
         // descriptionRes = R.string.double_number_description,

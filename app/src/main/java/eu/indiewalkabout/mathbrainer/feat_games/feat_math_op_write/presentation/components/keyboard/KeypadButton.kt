@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -24,12 +25,13 @@ fun KeypadButton(
     icon: ImageVector? = null,
     @StringRes contentDescription: Int? = null,
     highlight: Boolean = false,
+    isCompact: Boolean = false,
     onClick: () -> Unit
 ) {
     Card(
-        modifier = Modifier.Companion
-            .padding(6.dp)
-            .fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(if (isCompact) 2.dp else 4.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (highlight) MaterialTheme.colorScheme.primary
             else MaterialTheme.colorScheme.surfaceVariant
@@ -38,22 +40,26 @@ fun KeypadButton(
         onClick = onClick
     ) {
         Box(
-            modifier = Modifier.Companion
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 14.dp),
-            contentAlignment = Alignment.Companion.Center
+                .padding(vertical = if (isCompact) 6.dp else 12.dp),
+            contentAlignment = Alignment.Center
         ) {
             when {
                 icon != null -> Icon(
                     imageVector = icon,
                     contentDescription = contentDescription?.let { stringResource(id = it) },
-                    tint = if (highlight) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = if (highlight) MaterialTheme.colorScheme.onPrimary 
+                          else MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(if (isCompact) 20.dp else 24.dp)
                 )
 
                 text != null -> Text(
                     text = text,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = if (highlight) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
+                    style = if (isCompact) MaterialTheme.typography.bodyLarge
+                          else MaterialTheme.typography.titleMedium,
+                    color = if (highlight) MaterialTheme.colorScheme.onPrimary 
+                          else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }

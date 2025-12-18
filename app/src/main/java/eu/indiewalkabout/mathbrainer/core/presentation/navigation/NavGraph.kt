@@ -16,6 +16,7 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui.MathWriteGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.presentation.ui.RandomOperationGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.presentation.ui.NumberOrderGameScreen
+import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.ui.SequenceCompleteGameScreen
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeScreen
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeViewModel
 import eu.indiewalkabout.mathbrainer.feat_settings.presentation.ui.GameSettingsScreen
@@ -141,6 +142,21 @@ fun NavGraph(
         ) { backStackEntry ->
             val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
             CountObjectsGameScreen(
+                initialHighScore = highScore,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // --- Sequence Completion Game ---
+        composable(
+            route = ScreenRoutes.SequenceCompleteGame.route,
+            arguments = listOf(
+                navArgument("highScore") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
+
+            SequenceCompleteGameScreen(
                 initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )

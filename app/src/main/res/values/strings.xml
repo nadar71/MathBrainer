@@ -44,6 +44,8 @@
     <string name="double_number_description">Double the number as quickly as you can.</string>
     <string name="number_order_title">Number Order</string>
     <string name="number_order_description">Order the numbers correctly.</string>
+    <string name="sequence_complete_title">Sequence Solver</string>
+    <string name="sequence_complete_description">Complete the sequence by finding the missing number.</string>
     <string name="random_operations_title">Random Operations</string>
     <string name="random_operations_description">Solve random math operations.</string>
     <string name="random_operations_subtitle">Choose the operation that makes the equation true.</string>
@@ -112,10 +114,18 @@
     <string name="game_card_write_result_mult_text" >   x    \n        </string>
     <string name="game_card_write_result_div_text"  >   :    \n        </string>
     <string name="game_card_double_number_title"    >   2x   \n        </string>
+    <string name="game_card_sequence_complete_text" >1  2  4  ?\n        </string>
+
+    <string name="sequence_rule_reveal">Rule: %1$s</string>
+    <string name="sequence_correct_answer">Missing number: %1$d</string>
+    <string name="sequence_prompt">Fill the missing number to finish the sequence.</string>
+    <string name="sequence_again">Again</string>
+    <string name="sequence_feedback_success">OK ! Try next.</string>
+    <string name="sequence_feedback_failure">Wrong…check rule and try the next one.</string>
 
 
     <!-- - - - - - - - - - - - - - - - - Dialogs Strings - - - - - - - - - - - - - - - - - - - - -->
-    <string name="wrong_str">Wrong...</string>
+    <string name="wrong_str">Wrong…</string>
     <string name="ok_str">OK !</string>
     <string name="next_str">Next</string>
     <string name="gameover_str">GAME OVER !</string>
