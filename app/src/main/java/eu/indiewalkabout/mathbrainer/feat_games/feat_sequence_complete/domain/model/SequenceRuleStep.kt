@@ -8,17 +8,25 @@ enum class SequenceOperation(val symbol: String) {
 
 data class SequenceRuleStep(
     val operation: SequenceOperation,
-    val value: Int
+    val value: Int,
+    val alternateOperation: SequenceOperation? = null,
+    val alternateValue: Int? = null
 ) {
-    fun apply(to: Int): Int = when (operation) {
-        SequenceOperation.ADD -> to + value
-        SequenceOperation.SUBTRACT -> to - value
-        SequenceOperation.MULTIPLY -> to * value
+    fun apply(to: Int, position: Int): Int {
+        val useAlternate = alternateOperation != null && position % 2 == 1
+        return when (if (useAlternate) alternateOperation else operation) {
+            SequenceOperation.ADD -> to + (if (useAlternate) alternateValue!! else value)
+            SequenceOperation.SUBTRACT -> to - (if (useAlternate) alternateValue!! else value)
+            SequenceOperation.MULTIPLY -> to * (if (useAlternate) alternateValue!! else value)
+            else -> to
+        }
     }
 
-    fun describe(): String = when (operation) {
-        SequenceOperation.ADD -> "+$value"
-        SequenceOperation.SUBTRACT -> "-$value"
-        SequenceOperation.MULTIPLY -> "×$value"
+    fun describe(): String {
+        return if (alternateOperation != null && alternateValue != null) {
+            "${operation.symbol}$value, ${alternateOperation.symbol}$alternateValue (alternating)"
+        } else {
+            "${operation.symbol}$value"
+        }
     }
 }
