@@ -59,45 +59,48 @@ class GenerateSequenceChallengeUseCase @Inject constructor() {
     }
 
     private fun buildSteps(config: SequenceConfig): List<SequenceRuleStep> {
-        // Decide if we should use an alternating pattern (30% chance from level 3)
-        val useAlternating = config.level >= 3 && Random.nextFloat() < 0.3f
-        
+        val level = config.level
+        val useAlternating = when {
+            level in 3..5 -> Random.nextFloat() < 0.3f  // 30% chance for levels 3-5
+            level in 12..16 -> Random.nextFloat() < 0.3f // 30% chance for levels 12-16
+            else -> false
+        }
+
         if (useAlternating) {
-            // For alternating patterns, we'll use a single rule that alternates
+            // For alternating patterns
             val firstOp = when (Random.nextInt(3)) {
                 0 -> SequenceOperation.ADD
                 1 -> SequenceOperation.SUBTRACT
                 else -> SequenceOperation.MULTIPLY
             }
-            
-            // Second operation should be different from the first
+
             val secondOp = when (firstOp) {
-                SequenceOperation.ADD -> 
+                SequenceOperation.ADD ->
                     if (Random.nextBoolean()) SequenceOperation.SUBTRACT else SequenceOperation.MULTIPLY
-                SequenceOperation.SUBTRACT -> 
+                SequenceOperation.SUBTRACT ->
                     if (Random.nextBoolean()) SequenceOperation.ADD else SequenceOperation.MULTIPLY
-                else -> // MULTIPLY
+                else ->
                     if (Random.nextBoolean()) SequenceOperation.ADD else SequenceOperation.SUBTRACT
             }
-            
-            val maxStep = when (config.level) {
-                in 5..8 -> 3
-                in 9..12 -> 5
-                else -> 2
+
+            val maxStep = when (level) {
+                in 3..5 -> 3
+                in 12..13 -> 4
+                else -> 5  // levels 14-16
             }
-            
+
             val firstValue = when (firstOp) {
                 SequenceOperation.ADD -> Random.nextInt(1, maxStep + 1)
                 SequenceOperation.SUBTRACT -> Random.nextInt(1, maxStep + 1)
                 SequenceOperation.MULTIPLY -> Random.nextInt(2, maxStep.coerceAtMost(4) + 1)
             }
-            
+
             val secondValue = when (secondOp) {
                 SequenceOperation.ADD -> Random.nextInt(1, maxStep + 1)
                 SequenceOperation.SUBTRACT -> Random.nextInt(1, maxStep + 1)
                 SequenceOperation.MULTIPLY -> Random.nextInt(2, maxStep.coerceAtMost(4) + 1)
             }
-            
+
             return listOf(SequenceRuleStep(
                 operation = firstOp,
                 value = firstValue,
@@ -105,20 +108,28 @@ class GenerateSequenceChallengeUseCase @Inject constructor() {
                 alternateValue = secondValue
             ))
         } else {
-            // Original non-alternating logic
+            // Non-alternating patterns
             val stepCount = when {
-                config.level >= 9 -> 3
-                config.level >= 5 -> 2
-                else -> 1
+                level in 1..5 -> 1
+                level in 6..8 -> 2
+                level in 9..11 -> Random.nextInt(1, 4)  // 1-3 steps
+                level in 12..13 -> 2
+                else -> Random.nextInt(1, 4)  // 14-16: 1-3 steps
             }
 
             val operationsPool = when {
-                config.level >= 7 -> listOf(SequenceOperation.ADD, SequenceOperation.SUBTRACT, SequenceOperation.MULTIPLY)
-                config.level >= 4 -> listOf(SequenceOperation.ADD, SequenceOperation.MULTIPLY, SequenceOperation.SUBTRACT)
+                level >= 1 -> listOf(SequenceOperation.ADD, SequenceOperation.SUBTRACT, SequenceOperation.MULTIPLY)
                 else -> listOf(SequenceOperation.ADD, SequenceOperation.MULTIPLY)
             }
 
-            val maxStep = config.maxStepMagnitude.coerceAtLeast(2)
+            val maxStep = when (level) {
+                in 1..2 -> 3
+                in 3..5 -> 4
+                in 6..8 -> 5
+                in 9..11 -> 6
+                in 12..13 -> 5
+                else -> 7  // 14-16
+            }
 
             return List(stepCount) {
                 val operation = operationsPool.random()
@@ -146,3 +157,81 @@ class GenerateSequenceChallengeUseCase @Inject constructor() {
         private const val MAX_ATTEMPTS = 50
     }
 }
+
+
+/* RULES
+Level Progression
+Levels 1-2: Basic Operations
+Operations: Addition, Subtraction, Multiplication
+Pattern Type: Single operation patterns
+Step Values: 1-3
+Example:
+Sequence: 3, 6, 9, 12 (×3)
+Rule: "Repeat ×3 each step"
+
+Levels 3-5: Introducing Alternation
+Operations: All operations (+, -, ×)
+Pattern Type:
+70%: Single operation patterns
+30%: Alternating patterns (two operations that alternate)
+Step Values: 1-4
+Example Alternating:
+Sequence: 2, 5, 4, 7, 6, 9
+Rule: "+3, -1 (alternating)"
+
+Levels 6-8: Multi-step Sequences
+Operations: All operations (+, -, ×)
+Pattern Type: 1-2 operations in sequence (no alternation)
+Step Values: 1-5
+Example:
+Sequence: 1, 3, 6, 8, 11, 13
+Rule: "+2 then +3 (repeat)"
+
+Levels 9-11: Complex Sequences
+Operations: All operations (+, -, ×)
+Pattern Type: 1-3 operations in sequence (no alternation)
+Step Values: 1-6
+Example:
+Sequence: 2, 4, 8, 5, 10, 7
+Rule: "×2 then -3 then +2 (repeat)"
+
+Levels 12-13: Alternating Multi-step
+Operations: All operations (+, -, ×)
+Pattern Type:
+70%: 2 operations in sequence
+30%: Alternating patterns
+Step Values: 1-5
+Example Alternating:
+Sequence: 1, 4, 2, 8, 4, 16
+Rule: "×4, -2 (alternating)"
+
+Levels 14-16: Advanced Challenges
+Operations: All operations (+, -, ×)
+Pattern Type:
+70%: 1-3 operations in sequence
+30%: Alternating patterns
+Step Values: 1-7
+Example:
+Sequence: 1, 2, 6, 7, 21, 22
+Rule: "+1 then ×3 (repeat)"
+
+
+Sequence Generation:
+Each sequence starts with a random number between minStart and maxStart
+The sequence length increases with level
+One number is randomly hidden (never the first number)
+
+Pattern Generation:
+For non-alternating patterns, operations are applied in sequence
+For alternating patterns, operations switch between two different operations
+The SequenceRuleStep class handles both regular and alternating operations
+
+Difficulty Scaling:
+More operations in sequence as levels increase
+Larger step values at higher levels
+More complex operation combinations
+
+Fallback:
+If the generator can't create a valid sequence after 50 attempts, it falls back to a simple +1 pattern
+
+ */
