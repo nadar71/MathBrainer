@@ -83,11 +83,11 @@ fun FallingOpsHeader(
                 }
             }
 
-            Text(
+            /*Text(
                 text = stringResource(id = R.string.falling_ops_instructions),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface
-            )
+            )*/
         }
     }
 }

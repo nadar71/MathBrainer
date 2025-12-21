@@ -1,5 +1,6 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,12 +36,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
-import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.components.FallingOpsHeader
-import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.state.FallingOpsUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.keyboard.Keypad
 import kotlin.math.roundToInt
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun FallingOpsGameScreen(
     initialHighScore: Int = 0,
@@ -144,7 +144,7 @@ fun FallingOpsGameScreen(
                 )
             }
 
-            Text(
+            /*Text(
                 text = stringResource(id = R.string.current_input, state.input.ifEmpty { "-" }),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface
@@ -162,7 +162,7 @@ fun FallingOpsGameScreen(
                 )
 
                 null -> {}
-            }
+            }*/
 
             Keypad(
                 inputValue = state.input,
