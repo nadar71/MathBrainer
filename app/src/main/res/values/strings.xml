@@ -46,6 +46,9 @@
     <string name="number_order_description">Order the numbers correctly.</string>
     <string name="sequence_complete_title">Sequence Solver</string>
     <string name="sequence_complete_description">Complete the sequence by finding the missing number.</string>
+    <string name="enigma_title">Enigma</string>
+    <string name="enigma_subtitle">Decode the symbols and solve the final equation.</string>
+    <string name="enigma_prompt">Find the hidden values and solve the last line.</string>
     <string name="random_operations_title">Random Operations</string>
     <string name="random_operations_description">Solve random math operations.</string>
     <string name="random_operations_subtitle">Choose the operation that makes the equation true.</string>
@@ -115,6 +118,7 @@
     <string name="game_card_write_result_div_text"  >   :    \n        </string>
     <string name="game_card_double_number_title"    >   2x   \n        </string>
     <string name="game_card_sequence_complete_text" >1  2  4  ?\n        </string>
+    <string name="game_card_enigma_text">△  □  ?\n        </string>
 
     <string name="sequence_rule_reveal">Rule: %1$s</string>
     <string name="sequence_correct_answer">Missing number: %1$d</string>

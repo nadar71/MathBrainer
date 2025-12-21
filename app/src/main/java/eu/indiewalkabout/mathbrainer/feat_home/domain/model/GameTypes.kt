@@ -70,6 +70,10 @@ enum class GameTypes(
     SEQUENCE_COMPLETE(
         id = "sequence_complete",
         scoreField = { it.sequence_complete_game_score }
+    ),
+    ENIGMA(
+        id = "enigma",
+        scoreField = { it.enigma_game_score }
     );
 
     companion object {
