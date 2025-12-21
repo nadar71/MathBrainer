@@ -49,6 +49,10 @@
     <string name="random_operations_title">Random Operations</string>
     <string name="random_operations_description">Solve random math operations.</string>
     <string name="random_operations_subtitle">Choose the operation that makes the equation true.</string>
+    <string name="falling_ops_title">Falling Ops</string>
+    <string name="falling_ops_description">Clear the falling operations before they reach the keypad.</string>
+    <string name="falling_ops_subtitle">Type results to stop the fall.</string>
+    <string name="falling_ops_instructions">Type the result to clear all matching operations before they reach the line.</string>
 
 
     <string name="navigate_back">Back</string>
@@ -115,6 +119,7 @@
     <string name="game_card_write_result_div_text"  >   :    \n        </string>
     <string name="game_card_double_number_title"    >   2x   \n        </string>
     <string name="game_card_sequence_complete_text" >1  2  4  ?\n        </string>
+    <string name="game_card_falling_ops_text"       >  ↓  \n+  –  x  :</string>
 
     <string name="sequence_rule_reveal">Rule: %1$s</string>
     <string name="sequence_correct_answer">Missing number: %1$d</string>

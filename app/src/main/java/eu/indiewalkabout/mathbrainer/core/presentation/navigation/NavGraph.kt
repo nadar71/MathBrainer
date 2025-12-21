@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui.GameCreditsScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.ui.CountObjectsGameScreen
+import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.ui.FallingOpsGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation.ui.DoubleNumberGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui.MathWriteGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.presentation.ui.RandomOperationGameScreen
@@ -157,6 +158,21 @@ fun NavGraph(
             val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
 
             SequenceCompleteGameScreen(
+                initialHighScore = highScore,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // --- Falling Operations Game ---
+        composable(
+            route = ScreenRoutes.FallingOpsGame.route,
+            arguments = listOf(
+                navArgument("highScore") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
+
+            FallingOpsGameScreen(
                 initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )

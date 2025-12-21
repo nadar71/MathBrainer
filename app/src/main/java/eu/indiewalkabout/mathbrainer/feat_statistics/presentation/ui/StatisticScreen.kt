@@ -167,6 +167,14 @@ fun StatisticScreen(
                                     )
                                 }
 
+                                GameTypes.FALLING_OPS -> {
+                                    navController.navigate(
+                                        ScreenRoutes.FallingOpsGame.createRoute(
+                                            highScore = game.highScore ?: 0
+                                        )
+                                    )
+                                }
+
                                 null -> navController.navigate(ScreenRoutes.Home.route)
                             }
                         }
