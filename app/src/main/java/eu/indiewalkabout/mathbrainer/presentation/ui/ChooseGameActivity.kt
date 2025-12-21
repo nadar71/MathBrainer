@@ -22,6 +22,7 @@ import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.Math_Op_Choos
 import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.Math_Op_Write_Result_Activity
 import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.RandomOperationActivity
 import eu.indiewalkabout.mathbrainer.presentation.games.othergames.CountObjectsActivity
+import eu.indiewalkabout.mathbrainer.presentation.games.othergames.FallingOperationsActivity
 import eu.indiewalkabout.mathbrainer.presentation.games.othergames.NumberOrderActivity
 
 // Choose the type of game
@@ -44,6 +45,7 @@ class ChooseGameActivity : AppCompatActivity() {
     private var randomOpsHighscore_value: Int = 0
     private var quickCountHighscore_value: Int = 0
     private var orderHighscore_value: Int = 0
+    private var fallingOpsHighscore_value: Int = 0
 
     // private lateinit var consentSDK: ConsentSDK
     private var bottomBanner: BannerView? = null
@@ -217,6 +219,12 @@ class ChooseGameActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.fallingOpsBtn.setOnClickListener {
+            val intent = Intent(this@ChooseGameActivity, FallingOperationsActivity::class.java)
+            intent.putExtra(HIGHSCORE, fallingOpsHighscore_value)
+            startActivity(intent)
+        }
+
         binding.randomOpsBtn.setOnClickListener {
             val intent = Intent(this@ChooseGameActivity, RandomOperationActivity::class.java)
             intent.putExtra(HIGHSCORE, randomOpsHighscore_value)
@@ -294,6 +302,8 @@ class ChooseGameActivity : AppCompatActivity() {
             MathBrainerUtility.getGameResultsFromList("count_objects_game_score", gameResults)
         orderHighscore_value =
             MathBrainerUtility.getGameResultsFromList("number_order_game_score", gameResults)
+        fallingOpsHighscore_value =
+            MathBrainerUtility.getGameResultsFromList("falling_ops_game_score", gameResults)
     }
 
 

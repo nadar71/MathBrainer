@@ -55,6 +55,7 @@ class MathBrainerRepository private constructor(private val mathBrainerDB: MathB
         game_results_list.add("random_op_game_score")
         game_results_list.add("count_objects_game_score")
         game_results_list.add("number_order_game_score")
+        game_results_list.add("falling_ops_game_score")
     }
 
     // Check if game results are initialized (present with  0, so ok), otherwise init them.

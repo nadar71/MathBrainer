@@ -20,6 +20,7 @@ import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.Math_Op_Choos
 import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.Math_Op_Write_Result_Activity
 import eu.indiewalkabout.mathbrainer.presentation.games.arithmetic.RandomOperationActivity
 import eu.indiewalkabout.mathbrainer.presentation.games.othergames.CountObjectsActivity
+import eu.indiewalkabout.mathbrainer.presentation.games.othergames.FallingOperationsActivity
 import eu.indiewalkabout.mathbrainer.presentation.games.othergames.NumberOrderActivity
 
 // Choose the type of game
@@ -43,6 +44,7 @@ class HighscoresActivity : AppCompatActivity() {
     private var randomOpsHighscore_value: Int = 0
     private var quickCountHighscore_value: Int = 0
     private var orderHighscore_value: Int = 0
+    private var fallingOpsHighscore_value: Int = 0
 
     // unity bottom ads
     private var bottomBanner: BannerView? = null
@@ -177,6 +179,12 @@ class HighscoresActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.fallingOpsBtn.setOnClickListener {
+            val intent = Intent(this@HighscoresActivity, FallingOperationsActivity::class.java)
+            intent.putExtra(HIGHSCORE, fallingOpsHighscore_value)
+            startActivity(intent)
+        }
+
         binding.randomOpsBtn.setOnClickListener {
             val intent = Intent(this@HighscoresActivity, RandomOperationActivity::class.java)
             intent.putExtra(HIGHSCORE, randomOpsHighscore_value)
@@ -235,6 +243,7 @@ class HighscoresActivity : AppCompatActivity() {
 
         quickCountHighscore_value = MathBrainerUtility.getGameResultsFromList("count_objects_game_score", gameResults)
         orderHighscore_value = MathBrainerUtility.getGameResultsFromList("number_order_game_score", gameResults)
+        fallingOpsHighscore_value = MathBrainerUtility.getGameResultsFromList("falling_ops_game_score", gameResults)
 
         // set textviews
         binding.totalHighScoreTv.text = totalHighScore_value.toString()
@@ -256,6 +265,7 @@ class HighscoresActivity : AppCompatActivity() {
 
         binding.quickCountScoreTv.text = quickCountHighscore_value.toString()
         binding.orderScoreTv.text = orderHighscore_value.toString()
+        binding.fallingOpsScoreTv.text = fallingOpsHighscore_value.toString()
     }
 
     // Make bottom navigation bar and status bar hide, without resize when reappearing

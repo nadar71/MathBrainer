@@ -25,6 +25,7 @@ import androidx.room.PrimaryKey
  * - random_op_game_score
  * - count_objects_game_score
  * - number_order_game_score
+ * - falling_ops_game_score
  * - operations_executed
  * - operations_ok
  * - operations_ko
