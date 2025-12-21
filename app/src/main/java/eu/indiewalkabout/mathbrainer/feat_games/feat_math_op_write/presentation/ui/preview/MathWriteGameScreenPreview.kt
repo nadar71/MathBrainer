@@ -24,7 +24,7 @@ import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteChallenge
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.ChallengeCard
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.HeaderInfo
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.keyboard.Keypad
+import eu.indiewalkabout.mathbrainer.core.presentation.components.keyboard.Keypad
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.state.MathWriteUiState
 
 @Preview(showBackground = true)

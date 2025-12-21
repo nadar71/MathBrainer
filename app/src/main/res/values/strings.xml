@@ -1,4 +1,6 @@
 <resources>
+    <!-- Ads -->
+    <string name="ads_banner_placeholder">Advertisement</string>
 
     <string name="app_name">MathBrainer</string>
     <!-- - - - - - - - - - - - - - - - - Home Screen - - - - - - - - - - - - - - - - - - - - - -->

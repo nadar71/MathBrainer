@@ -37,7 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.components.FallingOpsHeader
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.keyboard.Keypad
+import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.components.FallingOpsKeypad
 import kotlin.math.roundToInt
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -164,12 +164,11 @@ fun FallingOpsGameScreen(
                 null -> {}
             }*/
 
-            Keypad(
+            FallingOpsKeypad(
                 inputValue = state.input,
                 onDigitPressed = { viewModel.onDigitPressed(it) },
                 onDelete = { viewModel.onDelete() },
-                onSubmit = { viewModel.onSubmit() },
-                isCompact = true
+                onSubmit = { viewModel.onSubmit() }
             )
         }
     }

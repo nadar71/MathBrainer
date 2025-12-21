@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.keyboard
+package eu.indiewalkabout.mathbrainer.core.presentation.components.keyboard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

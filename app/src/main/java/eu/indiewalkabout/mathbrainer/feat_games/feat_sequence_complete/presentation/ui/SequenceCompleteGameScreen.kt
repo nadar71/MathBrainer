@@ -29,7 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.keyboard.Keypad
+import eu.indiewalkabout.mathbrainer.core.presentation.components.keyboard.Keypad
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.components.SequenceChallengeCard
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.components.SequenceCompleteHeader
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.state.SequenceCompleteUiState

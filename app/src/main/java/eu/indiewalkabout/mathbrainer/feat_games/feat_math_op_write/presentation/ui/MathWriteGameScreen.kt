@@ -28,7 +28,7 @@ import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.ChallengeCard
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.HeaderInfo
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.keyboard.Keypad
+import eu.indiewalkabout.mathbrainer.core.presentation.components.keyboard.Keypad
 
 @Composable
 fun MathWriteGameScreen(

@@ -1,10 +1,11 @@
-package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.keyboard
+package eu.indiewalkabout.mathbrainer.core.presentation.components.keyboard
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -26,6 +27,7 @@ fun KeypadButton(
     @StringRes contentDescription: Int? = null,
     highlight: Boolean = false,
     isCompact: Boolean = false,
+    cornerRadius: Int = 4,
     onClick: () -> Unit
 ) {
     Card(
@@ -37,6 +39,7 @@ fun KeypadButton(
             else MaterialTheme.colorScheme.surfaceVariant
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        shape = RoundedCornerShape(cornerRadius.dp),
         onClick = onClick
     ) {
         Box(
