@@ -88,7 +88,10 @@ fun EnigmaGameScreen(
         ) {
             EnigmaHeader(state)
             state.challenge?.let { challenge ->
-                EnigmaChallengeCard(challenge = challenge)
+                EnigmaChallengeCard(
+                    challenge = challenge,
+                    inputValue = state.inputValue
+                )
             }
 
             when (state.feedback) {
