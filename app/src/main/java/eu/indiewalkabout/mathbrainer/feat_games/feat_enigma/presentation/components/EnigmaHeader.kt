@@ -76,13 +76,6 @@ fun EnigmaHeader(state: EnigmaUiState) {
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            LinearProgressIndicator(
-                progress = state.timerProgress,
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.primary
-            )
         }
     }
 }
