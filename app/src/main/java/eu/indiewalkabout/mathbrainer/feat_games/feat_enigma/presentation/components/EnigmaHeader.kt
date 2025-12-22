@@ -35,17 +35,6 @@ fun EnigmaHeader(state: EnigmaUiState) {
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
-                /*LevelProgressBar(
-                    currentProgress = state.challengesCompleted,
-                    totalSegments = state.challengesPerLevel,
-                    segmentColor = MaterialTheme.colorScheme.primary,
-                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 16.dp)
-                        .height(8.dp)
-                )*/
-
                 Text(
                     text = stringResource(id = R.string.lives_with_value, state.lives),
                     style = MaterialTheme.typography.bodyLarge,

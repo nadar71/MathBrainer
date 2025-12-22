@@ -21,8 +21,6 @@ class EnigmaViewModel @Inject constructor(
     private val updateEnigmaScoreUseCase: UpdateEnigmaScoreUseCase
 ) : ViewModel() {
 
-    // private var challengesPerLevel = INITIAL_CHALLENGES_PER_LEVEL
-    // private var challengesCompleted = 0
     private var isScorePersisted = false
 
     private val _uiState = MutableStateFlow(EnigmaUiState())
@@ -77,29 +75,20 @@ class EnigmaViewModel @Inject constructor(
                 challenge = challenge,
                 inputValue = "",
                 feedback = null,
-                // challengesPerLevel = challengesPerLevel,
-                // challengesCompleted = challengesCompleted
             )
         }
     }
 
 
     private fun handleSuccess() {
-        // challengesCompleted++
         promoteLevel()
         val newScore = _uiState.value.score + SCORE_INCREMENT
-
-        /*if (challengesCompleted >= challengesPerLevel) {
-            promoteLevel()
-        }*/
 
         _uiState.update {
             it.copy(
                 feedback = EnigmaUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = maxOf(it.highScore ?: 0, newScore),
-                // challengesCompleted = challengesCompleted,
-                // challengesPerLevel = challengesPerLevel
             )
         }
         startDelayedChallenge()
@@ -127,8 +116,6 @@ class EnigmaViewModel @Inject constructor(
     }
 
     private fun promoteLevel() {
-        // challengesCompleted = 0
-        // challengesPerLevel += 1
         _uiState.update { it.copy(level = it.level + 1) }
     }
 
@@ -151,7 +138,6 @@ class EnigmaViewModel @Inject constructor(
     companion object {
         private const val SCORE_INCREMENT = 50
         private const val NEXT_CHALLENGE_DELAY = 1_200L
-        private const val INITIAL_CHALLENGES_PER_LEVEL = 3
         private const val MIN_VALUE = 2
         private const val MAX_VALUE_BASE = 18
         private const val LEVEL_VALUE_INCREMENT = 4
