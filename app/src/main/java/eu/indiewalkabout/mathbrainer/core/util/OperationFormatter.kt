@@ -5,6 +5,7 @@ object OperationFormatter {
         return when (operation) {
             '*' -> "×"
             '/' -> ":"
+            '-' -> "–"
             else -> operation.toString()
         }
     }
@@ -13,6 +14,7 @@ object OperationFormatter {
         return when (operation) {
             "*" -> "×"
             "/" -> ":"
+            "-" -> "–"
             else -> operation
         }
     }

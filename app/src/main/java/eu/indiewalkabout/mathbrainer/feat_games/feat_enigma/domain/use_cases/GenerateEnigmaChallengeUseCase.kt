@@ -29,7 +29,7 @@ class GenerateEnigmaChallengeUseCase @Inject constructor() {
         values[second] = secondValue
 
         equations += EnigmaEquation("$first + $second", firstValue + secondValue)
-        equations += EnigmaEquation("$first - $second", firstValue - secondValue)
+        equations += EnigmaEquation("$first – $second", firstValue - secondValue)
 
         val availableOperators = buildOperatorsForLevel(level)
 
@@ -152,9 +152,9 @@ class GenerateEnigmaChallengeUseCase @Inject constructor() {
 
     private enum class Operator(val symbol: String, val apply: (Int, Int) -> Int) {
         PLUS("+", { a, b -> a + b }),
-        MINUS("-", { a, b -> a - b }),
-        MULTIPLY("x", { a, b -> a * b }),
-        DIVIDE("/", { a, b -> a / b })
+        MINUS("–", { a, b -> a - b }),
+        MULTIPLY("×", { a, b -> a * b }),
+        DIVIDE(":", { a, b -> a / b })
     }
 
     private companion object {
