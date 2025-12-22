@@ -21,8 +21,8 @@ class EnigmaViewModel @Inject constructor(
     private val updateEnigmaScoreUseCase: UpdateEnigmaScoreUseCase
 ) : ViewModel() {
 
-    private var challengesPerLevel = INITIAL_CHALLENGES_PER_LEVEL
-    private var challengesCompleted = 0
+    // private var challengesPerLevel = INITIAL_CHALLENGES_PER_LEVEL
+    // private var challengesCompleted = 0
     private var isScorePersisted = false
 
     private val _uiState = MutableStateFlow(EnigmaUiState())
@@ -77,28 +77,29 @@ class EnigmaViewModel @Inject constructor(
                 challenge = challenge,
                 inputValue = "",
                 feedback = null,
-                challengesPerLevel = challengesPerLevel,
-                challengesCompleted = challengesCompleted
+                // challengesPerLevel = challengesPerLevel,
+                // challengesCompleted = challengesCompleted
             )
         }
     }
 
 
     private fun handleSuccess() {
-        challengesCompleted++
+        // challengesCompleted++
+        promoteLevel()
         val newScore = _uiState.value.score + SCORE_INCREMENT
 
-        if (challengesCompleted >= challengesPerLevel) {
+        /*if (challengesCompleted >= challengesPerLevel) {
             promoteLevel()
-        }
+        }*/
 
         _uiState.update {
             it.copy(
                 feedback = EnigmaUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = maxOf(it.highScore ?: 0, newScore),
-                challengesCompleted = challengesCompleted,
-                challengesPerLevel = challengesPerLevel
+                // challengesCompleted = challengesCompleted,
+                // challengesPerLevel = challengesPerLevel
             )
         }
         startDelayedChallenge()
@@ -126,8 +127,8 @@ class EnigmaViewModel @Inject constructor(
     }
 
     private fun promoteLevel() {
-        challengesCompleted = 0
-        challengesPerLevel += 1
+        // challengesCompleted = 0
+        // challengesPerLevel += 1
         _uiState.update { it.copy(level = it.level + 1) }
     }
 

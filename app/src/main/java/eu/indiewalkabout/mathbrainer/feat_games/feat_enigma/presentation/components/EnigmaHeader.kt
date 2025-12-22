@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.presentation.state.EnigmaUiState
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.LevelProgressBar
 
 @Composable
 fun EnigmaHeader(state: EnigmaUiState) {
@@ -37,7 +35,7 @@ fun EnigmaHeader(state: EnigmaUiState) {
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
-                LevelProgressBar(
+                /*LevelProgressBar(
                     currentProgress = state.challengesCompleted,
                     totalSegments = state.challengesPerLevel,
                     segmentColor = MaterialTheme.colorScheme.primary,
@@ -46,7 +44,7 @@ fun EnigmaHeader(state: EnigmaUiState) {
                         .weight(1f)
                         .padding(horizontal = 16.dp)
                         .height(8.dp)
-                )
+                )*/
 
                 Text(
                     text = stringResource(id = R.string.lives_with_value, state.lives),
