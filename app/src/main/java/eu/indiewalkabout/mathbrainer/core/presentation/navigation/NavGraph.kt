@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui.GameCreditsScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.ui.CountObjectsGameScreen
+import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.presentation.ui.EnigmaGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.ui.FallingOpsGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation.ui.DoubleNumberGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui.MathWriteGameScreen
@@ -173,6 +174,21 @@ fun NavGraph(
             val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
 
             FallingOpsGameScreen(
+                initialHighScore = highScore,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // --- Enigma Game ---
+        composable(
+            route = ScreenRoutes.EnigmaGame.route,
+            arguments = listOf(
+                navArgument("highScore") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
+
+            EnigmaGameScreen(
                 initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )

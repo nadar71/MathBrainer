@@ -203,6 +203,15 @@ fun HomeScreen(
                                     )
                                 }
 
+			        GameTypes.ENIGMA -> {
+                                    navController.navigate(
+                                        ScreenRoutes.EnigmaGame.createRoute(
+                                            highScore = game.highScore ?: 0
+                                        )
+                                    )
+                                }
+
+
                                 null -> navController.navigate(ScreenRoutes.Home.route)
                             }
                         },

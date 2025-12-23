@@ -74,6 +74,10 @@ enum class GameTypes(
     FALLING_OPS(
         id = "falling_ops",
         scoreField = { it.falling_ops_game_score }
+    ),
+    ENIGMA(
+        id = "enigma",
+        scoreField = { it.enigma_game_score }
     );
 
     companion object {

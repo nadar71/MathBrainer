@@ -28,7 +28,8 @@ class GetGameScoresUseCase @Inject constructor(
         count_objects_game_score = 0,
         number_order_game_score = 0,
         sequence_complete_game_score = 0,
-        falling_ops_game_score = 0
+        falling_ops_game_score = 0,
+        enigma_game_score = 0
     )
 
     suspend operator fun invoke(): Flow<GameScores> {
