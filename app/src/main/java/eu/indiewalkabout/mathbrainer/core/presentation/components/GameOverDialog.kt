@@ -5,7 +5,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import eu.indiewalkabout.mathbrainer.R
+
+
 
 @Composable
 fun GameOverDialog(onDismiss: () -> Unit) {
@@ -19,4 +22,11 @@ fun GameOverDialog(onDismiss: () -> Unit) {
             }
         }
     )
+}
+
+
+@Preview
+@Composable
+fun GameOverDialogPreview() {
+    GameOverDialog(onDismiss = {})
 }

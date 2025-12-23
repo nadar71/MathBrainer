@@ -22,7 +22,8 @@ data class GameScores(
     val random_op_game_score: Int,
     val count_objects_game_score: Int,
     val number_order_game_score: Int,
-    val sequence_complete_game_score: Int
+    val sequence_complete_game_score: Int,
+    val falling_ops_game_score: Int
 ){
     companion object {
         val emptyScores = GameScores(
@@ -41,7 +42,8 @@ data class GameScores(
             random_op_game_score = 0,
             count_objects_game_score = 0,
             number_order_game_score = 0,
-            sequence_complete_game_score = 0
+            sequence_complete_game_score = 0,
+            falling_ops_game_score = 0
         )
     }
 }

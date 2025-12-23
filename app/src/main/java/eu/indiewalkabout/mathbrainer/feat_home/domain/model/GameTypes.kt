@@ -70,6 +70,10 @@ enum class GameTypes(
     SEQUENCE_COMPLETE(
         id = "sequence_complete",
         scoreField = { it.sequence_complete_game_score }
+    ),
+    FALLING_OPS(
+        id = "falling_ops",
+        scoreField = { it.falling_ops_game_score }
     );
 
     companion object {
