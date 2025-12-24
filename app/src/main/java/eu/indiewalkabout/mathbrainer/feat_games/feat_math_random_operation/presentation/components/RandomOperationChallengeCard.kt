@@ -21,6 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.util.OperationFormatter
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.model.ExpressionGrouping
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.model.RandomOperationChallenge
 
 @Composable
 fun RandomOperationChallengeCard(
@@ -51,52 +53,14 @@ fun RandomOperationChallengeCard(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // First operand - always visible
                 Text(
-                    text = state.challenge.firstOperand.toString(),
+                    text = buildExpressionText(
+                        challenge = challenge,
+                        showAnswer = state.feedback != null
+                    ),
                     style = MaterialTheme.typography.displaySmall,
                     color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSurface,
                     fontWeight = if (state.feedback != null) FontWeight.Bold else FontWeight.Normal
-                )
-                
-                // Operation symbol - only shown after feedback
-                if (state.feedback != null) {
-                    Text(
-                        text = " ${OperationFormatter.format(challenge.correctOperation)} ",
-                        style = MaterialTheme.typography.displaySmall,
-                        color = feedbackColor,
-                        fontWeight = FontWeight.Bold
-                    )
-                } else {
-                    // Show question mark before answer
-                    Text(
-                        text = " ? ",
-                        style = MaterialTheme.typography.displaySmall,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                
-                // Second operand - always visible
-                Text(
-                    text = state.challenge.secondOperand.toString(),
-                    style = MaterialTheme.typography.displaySmall,
-                    color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSurface,
-                    fontWeight = if (state.feedback != null) FontWeight.Bold else FontWeight.Normal
-                )
-                
-                // Equals and result - always visible
-                Text(
-                    text = " = ",
-                    style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Normal
-                )
-                Text(
-                    text = challenge.result.toString(),
-                    style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Normal
                 )
             }
 
@@ -121,4 +85,36 @@ fun RandomOperationChallengeCard(
             }
         }
     }
+}
+
+private fun buildExpressionText(
+    challenge: RandomOperationChallenge,
+    showAnswer: Boolean
+): String {
+    val operands = challenge.operands
+    val operations = challenge.operations
+    val hiddenIndex = challenge.hiddenOperationIndex
+    val displayedOperations = operations.mapIndexed { index, op ->
+        if (index == hiddenIndex) {
+            if (showAnswer) OperationFormatter.format(op) else "?"
+        } else {
+            OperationFormatter.format(op)
+        }
+    }
+
+    val expression = when (challenge.grouping) {
+        ExpressionGrouping.NONE -> {
+            "${operands[0]} ${displayedOperations[0]} ${operands[1]}"
+        }
+
+        ExpressionGrouping.LEFT -> {
+            "(${operands[0]} ${displayedOperations[0]} ${operands[1]}) ${displayedOperations[1]} ${operands[2]}"
+        }
+
+        ExpressionGrouping.RIGHT -> {
+            "${operands[0]} ${displayedOperations[0]} (${operands[1]} ${displayedOperations[1]} ${operands[2]})"
+        }
+    }
+
+    return "$expression = ${challenge.result}"
 }

@@ -8,5 +8,6 @@ data class RandomOperationConfig(
     val multHighMax: Int,
     val divMin: Int,
     val divLowMax: Int,
-    val divHighMax: Int
+    val divHighMax: Int,
+    val level: Int
 )

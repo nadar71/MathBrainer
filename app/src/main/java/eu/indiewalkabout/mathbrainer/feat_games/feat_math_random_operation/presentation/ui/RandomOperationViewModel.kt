@@ -84,7 +84,8 @@ class RandomOperationViewModel @Inject constructor(
                 multHighMax = multiplicationConfig.maxOperandHigh,
                 divMin = divisionConfig.minOperand,
                 divLowMax = divisionConfig.maxOperandLow,
-                divHighMax = divisionConfig.maxOperandHigh
+                divHighMax = divisionConfig.maxOperandHigh,
+                level = _uiState.value.level
             )
         )
 
