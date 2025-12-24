@@ -36,20 +36,25 @@ class GenerateEnigmaChallengeUseCase @Inject constructor() {
         symbols.drop(2).forEach { symbol ->
             val symbolValue = random.nextInt(valueRangeMin, valueRangeMax + 1)
             values[symbol] = symbolValue
-            val knownSymbol = values.keys.random(random)
-            val knownValue = values.getValue(knownSymbol)
             equations += buildEquation(
                 newSymbol = symbol,
                 newValue = symbolValue,
-                knownSymbol = knownSymbol,
-                knownValue = knownValue,
+                knownSymbol = values.keys.random(random),
+                values = values,
                 operators = availableOperators,
-                random = random
+                random = random,
+                level = level
             )
         }
 
         val expressionSymbols = symbols.shuffled(random).take(expressionSymbolCount(level, symbolCount))
-        val finalExpression = buildFinalExpression(expressionSymbols, values, availableOperators, random)
+        val finalExpression = buildFinalExpression(
+            level = level,
+            symbols = expressionSymbols,
+            values = values,
+            operators = availableOperators,
+            random = random
+        )
 
         return EnigmaChallenge(
             equations = equations,
@@ -63,10 +68,22 @@ class GenerateEnigmaChallengeUseCase @Inject constructor() {
         newSymbol: String,
         newValue: Int,
         knownSymbol: String,
-        knownValue: Int,
+        values: Map<String, Int>,
         operators: List<Operator>,
-        random: Random
+        random: Random,
+        level: Int
     ): EnigmaEquation {
+        if (level >= 4 && values.size >= 2 && random.nextBoolean()) {
+            buildCompositeEquation(
+                newSymbol = newSymbol,
+                newValue = newValue,
+                values = values,
+                operators = operators,
+                random = random
+            )?.let { return it }
+        }
+
+        val knownValue = values.getValue(knownSymbol)
         val shuffledOps = operators.shuffled(random)
         for (op in shuffledOps) {
             when (op) {
@@ -89,43 +106,109 @@ class GenerateEnigmaChallengeUseCase @Inject constructor() {
                 }
             }
         }
-
         return EnigmaEquation("$newSymbol + $knownSymbol", newValue + knownValue)
     }
 
+    private fun buildCompositeEquation(
+        newSymbol: String,
+        newValue: Int,
+        values: Map<String, Int>,
+        operators: List<Operator>,
+        random: Random
+    ): EnigmaEquation? {
+        val knownSymbols = values.keys.toList()
+        if (knownSymbols.size < 2) return null
+
+        val firstKnown = knownSymbols.random(random)
+        val secondKnown = (knownSymbols - firstKnown).random(random)
+        val firstValue = values.getValue(firstKnown)
+        val secondValue = values.getValue(secondKnown)
+
+        val firstOperator = pickSafeOperator(newValue, firstValue, operators, random)
+        val intermediate = firstOperator.apply(newValue, firstValue)
+        val secondOperator = pickSafeOperator(intermediate, secondValue, operators, random)
+        val result = secondOperator.apply(intermediate, secondValue)
+
+        val expression = "$newSymbol ${firstOperator.symbol} $firstKnown ${secondOperator.symbol} $secondKnown"
+        return EnigmaEquation(expression, result)
+    }
+
     private fun buildFinalExpression(
+        level: Int,
         symbols: List<String>,
         values: Map<String, Int>,
         operators: List<Operator>,
         random: Random
     ): FinalExpressionResult {
         val multiTerm = symbols.size > 2
-        val expressionOperators = if (multiTerm) {
-            listOf(Operator.PLUS, Operator.MINUS)
-        } else {
-            operators
-        }
+        val expressionOperators = buildExpressionOperators(level, operators, multiTerm)
 
         var expression = symbols.first()
         var result = values.getValue(symbols.first())
 
-        symbols.drop(1).forEach { symbol ->
+        symbols.drop(1).forEachIndexed { index, symbol ->
             val value = values.getValue(symbol)
-            val operator = expressionOperators.random(random)
-            val resolvedOperator = resolveSafeOperator(operator, result, value)
-            expression += " ${resolvedOperator.symbol} $symbol"
-            result = resolvedOperator.apply(result, value)
+            val operator = pickSafeOperator(result, value, expressionOperators, random)
+            val useParentheses = shouldUseParentheses(level, index, symbols.size, multiTerm, random)
+
+            if (useParentheses) {
+                expression = "($expression ${operator.symbol} $symbol)"
+            } else {
+                expression += " ${operator.symbol} $symbol"
+            }
+
+            result = operator.apply(result, value)
         }
 
         return FinalExpressionResult(expression = "$expression = ?", answer = result)
     }
+    private fun pickSafeOperator(
+        current: Int,
+        next: Int,
+        operators: List<Operator>,
+        random: Random
+    ): Operator {
+        val shuffled = operators.shuffled(random)
+        val valid = shuffled.firstOrNull { operator -> isValidOperation(operator, current, next) }
+        return valid ?: Operator.PLUS
+    }
 
-    private fun resolveSafeOperator(operator: Operator, current: Int, next: Int): Operator {
+    private fun isValidOperation(operator: Operator, current: Int, next: Int): Boolean {
         return when (operator) {
-            Operator.MINUS -> if (current - next < 0) Operator.PLUS else operator
-            Operator.DIVIDE -> if (next != 0 && current % next == 0) operator else Operator.PLUS
-            else -> operator
+            Operator.MINUS -> current - next >= 0
+            Operator.DIVIDE -> next != 0 && current % next == 0
+            else -> true
         }
+    }
+
+    private fun buildExpressionOperators(
+        level: Int,
+        operators: List<Operator>,
+        multiTerm: Boolean
+    ): List<Operator> {
+        val expanded = when {
+            level < 3 -> listOf(Operator.PLUS, Operator.MINUS)
+            level < 5 -> listOf(Operator.PLUS, Operator.MINUS, Operator.MULTIPLY)
+            else -> operators
+        }
+
+        return if (multiTerm && level < 4) {
+            expanded.filter { it == Operator.PLUS || it == Operator.MINUS }
+        } else {
+            expanded
+        }
+    }
+
+    private fun shouldUseParentheses(
+        level: Int,
+        index: Int,
+        symbolSize: Int,
+        multiTerm: Boolean,
+        random: Random
+    ): Boolean {
+        if (!multiTerm || level < 6) return false
+        if (index == symbolSize - 2) return random.nextBoolean()
+        return index == 0 && random.nextInt(3) == 0
     }
 
     private fun buildOperatorsForLevel(level: Int): List<Operator> {
@@ -140,7 +223,8 @@ class GenerateEnigmaChallengeUseCase @Inject constructor() {
         val desired = when {
             level < 3 -> 2
             level < 5 -> 3
-            else -> 4
+            level < 7 -> 4
+            else -> 5
         }
         return desired.coerceAtMost(symbolCount)
     }
