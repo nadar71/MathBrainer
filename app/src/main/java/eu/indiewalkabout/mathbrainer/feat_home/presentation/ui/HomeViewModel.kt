@@ -4,15 +4,15 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteGameStats
 import eu.indiewalkabout.mathbrainer.feat_home.data.local.gamesDefinitionsList
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameDefinition
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameUiModel
 import eu.indiewalkabout.mathbrainer.feat_home.domain.use_cases.GetGameScoresUseCase
-import eu.indiewalkabout.mathbrainer.feat_home.domain.use_cases.GetMathWriteGameStatsUseCase
+import eu.indiewalkabout.mathbrainer.feat_home.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.state.HomeUiState
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getGameScoresUseCase: GetGameScoresUseCase,
-    private val getMathWriteGameStatsUseCase: GetMathWriteGameStatsUseCase
+    private val getGameStatsUseCase: GetGameStatsUseCase
 ) : ViewModel() {
 
     private val TAG = "HomeViewModel"
@@ -45,19 +45,19 @@ class HomeViewModel @Inject constructor(
             try{
                 combine(
                     getGameScoresUseCase(),
-                    getMathWriteGameStatsUseCase()
+                    getGameStatsUseCase()
                 ) { scores, stats ->
                     Pair(scores, stats)
                 }.collect { (scores, stats) ->
                     Log.d(TAG, "Received game scores: $scores")
                     val games = gamesDefinitionsList.map { definition ->
                         val highScore = getHighScore(definition, scores)
-                        val mathWriteStats = getMathWriteStats(definition, stats)
+                        val gameStats = getGameStats(definition, stats)
                         Log.d(TAG, "Game: ${definition.id}, High Score: $highScore")
                         GameUiModel(
                             definition = definition,
                             highScore = highScore,
-                            mathWriteStats = mathWriteStats
+                            gameStats = gameStats
                         )
                     }
                     _uiState.value = HomeUiState(isLoading = false, games = games)
@@ -96,10 +96,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getMathWriteStats(
+    private fun getGameStats(
         definition: GameDefinition,
-        stats: Map<String, MathWriteGameStats>
-    ): MathWriteGameStats? {
-        return stats[definition.id]
+        stats: Map<String, GameStats>
+    ): GameStats {
+        return stats[definition.id] ?: GameStats(gameId = definition.id)
     }
 }

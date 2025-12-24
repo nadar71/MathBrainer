@@ -1,18 +1,17 @@
-package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases
+package eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases
 
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteGameStats
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository.MathBrainerRepository
 import javax.inject.Inject
 import kotlin.math.max
 
-class UpdateMathWriteGameStatsUseCase @Inject constructor(
+class UpdateGameStatsUseCase @Inject constructor(
     private val repository: MathBrainerRepository
 ) {
-    suspend operator fun invoke(operation: String, sessionScore: Int, isWin: Boolean, lastLevel: Int) {
-        if (operation.isBlank()) return
+    suspend operator fun invoke(gameId: String, sessionScore: Int, isWin: Boolean, lastLevel: Int) {
+        if (gameId.isBlank()) return
 
-        val currentStats = repository.getMathWriteGameStats(operation)
-            ?: MathWriteGameStats(operationId = operation)
+        val currentStats = repository.getGameStats(gameId) ?: GameStats(gameId = gameId)
 
         val shouldUpdateHighScore = currentStats.highScore == 0 || sessionScore >= currentStats.highScore
 
@@ -24,6 +23,6 @@ class UpdateMathWriteGameStatsUseCase @Inject constructor(
             lastLevel = max(currentStats.lastLevel, lastLevel)
         )
 
-        repository.insertMathWriteGameStats(updatedStats)
+        repository.insertGameStats(updatedStats)
     }
 }

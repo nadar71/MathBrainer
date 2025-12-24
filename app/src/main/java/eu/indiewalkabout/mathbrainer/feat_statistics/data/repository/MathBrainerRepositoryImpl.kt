@@ -1,8 +1,8 @@
 package eu.indiewalkabout.mathbrainer.feat_statistics.data.repository
 
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteGameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.data.local.db.MathBrainerDbDao
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStatistics
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository.MathBrainerRepository
 import kotlinx.coroutines.flow.Flow
@@ -18,12 +18,12 @@ class MathBrainerRepositoryImpl @Inject constructor(
         return mathBrainerDbDao.observeGameScores()
     }
 
-    override suspend fun observeMathWriteGameStats(): Flow<List<MathWriteGameStats>> {
-        return mathBrainerDbDao.observeMathWriteGameStats()
+    override suspend fun observeGameStats(): Flow<List<GameStats>> {
+        return mathBrainerDbDao.observeGameStats()
     }
 
-    override suspend fun getMathWriteGameStats(operationId: String): MathWriteGameStats? {
-        return mathBrainerDbDao.getMathWriteGameStats(operationId)
+    override suspend fun getGameStats(gameId: String): GameStats? {
+        return mathBrainerDbDao.getGameStats(gameId)
     }
 
     override suspend fun loadGameStatistics(): GameStatistics {
@@ -38,8 +38,8 @@ class MathBrainerRepositoryImpl @Inject constructor(
         mathBrainerDbDao.insertGameStatistics(gameStatistics)
     }
 
-    override suspend fun insertMathWriteGameStats(mathWriteGameStats: MathWriteGameStats) {
-        mathBrainerDbDao.insertMathWriteGameStats(mathWriteGameStats)
+    override suspend fun insertGameStats(gameStats: GameStats) {
+        mathBrainerDbDao.insertGameStats(gameStats)
     }
 
     //------------------------------------------- DROPS --------------------------------------------
@@ -51,7 +51,7 @@ class MathBrainerRepositoryImpl @Inject constructor(
         mathBrainerDbDao.dropTableGameStatistics()
     }
 
-    override suspend fun dropTableMathWriteGameStats() {
-        mathBrainerDbDao.dropTableMathWriteGameStats()
+    override suspend fun dropTableGameStats() {
+        mathBrainerDbDao.dropTableGameStats()
     }
 }

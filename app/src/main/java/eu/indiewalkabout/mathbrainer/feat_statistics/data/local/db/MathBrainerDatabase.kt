@@ -5,17 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteGameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStatistics
 
 @Database(
     entities = [
         GameScores::class,
         GameStatistics::class,
-        MathWriteGameStats::class
+        GameStats::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = true
 )
 @TypeConverters(DateConverter::class)
