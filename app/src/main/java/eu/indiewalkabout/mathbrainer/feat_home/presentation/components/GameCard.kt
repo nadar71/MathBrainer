@@ -26,10 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteGameStats
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameDefinition
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameUiModel
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 
 @Composable
 fun GameCard(
@@ -45,42 +45,42 @@ fun GameCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
-        modifier = Modifier.Companion
-            .padding(8.dp)
-            .fillMaxWidth()
-    ) {
-        // Image (if provided)
-        gameUiModel.definition.imageResId?.let { imageResId ->
-            Image(
-                painter = painterResource(id = imageResId),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .padding(bottom = 4.dp),
-                contentScale = ContentScale.Fit
-            )
-        }
-        
-        // Title (if provided)
-        gameUiModel.definition.titleRes?.let { titleRes ->
-            Text(
-                text = stringResource(id = titleRes),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-            
+            modifier = Modifier.Companion
+                .padding(8.dp)
+                .fillMaxWidth()
+        ) {
+            // Image (if provided)
+            gameUiModel.definition.imageResId?.let { imageResId ->
+                Image(
+                    painter = painterResource(id = imageResId),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .padding(bottom = 4.dp),
+                    contentScale = ContentScale.Fit
+                )
+            }
+
+            // Title (if provided)
+            gameUiModel.definition.titleRes?.let { titleRes ->
+                Text(
+                    text = stringResource(id = titleRes),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
             // Always show win percentage and best level, even if stats are null
-            val stats = gameUiModel.mathWriteStats
+            val stats = gameUiModel.gameStats
             val winPercentage = if (stats == null || stats.gamesPlayed == 0 || stats.gamesWon == 0) {
                 0
             } else {
                 minOf(100, ((stats.gamesWon.toDouble() / stats.gamesPlayed) * 100).toInt())
             }
-            
+
             // Show win percentage with bulb symbol and conditional coloring
             // - 0%: White
             // - 1-49%: Error color (red)
@@ -91,74 +91,71 @@ fun GameCard(
                 winPercentage >= 50 && winPercentage < 100 -> MaterialTheme.colorScheme.tertiary// Green for >=50% <100%
                 else -> MaterialTheme.colorScheme.primary // yellow for 100%
             }
-            
+
             // Show win percentage and best level in the same row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
 
-                    Text(
-                        text = if (winPercentage > 0) "W ${winPercentage}%" else " ",
-                        style = TextStyle(
-                            color = textColor,
-                            fontSize = 10.sp,
-                        ),
-                        color = textColor
-                    )
+                Text(
+                    text = if (winPercentage > 0) "W ${winPercentage}%" else " ",
+                    style = TextStyle(
+                        color = textColor,
+                        fontSize = 10.sp,
+                    ),
+                    color = textColor
+                )
 
-
-
-                    Text(
-                        text = if (stats?.lastLevel != null && stats.lastLevel > 0) "L ${stats.lastLevel}" else " ",
-                        style = TextStyle(
-                            color = textColor,
-                            fontSize = 10.sp,
-                        ),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                val bestLevel = stats?.lastLevel ?: 0
+                Text(
+                    text = if (bestLevel > 0) "L ${bestLevel}" else " ",
+                    style = TextStyle(
+                        color = textColor,
+                        fontSize = 10.sp,
+                    ),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
 
             }
-            
+
             // Only show additional stats if not in minimal mode
             if (!showMinimal) {
-                stats?.let {
-                    Spacer(modifier = Modifier.Companion.height(4.dp))
-                    val hasHighScore = gameUiModel.highScore != null
-                    val scoreText = if (hasHighScore) {
-                        stringResource(id = R.string.highscore_with_value, gameUiModel.highScore)
-                    } else {
-                        stringResource(id = R.string.no_high_score)
-                    }
-                    
-                    Text(
-                        text = scoreText,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = if (hasHighScore) FontWeight.Bold else FontWeight.Normal
-                        ),
-                        color = if (hasHighScore) {
-                            if (gameUiModel.highScore > 0) {
-                                MaterialTheme.colorScheme.primary
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-                            }
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-                        }
-                    )
-                    
-                    Spacer(modifier = Modifier.Companion.height(4.dp))
-                    Text(
-                        text = stringResource(id = R.string.math_write_played_count, it.gamesPlayed),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = stringResource(id = R.string.math_write_win_loss, it.gamesWon, it.gamesLost),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                val hasHighScore = gameUiModel.highScore != null
+                val scoreText = if (hasHighScore) {
+                    stringResource(id = R.string.highscore_with_value, gameUiModel.highScore)
+                } else {
+                    stringResource(id = R.string.no_high_score)
                 }
+
+                Spacer(modifier = Modifier.Companion.height(4.dp))
+                Text(
+                    text = scoreText,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = if (hasHighScore) FontWeight.Bold else FontWeight.Normal
+                    ),
+                    color = if (hasHighScore) {
+                        if ((gameUiModel.highScore ?: 0) > 0) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                        }
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                    }
+                )
+
+                Spacer(modifier = Modifier.Companion.height(4.dp))
+                Text(
+                    text = stringResource(id = R.string.game_played_count, stats?.gamesPlayed ?: 0),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = stringResource(id = R.string.game_win_loss, stats?.gamesWon ?: 0, stats?.gamesLost ?: 0),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }
@@ -175,8 +172,8 @@ fun GameCardPreview() {
                     id = GameTypes.MULT_WRITE.id,
                 ),
                 highScore = 100,
-                mathWriteStats = MathWriteGameStats(
-                    operationId = GameTypes.MULT_WRITE.id,
+                gameStats = GameStats(
+                    gameId = GameTypes.MULT_WRITE.id,
                     highScore = 100,
                     gamesPlayed = 10,
                     gamesWon = 7,

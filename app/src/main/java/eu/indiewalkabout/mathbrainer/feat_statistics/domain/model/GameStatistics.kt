@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
+// Store the statistics as a whole
 @Entity(tableName = "GameStatistics")
 data class GameStatistics(
     @PrimaryKey(autoGenerate = true)

@@ -8,9 +8,9 @@ import eu.indiewalkabout.mathbrainer.core.model.OperationConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.WriteResultScoreCategory
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.GenerateMathWriteChallengeUseCase
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.UpdateMathWriteGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.UpdateWriteResultScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.state.MathWriteUiState
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,10 +20,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
+    @HiltViewModel
 class MathOpWriteResultViewModel @Inject constructor(
     private val generateMathWriteChallengeUseCase: GenerateMathWriteChallengeUseCase,
-    private val updateMathWriteGameStatsUseCase: UpdateMathWriteGameStatsUseCase,
+    private val updateGameStatsUseCase: UpdateGameStatsUseCase,
     private val updateWriteResultScoreUseCase: UpdateWriteResultScoreUseCase
 ) : ViewModel() {
 
@@ -229,8 +229,8 @@ class MathOpWriteResultViewModel @Inject constructor(
         isScorePersisted = true
         val finalScore = _uiState.value.score
         viewModelScope.launch {
-            updateMathWriteGameStatsUseCase(
-                operation = operationParam,
+            updateGameStatsUseCase(
+                gameId = operationParam,
                 sessionScore = finalScore,
                 isWin = finalScore > 0,
                 lastLevel = _uiState.value.level

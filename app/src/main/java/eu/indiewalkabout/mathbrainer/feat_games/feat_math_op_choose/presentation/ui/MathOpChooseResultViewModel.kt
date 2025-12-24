@@ -9,6 +9,7 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.domain.model
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.domain.use_cases.GenerateMathChooseChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.domain.use_cases.UpdateChooseResultScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation.state.MathChooseUiState
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MathOpChooseResultViewModel @Inject constructor(
     private val generateMathChooseChallengeUseCase: GenerateMathChooseChallengeUseCase,
-    private val updateChooseResultScoreUseCase: UpdateChooseResultScoreUseCase
+    private val updateChooseResultScoreUseCase: UpdateChooseResultScoreUseCase,
+    private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
 
     private var operationParam: String = ""
@@ -211,9 +213,16 @@ class MathOpChooseResultViewModel @Inject constructor(
         if (isScorePersisted) return
         isScorePersisted = true
         val finalScore = _uiState.value.score
-        if (finalScore <= 0) return
         viewModelScope.launch {
-            updateChooseResultScoreUseCase(scoreCategory, finalScore)
+            updateGameStatsUseCase(
+                gameId = operationParam,
+                sessionScore = finalScore,
+                isWin = finalScore > 0,
+                lastLevel = _uiState.value.level
+            )
+            if (finalScore > 0) {
+                updateChooseResultScoreUseCase(scoreCategory,finalScore)
+            }
         }
     }
 

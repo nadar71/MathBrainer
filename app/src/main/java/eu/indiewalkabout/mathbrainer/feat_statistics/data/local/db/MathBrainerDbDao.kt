@@ -5,8 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteGameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStatistics
 import kotlinx.coroutines.flow.Flow
 
@@ -18,11 +18,11 @@ interface MathBrainerDbDao {
     @Query("SELECT * FROM GameScores ORDER BY id DESC LIMIT 1")
     fun observeGameScores(): Flow<GameScores?>
 
-    @Query("SELECT * FROM MathWriteGameStats")
-    fun observeMathWriteGameStats(): Flow<List<MathWriteGameStats>>
+    @Query("SELECT * FROM GameStats")
+    fun observeGameStats(): Flow<List<GameStats>>
 
-    @Query("SELECT * FROM MathWriteGameStats WHERE operationId = :operationId LIMIT 1")
-    suspend fun getMathWriteGameStats(operationId: String): MathWriteGameStats?
+    @Query("SELECT * FROM GameStats WHERE gameId = :gameId LIMIT 1")
+    suspend fun getGameStats(gameId: String): GameStats?
 
     @Query("SELECT * FROM GameStatistics")
     suspend fun loadGameStatistics(): GameStatistics
@@ -35,7 +35,7 @@ interface MathBrainerDbDao {
     suspend fun insertGameStatistics(gameStatistics: GameStatistics)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMathWriteGameStats(mathWriteGameStats: MathWriteGameStats)
+    suspend fun insertGameStats(gameStats: GameStats)
 
     // --- UPDATE ---
     @Delete
@@ -50,6 +50,6 @@ interface MathBrainerDbDao {
     @Query("DELETE FROM GameStatistics")
     suspend fun dropTableGameStatistics()
 
-    @Query("DELETE FROM MathWriteGameStats")
-    suspend fun dropTableMathWriteGameStats()
+    @Query("DELETE FROM GameStats")
+    suspend fun dropTableGameStats()
 }

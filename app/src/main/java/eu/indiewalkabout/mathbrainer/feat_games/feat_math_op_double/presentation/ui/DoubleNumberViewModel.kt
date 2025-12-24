@@ -7,6 +7,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.domain.model
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.domain.use_cases.GenerateDoubleNumberChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.domain.use_cases.UpdateDoubleNumberScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation.state.DoubleNumberUiState
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DoubleNumberViewModel @Inject constructor(
     private val generateDoubleNumberChallengeUseCase: GenerateDoubleNumberChallengeUseCase,
-    private val updateDoubleNumberScoreUseCase: UpdateDoubleNumberScoreUseCase
+    private val updateDoubleNumberScoreUseCase: UpdateDoubleNumberScoreUseCase,
+    private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
 
     private var operandRangeMin = 1
@@ -187,9 +190,16 @@ class DoubleNumberViewModel @Inject constructor(
         if (isScorePersisted) return
         isScorePersisted = true
         val finalScore = _uiState.value.score
-        if (finalScore <= 0) return
         viewModelScope.launch {
-            updateDoubleNumberScoreUseCase(finalScore)
+            updateGameStatsUseCase(
+                gameId = GameTypes.DOUBLE_NUMBER.id,
+                sessionScore = finalScore,
+                isWin = finalScore > 0,
+                lastLevel = _uiState.value.level
+            )
+            if (finalScore > 0) {
+                updateDoubleNumberScoreUseCase(finalScore)
+            }
         }
     }
 

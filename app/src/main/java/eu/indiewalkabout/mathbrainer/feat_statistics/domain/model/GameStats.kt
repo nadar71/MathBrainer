@@ -1,11 +1,12 @@
-package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model
+package eu.indiewalkabout.mathbrainer.feat_statistics.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "MathWriteGameStats")
-data class MathWriteGameStats(
-    @PrimaryKey val operationId: String,
+// Store the stats of a game
+@Entity(tableName = "GameStats")
+data class GameStats(
+    @PrimaryKey val gameId: String,
     val highScore: Int = 0,
     val gamesPlayed: Int = 0,
     val gamesWon: Int = 0,

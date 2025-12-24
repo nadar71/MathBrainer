@@ -7,6 +7,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.domain.use_cases
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.domain.use_cases.UpdateFallingOpsScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.state.FallingOperationItem
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.state.FallingOpsUiState
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +24,8 @@ import kotlin.random.Random
 @HiltViewModel
 class FallingOpsViewModel @Inject constructor(
     private val generateFallingOperationUseCase: GenerateFallingOperationUseCase,
-    private val updateFallingOpsScoreUseCase: UpdateFallingOpsScoreUseCase
+    private val updateFallingOpsScoreUseCase: UpdateFallingOpsScoreUseCase,
+    private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(FallingOpsUiState())
@@ -189,9 +192,16 @@ class FallingOpsViewModel @Inject constructor(
         if (isScorePersisted) return
         isScorePersisted = true
         val finalScore = _uiState.value.score
-        if (finalScore <= 0) return
         viewModelScope.launch {
-            updateFallingOpsScoreUseCase(finalScore)
+            updateGameStatsUseCase(
+                gameId = GameTypes.FALLING_OPS.id,
+                sessionScore = finalScore,
+                isWin = finalScore > 0,
+                lastLevel = _uiState.value.level
+            )
+            if (finalScore > 0) {
+                updateFallingOpsScoreUseCase(finalScore)
+            }
         }
     }
 

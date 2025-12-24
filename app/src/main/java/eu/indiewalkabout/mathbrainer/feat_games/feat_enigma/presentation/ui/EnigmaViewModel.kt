@@ -7,6 +7,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.domain.model.EnigmaC
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.domain.use_cases.GenerateEnigmaChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.domain.use_cases.UpdateEnigmaScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.presentation.state.EnigmaUiState
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class EnigmaViewModel @Inject constructor(
     private val generateEnigmaChallengeUseCase: GenerateEnigmaChallengeUseCase,
-    private val updateEnigmaScoreUseCase: UpdateEnigmaScoreUseCase
+    private val updateEnigmaScoreUseCase: UpdateEnigmaScoreUseCase,
+    private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
 
     private var isScorePersisted = false
@@ -129,6 +132,17 @@ class EnigmaViewModel @Inject constructor(
         isScorePersisted = true
         val finalScore = _uiState.value.score
         viewModelScope.launch {
+            if (finalScore > 0) {
+                updateEnigmaScoreUseCase(finalScore)
+            }
+        }
+        viewModelScope.launch {
+            updateGameStatsUseCase(
+                gameId = GameTypes.ENIGMA.id,
+                sessionScore = finalScore,
+                isWin = finalScore > 0,
+                lastLevel = _uiState.value.level
+            )
             if (finalScore > 0) {
                 updateEnigmaScoreUseCase(finalScore)
             }
