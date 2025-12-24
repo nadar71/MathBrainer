@@ -8,6 +8,8 @@ import eu.indiewalkabout.mathbrainer.core.model.OperationConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.model.RandomOperationConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.use_cases.GenerateRandomOperationChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.use_cases.UpdateRandomOperationScoreUseCase
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RandomOperationViewModel @Inject constructor(
     private val generateRandomOperationChallengeUseCase: GenerateRandomOperationChallengeUseCase,
-    private val updateRandomOperationScoreUseCase: UpdateRandomOperationScoreUseCase
+    private val updateRandomOperationScoreUseCase: UpdateRandomOperationScoreUseCase,
+    private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
 
     // random range of number to be processed
@@ -207,9 +210,16 @@ class RandomOperationViewModel @Inject constructor(
         if (isScorePersisted) return
         isScorePersisted = true
         val finalScore = _uiState.value.score
-        if (finalScore <= 0) return
         viewModelScope.launch {
-            updateRandomOperationScoreUseCase(finalScore)
+            updateGameStatsUseCase(
+                gameId = GameTypes.RANDOM_OPERATION.id,
+                sessionScore = finalScore,
+                isWin = finalScore > 0,
+                lastLevel = _uiState.value.level
+            )
+            if (finalScore > 0) {
+                updateRandomOperationScoreUseCase(finalScore)
+            }
         }
     }
 

@@ -7,6 +7,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.domain.model.N
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.domain.use_cases.GenerateNumberOrderChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.domain.use_cases.UpdateNumberOrderScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.presentation.state.NumberOrderUiState
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NumberOrderViewModel @Inject constructor(
     private val generateNumberOrderChallengeUseCase: GenerateNumberOrderChallengeUseCase,
-    private val updateNumberOrderScoreUseCase: UpdateNumberOrderScoreUseCase
+    private val updateNumberOrderScoreUseCase: UpdateNumberOrderScoreUseCase,
+    private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
 
     private var maxItemsToCount = INITIAL_MAX_ITEMS
@@ -182,9 +185,16 @@ class NumberOrderViewModel @Inject constructor(
         if (isScorePersisted) return
         isScorePersisted = true
         val finalScore = _uiState.value.score
-        if (finalScore <= 0) return
         viewModelScope.launch {
-            updateNumberOrderScoreUseCase(finalScore)
+            updateGameStatsUseCase(
+                gameId = GameTypes.NUMBER_ORDER.id,
+                sessionScore = finalScore,
+                isWin = finalScore > 0,
+                lastLevel = _uiState.value.level
+            )
+            if (finalScore > 0) {
+                updateNumberOrderScoreUseCase(finalScore)
+            }
         }
     }
 

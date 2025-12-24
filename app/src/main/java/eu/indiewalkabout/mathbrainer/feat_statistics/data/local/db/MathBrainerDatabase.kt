@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStatistics
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 
 @Database(
     entities = [
@@ -15,7 +15,7 @@ import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStatistics
         GameStatistics::class,
         GameStats::class
     ],
-    version = 6,
+    version = 7,
     exportSchema = true
 )
 @TypeConverters(DateConverter::class)

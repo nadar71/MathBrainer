@@ -8,6 +8,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.domain.mo
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.domain.use_cases.GenerateSequenceChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.domain.use_cases.UpdateSequenceCompleteScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.state.SequenceCompleteUiState
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +21,8 @@ import kotlin.math.max
 @HiltViewModel
 class SequenceCompleteViewModel @Inject constructor(
     private val generateSequenceChallengeUseCase: GenerateSequenceChallengeUseCase,
-    private val updateSequenceCompleteScoreUseCase: UpdateSequenceCompleteScoreUseCase
+    private val updateSequenceCompleteScoreUseCase: UpdateSequenceCompleteScoreUseCase,
+    private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
 
     private var challengesCompletedInternal = 0
@@ -167,9 +170,16 @@ class SequenceCompleteViewModel @Inject constructor(
         if (isScorePersisted) return
         isScorePersisted = true
         val finalScore = _uiState.value.score
-        if (finalScore <= 0) return
         viewModelScope.launch {
-            updateSequenceCompleteScoreUseCase(finalScore)
+            updateGameStatsUseCase(
+                gameId = GameTypes.SEQUENCE_COMPLETE.id,
+                sessionScore = finalScore,
+                isWin = finalScore > 0,
+                lastLevel = _uiState.value.level
+            )
+            if (finalScore > 0) {
+                updateSequenceCompleteScoreUseCase(finalScore)
+            }
         }
     }
 

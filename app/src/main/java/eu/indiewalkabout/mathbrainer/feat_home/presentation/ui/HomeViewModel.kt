@@ -50,10 +50,13 @@ class HomeViewModel @Inject constructor(
                     Pair(scores, stats)
                 }.collect { (scores, stats) ->
                     Log.d(TAG, "Received game scores: $scores")
+                    Log.d(TAG, "Received game stats: $stats")
+
                     val games = gamesDefinitionsList.map { definition ->
                         val highScore = getHighScore(definition, scores)
                         val gameStats = getGameStats(definition, stats)
                         Log.d(TAG, "Game: ${definition.id}, High Score: $highScore")
+                        Log.d(TAG, "Game: ${definition.id}, Game Stats: $gameStats")
                         GameUiModel(
                             definition = definition,
                             highScore = highScore,

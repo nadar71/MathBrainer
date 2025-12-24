@@ -3,6 +3,8 @@ package eu.indiewalkabout.mathbrainer.feat_statistics.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+
+// Store the scores of each game
 @Entity(tableName = "GameScores")
 data class GameScores(
     @PrimaryKey(autoGenerate = true)

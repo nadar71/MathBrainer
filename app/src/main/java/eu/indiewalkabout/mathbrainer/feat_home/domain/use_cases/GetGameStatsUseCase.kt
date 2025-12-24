@@ -12,7 +12,7 @@ import javax.inject.Inject
 class GetGameStatsUseCase @Inject constructor(
     private val repository: MathBrainerRepository
 ) {
-    private val supportedGameIds = GameTypes.values().map { it.id }
+    private val supportedGameIds = GameTypes.entries.map { it.id }
 
     suspend operator fun invoke(): Flow<Map<String, GameStats>> {
         return repository.observeGameStats()

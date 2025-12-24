@@ -3,6 +3,7 @@ package eu.indiewalkabout.mathbrainer.feat_statistics.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+// Store the stats of a game
 @Entity(tableName = "GameStats")
 data class GameStats(
     @PrimaryKey val gameId: String,

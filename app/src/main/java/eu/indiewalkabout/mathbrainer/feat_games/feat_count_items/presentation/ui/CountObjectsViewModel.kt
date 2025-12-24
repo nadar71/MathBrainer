@@ -7,6 +7,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.domain.model.Co
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.domain.use_cases.GenerateCountObjectsChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.domain.use_cases.UpdateCountObjectsScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.state.CountObjectsUiState
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CountObjectsViewModel @Inject constructor(
     private val generateCountObjectsChallengeUseCase: GenerateCountObjectsChallengeUseCase,
-    private val updateCountObjectsScoreUseCase: UpdateCountObjectsScoreUseCase
+    private val updateCountObjectsScoreUseCase: UpdateCountObjectsScoreUseCase,
+    private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
 
     private var maxItemsToCount = INITIAL_MAX_ITEMS
@@ -65,7 +68,7 @@ class CountObjectsViewModel @Inject constructor(
         persistScoreIfNeeded()
     }
 
-    private suspend fun launchNewChallenge(resetTimer: Boolean) {
+    private fun launchNewChallenge(resetTimer: Boolean) {
         val challenge = generateCountObjectsChallengeUseCase(
             CountObjectsConfig(
                 maxItemsToCount = maxItemsToCount,
@@ -163,9 +166,16 @@ class CountObjectsViewModel @Inject constructor(
         if (isScorePersisted) return
         isScorePersisted = true
         val finalScore = _uiState.value.score
-        if (finalScore <= 0) return
         viewModelScope.launch {
-            updateCountObjectsScoreUseCase(finalScore)
+            updateGameStatsUseCase(
+                gameId = GameTypes.QUICK_COUNT.id,
+                sessionScore = finalScore,
+                isWin = finalScore > 0,
+                lastLevel = _uiState.value.level
+            )
+            if (finalScore > 0) {
+                updateCountObjectsScoreUseCase(finalScore)
+            }
         }
     }
 
