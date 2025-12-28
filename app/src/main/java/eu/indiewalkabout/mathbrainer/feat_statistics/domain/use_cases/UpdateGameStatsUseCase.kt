@@ -18,9 +18,9 @@ class UpdateGameStatsUseCase @Inject constructor(
 
         val updatedStats = currentStats.copy(
             highScore = if (shouldUpdateHighScore) sessionScore else currentStats.highScore,
-            gamesPlayed = currentStats.gamesPlayed + 1,
-            gamesWon = currentStats.gamesWon + if (isWin) 1 else 0,
-            gamesLost = currentStats.gamesLost + if (isWin) 0 else 1,
+            challengesPlayed = currentStats.challengesPlayed + 1,
+            challengesWon = currentStats.challengesWon + if (isWin) 1 else 0,
+            challengesLost = currentStats.challengesLost + if (isWin) 0 else 1,
             lastLevel = max(currentStats.lastLevel, lastLevel)
         )
 

@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey
 data class GameStats(
     @PrimaryKey val gameId: String,
     val highScore: Int = 0,
-    val gamesPlayed: Int = 0,
-    val gamesWon: Int = 0,
-    val gamesLost: Int = 0,
+    val challengesPlayed: Int = 0,
+    val challengesWon: Int = 0,
+    val challengesLost: Int = 0,
     val lastLevel: Int = 0
 )

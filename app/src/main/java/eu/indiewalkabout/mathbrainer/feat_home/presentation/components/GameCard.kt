@@ -75,10 +75,10 @@ fun GameCard(
 
             // Always show win percentage and best level, even if stats are null
             val stats = gameUiModel.gameStats
-            val winPercentage = if (stats == null || stats.gamesPlayed == 0 || stats.gamesWon == 0) {
+            val winPercentage = if (stats == null || stats.challengesPlayed == 0 || stats.challengesWon == 0) {
                 0
             } else {
-                minOf(100, ((stats.gamesWon.toDouble() / stats.gamesPlayed) * 100).toInt())
+                minOf(100, ((stats.challengesWon.toDouble() / stats.challengesPlayed) * 100).toInt())
             }
 
             // Show win percentage with bulb symbol and conditional coloring
@@ -147,12 +147,12 @@ fun GameCard(
 
                 Spacer(modifier = Modifier.Companion.height(4.dp))
                 Text(
-                    text = stringResource(id = R.string.game_played_count, stats?.gamesPlayed ?: 0),
+                    text = stringResource(id = R.string.game_played_count, stats?.challengesPlayed ?: 0),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = stringResource(id = R.string.game_win_loss, stats?.gamesWon ?: 0, stats?.gamesLost ?: 0),
+                    text = stringResource(id = R.string.game_win_loss, stats?.challengesWon ?: 0, stats?.challengesLost ?: 0),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -175,9 +175,9 @@ fun GameCardPreview() {
                 gameStats = GameStats(
                     gameId = GameTypes.MULT_WRITE.id,
                     highScore = 100,
-                    gamesPlayed = 10,
-                    gamesWon = 7,
-                    gamesLost = 3,
+                    challengesPlayed = 10,
+                    challengesWon = 7,
+                    challengesLost = 3,
                     lastLevel = 5
                 )
             ),
