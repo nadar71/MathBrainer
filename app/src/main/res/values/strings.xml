@@ -13,6 +13,10 @@
     <string name="highscore_with_value">Highscore: %1$d</string>
     <string name="no_high_score">No high score yet</string>
     <string name="game_played_count">Played: %1$d</string>
+    <string name="math_write_played_count">Played: %1$d</string>
+    <string name="math_write_win_loss">Wins: %1$d \nLosses: %2$d</string>
+    <string name="math_write_win_percentage">Win %%: %1$d</string>
+    <string name="math_write_best_level">Best level: %1$d</string>
     <string name="game_win_loss">Wins: %1$d \nLosses: %2$d</string>
     <string name="game_win_percentage">Win %%: %1$d</string>
     <string name="game_best_level">Best level: %1$d</string>
@@ -58,7 +62,7 @@
     <string name="memory_flash_subtitle">Memorize the digits, then type them back.</string>
     <string name="memory_flash_instruction">Memorize this sequence while it is visible.</string>
     <string name="memory_flash_prompt">Enter the sequence from memory to score points.</string>
-    <string name="memory_flash_hidden_sequence">? ? ?</string>
+    <string name="memory_flash_hidden_sequence">\? ? ?</string>
     <string name="memory_flash_success">Great recall! Get ready for the next pattern.</string>
     <string name="memory_flash_failure">That pattern was different. Try the next one.</string>
     <string name="memory_flash_challenges_label">Round %1$d of %2$d</string>
@@ -137,9 +141,9 @@
     <string name="game_card_write_result_div_text"  >   :    \n        </string>
     <string name="game_card_double_number_title"    >   2x   \n        </string>
     <string name="game_card_sequence_complete_text" >1  2  4  ?\n        </string>
-    <string name="game_card_memory_flash_text">✦  ✦  ✦\n        </string>
+    <string name="game_card_memory_flash_text"      >✦  ✦  ✦\n        </string>
     <string name="game_card_falling_ops_text"       >  ↓  \n+  –  x  :</string>
-    <string name="game_card_enigma_text">△  □  ?\n        </string>
+    <string name="game_card_enigma_text"            >△  □  ?\n        </string>
 
     <string name="sequence_rule_reveal">Rule: %1$s</string>
     <string name="sequence_correct_answer">Missing number: %1$d</string>

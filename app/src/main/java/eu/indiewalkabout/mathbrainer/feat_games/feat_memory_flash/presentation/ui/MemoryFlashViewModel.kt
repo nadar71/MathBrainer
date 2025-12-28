@@ -10,14 +10,14 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_memory_flash.domain.use_cas
 import eu.indiewalkabout.mathbrainer.feat_games.feat_memory_flash.presentation.state.MemoryFlashUiState
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
-import javax.inject.Inject
-import kotlin.math.max
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.math.max
 
 @HiltViewModel
 class MemoryFlashViewModel @Inject constructor(
@@ -96,7 +96,7 @@ class MemoryFlashViewModel @Inject constructor(
         persistScoreIfNeeded()
     }
 
-    private suspend fun launchNewChallenge() {
+    private fun launchNewChallenge() {
         val config = buildConfig()
         val challenge = generateMemoryFlashChallengeUseCase(config)
         currentChallenge = challenge
@@ -113,7 +113,9 @@ class MemoryFlashViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            delay(SEQUENCE_REVEAL_DURATION_MS)
+            val sequenceLength = challenge.sequence.size
+            val revealDuration = calculateRevealDuration(sequenceLength)
+            delay(revealDuration)
             _uiState.update { current -> current.copy(isSequenceVisible = false) }
         }
     }
@@ -210,6 +212,12 @@ class MemoryFlashViewModel @Inject constructor(
         private const val BASE_MAX_DIGIT = 4
         private const val MAX_DIGIT = 9
         private const val SCORE_PER_DIGIT = 10
-        private const val SEQUENCE_REVEAL_DURATION_MS = 1800L
+        private const val BASE_DELAY_PER_DIGIT_MS = 300L  // Base delay per digit in milliseconds
+        private const val MIN_TOTAL_DELAY_MS = 900L      // Minimum total delay
+        
+        private fun calculateRevealDuration(sequenceLength: Int): Long {
+            val calculatedDelay = sequenceLength * BASE_DELAY_PER_DIGIT_MS
+            return maxOf(calculatedDelay, MIN_TOTAL_DELAY_MS)
+        }
     }
 }

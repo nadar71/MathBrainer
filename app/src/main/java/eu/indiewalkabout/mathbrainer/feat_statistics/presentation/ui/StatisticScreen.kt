@@ -183,6 +183,14 @@ fun StatisticScreen(
                                     )
                                 }
 
+                                GameTypes.MEMORY_FLASH -> {
+                                    navController.navigate(
+                                        ScreenRoutes.MemoryFlashGame.createRoute(
+                                            highScore = game.highScore ?: 0
+                                        )
+                                    )
+                                }
+
                                 null -> navController.navigate(ScreenRoutes.Home.route)
                             }
                         }
