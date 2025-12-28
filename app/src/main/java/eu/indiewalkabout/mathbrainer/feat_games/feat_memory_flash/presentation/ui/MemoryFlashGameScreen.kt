@@ -119,7 +119,7 @@ fun MemoryFlashGameScreen(
                 onDigitPressed = { digit -> viewModel.onDigitPressed(digit) },
                 onDelete = { viewModel.onDelete() },
                 onSubmit = { viewModel.submitAnswer() },
-                isCompact = true
+                isCompact = false
             )
             Spacer(modifier = Modifier.height(8.dp))
         }

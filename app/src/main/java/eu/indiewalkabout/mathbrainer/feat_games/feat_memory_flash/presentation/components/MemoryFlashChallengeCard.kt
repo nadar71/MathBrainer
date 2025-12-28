@@ -8,15 +8,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
@@ -58,11 +65,45 @@ fun MemoryFlashChallengeCard(state: MemoryFlashUiState) {
             )
 
             if (!state.isSequenceVisible && state.revealedSequence == null) {
-                Text(
-                    text = stringResource(id = R.string.memory_flash_prompt),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
+                // Input field for the answer
+                TextField(
+                    value = state.inputValue,
+                    onValueChange = {},
+                    readOnly = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    textStyle = MaterialTheme.typography.headlineMedium.copy(
+                        textAlign = TextAlign.Center,
+                        color = if (state.feedback != null) {
+                            when (state.feedback) {
+                                MemoryFlashUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
+                                MemoryFlashUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
+                            }
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        }
+                    ),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surface,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                        disabledContainerColor = MaterialTheme.colorScheme.surface,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        cursorColor = Color.Transparent
+                    ),
+                    visualTransformation = VisualTransformation.None,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.None
+                    ),
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.memory_flash_prompt),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 )
             }
 

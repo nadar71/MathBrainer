@@ -116,7 +116,7 @@ fun SequenceCompleteGameScreen(
                 Spacer(modifier = Modifier.height(0.dp))
             }
 
-Keypad(
+            Keypad(
                 inputValue = state.inputValue,
                 onDigitPressed = { digit -> viewModel.onDigitPressed(digit) },
                 onDelete = { viewModel.onDelete() },
