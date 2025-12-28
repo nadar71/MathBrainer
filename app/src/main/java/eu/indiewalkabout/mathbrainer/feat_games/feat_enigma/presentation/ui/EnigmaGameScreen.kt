@@ -27,10 +27,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
+import eu.indiewalkabout.mathbrainer.core.presentation.components.keyboard.Keypad
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.presentation.components.EnigmaChallengeCard
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.presentation.components.EnigmaHeader
-import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.presentation.state.EnigmaUiState
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.keyboard.Keypad
 
 @Composable
 fun EnigmaGameScreen(
@@ -95,11 +95,11 @@ fun EnigmaGameScreen(
             }
 
             when (state.feedback) {
-                EnigmaUiState.Feedback.SUCCESS -> ResultBanner(
+                ChallengeUiState.Feedback.SUCCESS -> ResultBanner(
                     text = stringResource(id = R.string.ok_str),
                     color = MaterialTheme.colorScheme.primary
                 )
-                EnigmaUiState.Feedback.FAILURE -> ResultBanner(
+                ChallengeUiState.Feedback.FAILURE -> ResultBanner(
                     text = stringResource(id = R.string.wrong_answer),
                     color = MaterialTheme.colorScheme.error
                 )
@@ -110,6 +110,7 @@ fun EnigmaGameScreen(
             }
 
             Keypad(
+                feedback = state.feedback,
                 inputValue = state.inputValue,
                 onDigitPressed = { digit -> viewModel.onDigitPressed(digit) },
                 onDelete = { viewModel.onDelete() },

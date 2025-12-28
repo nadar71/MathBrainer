@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.indiewalkabout.mathbrainer.core.model.OperationConfig
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.domain.model.ChooseResultScoreCategory
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.domain.model.MathChooseConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.domain.use_cases.GenerateMathChooseChallengeUseCase
@@ -51,7 +52,7 @@ class MathOpChooseResultViewModel @Inject constructor(
     private var challengesCompleted = 0
     private var optionsCount = MIN_OPTIONS
 
-    private var timerLength = MathChooseUiState.INITIAL_TIMER_LENGTH
+    private var timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
     private var timerJob: Job? = null
     private var isScorePersisted = false // flag to prevent double writes to the DB
 
@@ -85,7 +86,7 @@ class MathOpChooseResultViewModel @Inject constructor(
         persistScoreIfNeeded()
     }
 
-    private suspend fun launchNewChallenge(resetTimer: Boolean) {
+    private fun launchNewChallenge(resetTimer: Boolean) {
         val challenge = generateMathChooseChallengeUseCase(
             MathChooseConfig(
                 operationCode = operationParam,
@@ -142,7 +143,7 @@ class MathOpChooseResultViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                feedback = MathChooseUiState.Feedback.SUCCESS,
+                feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = maxOf(it.highScore ?: 0, newScore),
                 challengesCompleted = challengesCompleted,
@@ -159,7 +160,7 @@ class MathOpChooseResultViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 lives = remainingLives,
-                feedback = MathChooseUiState.Feedback.FAILURE
+                feedback = ChallengeUiState.Feedback.FAILURE
             )
         }
 
@@ -172,7 +173,7 @@ class MathOpChooseResultViewModel @Inject constructor(
 
     private fun handleCountdownExpired() {
         val remainingLives = _uiState.value.lives - 1
-        _uiState.update { it.copy(lives = remainingLives, feedback = MathChooseUiState.Feedback.FAILURE, timeRemaining = 0L) }
+        _uiState.update { it.copy(lives = remainingLives, feedback = ChallengeUiState.Feedback.FAILURE, timeRemaining = 0L) }
         if (remainingLives <= 0) {
             onGameOver()
         } else {

@@ -24,13 +24,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation.state.DoubleNumberUiState
 
 @Composable
 fun DoubleNumberChallengeCard(state: DoubleNumberUiState) {
     val feedbackColor = when (state.feedback) {
-        DoubleNumberUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
-        DoubleNumberUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
+        ChallengeUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
+        ChallengeUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
         else -> MaterialTheme.colorScheme.onSecondaryContainer
     }
     
@@ -94,12 +95,12 @@ fun DoubleNumberChallengeCard(state: DoubleNumberUiState) {
             )
 
             when (state.feedback) {
-                DoubleNumberUiState.Feedback.SUCCESS -> ResultBanner(
+                ChallengeUiState.Feedback.SUCCESS -> ResultBanner(
                     text = stringResource(id = R.string.ok_str),
                     color = MaterialTheme.colorScheme.primary
                 )
 
-                DoubleNumberUiState.Feedback.FAILURE -> ResultBanner(
+                ChallengeUiState.Feedback.FAILURE -> ResultBanner(
                     text = stringResource(id = R.string.wrong_answer),
                     color = MaterialTheme.colorScheme.error
                 )

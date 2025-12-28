@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.state.SequenceCompleteUiState
 
 @Composable
@@ -34,8 +35,8 @@ fun SequenceChallengeCard(
     state: SequenceCompleteUiState
 ) {
     val feedbackColor = when (state.feedback) {
-        SequenceCompleteUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
-        SequenceCompleteUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
+        ChallengeUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
+        ChallengeUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
         else -> MaterialTheme.colorScheme.onSecondaryContainer
     }
     

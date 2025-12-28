@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.indiewalkabout.mathbrainer.core.model.OperationConfig
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.WriteResultScoreCategory
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.GenerateMathWriteChallengeUseCase
@@ -54,7 +55,7 @@ class MathOpWriteResultViewModel @Inject constructor(
     private var challengesPerLevel: Int = 10 // num. levels to complete before next level
     private var challengesCompleted = 0
 
-    private var timerLength = MathWriteUiState.INITIAL_TIMER_LENGTH
+    private var timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
     private var timerJob: Job? = null
     private var isScorePersisted = false // flag to prevent double writes to the DB
 
@@ -157,7 +158,7 @@ class MathOpWriteResultViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                feedback = MathWriteUiState.Feedback.SUCCESS,
+                feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = maxOf(it.highScore ?: 0, newScore),
                 challengesCompleted = challengesCompleted,
@@ -174,7 +175,7 @@ class MathOpWriteResultViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 lives = remainingLives,
-                feedback = MathWriteUiState.Feedback.FAILURE
+                feedback = ChallengeUiState.Feedback.FAILURE
             )
         }
 
@@ -187,7 +188,7 @@ class MathOpWriteResultViewModel @Inject constructor(
 
     private fun handleCountdownExpired() {
         val remainingLives = _uiState.value.lives - 1
-        _uiState.update { it.copy(lives = remainingLives, feedback = MathWriteUiState.Feedback.FAILURE, timeRemaining = 0L) }
+        _uiState.update { it.copy(lives = remainingLives, feedback = ChallengeUiState.Feedback.FAILURE, timeRemaining = 0L) }
         if (remainingLives <= 0) {
             onGameOver()
         } else {

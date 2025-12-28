@@ -45,9 +45,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.components.CountObjectsHeader
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.components.Placement
-import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.state.CountObjectsUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.math.max
@@ -120,12 +120,12 @@ fun CountObjectsGameScreen(
             )
 
             when (state.feedback) {
-                CountObjectsUiState.Feedback.SUCCESS -> ResultBanner(
+                ChallengeUiState.Feedback.SUCCESS -> ResultBanner(
                     text = stringResource(id = R.string.ok_str),
                     color = MaterialTheme.colorScheme.primary
                 )
 
-                CountObjectsUiState.Feedback.FAILURE -> ResultBanner(
+                ChallengeUiState.Feedback.FAILURE -> ResultBanner(
                     text = stringResource(id = R.string.wrong_answer),
                     color = MaterialTheme.colorScheme.error
                 )

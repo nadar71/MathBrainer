@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.ChallengeCard
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.HeaderInfo
 import eu.indiewalkabout.mathbrainer.core.presentation.components.keyboard.Keypad
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.HeaderInfo
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.WriteChallengeCard
 
 @Composable
 fun MathWriteGameScreen(
@@ -91,8 +91,9 @@ fun MathWriteGameScreen(
                 levelChallengesCompleted = state.challengesCompleted,
                 levelChallengesTarget = state.challengesPerLevel
                 )
-            ChallengeCard(state = state)
+            WriteChallengeCard(state = state)
             Keypad(
+                feedback = state.feedback,
                 inputValue = state.inputValue,
                 onDigitPressed = { digit -> viewModel.onDigitPressed(digit) },
                 onDelete = { viewModel.onDelete() },

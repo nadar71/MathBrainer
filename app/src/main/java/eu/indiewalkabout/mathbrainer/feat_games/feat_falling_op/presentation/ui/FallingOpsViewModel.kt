@@ -3,6 +3,7 @@ package eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.domain.use_cases.GenerateFallingOperationUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.domain.use_cases.UpdateFallingOpsScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.state.FallingOperationItem
@@ -78,7 +79,7 @@ class FallingOpsViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     input = "",
-                    feedback = FallingOpsUiState.Feedback.FAILURE
+                    feedback = ChallengeUiState.Feedback.FAILURE
                 )
             }
             return
@@ -110,7 +111,7 @@ class FallingOpsViewModel @Inject constructor(
                 level = updatedLevel,
                 targetPerLevel = updatedTarget,
                 input = "",
-                feedback = FallingOpsUiState.Feedback.SUCCESS
+                feedback = ChallengeUiState.Feedback.SUCCESS
             )
         }
     }
@@ -174,7 +175,7 @@ class FallingOpsViewModel @Inject constructor(
                 lives = remainingLives,
                 operations = emptyList(),
                 input = "",
-                feedback = FallingOpsUiState.Feedback.FAILURE
+                feedback = ChallengeUiState.Feedback.FAILURE
             )
         }
         if (remainingLives <= 0) {

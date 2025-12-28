@@ -20,11 +20,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import eu.indiewalkabout.mathbrainer.core.presentation.components.keyboard.Keypad
 import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteChallenge
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.ChallengeCard
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.HeaderInfo
-import eu.indiewalkabout.mathbrainer.core.presentation.components.keyboard.Keypad
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.components.WriteChallengeCard
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.state.MathWriteUiState
 
 @Preview(showBackground = true)
@@ -96,10 +96,11 @@ private fun MathWriteGameScreenPreview() {
                 HeaderInfo(state = sampleState)
 
                 // Challenge card with the math problem
-                ChallengeCard(state = sampleState)
+                WriteChallengeCard(state = sampleState)
 
                 // Keypad for input
                 Keypad(
+                    feedback = sampleState.feedback,
                     inputValue = sampleState.inputValue,
                     onDigitPressed = { },
                     onDelete = { },

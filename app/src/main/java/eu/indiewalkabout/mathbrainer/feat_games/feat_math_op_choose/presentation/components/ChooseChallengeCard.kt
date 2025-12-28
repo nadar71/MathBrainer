@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.core.util.OperationFormatter
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.domain.model.MathChooseChallenge
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation.state.MathChooseUiState
@@ -27,8 +28,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation
 @Composable
 fun ChooseChallengeCard(state: MathChooseUiState, onOptionSelected: (Int) -> Unit) {
     val feedbackColor = when (state.feedback) {
-        MathChooseUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
-        MathChooseUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
+        ChallengeUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
+        ChallengeUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
         else -> MaterialTheme.colorScheme.onSecondaryContainer
     }
     
@@ -99,7 +100,9 @@ fun ChooseChallengeCard(state: MathChooseUiState, onOptionSelected: (Int) -> Uni
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     state.challenge?.options.orEmpty().forEach { option ->
-                        Button(onClick = { onOptionSelected(option) }) {
+                        Button(onClick = {
+                           if (state.feedback == null) onOptionSelected(option)
+                        }) {
                             Text(
                                 text = option.toString(),
                                 style = MaterialTheme.typography.titleMedium
@@ -109,12 +112,12 @@ fun ChooseChallengeCard(state: MathChooseUiState, onOptionSelected: (Int) -> Uni
                 }
 
                 when (state.feedback) {
-                    MathChooseUiState.Feedback.SUCCESS -> ResultBanner(
+                    ChallengeUiState.Feedback.SUCCESS -> ResultBanner(
                         text = stringResource(id = R.string.ok_str),
                         color = MaterialTheme.colorScheme.primary
                     )
 
-                    MathChooseUiState.Feedback.FAILURE -> ResultBanner(
+                    ChallengeUiState.Feedback.FAILURE -> ResultBanner(
                         text = stringResource(id = R.string.wrong_answer),
                         color = MaterialTheme.colorScheme.error
                     )
@@ -132,7 +135,7 @@ fun ChooseChallengeCardPreview() {
     ChooseChallengeCard(
         state = MathChooseUiState(
             challenge = MathChooseChallenge(5, 3, '+', 8, listOf(7, 8, 9)),
-            feedback = MathChooseUiState.Feedback.SUCCESS
+            feedback = ChallengeUiState.Feedback.SUCCESS
         ),
         onOptionSelected = {}
     )

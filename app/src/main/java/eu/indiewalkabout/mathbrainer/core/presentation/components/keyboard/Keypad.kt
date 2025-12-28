@@ -19,10 +19,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
 
 @Composable
 fun Keypad(
+    feedback: ChallengeUiState.Feedback?,
     inputValue: String,
     onDigitPressed: (Int) -> Unit,
     onDelete: () -> Unit,
@@ -74,7 +76,7 @@ fun Keypad(
                         highlight = true,
                         isCompact = isCompact
                     ) {
-                        onSubmit()
+                        if (feedback == null) onSubmit()
                     }
                 }
             }
@@ -94,6 +96,7 @@ fun Keypad(
 fun KeypadPreview() {
     MathBrainerTheme{
         Keypad(
+            feedback = null,
             inputValue = "123",
             onDigitPressed = {},
             onDelete = {},

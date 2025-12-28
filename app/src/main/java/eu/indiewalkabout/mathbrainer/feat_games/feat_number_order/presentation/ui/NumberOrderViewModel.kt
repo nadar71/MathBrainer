@@ -3,6 +3,7 @@ package eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.presentation.
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.domain.model.NumberOrderConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.domain.use_cases.GenerateNumberOrderChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.domain.use_cases.UpdateNumberOrderScoreUseCase
@@ -127,7 +128,7 @@ class NumberOrderViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                feedback = NumberOrderUiState.Feedback.SUCCESS,
+                feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = maxOf(it.highScore ?: 0, newScore),
                 revealedCount = it.challenge?.itemCount ?: it.revealedCount,
@@ -151,7 +152,7 @@ class NumberOrderViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 lives = remainingLives,
-                feedback = NumberOrderUiState.Feedback.FAILURE,
+                feedback = ChallengeUiState.Feedback.FAILURE,
                 showNextButton = remainingLives > 0
             )
         }

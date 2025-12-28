@@ -25,15 +25,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.core.util.OperationFormatter
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.MathWriteChallenge
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.state.MathWriteUiState
 
 @Composable
-fun ChallengeCard(state: MathWriteUiState) {
+fun WriteChallengeCard(state: MathWriteUiState) {
     val feedbackColor = when (state.feedback) {
-        MathWriteUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
-        MathWriteUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
+        ChallengeUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
+        ChallengeUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
         else -> MaterialTheme.colorScheme.onSecondaryContainer
     }
     
@@ -98,12 +99,12 @@ fun ChallengeCard(state: MathWriteUiState) {
             )
 
             when (state.feedback) {
-                MathWriteUiState.Feedback.SUCCESS -> ResultBanner(
+                ChallengeUiState.Feedback.SUCCESS -> ResultBanner(
                     text = stringResource(id = R.string.ok_str),
                     color = MaterialTheme.colorScheme.primary
                 )
 
-                MathWriteUiState.Feedback.FAILURE -> ResultBanner(
+                ChallengeUiState.Feedback.FAILURE -> ResultBanner(
                     text = stringResource(id = R.string.wrong_answer),
                     color = MaterialTheme.colorScheme.error
                 )
@@ -117,11 +118,11 @@ fun ChallengeCard(state: MathWriteUiState) {
 @Preview(showBackground = true)
 @Composable
 fun ChallengeCardPreview() {
-    ChallengeCard(
+    WriteChallengeCard(
         state = MathWriteUiState(
             challenge = MathWriteChallenge(2, 3, '*', 6),
             inputValue = "4",
-            feedback = MathWriteUiState.Feedback.SUCCESS
+            feedback = ChallengeUiState.Feedback.SUCCESS
         )
     )
 }

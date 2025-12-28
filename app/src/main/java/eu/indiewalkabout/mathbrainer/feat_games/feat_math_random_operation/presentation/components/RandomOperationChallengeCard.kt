@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.core.util.OperationFormatter
 
 @Composable
@@ -29,8 +30,8 @@ fun RandomOperationChallengeCard(
 ) {
     val challenge = state.challenge ?: return
     val feedbackColor = when (state.feedback) {
-        RandomOperationUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
-        RandomOperationUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
+        ChallengeUiState.Feedback.SUCCESS -> MaterialTheme.colorScheme.primary
+        ChallengeUiState.Feedback.FAILURE -> MaterialTheme.colorScheme.error
         else -> MaterialTheme.colorScheme.onSurface
     }
 

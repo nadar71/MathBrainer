@@ -3,6 +3,7 @@ package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentatio
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.domain.model.DoubleNumberConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.domain.use_cases.GenerateDoubleNumberChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.domain.use_cases.UpdateDoubleNumberScoreUseCase
@@ -28,7 +29,7 @@ class DoubleNumberViewModel @Inject constructor(
     private var operandRangeMin = 1
     private var operandRangeMax = 100
 
-    private var timerLength = DoubleNumberUiState.INITIAL_TIMER_LENGTH
+    private var timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
     private var timerJob: Job? = null
     private var challengesCompleted = 0
     private var isScorePersisted = false // flag to prevent double writes to the DB
@@ -121,7 +122,7 @@ class DoubleNumberViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                feedback = DoubleNumberUiState.Feedback.SUCCESS,
+                feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = maxOf(it.highScore ?: 0, newScore),
                 challengesCompleted = challengesCompleted,
@@ -137,7 +138,7 @@ class DoubleNumberViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 lives = remainingLives,
-                feedback = DoubleNumberUiState.Feedback.FAILURE
+                feedback = ChallengeUiState.Feedback.FAILURE
             )
         }
 
@@ -153,7 +154,7 @@ class DoubleNumberViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 lives = remainingLives,
-                feedback = DoubleNumberUiState.Feedback.FAILURE,
+                feedback = ChallengeUiState.Feedback.FAILURE,
                 timeRemaining = 0L
             )
         }

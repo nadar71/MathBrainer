@@ -3,6 +3,7 @@ package eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.u
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.domain.model.CountObjectsConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.domain.use_cases.GenerateCountObjectsChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.domain.use_cases.UpdateCountObjectsScoreUseCase
@@ -115,7 +116,7 @@ class CountObjectsViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                feedback = CountObjectsUiState.Feedback.SUCCESS,
+                feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = maxOf(it.highScore ?: 0, newScore),
                 challengesCompleted = if (newChallengesCompleted >= it.challengesPerLevel) 0 else newChallengesCompleted,
@@ -138,7 +139,7 @@ class CountObjectsViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 lives = remainingLives,
-                feedback = CountObjectsUiState.Feedback.FAILURE,
+                feedback = ChallengeUiState.Feedback.FAILURE,
                 showNextButton = remainingLives > 0
             )
         }

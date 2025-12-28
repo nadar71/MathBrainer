@@ -1,24 +1,32 @@
+import androidx.compose.runtime.Immutable
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.model.RandomOperationChallenge
 
+@Immutable
 data class RandomOperationUiState(
-    val challenge: RandomOperationChallenge? = null,
-    val score: Int = 0,
-    val highScore: Int? = null,
-    val level: Int = 1,
-    val challengesCompleted: Int = 0,
-    val challengesPerLevel: Int = 12,
-    val lives: Int = 3,
-    val timeRemaining: Long = INITIAL_TIMER_LENGTH,
-    val totalTime: Long = INITIAL_TIMER_LENGTH,
-    val feedback: Feedback? = null,
-    val isGameOver: Boolean = false
-) {
-    val timerProgress: Float
-        get() = if (totalTime == 0L) 0f else (timeRemaining.toFloat() / totalTime.toFloat()).coerceIn(0f, 1f)
-
-    enum class Feedback { SUCCESS, FAILURE }
-
-    companion object {
-        const val INITIAL_TIMER_LENGTH: Long = 20_000L
-    }
-}
+    override val challenge: RandomOperationChallenge? = null,
+    override val inputValue: String = "",
+    override val score: Int = 0,
+    override val highScore: Int? = null,
+    override val level: Int = 1,
+    override val challengesCompleted: Int = 0,
+    override val challengesPerLevel: Int = 10,
+    override val lives: Int = 3,
+    override val timeRemaining: Long = INITIAL_TIMER_LENGTH,
+    override val totalTime: Long = INITIAL_TIMER_LENGTH,
+    override val feedback: Feedback? = null,
+    override val isGameOver: Boolean = false
+) : ChallengeUiState<RandomOperationChallenge>(
+    challenge = challenge,
+    inputValue = inputValue,
+    score = score,
+    highScore = highScore,
+    level = level,
+    challengesCompleted = challengesCompleted,
+    challengesPerLevel = challengesPerLevel,
+    lives = lives,
+    timeRemaining = timeRemaining,
+    totalTime = totalTime,
+    feedback = feedback,
+    isGameOver = isGameOver
+)

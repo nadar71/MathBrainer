@@ -3,6 +3,7 @@ package eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presenta
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.domain.model.SequenceChallenge
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.domain.model.SequenceConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.domain.use_cases.GenerateSequenceChallengeUseCase
@@ -122,7 +123,7 @@ class SequenceCompleteViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                feedback = SequenceCompleteUiState.Feedback.SUCCESS,
+                feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = max(it.highScore ?: 0, newScore),
                 challengesCompleted = challengesCompletedInternal,
@@ -141,7 +142,7 @@ class SequenceCompleteViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 lives = remainingLives,
-                feedback = SequenceCompleteUiState.Feedback.FAILURE,
+                feedback = ChallengeUiState.Feedback.FAILURE,
                 ruleDescription = challenge.ruleDescription,
                 revealedAnswer = challenge.answer,
                 visibleSequence = revealSequence(challenge),

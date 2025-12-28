@@ -3,6 +3,7 @@ package eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.presentation.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.domain.model.EnigmaConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.domain.use_cases.GenerateEnigmaChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.domain.use_cases.UpdateEnigmaScoreUseCase
@@ -89,7 +90,7 @@ class EnigmaViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                feedback = EnigmaUiState.Feedback.SUCCESS,
+                feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = maxOf(it.highScore ?: 0, newScore),
             )
@@ -99,7 +100,7 @@ class EnigmaViewModel @Inject constructor(
 
     private fun handleFailure() {
         val remainingLives = _uiState.value.lives - 1
-        _uiState.update { it.copy(lives = remainingLives, feedback = EnigmaUiState.Feedback.FAILURE) }
+        _uiState.update { it.copy(lives = remainingLives, feedback = ChallengeUiState.Feedback.FAILURE) }
 
         if (remainingLives <= 0) {
             onGameOver()

@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.domain.model.MathChooseChallenge
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation.components.ChooseChallengeCard
@@ -141,7 +142,7 @@ fun MathChooseGameScreenLastLifePreview() {
         StaticMathChooseGameScreen(
             state = previewMathChooseState.copy(
                 lives = 1,
-                feedback = MathChooseUiState.Feedback.FAILURE
+                feedback = ChallengeUiState.Feedback.FAILURE
             ),
             onBack = {},
             onOptionSelected = {}

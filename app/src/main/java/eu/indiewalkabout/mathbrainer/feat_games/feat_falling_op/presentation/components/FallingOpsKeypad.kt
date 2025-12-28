@@ -27,11 +27,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.AdsBannerPlaceholder
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FallingOpsKeypad(
+    feedback: ChallengeUiState.Feedback?,
     inputValue: String,
     onDigitPressed: (Int) -> Unit,
     onDelete: () -> Unit,
@@ -106,7 +108,7 @@ fun FallingOpsKeypad(
                 text = stringResource(id = R.string.submit_label),
                 modifier = Modifier.weight(2f),
                 highlight = true,
-                onClick = onSubmit
+                onClick = { if (feedback == null) onSubmit }
             )
         }
 
@@ -179,6 +181,7 @@ private fun FallingOpsKeypadPreview() {
                 .padding(16.dp)
         ) {
             FallingOpsKeypad(
+                feedback = null,
                 inputValue = "123",
                 onDigitPressed = {},
                 onDelete = {},

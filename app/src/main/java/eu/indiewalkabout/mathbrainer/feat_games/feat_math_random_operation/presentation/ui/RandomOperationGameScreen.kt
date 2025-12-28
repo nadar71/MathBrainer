@@ -26,9 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
+import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.presentation.components.RandomOperationChallengeCard
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.presentation.components.RandomOperationHeaderInfo
-import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
 
 @Composable
 fun RandomOperationGameScreen(
@@ -92,12 +93,12 @@ fun RandomOperationGameScreen(
             )
             
             when (state.feedback) {
-                RandomOperationUiState.Feedback.SUCCESS -> ResultBanner(
+                ChallengeUiState.Feedback.SUCCESS -> ResultBanner(
                     text = stringResource(id = R.string.ok_str),
                     color = MaterialTheme.colorScheme.primary
                 )
 
-                RandomOperationUiState.Feedback.FAILURE -> ResultBanner(
+                ChallengeUiState.Feedback.FAILURE -> ResultBanner(
                     text = stringResource(id = R.string.wrong_answer),
                     color = MaterialTheme.colorScheme.error
                 )

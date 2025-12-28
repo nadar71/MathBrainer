@@ -30,9 +30,9 @@ import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
 import eu.indiewalkabout.mathbrainer.core.presentation.components.keyboard.Keypad
+import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.components.SequenceChallengeCard
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.components.SequenceCompleteHeader
-import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.state.SequenceCompleteUiState
 
 @Composable
 fun SequenceCompleteGameScreen(
@@ -92,12 +92,12 @@ fun SequenceCompleteGameScreen(
             SequenceChallengeCard(state = state)
 
             when (state.feedback) {
-                SequenceCompleteUiState.Feedback.SUCCESS -> ResultBanner(
+                ChallengeUiState.Feedback.SUCCESS -> ResultBanner(
                     text = stringResource(id = R.string.sequence_feedback_success),
                     color = MaterialTheme.colorScheme.primary
                 )
 
-                SequenceCompleteUiState.Feedback.FAILURE -> ResultBanner(
+                ChallengeUiState.Feedback.FAILURE -> ResultBanner(
                     text = stringResource(id = R.string.sequence_feedback_failure),
                     color = MaterialTheme.colorScheme.error
                 )
@@ -115,8 +115,8 @@ fun SequenceCompleteGameScreen(
             } else {
                 Spacer(modifier = Modifier.height(0.dp))
             }
-
-Keypad(
+            Keypad(
+                feedback = state.feedback,
                 inputValue = state.inputValue,
                 onDigitPressed = { digit -> viewModel.onDigitPressed(digit) },
                 onDelete = { viewModel.onDelete() },
