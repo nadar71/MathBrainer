@@ -67,6 +67,10 @@ enum class GameTypes(
         id = "random",
         scoreField = { it.random_op_game_score }
     ),
+    MEMORY_FLASH(
+        id = "memory_flash",
+        scoreField = { it.memory_flash_game_score }
+    ),
     SEQUENCE_COMPLETE(
         id = "sequence_complete",
         scoreField = { it.sequence_complete_game_score }

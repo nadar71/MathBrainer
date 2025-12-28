@@ -15,7 +15,7 @@ import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
         GameStatistics::class,
         GameStats::class
     ],
-    version = 8,
+    version = 9,
     exportSchema = true
 )
 @TypeConverters(DateConverter::class)

@@ -64,6 +64,10 @@ val gamesDefinitionsList = listOf(
         // descriptionRes = R.string.random_operations_description,
     ),
     GameDefinition(
+        id = "memory_flash",
+        titleRes = R.string.game_card_memory_flash_text,
+    ),
+    GameDefinition(
         id = "falling_ops",
         titleRes = R.string.game_card_falling_ops_text,
     ),
