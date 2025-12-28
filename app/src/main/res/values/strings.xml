@@ -54,6 +54,19 @@
     <string name="random_operations_title">Random Operations</string>
     <string name="random_operations_description">Solve random math operations.</string>
     <string name="random_operations_subtitle">Choose the operation that makes the equation true.</string>
+    <string name="memory_flash_title">Memory Flash</string>
+    <string name="memory_flash_subtitle">Memorize the digits, then type them back.</string>
+    <string name="memory_flash_instruction">Memorize this sequence while it is visible.</string>
+    <string name="memory_flash_prompt">Enter the sequence from memory to score points.</string>
+    <string name="memory_flash_hidden_sequence">? ? ?</string>
+    <string name="memory_flash_success">Great recall! Get ready for the next pattern.</string>
+    <string name="memory_flash_failure">That pattern was different. Try the next one.</string>
+    <string name="memory_flash_challenges_label">Round %1$d of %2$d</string>
+    <string name="next_challenge">Next challenge</string>
+    <string name="score_label">Score: %1$d</string>
+    <string name="high_score_label">Best: %1$d</string>
+    <string name="level_label">Level %1$d</string>
+    <string name="lives_label">Lives: %1$d</string>
     <string name="falling_ops_title">Falling Ops</string>
     <string name="falling_ops_description">Clear the falling operations before they reach the keypad.</string>
     <string name="falling_ops_subtitle">Type results to stop the fall.</string>
@@ -124,6 +137,7 @@
     <string name="game_card_write_result_div_text"  >   :    \n        </string>
     <string name="game_card_double_number_title"    >   2x   \n        </string>
     <string name="game_card_sequence_complete_text" >1  2  4  ?\n        </string>
+    <string name="game_card_memory_flash_text">✦  ✦  ✦\n        </string>
     <string name="game_card_falling_ops_text"       >  ↓  \n+  –  x  :</string>
     <string name="game_card_enigma_text">△  □  ?\n        </string>
 

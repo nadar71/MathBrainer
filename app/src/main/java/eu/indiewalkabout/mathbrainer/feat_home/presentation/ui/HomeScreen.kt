@@ -164,6 +164,14 @@ fun HomeScreen(
                                     )
                                 }
 
+                                GameTypes.MEMORY_FLASH -> {
+                                    navController.navigate(
+                                        ScreenRoutes.MemoryFlashGame.createRoute(
+                                            highScore = game.highScore ?: 0
+                                        )
+                                    )
+                                }
+
                                 GameTypes.DOUBLE_NUMBER -> {
                                     navController.navigate(
                                         ScreenRoutes.DoubleNumberGame.createRoute(
