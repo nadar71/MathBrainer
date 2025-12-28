@@ -51,19 +51,22 @@ fun WriteChallengeCard(state: MathWriteUiState) {
                 Text(
                     text = state.challenge?.firstOperand?.toString().orEmpty(),
                     style = MaterialTheme.typography.displaySmall,
-                    color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSecondaryContainer
+                    color = if (state.feedback != null) feedbackColor else
+                        MaterialTheme.colorScheme.onSecondaryContainer
                 )
                 Spacer(modifier = Modifier.Companion.padding(horizontal = 8.dp))
                 Text(
                     text = state.challenge?.operation?.let { OperationFormatter.format(it) }.orEmpty(),
                     style = MaterialTheme.typography.displaySmall,
-                    color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSecondaryContainer
+                    color = if (state.feedback != null) feedbackColor else
+                        MaterialTheme.colorScheme.onSecondaryContainer
                 )
                 Spacer(modifier = Modifier.Companion.padding(horizontal = 8.dp))
                 Text(
                     text = state.challenge?.secondOperand?.toString().orEmpty(),
                     style = MaterialTheme.typography.displaySmall,
-                    color = if (state.feedback != null) feedbackColor else MaterialTheme.colorScheme.onSecondaryContainer
+                    color = if (state.feedback != null) feedbackColor else
+                        MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
             TextField(
@@ -103,7 +106,6 @@ fun WriteChallengeCard(state: MathWriteUiState) {
                     text = stringResource(id = R.string.ok_str),
                     color = MaterialTheme.colorScheme.primary
                 )
-
                 ChallengeUiState.Feedback.FAILURE -> ResultBanner(
                     text = stringResource(id = R.string.wrong_answer),
                     color = MaterialTheme.colorScheme.error

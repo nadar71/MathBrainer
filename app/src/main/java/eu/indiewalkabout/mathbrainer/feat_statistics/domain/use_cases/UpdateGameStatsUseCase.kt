@@ -11,6 +11,7 @@ class UpdateGameStatsUseCase @Inject constructor(
     suspend operator fun invoke(gameId: String, sessionScore: Int, isWin: Boolean, lastLevel: Int) {
         if (gameId.isBlank()) return
 
+        // TODO: must be passed as parameters
         val currentStats = repository.getGameStats(gameId) ?: GameStats(gameId = gameId)
 
         val shouldUpdateHighScore = currentStats.highScore == 0 || sessionScore >= currentStats.highScore

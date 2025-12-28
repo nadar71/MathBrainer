@@ -1,13 +1,12 @@
 package eu.indiewalkabout.mathbrainer.feat_statistics.data.local.db
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameScores
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStatistics
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import kotlinx.coroutines.flow.Flow
 
 
@@ -38,11 +37,11 @@ interface MathBrainerDbDao {
     suspend fun insertGameStats(gameStats: GameStats)
 
     // --- UPDATE ---
-    @Delete
+   /* @Delete
     suspend fun deleteGameScores(gameScores: GameScores)
     @Delete
     suspend fun deleteGameStatistics(gameStatistics: GameStatistics)
-
+*/
     // --- DROPS ---
     @Query("DELETE FROM GameScores")
     suspend fun dropTableGameScores()
