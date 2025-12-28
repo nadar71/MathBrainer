@@ -41,7 +41,6 @@ fun HomeScreen(
     navController: NavHostController,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-
     val state by homeViewModel.uiState.collectAsState()
     Log.d(
         "HomeScreen",
@@ -159,6 +158,14 @@ fun HomeScreen(
                                 GameTypes.RANDOM_OPERATION -> {
                                     navController.navigate(
                                         ScreenRoutes.RandomOperationGame.createRoute(
+                                            highScore = game.highScore ?: 0
+                                        )
+                                    )
+                                }
+
+                                GameTypes.MEMORY_FLASH -> {
+                                    navController.navigate(
+                                        ScreenRoutes.MemoryFlashGame.createRoute(
                                             highScore = game.highScore ?: 0
                                         )
                                     )

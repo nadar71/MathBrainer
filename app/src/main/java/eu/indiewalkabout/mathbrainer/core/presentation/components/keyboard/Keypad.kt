@@ -80,12 +80,6 @@ fun Keypad(
                     }
                 }
             }
-            /*Spacer(modifier = Modifier.Companion.height(8.dp))
-            Text(
-                text = stringResource(id = R.string.current_input, inputValue.ifEmpty { "-" }),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )*/
         }
     }
 }

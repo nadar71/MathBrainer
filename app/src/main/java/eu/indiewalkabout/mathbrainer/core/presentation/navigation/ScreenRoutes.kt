@@ -22,6 +22,9 @@ sealed class ScreenRoutes(val route: String) {
     object RandomOperationGame : ScreenRoutes("random_op_game/{highScore}") {
         fun createRoute(highScore: Int = 0): String = "random_op_game/$highScore"
     }
+    object MemoryFlashGame : ScreenRoutes("memory_flash_game/{highScore}") {
+        fun createRoute(highScore: Int = 0): String = "memory_flash_game/$highScore"
+    }
     object CountObjectsGame : ScreenRoutes("count_objects_game/{highScore}") {
         fun createRoute(highScore: Int = 0): String {
             return "count_objects_game/$highScore"
