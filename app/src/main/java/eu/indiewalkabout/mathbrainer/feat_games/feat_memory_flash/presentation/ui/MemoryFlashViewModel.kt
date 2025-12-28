@@ -214,6 +214,7 @@ class MemoryFlashViewModel @Inject constructor(
         private const val SCORE_PER_DIGIT = 10
         private const val BASE_DELAY_PER_DIGIT_MS = 300L  // Base delay per digit in milliseconds
         private const val MIN_TOTAL_DELAY_MS = 900L      // Minimum total delay
+        private const val MAX_CHALLENGES_PER_LEVEL = 6
         
         private fun calculateRevealDuration(sequenceLength: Int): Long {
             val calculatedDelay = sequenceLength * BASE_DELAY_PER_DIGIT_MS

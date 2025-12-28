@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -36,6 +35,9 @@ fun MemoryFlashChallengeCard(state: MemoryFlashUiState) {
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
+        // Define height constants at the top of the Column scope
+        val textFieldHeight = 50.dp
+        
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -72,8 +74,8 @@ fun MemoryFlashChallengeCard(state: MemoryFlashUiState) {
                     readOnly = true,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(),
-                    textStyle = MaterialTheme.typography.headlineMedium.copy(
+                        .height(textFieldHeight),
+                    textStyle = MaterialTheme.typography.titleMedium.copy(
                         textAlign = TextAlign.Center,
                         color = if (state.feedback != null) {
                             when (state.feedback) {
@@ -105,8 +107,10 @@ fun MemoryFlashChallengeCard(state: MemoryFlashUiState) {
                         )
                     }
                 )
+            } else {
+                // Invisible placeholder with the same height as TextField
+                Spacer(modifier = Modifier.height(textFieldHeight))
             }
-
             Spacer(modifier = Modifier.height(4.dp))
         }
     }
