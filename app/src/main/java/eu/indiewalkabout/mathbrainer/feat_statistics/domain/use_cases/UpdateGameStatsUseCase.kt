@@ -1,5 +1,6 @@
 package eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases
 
+import android.util.Log
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository.MathBrainerRepository
 import javax.inject.Inject
@@ -8,22 +9,18 @@ import kotlin.math.max
 class UpdateGameStatsUseCase @Inject constructor(
     private val repository: MathBrainerRepository
 ) {
-    suspend operator fun invoke(gameId: String, sessionScore: Int, isWin: Boolean, lastLevel: Int) {
-        if (gameId.isBlank()) return
+    suspend operator fun invoke(previousStats: GameStats?, updatedStats: GameStats) {
+        if (updatedStats.gameId.isBlank()) return
 
-        // TODO: must be passed as parameters
-        val currentStats = repository.getGameStats(gameId) ?: GameStats(gameId = gameId)
+        val currentStats = previousStats ?:
+                repository.getGameStats(updatedStats.gameId) ?:
+                GameStats(gameId = updatedStats.gameId)
 
-        val shouldUpdateHighScore = currentStats.highScore == 0 || sessionScore >= currentStats.highScore
-
-        val updatedStats = currentStats.copy(
-            highScore = if (shouldUpdateHighScore) sessionScore else currentStats.highScore,
-            challengesPlayed = currentStats.challengesPlayed + 1,
-            challengesWon = currentStats.challengesWon + if (isWin) 1 else 0,
-            challengesLost = currentStats.challengesLost + if (isWin) 0 else 1,
-            lastLevel = max(currentStats.lastLevel, lastLevel)
+        val mergedStats = updatedStats.copy(
+            highScore = max(currentStats.highScore, updatedStats.highScore),
+            lastLevel = max(currentStats.lastLevel, updatedStats.lastLevel)
         )
-
-        repository.insertGameStats(updatedStats)
+        Log.d("UpdateGameStatsUseCase", "Merged stats: $mergedStats")
+        repository.insertGameStats(mergedStats)
     }
 }

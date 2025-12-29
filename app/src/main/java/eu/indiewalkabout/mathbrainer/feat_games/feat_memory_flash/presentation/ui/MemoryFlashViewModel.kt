@@ -10,6 +10,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_memory_flash.domain.use_cas
 import eu.indiewalkabout.mathbrainer.feat_games.feat_memory_flash.domain.use_cases.UpdateMemoryFlashScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_memory_flash.presentation.state.MemoryFlashUiState
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,14 +20,23 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.math.max
 
 @HiltViewModel
 class MemoryFlashViewModel @Inject constructor(
     private val generateMemoryFlashChallengeUseCase: GenerateMemoryFlashChallengeUseCase,
     private val updateMemoryFlashScoreUseCase: UpdateMemoryFlashScoreUseCase,
+    private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
+
+    private var highScore: Int = 0
+    private var challengesPlayed: Int = 0
+    private var challengesWon: Int = 0
+    private var challengesLost: Int = 0
+    private var lastLevel: Int = 1
+
+    private val _gameStats = MutableStateFlow<GameStats?>(null)
+    val gameStats: StateFlow<GameStats?> = _gameStats.asStateFlow()
 
     private var challengesCompletedInternal = 0
     private var challengesPerLevelInternal = INITIAL_CHALLENGES_PER_LEVEL
@@ -35,6 +46,19 @@ class MemoryFlashViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MemoryFlashUiState())
     val uiState: StateFlow<MemoryFlashUiState> = _uiState.asStateFlow()
 
+    fun refreshGameStat(gameId: String, fallbackHighScore: Int = 0) {
+        viewModelScope.launch {
+            val stats = getGameStatsUseCase(gameId)
+            _gameStats.value = stats
+            highScore = stats?.highScore ?: fallbackHighScore
+            challengesPlayed = stats?.challengesPlayed ?: 0
+            challengesWon = stats?.challengesWon ?: 0
+            challengesLost = stats?.challengesLost ?: 0
+            lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
+            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
+        }
+    }
+
     fun startGame(initialHighScore: Int = 0) {
         isScorePersisted = false
         challengesCompletedInternal = 0
@@ -42,7 +66,8 @@ class MemoryFlashViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                highScore = initialHighScore.takeIf { score -> score > 0 },
+                highScore = highScore.takeIf { score -> score > 0 }
+                    ?: initialHighScore.takeIf { score -> score > 0 },
                 score = 0,
                 level = 1,
                 lives = 3,
@@ -133,11 +158,16 @@ class MemoryFlashViewModel @Inject constructor(
             _uiState.value.level to challengesPerLevelInternal
         }
 
+        challengesPlayed++
+        challengesWon++
+        lastLevel = maxOf(lastLevel, nextLevel)
+        highScore = maxOf(highScore, newScore)
+
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
-                highScore = max(it.highScore ?: 0, newScore),
+                highScore = highScore,
                 challengesCompleted = challengesCompletedInternal,
                 challengesPerLevel = nextChallengesPerLevel,
                 level = nextLevel,
@@ -150,6 +180,9 @@ class MemoryFlashViewModel @Inject constructor(
 
     private fun handleFailure(challenge: MemoryFlashChallenge) {
         val remainingLives = _uiState.value.lives - 1
+        challengesPlayed++
+        challengesLost++
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
         _uiState.update {
             it.copy(
                 lives = remainingLives,
@@ -182,13 +215,20 @@ class MemoryFlashViewModel @Inject constructor(
         if (isScorePersisted) return
         isScorePersisted = true
         val finalScore = _uiState.value.score
+        highScore = maxOf(highScore, finalScore)
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        val updatedStats = GameStats(
+            gameId = GameTypes.MEMORY_FLASH.id,
+            highScore = highScore,
+            challengesPlayed = challengesPlayed,
+            challengesWon = challengesWon,
+            challengesLost = challengesLost,
+            lastLevel = lastLevel
+        )
+        val previousStats = _gameStats.value
+        _gameStats.value = updatedStats
         viewModelScope.launch {
-            updateGameStatsUseCase(
-                gameId = GameTypes.MEMORY_FLASH.id,
-                sessionScore = finalScore,
-                isWin = finalScore > 0,
-                lastLevel = _uiState.value.level
-            )
+            updateGameStatsUseCase(previousStats, updatedStats)
             if (finalScore > 0) {
                 updateMemoryFlashScoreUseCase(finalScore)
             }

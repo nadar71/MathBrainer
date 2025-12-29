@@ -10,6 +10,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domai
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.use_cases.GenerateRandomOperationChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.use_cases.UpdateRandomOperationScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -24,8 +26,18 @@ import javax.inject.Inject
 class RandomOperationViewModel @Inject constructor(
     private val generateRandomOperationChallengeUseCase: GenerateRandomOperationChallengeUseCase,
     private val updateRandomOperationScoreUseCase: UpdateRandomOperationScoreUseCase,
+    private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
+
+    private var highScore: Int = 0
+    private var challengesPlayed: Int = 0
+    private var challengesWon: Int = 0
+    private var challengesLost: Int = 0
+    private var lastLevel: Int = 1
+
+    private val _gameStats = MutableStateFlow<GameStats?>(null)
+    val gameStats: StateFlow<GameStats?> = _gameStats.asStateFlow()
 
     // random range of number to be processed
     private var operandRangeMin = 1
@@ -55,8 +67,22 @@ class RandomOperationViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(RandomOperationUiState())
     val uiState: StateFlow<RandomOperationUiState> = _uiState.asStateFlow()
 
+    fun refreshGameStat(gameId: String, fallbackHighScore: Int = 0) {
+        viewModelScope.launch {
+            val stats = getGameStatsUseCase(gameId)
+            _gameStats.value = stats
+            highScore = stats?.highScore ?: fallbackHighScore
+            challengesPlayed = stats?.challengesPlayed ?: 0
+            challengesWon = stats?.challengesWon ?: 0
+            challengesLost = stats?.challengesLost ?: 0
+            lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
+            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
+        }
+    }
+
     fun startGame(initialHighScore: Int = 0) {
-        _uiState.update { it.copy(highScore = initialHighScore.takeIf { score -> score > 0 }) }
+        isScorePersisted = false
+        _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 } ?: initialHighScore.takeIf { it > 0 }) }
         viewModelScope.launch {
             launchNewChallenge(resetTimer = true)
         }
@@ -120,6 +146,8 @@ class RandomOperationViewModel @Inject constructor(
     }
 
     private fun handleSuccess() {
+        challengesPlayed++
+        challengesWon++
         challengesCompleted++
         val newScore = _uiState.value.score + SCORE_INCREMENT
         var updatedTimer = timerLength
@@ -130,11 +158,13 @@ class RandomOperationViewModel @Inject constructor(
             updatedTimer = timerLength
         }
 
+        highScore = maxOf(highScore, newScore)
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
-                highScore = maxOf(it.highScore ?: 0, newScore),
+                highScore = highScore,
                 challengesCompleted = challengesCompleted,
                 challengesPerLevel = challengesPerLevel,
                 timeRemaining = updatedTimer,
@@ -146,6 +176,9 @@ class RandomOperationViewModel @Inject constructor(
 
     private fun handleFailure() {
         val remainingLives = _uiState.value.lives - 1
+        challengesPlayed++
+        challengesLost++
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
         _uiState.update {
             it.copy(
                 lives = remainingLives,
@@ -162,6 +195,9 @@ class RandomOperationViewModel @Inject constructor(
 
     private fun handleCountdownExpired() {
         val remainingLives = _uiState.value.lives - 1
+        challengesPlayed++
+        challengesLost++
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
         _uiState.update {
             it.copy(
                 lives = remainingLives,
@@ -189,6 +225,7 @@ class RandomOperationViewModel @Inject constructor(
     // Increases the current level by 1 and updates the game parameters accordingly.
     private fun promoteLevel() {
         _uiState.update { it.copy(level = it.level + 1) }
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
         val level = _uiState.value.level
         operandRangeMin = operandRangeMax
         operandRangeMax = 100 * level + 50 * (level - 1)
@@ -211,13 +248,20 @@ class RandomOperationViewModel @Inject constructor(
         if (isScorePersisted) return
         isScorePersisted = true
         val finalScore = _uiState.value.score
+        highScore = maxOf(highScore, finalScore)
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        val updatedStats = GameStats(
+            gameId = GameTypes.RANDOM_OPERATION.id,
+            highScore = highScore,
+            challengesPlayed = challengesPlayed,
+            challengesWon = challengesWon,
+            challengesLost = challengesLost,
+            lastLevel = lastLevel
+        )
+        val previousStats = _gameStats.value
+        _gameStats.value = updatedStats
         viewModelScope.launch {
-            updateGameStatsUseCase(
-                gameId = GameTypes.RANDOM_OPERATION.id,
-                sessionScore = finalScore,
-                isWin = finalScore > 0,
-                lastLevel = _uiState.value.level
-            )
+            updateGameStatsUseCase(previousStats, updatedStats)
             if (finalScore > 0) {
                 updateRandomOperationScoreUseCase(finalScore)
             }

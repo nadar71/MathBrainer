@@ -44,6 +44,7 @@ import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
 import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.domain.model.NumberMarker
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.presentation.components.NumberOrderHeader
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import kotlin.math.max
 import kotlin.math.roundToInt
 import kotlin.random.Random
@@ -52,13 +53,23 @@ import kotlin.random.Random
 fun NumberOrderGameScreen(
     initialHighScore: Int = 0,
     onBack: () -> Unit,
-    viewModel: NumberOrderViewModel = hiltViewModel()
+    viewModel: NumberOrderViewModel = hiltViewModel(),
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val gameId = GameTypes.NUMBER_ORDER.id
+    val gameStats by viewModel.gameStats.collectAsState()
+    var hasStarted by remember(gameId) { mutableStateOf(false) }
 
-    LaunchedEffect(initialHighScore) {
-        viewModel.startGame(initialHighScore)
+    LaunchedEffect(gameId, initialHighScore) {
+        viewModel.refreshGameStat(gameId, initialHighScore)
     }
+
+    LaunchedEffect(gameId, gameStats) {
+        if (!hasStarted && gameStats != null) {
+            viewModel.startGame()
+            hasStarted = true
+        }
+    }
+    val state by viewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {

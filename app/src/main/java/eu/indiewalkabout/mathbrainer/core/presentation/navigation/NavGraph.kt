@@ -1,6 +1,5 @@
 package eu.indiewalkabout.mathbrainer.core.presentation.navigation
 
-import MathChooseGameScreen
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,10 +13,11 @@ import eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui.GameCreditsScr
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.ui.CountObjectsGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.presentation.ui.EnigmaGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.ui.FallingOpsGameScreen
-import eu.indiewalkabout.mathbrainer.feat_games.feat_memory_flash.presentation.ui.MemoryFlashGameScreen
+import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation.ui.MathChooseGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation.ui.DoubleNumberGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui.MathWriteGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.presentation.ui.RandomOperationGameScreen
+import eu.indiewalkabout.mathbrainer.feat_games.feat_memory_flash.presentation.ui.MemoryFlashGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.presentation.ui.NumberOrderGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.ui.SequenceCompleteGameScreen
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeScreen
