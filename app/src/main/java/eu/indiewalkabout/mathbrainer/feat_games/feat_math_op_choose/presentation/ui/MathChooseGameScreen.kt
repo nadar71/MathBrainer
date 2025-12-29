@@ -21,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,7 +31,6 @@ import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation.components.ChooseChallengeCard
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation.components.ChooseHeaderInfo
-import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation.ui.MathOpChooseResultViewModel
 
 @Composable
 fun MathChooseGameScreen(
