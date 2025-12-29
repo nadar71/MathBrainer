@@ -140,8 +140,7 @@ fun HomeScreen(
                                 GameTypes.SUM_WRITE, GameTypes.DIFF_WRITE, GameTypes.MULT_WRITE, GameTypes.DIV_WRITE, GameTypes.MIX_WRITE -> {
                                     navController.navigate(
                                         ScreenRoutes.MathWriteGame.createRoute(
-                                            operation = game.definition.id,
-                                            highScore = game.highScore ?: 0
+                                            operation = game.definition.id
                                         )
                                     )
                                 }
@@ -149,73 +148,56 @@ fun HomeScreen(
                                 GameTypes.SUM_CHOOSE, GameTypes.DIFF_CHOOSE, GameTypes.MULT_CHOOSE, GameTypes.DIV_CHOOSE, GameTypes.MIX_CHOOSE -> {
                                     navController.navigate(
                                         ScreenRoutes.MathChooseGame.createRoute(
-                                            operation = game.definition.id,
-                                            highScore = game.highScore ?: 0
+                                            operation = game.definition.id
                                         )
                                     )
                                 }
 
                                 GameTypes.RANDOM_OPERATION -> {
                                     navController.navigate(
-                                        ScreenRoutes.RandomOperationGame.createRoute(
-                                            highScore = game.highScore ?: 0
-                                        )
+                                        ScreenRoutes.RandomOperationGame.route
                                     )
                                 }
 
                                 GameTypes.MEMORY_FLASH -> {
                                     navController.navigate(
-                                        ScreenRoutes.MemoryFlashGame.createRoute(
-                                            highScore = game.highScore ?: 0
-                                        )
+                                        ScreenRoutes.MemoryFlashGame.route
                                     )
                                 }
 
                                 GameTypes.DOUBLE_NUMBER -> {
                                     navController.navigate(
-                                        ScreenRoutes.DoubleNumberGame.createRoute(
-                                            highScore = game.highScore ?: 0
-                                        )
+                                        ScreenRoutes.DoubleNumberGame.route
                                     )
                                 }
 
                                 GameTypes.QUICK_COUNT -> {
                                     navController.navigate(
-                                        ScreenRoutes.CountObjectsGame.createRoute(
-                                            highScore = game.highScore ?: 0
-                                        )
+                                        ScreenRoutes.CountObjectsGame.route
                                     )
                                 }
 
                                 GameTypes.NUMBER_ORDER -> {
                                     navController.navigate(
-                                        ScreenRoutes.NumberOrderGame.createRoute(
-                                            highScore = game.highScore ?: 0
-                                        )
+                                        ScreenRoutes.NumberOrderGame.route
                                     )
                                 }
 
                                 GameTypes.SEQUENCE_COMPLETE -> {
                                     navController.navigate(
-                                        ScreenRoutes.SequenceCompleteGame.createRoute(
-                                            highScore = game.highScore ?: 0
-                                        )
+                                        ScreenRoutes.SequenceCompleteGame.route
                                     )
                                 }
 
                                 GameTypes.FALLING_OPS -> {
                                     navController.navigate(
-                                        ScreenRoutes.FallingOpsGame.createRoute(
-                                            highScore = game.highScore ?: 0
-                                        )
+                                        ScreenRoutes.FallingOpsGame.route
                                     )
                                 }
 
-			        GameTypes.ENIGMA -> {
+                                GameTypes.ENIGMA -> {
                                     navController.navigate(
-                                        ScreenRoutes.EnigmaGame.createRoute(
-                                            highScore = game.highScore ?: 0
-                                        )
+                                        ScreenRoutes.EnigmaGame.route
                                     )
                                 }
 

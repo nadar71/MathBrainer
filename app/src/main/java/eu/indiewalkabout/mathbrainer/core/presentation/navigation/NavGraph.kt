@@ -57,17 +57,14 @@ fun NavGraph(
         composable(
             route = ScreenRoutes.MathWriteGame.route,
             arguments = listOf(
-                navArgument("operation") { type = NavType.StringType },
-                navArgument("highScore") { type = NavType.IntType }
+                navArgument("operation") { type = NavType.StringType }
             )
         ) { backStackEntry ->
             val encodedOperation = backStackEntry.arguments?.getString("operation") ?: "+"
             val operation = URLDecoder.decode(encodedOperation, "UTF-8")
-            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
-            
+
             MathWriteGameScreen(
                 operation = operation,
-                initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )
         }
@@ -76,136 +73,68 @@ fun NavGraph(
         composable(
             route = ScreenRoutes.MathChooseGame.route,
             arguments = listOf(
-                navArgument("operation") { type = NavType.StringType },
-                navArgument("highScore") { type = NavType.IntType }
+                navArgument("operation") { type = NavType.StringType }
             )
         ) { backStackEntry ->
             val encodedOperation = backStackEntry.arguments?.getString("operation") ?: "+"
             val operation = java.net.URLDecoder.decode(encodedOperation, "UTF-8")
-            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
 
             MathChooseGameScreen(
                 operation = operation,
-                initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )
         }
 
         // --- Double Number Game ---
-        composable(
-            route = ScreenRoutes.DoubleNumberGame.route,
-            arguments = listOf(
-                navArgument("highScore") { type = NavType.IntType }
-            )
-        ) { backStackEntry ->
-            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
-
+        composable(route = ScreenRoutes.DoubleNumberGame.route) {
             DoubleNumberGameScreen(
-                initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )
         }
 
         // --- Random Operation Game ---
-        composable(
-            route = ScreenRoutes.RandomOperationGame.route,
-            arguments = listOf(
-                navArgument("highScore") { type = NavType.IntType }
-            )
-        ) { backStackEntry ->
-            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
-
+        composable(route = ScreenRoutes.RandomOperationGame.route) {
             RandomOperationGameScreen(
-                initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )
         }
 
         // --- Memory Flash Game ---
-        composable(
-            route = ScreenRoutes.MemoryFlashGame.route,
-            arguments = listOf(
-                navArgument("highScore") { type = NavType.IntType }
-            )
-        ) { backStackEntry ->
-            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
-
+        composable(route = ScreenRoutes.MemoryFlashGame.route) {
             MemoryFlashGameScreen(
-                initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )
         }
 
         // --- Number Order Game ---
-        composable(
-            route = ScreenRoutes.NumberOrderGame.route,
-            arguments = listOf(
-                navArgument("highScore") { type = NavType.IntType }
-            )
-        ) { backStackEntry ->
-            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
-
+        composable(route = ScreenRoutes.NumberOrderGame.route) {
             NumberOrderGameScreen(
-                initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )
         }
 
         // --- Count Objects Game ---
-        composable(
-            route = ScreenRoutes.CountObjectsGame.route,
-            arguments = listOf(
-                navArgument("highScore") { type = NavType.IntType }
-            )
-        ) { backStackEntry ->
-            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
-            CountObjectsGameScreen(
-                initialHighScore = highScore,
-                onBack = { navController.popBackStack() }
-            )
+        composable(route = ScreenRoutes.CountObjectsGame.route) {
+            CountObjectsGameScreen(onBack = { navController.popBackStack() })
         }
 
         // --- Sequence Completion Game ---
-        composable(
-            route = ScreenRoutes.SequenceCompleteGame.route,
-            arguments = listOf(
-                navArgument("highScore") { type = NavType.IntType }
-            )
-        ) { backStackEntry ->
-            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
-
+        composable(route = ScreenRoutes.SequenceCompleteGame.route) {
             SequenceCompleteGameScreen(
-                initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )
         }
 
         // --- Falling Operations Game ---
-        composable(
-            route = ScreenRoutes.FallingOpsGame.route,
-            arguments = listOf(
-                navArgument("highScore") { type = NavType.IntType }
-            )
-        ) { backStackEntry ->
-            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
-
+        composable(route = ScreenRoutes.FallingOpsGame.route) {
             FallingOpsGameScreen(
-                initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )
         }
 
         // --- Enigma Game ---
-        composable(
-            route = ScreenRoutes.EnigmaGame.route,
-            arguments = listOf(
-                navArgument("highScore") { type = NavType.IntType }
-            )
-        ) { backStackEntry ->
-            val highScore = backStackEntry.arguments?.getInt("highScore") ?: 0
-
+        composable(route = ScreenRoutes.EnigmaGame.route) {
             EnigmaGameScreen(
-                initialHighScore = highScore,
                 onBack = { navController.popBackStack() }
             )
         }
