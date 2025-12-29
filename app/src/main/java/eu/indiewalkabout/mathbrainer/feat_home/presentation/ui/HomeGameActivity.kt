@@ -20,11 +20,6 @@ class HomeGameActivity : ComponentActivity() {
             }
         }
     }
-
-    companion object {
-        const val OPERATION_KEY = "operation"
-        const val HIGHSCORE = "highscore"
-    }
 }
 
 
