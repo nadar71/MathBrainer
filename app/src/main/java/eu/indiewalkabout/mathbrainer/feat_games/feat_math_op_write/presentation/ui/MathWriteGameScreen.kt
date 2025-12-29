@@ -19,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -38,9 +40,19 @@ fun MathWriteGameScreen(
     viewModel: MathOpWriteResultViewModel = hiltViewModel()
 ) {
 
-    // ----------------------------------------- LOGIC -------------------------------------------
-    LaunchedEffect(operation) {
-        viewModel.setOperation(operation, initialHighScore)
+    val gameId = operation
+    val gameStats by viewModel.gameStats.collectAsState()
+    var hasStarted by remember(gameId) { mutableStateOf(false) }
+
+    LaunchedEffect(gameId, initialHighScore) {
+        viewModel.refreshGameStat(gameId, initialHighScore)
+    }
+
+    LaunchedEffect(gameId, gameStats) {
+        if (!hasStarted && gameStats != null) {
+            viewModel.setOperation(gameId)
+            hasStarted = true
+        }
     }
 
     // --- game state
@@ -103,8 +115,8 @@ fun MathWriteGameScreen(
     }
 
     if (state.isGameOver) {
-        LaunchedEffect(operation, initialHighScore) {
-            viewModel.setOperation(operation, initialHighScore)
+        LaunchedEffect(gameId, gameStats) {
+            viewModel.setOperation(gameId)
         }
         GameOverDialog(onDismiss = {
             viewModel.onQuitGame()

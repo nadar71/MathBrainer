@@ -9,6 +9,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.domain.use_case
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.domain.use_cases.UpdateCountObjectsScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.state.CountObjectsUiState
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -23,8 +25,18 @@ import javax.inject.Inject
 class CountObjectsViewModel @Inject constructor(
     private val generateCountObjectsChallengeUseCase: GenerateCountObjectsChallengeUseCase,
     private val updateCountObjectsScoreUseCase: UpdateCountObjectsScoreUseCase,
+    private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
+
+    private var highScore: Int = 0
+    private var challengesPlayed: Int = 0
+    private var challengesWon: Int = 0
+    private var challengesLost: Int = 0
+    private var lastLevel: Int = 1
+
+    private val _gameStats = MutableStateFlow<GameStats?>(null)
+    val gameStats: StateFlow<GameStats?> = _gameStats.asStateFlow()
 
     private var maxItemsToCount = INITIAL_MAX_ITEMS
     private var memorizeDuration = CountObjectsUiState.INITIAL_MEMORIZE_DURATION
@@ -35,16 +47,30 @@ class CountObjectsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CountObjectsUiState())
     val uiState: StateFlow<CountObjectsUiState> = _uiState.asStateFlow()
 
-    fun startGame(initialHighScore: Int = 0) {
-        _uiState.update { 
+    fun refreshGameStat(gameId: String, fallbackHighScore: Int = 0) {
+        viewModelScope.launch {
+            val stats = getGameStatsUseCase(gameId)
+            _gameStats.value = stats
+            highScore = stats?.highScore ?: fallbackHighScore
+            challengesPlayed = stats?.challengesPlayed ?: 0
+            challengesWon = stats?.challengesWon ?: 0
+            challengesLost = stats?.challengesLost ?: 0
+            lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
+            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
+        }
+    }
+
+    fun startGame() {
+        isScorePersisted = false
+        _uiState.update {
             it.copy(
-                highScore = initialHighScore.takeIf { score -> score > 0 },
+                highScore = highScore.takeIf { score -> score > 0 },
                 challengesPerLevel = INITIAL_CHALLENGES_PER_LEVEL,
                 challengesCompleted = 0,
                 level = 1,
                 score = 0,
                 lives = 3
-            ) 
+            )
         }
         viewModelScope.launch { launchNewChallenge(resetTimer = true) }
     }
@@ -102,6 +128,8 @@ class CountObjectsViewModel @Inject constructor(
     }
 
     private fun handleSuccess() {
+        challengesPlayed++
+        challengesWon++
         val newChallengesCompleted = _uiState.value.challengesCompleted + 1
         val newScore = _uiState.value.score + SCORE_INCREMENT
         var newLevel = _uiState.value.level
@@ -114,11 +142,13 @@ class CountObjectsViewModel @Inject constructor(
             updatedMemorizeDuration = memorizeDuration
         }
 
+        highScore = maxOf(highScore, newScore)
+        lastLevel = maxOf(lastLevel, newLevel)
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
-                highScore = maxOf(it.highScore ?: 0, newScore),
+                highScore = highScore,
                 challengesCompleted = if (newChallengesCompleted >= it.challengesPerLevel) 0 else newChallengesCompleted,
                 memorizeDurationMs = updatedMemorizeDuration,
                 showNextButton = true,
@@ -136,6 +166,9 @@ class CountObjectsViewModel @Inject constructor(
 
     private fun handleFailure() {
         val remainingLives = _uiState.value.lives - 1
+        challengesPlayed++
+        challengesLost++
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
         _uiState.update {
             it.copy(
                 lives = remainingLives,
@@ -151,6 +184,7 @@ class CountObjectsViewModel @Inject constructor(
 
     private fun promoteLevel() {
         _uiState.update { it.copy(level = it.level + 1) }
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
         if (_uiState.value.level < LEVEL_ITEMS_CAP) {
             maxItemsToCount += ITEMS_INCREMENT
         }
@@ -167,13 +201,20 @@ class CountObjectsViewModel @Inject constructor(
         if (isScorePersisted) return
         isScorePersisted = true
         val finalScore = _uiState.value.score
+        highScore = maxOf(highScore, finalScore)
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        val updatedStats = GameStats(
+            gameId = GameTypes.QUICK_COUNT.id,
+            highScore = highScore,
+            challengesPlayed = challengesPlayed,
+            challengesWon = challengesWon,
+            challengesLost = challengesLost,
+            lastLevel = lastLevel
+        )
+        val previousStats = _gameStats.value
+        _gameStats.value = updatedStats
         viewModelScope.launch {
-            updateGameStatsUseCase(
-                gameId = GameTypes.QUICK_COUNT.id,
-                sessionScore = finalScore,
-                isWin = finalScore > 0,
-                lastLevel = _uiState.value.level
-            )
+            updateGameStatsUseCase(previousStats, updatedStats)
             if (finalScore > 0) {
                 updateCountObjectsScoreUseCase(finalScore)
             }

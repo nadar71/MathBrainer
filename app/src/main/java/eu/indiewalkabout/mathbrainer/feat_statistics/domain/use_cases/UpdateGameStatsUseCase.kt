@@ -8,6 +8,19 @@ import kotlin.math.max
 class UpdateGameStatsUseCase @Inject constructor(
     private val repository: MathBrainerRepository
 ) {
+    suspend operator fun invoke(previousStats: GameStats?, updatedStats: GameStats) {
+        if (updatedStats.gameId.isBlank()) return
+
+        val currentStats = previousStats ?: repository.getGameStats(updatedStats.gameId) ?: GameStats(gameId = updatedStats.gameId)
+
+        val mergedStats = updatedStats.copy(
+            highScore = max(currentStats.highScore, updatedStats.highScore),
+            lastLevel = max(currentStats.lastLevel, updatedStats.lastLevel)
+        )
+
+        repository.insertGameStats(mergedStats)
+    }
+
     suspend operator fun invoke(gameId: String, sessionScore: Int, isWin: Boolean, lastLevel: Int) {
         if (gameId.isBlank()) return
 

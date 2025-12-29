@@ -1,6 +1,5 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.ui
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +10,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.GenerateMathWriteChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.UpdateWriteResultScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.state.MathWriteUiState
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
+import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -21,15 +22,23 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-    @HiltViewModel
+@HiltViewModel
 class MathOpWriteResultViewModel @Inject constructor(
     private val generateMathWriteChallengeUseCase: GenerateMathWriteChallengeUseCase,
     private val updateGameStatsUseCase: UpdateGameStatsUseCase,
+    private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateWriteResultScoreUseCase: UpdateWriteResultScoreUseCase
 ) : ViewModel() {
 
     private var operationParam: String = ""
-    private var initialHighScore: Int? = null
+    private var highScore: Int = 0
+    private var challengesPlayed: Int = 0
+    private var challengesWon: Int = 0
+    private var challengesLost: Int = 0
+    private var lastLevel: Int = 1
+
+    private val _gameStats = MutableStateFlow<GameStats?>(null)
+    val gameStats: StateFlow<GameStats?> = _gameStats.asStateFlow()
 
     // score category for saving score
     private val scoreCategory: WriteResultScoreCategory
@@ -60,15 +69,28 @@ class MathOpWriteResultViewModel @Inject constructor(
     private var isScorePersisted = false // flag to prevent double writes to the DB
 
     // game state
-    private val _uiState = MutableStateFlow(MathWriteUiState(highScore = initialHighScore))
+    private val _uiState = MutableStateFlow(MathWriteUiState())
     val uiState: StateFlow<MathWriteUiState> = _uiState.asStateFlow()
 
-    fun setOperation(operation: String, highScore: Int = 0) {
+    fun refreshGameStat(gameId: String, fallbackHighScore: Int = 0) {
+        viewModelScope.launch {
+            operationParam = gameId
+            val stats = getGameStatsUseCase(gameId)
+            _gameStats.value = stats
+            highScore = stats?.highScore ?: fallbackHighScore
+            challengesPlayed = stats?.challengesPlayed ?: 0
+            challengesWon = stats?.challengesWon ?: 0
+            challengesLost = stats?.challengesLost ?: 0
+            lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
+            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
+        }
+    }
+
+    fun setOperation(operation: String) {
         operationParam = operation
-        initialHighScore = highScore.takeIf { it > 0 }
         isScorePersisted = false
         viewModelScope.launch {
-            _uiState.update { it.copy(highScore = initialHighScore) }
+            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
             launchNewChallenge(resetTimer = true)
         }
     }
@@ -147,6 +169,8 @@ class MathOpWriteResultViewModel @Inject constructor(
 
     private fun handleSuccess() {
         challengesCompleted++
+        challengesPlayed++
+        challengesWon++
         val newScore = _uiState.value.score + SCORE_INCREMENT
         var updatedTimer = timerLength
 
@@ -156,11 +180,13 @@ class MathOpWriteResultViewModel @Inject constructor(
             updatedTimer = timerLength
         }
 
+        highScore = maxOf(highScore, newScore)
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
-                highScore = maxOf(it.highScore ?: 0, newScore),
+                highScore = highScore,
                 challengesCompleted = challengesCompleted,
                 challengesPerLevel = challengesPerLevel,
                 timeRemaining = updatedTimer,
@@ -172,6 +198,9 @@ class MathOpWriteResultViewModel @Inject constructor(
 
     private fun handleFailure() {
         val remainingLives = _uiState.value.lives - 1
+        challengesPlayed++
+        challengesLost++
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
         _uiState.update {
             it.copy(
                 lives = remainingLives,
@@ -188,6 +217,9 @@ class MathOpWriteResultViewModel @Inject constructor(
 
     private fun handleCountdownExpired() {
         val remainingLives = _uiState.value.lives - 1
+        challengesPlayed++
+        challengesLost++
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
         _uiState.update { it.copy(lives = remainingLives, feedback = ChallengeUiState.Feedback.FAILURE, timeRemaining = 0L) }
         if (remainingLives <= 0) {
             onGameOver()
@@ -208,6 +240,7 @@ class MathOpWriteResultViewModel @Inject constructor(
     // Increases the current level by 1 and updates the game parameters accordingly.
     private fun promoteLevel() {
         _uiState.update { it.copy(level = it.level + 1) }
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
         operandRangeMin = operandRangeMax
         operandRangeMax = 100 * _uiState.value.level + 50 * (_uiState.value.level - 1)
         multiplicationConfig.maxOperandHigh += 5
@@ -229,13 +262,20 @@ class MathOpWriteResultViewModel @Inject constructor(
         if (isScorePersisted) return
         isScorePersisted = true
         val finalScore = _uiState.value.score
+        highScore = maxOf(highScore, finalScore)
+        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        val updatedStats = GameStats(
+            gameId = operationParam,
+            highScore = highScore,
+            challengesPlayed = challengesPlayed,
+            challengesWon = challengesWon,
+            challengesLost = challengesLost,
+            lastLevel = lastLevel
+        )
+        val previousStats = _gameStats.value
+        _gameStats.value = updatedStats
         viewModelScope.launch {
-            updateGameStatsUseCase(
-                gameId = operationParam,
-                sessionScore = finalScore,
-                isWin = finalScore > 0,
-                lastLevel = _uiState.value.level
-            )
+            updateGameStatsUseCase(previousStats, updatedStats)
             if (finalScore > 0) {
                 updateWriteResultScoreUseCase(scoreCategory, finalScore)
             }

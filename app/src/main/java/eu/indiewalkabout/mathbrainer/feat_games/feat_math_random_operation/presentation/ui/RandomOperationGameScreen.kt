@@ -19,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,15 +32,27 @@ import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
 import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.presentation.components.RandomOperationChallengeCard
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.presentation.components.RandomOperationHeaderInfo
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 
 @Composable
 fun RandomOperationGameScreen(
     initialHighScore: Int = 0,
     onBack: () -> Unit,
-    viewModel: RandomOperationViewModel = hiltViewModel()
+    viewModel: RandomOperationViewModel = hiltViewModel(),
 ) {
-    LaunchedEffect(initialHighScore) {
-        viewModel.startGame(initialHighScore)
+    val gameId = GameTypes.RANDOM_OPERATION.id
+    val gameStats by viewModel.gameStats.collectAsState()
+    var hasStarted by remember(gameId) { mutableStateOf(false) }
+
+    LaunchedEffect(gameId, initialHighScore) {
+        viewModel.refreshGameStat(gameId, initialHighScore)
+    }
+
+    LaunchedEffect(gameId, gameStats) {
+        if (!hasStarted && gameStats != null) {
+            viewModel.startGame()
+            hasStarted = true
+        }
     }
 
     val state by viewModel.uiState.collectAsState()

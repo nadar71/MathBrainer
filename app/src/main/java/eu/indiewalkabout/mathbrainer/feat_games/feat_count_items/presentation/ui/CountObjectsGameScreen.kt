@@ -48,6 +48,7 @@ import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
 import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.components.CountObjectsHeader
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.components.Placement
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.math.max
@@ -58,13 +59,23 @@ import kotlin.random.Random
 fun CountObjectsGameScreen(
     initialHighScore: Int = 0,
     onBack: () -> Unit,
-    viewModel: CountObjectsViewModel = hiltViewModel()
+    viewModel: CountObjectsViewModel = hiltViewModel(),
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val gameId = GameTypes.QUICK_COUNT.id
+    val gameStats by viewModel.gameStats.collectAsState()
+    var hasStarted by remember(gameId) { mutableStateOf(false) }
 
-    LaunchedEffect(initialHighScore) {
-        viewModel.startGame(initialHighScore)
+    LaunchedEffect(gameId, initialHighScore) {
+        viewModel.refreshGameStat(gameId, initialHighScore)
     }
+
+    LaunchedEffect(gameId, gameStats) {
+        if (!hasStarted && gameStats != null) {
+            viewModel.startGame()
+            hasStarted = true
+        }
+    }
+    val state by viewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {

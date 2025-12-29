@@ -27,6 +27,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -38,6 +40,7 @@ import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.components.FallingOpsHeader
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.components.FallingOpsKeypad
+import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import kotlin.math.roundToInt
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -45,10 +48,21 @@ import kotlin.math.roundToInt
 fun FallingOpsGameScreen(
     initialHighScore: Int = 0,
     onBack: () -> Unit,
-    viewModel: FallingOpsViewModel = hiltViewModel()
+    viewModel: FallingOpsViewModel = hiltViewModel(),
 ) {
-    LaunchedEffect(initialHighScore) {
-        viewModel.startGame(initialHighScore)
+    val gameId = GameTypes.FALLING_OPS.id
+    val gameStats by viewModel.gameStats.collectAsState()
+    var hasStarted by remember(gameId) { mutableStateOf(false) }
+
+    LaunchedEffect(gameId, initialHighScore) {
+        viewModel.refreshGameStat(gameId, initialHighScore)
+    }
+
+    LaunchedEffect(gameId, gameStats) {
+        if (!hasStarted && gameStats != null) {
+            viewModel.startGame()
+            hasStarted = true
+        }
     }
 
     val state by viewModel.uiState.collectAsState()
