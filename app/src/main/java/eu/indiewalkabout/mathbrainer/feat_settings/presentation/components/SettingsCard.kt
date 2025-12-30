@@ -68,7 +68,7 @@ fun SettingsCard(
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                     modifier = Modifier
-                        .size(16.dp)
+                        .size(28.dp)
                 )
             }
         }

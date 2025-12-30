@@ -65,7 +65,7 @@ fun CreditsCard(
                     painter = painterResource(id = rightIcon),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(28.dp)
                 )
             }
         }
