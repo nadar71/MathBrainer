@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.core.presentation.components.AdsBannerPlaceholder
+import eu.indiewalkabout.mathbrainer.feat_ads.presentation.AdsBannerPlaceholder
 import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
 

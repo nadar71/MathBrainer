@@ -1,4 +1,4 @@
-package eu.indiewalkabout.mathbrainer.core.presentation.components
+package eu.indiewalkabout.mathbrainer.feat_ads.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
