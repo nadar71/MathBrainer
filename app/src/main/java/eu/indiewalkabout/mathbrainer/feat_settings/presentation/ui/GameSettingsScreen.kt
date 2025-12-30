@@ -1,5 +1,7 @@
 package eu.indiewalkabout.mathbrainer.feat_settings.presentation.ui
 
+import android.widget.Toast
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,9 +22,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.android.ump.UserMessagingPlatform
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.feat_ads.util.ConsentManager
 import eu.indiewalkabout.mathbrainer.feat_settings.presentation.components.GameSettingsHeaderLogo
 import eu.indiewalkabout.mathbrainer.feat_settings.presentation.components.SettingsCard
 
@@ -32,7 +37,9 @@ fun GameSettingsScreen(
     onBack: () -> Unit,
     onCreditsClick: () -> Unit
 ) {
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
+    val activity = LocalActivity.current
 
     Scaffold(
         topBar = {
@@ -72,7 +79,27 @@ fun GameSettingsScreen(
 
             SettingsCard(
                 title = stringResource(id = R.string.gdpr_title),
-                description = stringResource(id = R.string.gdpr_text)
+                description = stringResource(id = R.string.gdpr_text),
+                onClick = {
+                    UserMessagingPlatform.getConsentInformation(context).reset()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.gdpr_dialog_will_show_again),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    // Trigger re-consent
+                    ConsentManager.requestConsent(
+                        context = context,
+                        activity = activity,
+                        onConsentReady = { canRequestAds ->
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.gdpr_dialog_reset_done),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    )
+                }
             )
         }
     }

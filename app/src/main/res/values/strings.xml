@@ -97,18 +97,11 @@
 
 
     <!-- - - - - - - - - - - - - - - - - - - - Credits - - - - - - - - - - - - - - - - - - - - - -->
-    <string name="credits_title">Credits &amp; GDPR </string>
+    <string name="credits_title">Credits</string>
     <string name="credits_subtitle">Thanks for playing and supporting MathBrainer.</string>
-    <string name="credits_text" translatable="false">
-        <b>CREDITS</b>\n\n
-        <b>Idea, Development and Design</b>\n\n Simone Mapelli\n
-        <a href='http://www.indie-walkabout.eu/'>www.indie-walkabout.eu </a>\n\n
-
-    </string>
-
-    <string name="gdpr_text" translatable="false">
-        <b>GDPR</b>\n\n Touch here for GDPR Consent Withdraw.
-    </string>
+    <string name="credits_attributions_title">Idea, Development and Design</string>
+    <string name="credits_text">Simone Mapelli</string>
+    <string name="gdpr_text">Touch here for GDPR Consent Withdraw.</string>
     <string name="gdpr_title">GDPR &amp; Privacy</string>
 
 
@@ -143,7 +136,7 @@
     <string name="game_card_sequence_complete_text" >1  2  4  ?\n        </string>
     <string name="game_card_memory_flash_text"      >✦  ✦  ✦\n        </string>
     <string name="game_card_falling_ops_text"       >  ↓  \n+  –  x  :</string>
-    <string name="game_card_enigma_text">△  □  ?\n        </string>
+    <string name="game_card_enigma_text"            >△  □  ?\n        </string>
 
     <string name="sequence_rule_reveal">Rule: %1$s</string>
     <string name="sequence_correct_answer">Missing number: %1$d</string>
@@ -160,7 +153,12 @@
     <string name="gameover_str">GAME OVER !</string>
 
     <!-- - - - - - - - - - - - - - - - - - Settings - - - - - - - - - - - - - - - - - - - - - - -->
-
+    <string name="settings_gdpr_btn_title">Privacy &amp; Ad Consent</string>
+    <string name="gdpr_btn_key">gdpr_withdraw</string>
+    <string name="gdpr_btn_title">GDPR</string>
+    <string name="gdpr_btn_summary">Manage your ad personalization consent</string>
+    <string name="gdpr_dialog_will_show_again">Consent has been reset. You\'ll be asked again.</string>
+    <string name="gdpr_dialog_reset_done">Consent choice done.</string>
     <!-- - - - - - - - - - - - - - - - - Category titles - - - - - - - - - - - - - - - - - - - - -->
     <string name="category_settings_title">Settings</string>
     <string name="category_help_title">Help</string>
@@ -168,11 +166,6 @@
     <!-- Settings menu item -->
     <string name="main_settings_menu_item">Settings</string>
 
-    <!-- - - - - - - - - - - - - - - - - - GDPR  - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <string name="gdpr_btn_key">gdpr_withdraw</string>
-    <string name="gdpr_btn_title">GDPR</string>
-    <string name="gdpr_btn_summary">GDPR Consent Withdraw.</string>
-    <string name="question_mark">\?</string>
 
 
 </resources>

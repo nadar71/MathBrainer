@@ -18,14 +18,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.data.local.Constants.my_website
+import eu.indiewalkabout.mathbrainer.core.util.GenericUtil.openUrlInBrowserNotCompose
 import eu.indiewalkabout.mathbrainer.feat_credits.presentation.components.CreditsCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameCreditsScreen(onBack: () -> Unit) {
+    val context = LocalContext.current
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -50,16 +55,20 @@ fun GameCreditsScreen(onBack: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CreditsCard(
-                title = stringResource(id = R.string.credits_title),
-                description = stringResource(id = R.string.credits_text)
+                title = stringResource(id = R.string.credits_attributions_title),
+                description = stringResource(id = R.string.credits_text),
+                rightIcon = R.drawable.ic_globe,
+                onClick = {
+                    openUrlInBrowserNotCompose(context, my_website)
+                }
             )
             
             Spacer(modifier = Modifier.height(16.dp))
 
-            CreditsCard(
+            /*CreditsCard(
                 title = stringResource(id = R.string.gdpr_title),
                 description = stringResource(id = R.string.gdpr_text)
-            )
+            )*/
         }
     }
 }
