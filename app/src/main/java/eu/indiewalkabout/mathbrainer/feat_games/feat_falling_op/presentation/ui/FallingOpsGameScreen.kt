@@ -159,19 +159,19 @@ fun FallingOpsGameScreen(
                 )
             }
 
-            /*Text(
-                text = stringResource(id = R.string.current_input, state.input.ifEmpty { "-" }),
+            Text(
+                text = stringResource(id = R.string.current_input, state.input.ifEmpty { "" }),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
 
-            when (state.feedback) {
-                FallingOpsUiState.Feedback.SUCCESS -> ResultBanner(
+            /*when (state.feedback) {
+                ChallengeUiState.Feedback.SUCCESS -> ResultBanner(
                     text = stringResource(id = R.string.ok_str),
                     color = MaterialTheme.colorScheme.primary
                 )
 
-                FallingOpsUiState.Feedback.FAILURE -> ResultBanner(
+                ChallengeUiState.Feedback.FAILURE -> ResultBanner(
                     text = stringResource(id = R.string.wrong_answer),
                     color = MaterialTheme.colorScheme.error
                 )

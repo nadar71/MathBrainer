@@ -26,7 +26,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
-import eu.indiewalkabout.mathbrainer.feat_ads.presentation.AdsBannerPlaceholder
 import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
 
@@ -77,18 +76,32 @@ fun FallingOpsKeypad(
             }
         }
 
-        // Third row: 9, Backspace, Enter
+        // Third row:  9
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 2.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
+            /*listOf(7, 8, 9).forEach { digit ->
+                FallingOpsKeyButton(
+                    text = digit.toString(),
+                    modifier = Modifier.weight(1f),
+                    onClick = { onDigitPressed(digit) }
+                )
+            }*/
             // 9
             FallingOpsKeyButton(
                 text = "9",
                 modifier = Modifier.weight(1f),
                 onClick = { onDigitPressed(9) }
+            )
+
+            // 0
+            FallingOpsKeyButton(
+                text = "0",
+                modifier = Modifier.weight(1f),
+                onClick = { onDigitPressed(0) }
             )
 
             // Backspace
@@ -106,19 +119,12 @@ fun FallingOpsKeypad(
             // Enter/Submit
             FallingOpsKeyButton(
                 text = stringResource(id = R.string.submit_label),
-                modifier = Modifier.weight(2f),
+                modifier = Modifier.weight(1f),
                 highlight = true,
-                onClick = { if (feedback == null) onSubmit }
+                onClick = {onSubmit()}//{ if (feedback == null) onSubmit() }
             )
         }
 
-        // Ads banner placeholder at the bottom
-        AdsBannerPlaceholder(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-                .clip(RoundedCornerShape(4.dp))
-        )
     }
 }
 
