@@ -1,5 +1,7 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.ui
 
+// Quick Count asks the player to memorize and then identify how many objects were shown.
+
 import android.content.Context
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Canvas

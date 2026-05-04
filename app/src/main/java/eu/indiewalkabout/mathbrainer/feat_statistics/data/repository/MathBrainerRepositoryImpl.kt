@@ -14,11 +14,11 @@ class MathBrainerRepositoryImpl @Inject constructor(
 
     // ---------------------------------------- QUERY ----------------------------------------------
 
-    override suspend fun observeGameScores(): Flow<GameScores?> {
+    override fun observeGameScores(): Flow<GameScores?> {
         return mathBrainerDbDao.observeGameScores()
     }
 
-    override suspend fun observeGameStats(): Flow<List<GameStats>> {
+    override fun observeGameStats(): Flow<List<GameStats>> {
         return mathBrainerDbDao.observeGameStats()
     }
 

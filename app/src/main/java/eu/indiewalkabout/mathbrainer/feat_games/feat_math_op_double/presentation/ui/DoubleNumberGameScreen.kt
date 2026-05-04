@@ -1,5 +1,7 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation.ui
 
+// Double Number shows a number and asks the player to quickly provide its doubled value.
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -29,16 +29,13 @@ class MathOpWriteResultViewModel @Inject constructor(
     private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateWriteResultScoreUseCase: UpdateWriteResultScoreUseCase
 ) : ViewModel() {
-
     private var operationParam: String = ""
+    private var previousStats: GameStats? = null
     private var highScore: Int = 0
     private var challengesPlayed: Int = 0
     private var challengesWon: Int = 0
     private var challengesLost: Int = 0
     private var lastLevel: Int = 1
-
-    private val _gameStats = MutableStateFlow<GameStats?>(null)
-    val gameStats: StateFlow<GameStats?> = _gameStats.asStateFlow()
 
     // score category for saving score
     private val scoreCategory: WriteResultScoreCategory
@@ -72,27 +69,36 @@ class MathOpWriteResultViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MathWriteUiState())
     val uiState: StateFlow<MathWriteUiState> = _uiState.asStateFlow()
 
-    fun refreshGameStat(gameId: String, fallbackHighScore: Int = 0) {
+    fun initialize(gameId: String, fallbackHighScore: Int = 0) {
         viewModelScope.launch {
             operationParam = gameId
             val stats = getGameStatsUseCase(gameId)
-            _gameStats.value = stats
+            previousStats = stats
             highScore = stats?.highScore ?: fallbackHighScore
             challengesPlayed = stats?.challengesPlayed ?: 0
             challengesWon = stats?.challengesWon ?: 0
             challengesLost = stats?.challengesLost ?: 0
             lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
-            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
+            resetSessionState()
+            launchNewChallenge(resetTimer = true)
         }
     }
 
-    fun setOperation(operation: String) {
-        operationParam = operation
+    private fun resetSessionState() {
+        timerJob?.cancel()
         isScorePersisted = false
-        viewModelScope.launch {
-            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
-            launchNewChallenge(resetTimer = true)
-        }
+        operandRangeMin = 1
+        operandRangeMax = 100
+        multiplicationConfig.maxOperandLow = 15
+        multiplicationConfig.maxOperandHigh = 30
+        divisionConfig.maxOperandLow = 11
+        divisionConfig.maxOperandHigh = 15
+        challengesPerLevel = 10
+        challengesCompleted = 0
+        timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
+        _uiState.value = MathWriteUiState(
+            highScore = highScore.takeIf { score -> score > 0 }
+        )
     }
 
     fun onDigitPressed(digit: Int) {
@@ -100,7 +106,7 @@ class MathOpWriteResultViewModel @Inject constructor(
         _uiState.update { it.copy(inputValue = (it.inputValue + digit.toString()).take(7)) }
     }
 
-    fun onDelete() {
+    fun onDeletePressed() {
         if (_uiState.value.isGameOver) return
         _uiState.update { current ->
             val newValue = if (current.inputValue.isNotEmpty()) current.inputValue.dropLast(1) else ""
@@ -108,7 +114,7 @@ class MathOpWriteResultViewModel @Inject constructor(
         }
     }
 
-    fun submitAnswer() {
+    fun onSubmitPressed() {
         val challenge = _uiState.value.challenge ?: return
         val attempt = _uiState.value.inputValue.toIntOrNull() ?: return
         timerJob?.cancel()
@@ -120,7 +126,7 @@ class MathOpWriteResultViewModel @Inject constructor(
         }
     }
 
-    fun onQuitGame() {
+    fun onBackPressed() {
         persistScoreIfNeeded()
     }
 
@@ -272,10 +278,10 @@ class MathOpWriteResultViewModel @Inject constructor(
             challengesLost = challengesLost,
             lastLevel = lastLevel
         )
-        val previousStats = _gameStats.value
-        _gameStats.value = updatedStats
+        val existingStats = previousStats
+        previousStats = updatedStats
         viewModelScope.launch {
-            updateGameStatsUseCase(previousStats, updatedStats)
+            updateGameStatsUseCase(existingStats, updatedStats)
             if (finalScore > 0) {
                 updateWriteResultScoreUseCase(scoreCategory, finalScore)
             }

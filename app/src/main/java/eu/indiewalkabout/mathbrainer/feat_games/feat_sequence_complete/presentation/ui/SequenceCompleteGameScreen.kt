@@ -1,5 +1,7 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.ui
 
+// Sequence Complete asks the player to infer the missing value in a numeric pattern.
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

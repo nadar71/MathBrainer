@@ -1,5 +1,7 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation.ui
 
+// Choose Result presents an arithmetic expression and asks the player to pick the correct result.
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

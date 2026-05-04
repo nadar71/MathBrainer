@@ -1,5 +1,7 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.ui
 
+// Falling Operations challenges the player to solve operations under pressure as prompts move dynamically.
+
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

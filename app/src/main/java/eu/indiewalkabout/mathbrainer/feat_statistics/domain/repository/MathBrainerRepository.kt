@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface MathBrainerRepository {
     // --- QUERY ---
-    suspend fun observeGameScores(): Flow<GameScores?>
-    suspend fun observeGameStats(): Flow<List<GameStats>>
+    fun observeGameScores(): Flow<GameScores?>
+    fun observeGameStats(): Flow<List<GameStats>>
     suspend fun getGameStats(gameId: String): GameStats?
     suspend fun loadGameStatistics(): GameStatistics
 
