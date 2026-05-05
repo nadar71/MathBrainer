@@ -32,14 +32,13 @@ class FallingOpsViewModel @Inject constructor(
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
 
+    private var currentGameId: String = GameTypes.FALLING_OPS.id
+    private var previousStats: GameStats? = null
     private var highScore: Int = 0
     private var challengesPlayed: Int = 0
     private var challengesWon: Int = 0
     private var challengesLost: Int = 0
     private var lastLevel: Int = 1
-
-    private val _gameStats = MutableStateFlow<GameStats?>(null)
-    val gameStats: StateFlow<GameStats?> = _gameStats.asStateFlow()
 
     private val _uiState = MutableStateFlow(FallingOpsUiState())
     val uiState: StateFlow<FallingOpsUiState> = _uiState.asStateFlow()
@@ -51,30 +50,21 @@ class FallingOpsViewModel @Inject constructor(
     private var spawnIntervalMs = BASE_SPAWN_INTERVAL_MS
     private var isScorePersisted = false
 
-    fun refreshGameStat(gameId: String, fallbackHighScore: Int = 0) {
+    fun initialize(gameId: String, fallbackHighScore: Int = 0) {
         viewModelScope.launch {
             val stats = getGameStatsUseCase(gameId)
-            _gameStats.value = stats
+            currentGameId = gameId
+            previousStats = stats
             highScore = stats?.highScore ?: fallbackHighScore
             challengesPlayed = stats?.challengesPlayed ?: 0
             challengesWon = stats?.challengesWon ?: 0
             challengesLost = stats?.challengesLost ?: 0
             lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
-            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
+            resetSessionState(fallbackHighScore)
+            addOperation()
+            startFallingLoop()
+            startSpawnLoop()
         }
-    }
-
-    fun startGame(initialHighScore: Int = 0) {
-        stopJobs()
-        isScorePersisted = false
-        nextId = 0
-        updateDifficulty(level = 1)
-        _uiState.value = FallingOpsUiState(
-            highScore = highScore.takeIf { score -> score > 0 } ?: initialHighScore.takeIf { it > 0 }
-        )
-        addOperation()
-        startFallingLoop()
-        startSpawnLoop()
     }
 
     fun onDigitPressed(digit: Int) {
@@ -84,14 +74,14 @@ class FallingOpsViewModel @Inject constructor(
         _uiState.update { it.copy(input = currentInput + digit.toString()) }
     }
 
-    fun onDelete() {
+    fun onDeletePressed() {
         if (_uiState.value.isGameOver) return
         val currentInput = _uiState.value.input
         if (currentInput.isEmpty()) return
         _uiState.update { it.copy(input = currentInput.dropLast(1)) }
     }
 
-    fun onSubmit() {
+    fun onSubmitPressed() {
         if (_uiState.value.isGameOver) return
         val inputValue = _uiState.value.input.toIntOrNull()
         if (inputValue == null) {
@@ -150,8 +140,19 @@ class FallingOpsViewModel @Inject constructor(
         }
     }
 
-    fun onQuitGame() {
+    fun onBackPressed() {
         persistScoreIfNeeded()
+    }
+
+    private fun resetSessionState(initialHighScore: Int) {
+        stopJobs()
+        isScorePersisted = false
+        nextId = 0
+        updateDifficulty(level = 1)
+        _uiState.value = FallingOpsUiState(
+            highScore = highScore.takeIf { score -> score > 0 }
+                ?: initialHighScore.takeIf { score -> score > 0 }
+        )
     }
 
     private fun addOperation() {
@@ -233,17 +234,17 @@ class FallingOpsViewModel @Inject constructor(
         highScore = maxOf(highScore, finalScore)
         lastLevel = maxOf(lastLevel, _uiState.value.level)
         val updatedStats = GameStats(
-            gameId = GameTypes.FALLING_OPS.id,
+            gameId = currentGameId,
             highScore = highScore,
             challengesPlayed = challengesPlayed,
             challengesWon = challengesWon,
             challengesLost = challengesLost,
             lastLevel = lastLevel
         )
-        val previousStats = _gameStats.value
-        _gameStats.value = updatedStats
+        val existingStats = previousStats
+        previousStats = updatedStats
         viewModelScope.launch {
-            updateGameStatsUseCase(previousStats, updatedStats)
+            updateGameStatsUseCase(existingStats, updatedStats)
             if (finalScore > 0) {
                 updateFallingOpsScoreUseCase(finalScore)
             }

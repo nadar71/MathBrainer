@@ -19,16 +19,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation.components.ChooseChallengeCard
@@ -42,21 +39,12 @@ fun MathChooseGameScreen(
     viewModel: MathOpChooseResultViewModel = hiltViewModel()
 ) {
     val gameId = operation
-    val gameStats by viewModel.gameStats.collectAsState()
-    var hasStarted by remember(gameId) { mutableStateOf(false) }
 
     LaunchedEffect(gameId, initialHighScore) {
-        viewModel.refreshGameStat(gameId, initialHighScore)
+        viewModel.initialize(gameId, initialHighScore)
     }
 
-    LaunchedEffect(gameId, gameStats) {
-        if (!hasStarted && gameStats != null) {
-            viewModel.setOperation(gameId)
-            hasStarted = true
-        }
-    }
-
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -67,7 +55,10 @@ fun MathChooseGameScreen(
                     .padding(horizontal = 12.dp, vertical = 16.dp),
                 verticalAlignment = Alignment.Companion.CenterVertically
             ) {
-                IconButton(onClick = onBack) {
+                IconButton(onClick = {
+                    viewModel.onBackPressed()
+                    onBack()
+                }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = stringResource(id = R.string.navigate_back),
@@ -111,7 +102,7 @@ fun MathChooseGameScreen(
 
     if (state.isGameOver) {
         GameOverDialog(onDismiss = {
-            viewModel.onQuitGame()
+            viewModel.onBackPressed()
             onBack()
         })
     }

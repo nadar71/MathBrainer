@@ -28,37 +28,32 @@ class EnigmaViewModel @Inject constructor(
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
 
+    private var currentGameId: String = GameTypes.ENIGMA.id
+    private var previousStats: GameStats? = null
     private var highScore: Int = 0
     private var challengesPlayed: Int = 0
     private var challengesWon: Int = 0
     private var challengesLost: Int = 0
     private var lastLevel: Int = 1
 
-    private val _gameStats = MutableStateFlow<GameStats?>(null)
-    val gameStats: StateFlow<GameStats?> = _gameStats.asStateFlow()
-
     private var isScorePersisted = false
 
     private val _uiState = MutableStateFlow(EnigmaUiState())
     val uiState: StateFlow<EnigmaUiState> = _uiState.asStateFlow()
 
-    fun refreshGameStat(gameId: String, fallbackHighScore: Int = 0) {
+    fun initialize(gameId: String, fallbackHighScore: Int = 0) {
         viewModelScope.launch {
             val stats = getGameStatsUseCase(gameId)
-            _gameStats.value = stats
+            currentGameId = gameId
+            previousStats = stats
             highScore = stats?.highScore ?: fallbackHighScore
             challengesPlayed = stats?.challengesPlayed ?: 0
             challengesWon = stats?.challengesWon ?: 0
             challengesLost = stats?.challengesLost ?: 0
             lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
-            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
+            resetSessionState(fallbackHighScore)
+            launchNewChallenge()
         }
-    }
-
-    fun startGame() {
-        isScorePersisted = false
-        _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
-        launchNewChallenge()
     }
 
     fun onDigitPressed(digit: Int) {
@@ -66,7 +61,7 @@ class EnigmaViewModel @Inject constructor(
         _uiState.update { it.copy(inputValue = (it.inputValue + digit.toString()).take(7)) }
     }
 
-    fun onDelete() {
+    fun onDeletePressed() {
         if (_uiState.value.isGameOver) return
         _uiState.update { current ->
             val newValue = if (current.inputValue.isNotEmpty()) current.inputValue.dropLast(1) else ""
@@ -74,7 +69,7 @@ class EnigmaViewModel @Inject constructor(
         }
     }
 
-    fun submitAnswer() {
+    fun onSubmitPressed() {
         val challenge = _uiState.value.challenge ?: return
         val attempt = _uiState.value.inputValue.toIntOrNull() ?: return
 
@@ -85,8 +80,16 @@ class EnigmaViewModel @Inject constructor(
         }
     }
 
-    fun onQuitGame() {
+    fun onBackPressed() {
         persistScoreIfNeeded()
+    }
+
+    private fun resetSessionState(initialHighScore: Int) {
+        isScorePersisted = false
+        _uiState.value = EnigmaUiState(
+            highScore = highScore.takeIf { score -> score > 0 }
+                ?: initialHighScore.takeIf { score -> score > 0 }
+        )
     }
 
     private fun launchNewChallenge() {
@@ -168,17 +171,17 @@ class EnigmaViewModel @Inject constructor(
         highScore = maxOf(highScore, finalScore)
         lastLevel = maxOf(lastLevel, _uiState.value.level)
         val updatedStats = GameStats(
-            gameId = GameTypes.ENIGMA.id,
+            gameId = currentGameId,
             highScore = highScore,
             challengesPlayed = challengesPlayed,
             challengesWon = challengesWon,
             challengesLost = challengesLost,
             lastLevel = lastLevel
         )
-        val previousStats = _gameStats.value
-        _gameStats.value = updatedStats
+        val existingStats = previousStats
+        previousStats = updatedStats
         viewModelScope.launch {
-            updateGameStatsUseCase(previousStats, updatedStats)
+            updateGameStatsUseCase(existingStats, updatedStats)
             if (finalScore > 0) {
                 updateEnigmaScoreUseCase(finalScore)
             }
