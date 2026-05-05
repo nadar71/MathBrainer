@@ -9,12 +9,11 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.WriteResultScoreCategory
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.GenerateMathWriteChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.UpdateWriteResultScoreUseCase
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.CountdownChallengeLoop
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.state.MathWriteUiState
 import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.GameSessionTracker
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -57,7 +56,7 @@ class MathOpWriteResultViewModel @Inject constructor(
     private var challengesCompleted = 0
 
     private var timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
-    private var timerJob: Job? = null
+    private val challengeLoop = CountdownChallengeLoop(viewModelScope, COUNTDOWN_STEP, NEXT_CHALLENGE_DELAY)
     // game state
     private val _uiState = MutableStateFlow(MathWriteUiState())
     val uiState: StateFlow<MathWriteUiState> = _uiState.asStateFlow()
@@ -72,7 +71,7 @@ class MathOpWriteResultViewModel @Inject constructor(
     }
 
     private fun resetSessionState() {
-        timerJob?.cancel()
+        challengeLoop.cancelAll()
         sessionTracker.beginSession()
         operandRangeMin = 1
         operandRangeMax = 100
@@ -104,7 +103,7 @@ class MathOpWriteResultViewModel @Inject constructor(
     fun onSubmitPressed() {
         val challenge = _uiState.value.challenge ?: return
         val attempt = _uiState.value.inputValue.toIntOrNull() ?: return
-        timerJob?.cancel()
+        challengeLoop.cancelCountdown()
 
         if (attempt == challenge.answer) {
             handleSuccess()
@@ -148,16 +147,11 @@ class MathOpWriteResultViewModel @Inject constructor(
     }
 
     private fun startTimer() {
-        timerJob?.cancel()
-        timerJob = viewModelScope.launch {
-            var remaining = timerLength
-            while (remaining > 0) {
-                delay(COUNTDOWN_STEP)
-                remaining -= COUNTDOWN_STEP
-                _uiState.update { it.copy(timeRemaining = remaining) }
-            }
-            handleCountdownExpired()
-        }
+        challengeLoop.startCountdown(
+            durationMs = timerLength,
+            onTick = { remaining -> _uiState.update { it.copy(timeRemaining = remaining) } },
+            onExpired = ::handleCountdownExpired
+        )
     }
 
     private fun handleSuccess() {
@@ -215,12 +209,10 @@ class MathOpWriteResultViewModel @Inject constructor(
     }
 
     private fun startDelayedChallenge() {
-        viewModelScope.launch {
-            delay(NEXT_CHALLENGE_DELAY)
-            if (!_uiState.value.isGameOver) {
-                launchNewChallenge(resetTimer = true)
-            }
-        }
+        challengeLoop.scheduleNextChallenge(
+            shouldLaunch = { !_uiState.value.isGameOver },
+            onLaunch = { launchNewChallenge(resetTimer = true) }
+        )
     }
 
     // Increases the current level by 1 and updates the game parameters accordingly.
@@ -239,7 +231,7 @@ class MathOpWriteResultViewModel @Inject constructor(
     }
 
     private fun onGameOver() {
-        timerJob?.cancel()
+        challengeLoop.cancelAll()
         _uiState.update { it.copy(isGameOver = true) }
         persistScoreIfNeeded()
     }
