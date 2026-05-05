@@ -37,15 +37,13 @@ class CountObjectsViewModelTest {
     }
 
     @Test
-    fun `refresh and start load saved high score and challenge`() = runTest(dispatcher) {
+    fun `initialize loads saved high score and challenge`() = runTest(dispatcher) {
         val repository = FakeMathBrainerRepository(
             initialStats = listOf(GameStats(gameId = "quick_count", highScore = 29))
         )
         val viewModel = createViewModel(repository)
 
-        viewModel.refreshGameStat("quick_count", 0)
-        runCurrent()
-        viewModel.startGame()
+        viewModel.initialize("quick_count", 0)
         runCurrent()
 
         val state = viewModel.uiState.value
@@ -59,15 +57,13 @@ class CountObjectsViewModelTest {
         val repository = FakeMathBrainerRepository()
         val viewModel = createViewModel(repository)
 
-        viewModel.refreshGameStat("quick_count", 0)
-        runCurrent()
-        viewModel.startGame()
+        viewModel.initialize("quick_count", 0)
         runCurrent()
         advanceTimeBy(2_000)
         runCurrent()
 
         val answer = viewModel.uiState.value.challenge!!.itemsToCount
-        viewModel.submitAnswer(answer)
+        viewModel.onAnswerSelected(answer)
 
         val state = viewModel.uiState.value
         assertEquals(25, state.score)
@@ -80,19 +76,17 @@ class CountObjectsViewModelTest {
         val repository = FakeMathBrainerRepository()
         val viewModel = createViewModel(repository)
 
-        viewModel.refreshGameStat("quick_count", 0)
-        runCurrent()
-        viewModel.startGame()
+        viewModel.initialize("quick_count", 0)
         runCurrent()
         advanceTimeBy(2_000)
         runCurrent()
 
         val answer = viewModel.uiState.value.challenge!!.itemsToCount
-        viewModel.submitAnswer(answer)
+        viewModel.onAnswerSelected(answer)
 
-        viewModel.onQuitGame()
+        viewModel.onBackPressed()
         runCurrent()
-        viewModel.onQuitGame()
+        viewModel.onBackPressed()
         runCurrent()
 
         assertEquals(1, repository.insertedScoresCount)

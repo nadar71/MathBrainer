@@ -37,15 +37,13 @@ class SequenceCompleteViewModelTest {
     }
 
     @Test
-    fun `refresh and start load saved high score and first sequence`() = runTest(dispatcher) {
+    fun `initialize loads saved high score and first sequence`() = runTest(dispatcher) {
         val repository = FakeMathBrainerRepository(
             initialStats = listOf(GameStats(gameId = "sequence_complete", highScore = 37))
         )
         val viewModel = createViewModel(repository)
 
-        viewModel.refreshGameStat("sequence_complete", 0)
-        runCurrent()
-        viewModel.startGame()
+        viewModel.initialize("sequence_complete", 0)
         runCurrent()
 
         val state = viewModel.uiState.value
@@ -59,15 +57,13 @@ class SequenceCompleteViewModelTest {
         val repository = FakeMathBrainerRepository()
         val viewModel = createViewModel(repository)
 
-        viewModel.refreshGameStat("sequence_complete", 0)
-        runCurrent()
-        viewModel.startGame()
+        viewModel.initialize("sequence_complete", 0)
         runCurrent()
 
         val challenge = viewModel.currentChallengeForTest()
         challenge.answer.toString().forEach { digit -> viewModel.onDigitPressed(digit.digitToInt()) }
 
-        viewModel.submitAnswer()
+        viewModel.onSubmitPressed()
 
         val state = viewModel.uiState.value
         assertEquals(10, state.score)
@@ -80,18 +76,16 @@ class SequenceCompleteViewModelTest {
         val repository = FakeMathBrainerRepository()
         val viewModel = createViewModel(repository)
 
-        viewModel.refreshGameStat("sequence_complete", 0)
-        runCurrent()
-        viewModel.startGame()
+        viewModel.initialize("sequence_complete", 0)
         runCurrent()
 
         val challenge = viewModel.currentChallengeForTest()
         challenge.answer.toString().forEach { digit -> viewModel.onDigitPressed(digit.digitToInt()) }
-        viewModel.submitAnswer()
+        viewModel.onSubmitPressed()
 
-        viewModel.onQuitGame()
+        viewModel.onBackPressed()
         runCurrent()
-        viewModel.onQuitGame()
+        viewModel.onBackPressed()
         runCurrent()
 
         assertEquals(1, repository.insertedScoresCount)

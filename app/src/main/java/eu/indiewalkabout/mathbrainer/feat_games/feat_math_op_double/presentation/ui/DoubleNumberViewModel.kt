@@ -28,16 +28,13 @@ class DoubleNumberViewModel @Inject constructor(
     private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
-
+    private var currentGameId: String = GameTypes.DOUBLE_NUMBER.id
+    private var previousStats: GameStats? = null
     private var highScore: Int = 0
     private var challengesPlayed: Int = 0
     private var challengesWon: Int = 0
     private var challengesLost: Int = 0
     private var lastLevel: Int = 1
-
-    private val _gameStats = MutableStateFlow<GameStats?>(null)
-    val gameStats: StateFlow<GameStats?> = _gameStats.asStateFlow()
-
     private var operandRangeMin = 1
     private var operandRangeMax = 100
 
@@ -49,23 +46,17 @@ class DoubleNumberViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(DoubleNumberUiState())
     val uiState: StateFlow<DoubleNumberUiState> = _uiState.asStateFlow()
 
-    fun refreshGameStat(gameId: String, fallbackHighScore: Int = 0) {
+    fun initialize(gameId: String, fallbackHighScore: Int = 0) {
         viewModelScope.launch {
             val stats = getGameStatsUseCase(gameId)
-            _gameStats.value = stats
+            currentGameId = gameId
+            previousStats = stats
             highScore = stats?.highScore ?: fallbackHighScore
             challengesPlayed = stats?.challengesPlayed ?: 0
             challengesWon = stats?.challengesWon ?: 0
             challengesLost = stats?.challengesLost ?: 0
             lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
-            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
-        }
-    }
-
-    fun startGame(initialHighScore: Int = 0) {
-        isScorePersisted = false
-        _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 } ?: initialHighScore.takeIf { it > 0 }) }
-        viewModelScope.launch {
+            resetSessionState(fallbackHighScore)
             launchNewChallenge(resetTimer = true)
         }
     }
@@ -75,7 +66,7 @@ class DoubleNumberViewModel @Inject constructor(
         _uiState.update { it.copy(inputValue = (it.inputValue + digit.toString()).take(7)) }
     }
 
-    fun onDelete() {
+    fun onDeletePressed() {
         if (_uiState.value.isGameOver) return
         _uiState.update { current ->
             val newValue = if (current.inputValue.isNotEmpty()) current.inputValue.dropLast(1) else ""
@@ -83,7 +74,7 @@ class DoubleNumberViewModel @Inject constructor(
         }
     }
 
-    fun submitAnswer() {
+    fun onSubmitPressed() {
         val challenge = _uiState.value.challenge ?: return
         val attempt = _uiState.value.inputValue.toIntOrNull() ?: return
         timerJob?.cancel()
@@ -95,8 +86,21 @@ class DoubleNumberViewModel @Inject constructor(
         }
     }
 
-    fun onQuitGame() {
+    fun onBackPressed() {
         persistScoreIfNeeded()
+    }
+
+    private fun resetSessionState(initialHighScore: Int) {
+        timerJob?.cancel()
+        isScorePersisted = false
+        operandRangeMin = 1
+        operandRangeMax = 100
+        timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
+        challengesCompleted = 0
+        _uiState.value = DoubleNumberUiState(
+            highScore = highScore.takeIf { score -> score > 0 }
+                ?: initialHighScore.takeIf { score -> score > 0 }
+        )
     }
 
     private suspend fun launchNewChallenge(resetTimer: Boolean) {
@@ -231,17 +235,17 @@ class DoubleNumberViewModel @Inject constructor(
         highScore = maxOf(highScore, finalScore)
         lastLevel = maxOf(lastLevel, _uiState.value.level)
         val updatedStats = GameStats(
-            gameId = GameTypes.DOUBLE_NUMBER.id,
+            gameId = currentGameId,
             highScore = highScore,
             challengesPlayed = challengesPlayed,
             challengesWon = challengesWon,
             challengesLost = challengesLost,
             lastLevel = lastLevel
         )
-        val previousStats = _gameStats.value
-        _gameStats.value = updatedStats
+        val existingStats = previousStats
+        previousStats = updatedStats
         viewModelScope.launch {
-            updateGameStatsUseCase(previousStats, updatedStats)
+            updateGameStatsUseCase(existingStats, updatedStats)
             if (finalScore > 0) {
                 updateDoubleNumberScoreUseCase(finalScore)
             }

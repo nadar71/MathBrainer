@@ -29,16 +29,13 @@ class RandomOperationViewModel @Inject constructor(
     private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
-
+    private var currentGameId: String = GameTypes.RANDOM_OPERATION.id
+    private var previousStats: GameStats? = null
     private var highScore: Int = 0
     private var challengesPlayed: Int = 0
     private var challengesWon: Int = 0
     private var challengesLost: Int = 0
     private var lastLevel: Int = 1
-
-    private val _gameStats = MutableStateFlow<GameStats?>(null)
-    val gameStats: StateFlow<GameStats?> = _gameStats.asStateFlow()
-
     // random range of number to be processed
     private var operandRangeMin = 1
     private var operandRangeMax = 100
@@ -67,23 +64,17 @@ class RandomOperationViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(RandomOperationUiState())
     val uiState: StateFlow<RandomOperationUiState> = _uiState.asStateFlow()
 
-    fun refreshGameStat(gameId: String, fallbackHighScore: Int = 0) {
+    fun initialize(gameId: String, fallbackHighScore: Int = 0) {
         viewModelScope.launch {
             val stats = getGameStatsUseCase(gameId)
-            _gameStats.value = stats
+            currentGameId = gameId
+            previousStats = stats
             highScore = stats?.highScore ?: fallbackHighScore
             challengesPlayed = stats?.challengesPlayed ?: 0
             challengesWon = stats?.challengesWon ?: 0
             challengesLost = stats?.challengesLost ?: 0
             lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
-            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
-        }
-    }
-
-    fun startGame(initialHighScore: Int = 0) {
-        isScorePersisted = false
-        _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 } ?: initialHighScore.takeIf { it > 0 }) }
-        viewModelScope.launch {
+            resetSessionState(fallbackHighScore)
             launchNewChallenge(resetTimer = true)
         }
     }
@@ -100,8 +91,27 @@ class RandomOperationViewModel @Inject constructor(
         }
     }
 
-    fun onQuitGame() {
+    fun onBackPressed() {
         persistScoreIfNeeded()
+    }
+
+    private fun resetSessionState(initialHighScore: Int) {
+        timerJob?.cancel()
+        isScorePersisted = false
+        operandRangeMin = 1
+        operandRangeMax = 100
+        multiplicationConfig.maxOperandLow = 15
+        multiplicationConfig.maxOperandHigh = 30
+        divisionConfig.maxOperandLow = 11
+        divisionConfig.maxOperandHigh = 15
+        challengesPerLevel = 12
+        challengesCompleted = 0
+        timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
+        _uiState.value = RandomOperationUiState(
+            highScore = highScore.takeIf { score -> score > 0 }
+                ?: initialHighScore.takeIf { score -> score > 0 },
+            challengesPerLevel = challengesPerLevel
+        )
     }
 
     private suspend fun launchNewChallenge(resetTimer: Boolean) {
@@ -251,17 +261,17 @@ class RandomOperationViewModel @Inject constructor(
         highScore = maxOf(highScore, finalScore)
         lastLevel = maxOf(lastLevel, _uiState.value.level)
         val updatedStats = GameStats(
-            gameId = GameTypes.RANDOM_OPERATION.id,
+            gameId = currentGameId,
             highScore = highScore,
             challengesPlayed = challengesPlayed,
             challengesWon = challengesWon,
             challengesLost = challengesLost,
             lastLevel = lastLevel
         )
-        val previousStats = _gameStats.value
-        _gameStats.value = updatedStats
+        val existingStats = previousStats
+        previousStats = updatedStats
         viewModelScope.launch {
-            updateGameStatsUseCase(previousStats, updatedStats)
+            updateGameStatsUseCase(existingStats, updatedStats)
             if (finalScore > 0) {
                 updateRandomOperationScoreUseCase(finalScore)
             }

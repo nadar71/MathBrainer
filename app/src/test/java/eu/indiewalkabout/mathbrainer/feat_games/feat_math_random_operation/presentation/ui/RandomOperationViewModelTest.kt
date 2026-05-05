@@ -35,15 +35,13 @@ class RandomOperationViewModelTest {
     }
 
     @Test
-    fun `refresh and start load saved high score and challenge`() = runTest(dispatcher) {
+    fun `initialize loads saved high score and challenge`() = runTest(dispatcher) {
         val repository = FakeMathBrainerRepository(
             initialStats = listOf(GameStats(gameId = "random", highScore = 44))
         )
         val viewModel = createViewModel(repository)
 
-        viewModel.refreshGameStat("random", 0)
-        runCurrent()
-        viewModel.startGame()
+        viewModel.initialize("random", 0)
         runCurrent()
 
         val state = viewModel.uiState.value
@@ -57,9 +55,7 @@ class RandomOperationViewModelTest {
         val repository = FakeMathBrainerRepository()
         val viewModel = createViewModel(repository)
 
-        viewModel.refreshGameStat("random", 0)
-        runCurrent()
-        viewModel.startGame()
+        viewModel.initialize("random", 0)
         runCurrent()
 
         val correctOperation = viewModel.uiState.value.challenge!!.correctOperation
@@ -74,18 +70,16 @@ class RandomOperationViewModelTest {
         val repository = FakeMathBrainerRepository()
         val viewModel = createViewModel(repository)
 
-        viewModel.refreshGameStat("random", 0)
-        runCurrent()
-        viewModel.startGame()
+        viewModel.initialize("random", 0)
         runCurrent()
 
         val correctOperation = viewModel.uiState.value.challenge!!.correctOperation
         viewModel.onOperationSelected(correctOperation)
         runCurrent()
 
-        viewModel.onQuitGame()
+        viewModel.onBackPressed()
         runCurrent()
-        viewModel.onQuitGame()
+        viewModel.onBackPressed()
         runCurrent()
 
         assertEquals(1, repository.insertedScoresCount)
