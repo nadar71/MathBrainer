@@ -9,8 +9,8 @@ import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.model.RandomOperationConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.use_cases.GenerateRandomOperationChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.use_cases.UpdateRandomOperationScoreUseCase
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.GameSessionTracker
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.Job
@@ -29,13 +29,7 @@ class RandomOperationViewModel @Inject constructor(
     private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
-    private var currentGameId: String = GameTypes.RANDOM_OPERATION.id
-    private var previousStats: GameStats? = null
-    private var highScore: Int = 0
-    private var challengesPlayed: Int = 0
-    private var challengesWon: Int = 0
-    private var challengesLost: Int = 0
-    private var lastLevel: Int = 1
+    private val sessionTracker = GameSessionTracker(GameTypes.RANDOM_OPERATION.id)
     // random range of number to be processed
     private var operandRangeMin = 1
     private var operandRangeMax = 100
@@ -59,21 +53,12 @@ class RandomOperationViewModel @Inject constructor(
 
     private var timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
     private var timerJob: Job? = null
-    private var isScorePersisted = false // flag to prevent double writes to the DB
-
     private val _uiState = MutableStateFlow(RandomOperationUiState())
     val uiState: StateFlow<RandomOperationUiState> = _uiState.asStateFlow()
 
     fun initialize(gameId: String, fallbackHighScore: Int = 0) {
         viewModelScope.launch {
-            val stats = getGameStatsUseCase(gameId)
-            currentGameId = gameId
-            previousStats = stats
-            highScore = stats?.highScore ?: fallbackHighScore
-            challengesPlayed = stats?.challengesPlayed ?: 0
-            challengesWon = stats?.challengesWon ?: 0
-            challengesLost = stats?.challengesLost ?: 0
-            lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
+            sessionTracker.loadStats(gameId, fallbackHighScore, getGameStatsUseCase::invoke)
             resetSessionState(fallbackHighScore)
             launchNewChallenge(resetTimer = true)
         }
@@ -97,7 +82,7 @@ class RandomOperationViewModel @Inject constructor(
 
     private fun resetSessionState(initialHighScore: Int) {
         timerJob?.cancel()
-        isScorePersisted = false
+        sessionTracker.beginSession()
         operandRangeMin = 1
         operandRangeMax = 100
         multiplicationConfig.maxOperandLow = 15
@@ -108,8 +93,7 @@ class RandomOperationViewModel @Inject constructor(
         challengesCompleted = 0
         timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
         _uiState.value = RandomOperationUiState(
-            highScore = highScore.takeIf { score -> score > 0 }
-                ?: initialHighScore.takeIf { score -> score > 0 },
+            highScore = sessionTracker.sessionHighScoreOr(initialHighScore),
             challengesPerLevel = challengesPerLevel
         )
     }
@@ -156,8 +140,6 @@ class RandomOperationViewModel @Inject constructor(
     }
 
     private fun handleSuccess() {
-        challengesPlayed++
-        challengesWon++
         challengesCompleted++
         val newScore = _uiState.value.score + SCORE_INCREMENT
         var updatedTimer = timerLength
@@ -168,13 +150,12 @@ class RandomOperationViewModel @Inject constructor(
             updatedTimer = timerLength
         }
 
-        highScore = maxOf(highScore, newScore)
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        sessionTracker.recordSuccess(newScore, _uiState.value.level)
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
-                highScore = highScore,
+                highScore = sessionTracker.highScore,
                 challengesCompleted = challengesCompleted,
                 challengesPerLevel = challengesPerLevel,
                 timeRemaining = updatedTimer,
@@ -186,9 +167,7 @@ class RandomOperationViewModel @Inject constructor(
 
     private fun handleFailure() {
         val remainingLives = _uiState.value.lives - 1
-        challengesPlayed++
-        challengesLost++
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        sessionTracker.recordFailure(_uiState.value.level)
         _uiState.update {
             it.copy(
                 lives = remainingLives,
@@ -205,9 +184,7 @@ class RandomOperationViewModel @Inject constructor(
 
     private fun handleCountdownExpired() {
         val remainingLives = _uiState.value.lives - 1
-        challengesPlayed++
-        challengesLost++
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        sessionTracker.recordFailure(_uiState.value.level)
         _uiState.update {
             it.copy(
                 lives = remainingLives,
@@ -235,7 +212,7 @@ class RandomOperationViewModel @Inject constructor(
     // Increases the current level by 1 and updates the game parameters accordingly.
     private fun promoteLevel() {
         _uiState.update { it.copy(level = it.level + 1) }
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        sessionTracker.recordProgress(_uiState.value.level)
         val level = _uiState.value.level
         operandRangeMin = operandRangeMax
         operandRangeMax = 100 * level + 50 * (level - 1)
@@ -255,25 +232,12 @@ class RandomOperationViewModel @Inject constructor(
     }
 
     private fun persistScoreIfNeeded() {
-        if (isScorePersisted) return
-        isScorePersisted = true
         val finalScore = _uiState.value.score
-        highScore = maxOf(highScore, finalScore)
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
-        val updatedStats = GameStats(
-            gameId = currentGameId,
-            highScore = highScore,
-            challengesPlayed = challengesPlayed,
-            challengesWon = challengesWon,
-            challengesLost = challengesLost,
-            lastLevel = lastLevel
-        )
-        val existingStats = previousStats
-        previousStats = updatedStats
+        val persistRequest = sessionTracker.buildPersistRequest(finalScore, _uiState.value.level) ?: return
         viewModelScope.launch {
-            updateGameStatsUseCase(existingStats, updatedStats)
-            if (finalScore > 0) {
-                updateRandomOperationScoreUseCase(finalScore)
+            updateGameStatsUseCase(persistRequest.previousStats, persistRequest.updatedStats)
+            if (persistRequest.finalScore > 0) {
+                updateRandomOperationScoreUseCase(persistRequest.finalScore)
             }
         }
     }

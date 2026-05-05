@@ -9,8 +9,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.domain.mo
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.domain.use_cases.GenerateSequenceChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.domain.use_cases.UpdateSequenceCompleteScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_sequence_complete.presentation.state.SequenceCompleteUiState
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.GameSessionTracker
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,16 +27,9 @@ class SequenceCompleteViewModel @Inject constructor(
     private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
-    private var currentGameId: String = GameTypes.SEQUENCE_COMPLETE.id
-    private var previousStats: GameStats? = null
-    private var highScore: Int = 0
-    private var challengesPlayed: Int = 0
-    private var challengesWon: Int = 0
-    private var challengesLost: Int = 0
-    private var lastLevel: Int = 1
+    private val sessionTracker = GameSessionTracker(GameTypes.SEQUENCE_COMPLETE.id)
     private var challengesCompletedInternal = 0
     private var challengesPerLevelInternal = SequenceCompleteUiState.INITIAL_CHALLENGES_PER_LEVEL
-    private var isScorePersisted = false
     private var currentChallenge: SequenceChallenge? = null
 
     private val _uiState = MutableStateFlow(SequenceCompleteUiState())
@@ -44,14 +37,7 @@ class SequenceCompleteViewModel @Inject constructor(
 
     fun initialize(gameId: String, fallbackHighScore: Int = 0) {
         viewModelScope.launch {
-            val stats = getGameStatsUseCase(gameId)
-            currentGameId = gameId
-            previousStats = stats
-            highScore = stats?.highScore ?: fallbackHighScore
-            challengesPlayed = stats?.challengesPlayed ?: 0
-            challengesWon = stats?.challengesWon ?: 0
-            challengesLost = stats?.challengesLost ?: 0
-            lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
+            sessionTracker.loadStats(gameId, fallbackHighScore, getGameStatsUseCase::invoke)
             resetSessionState(fallbackHighScore)
             launchNewChallenge()
         }
@@ -92,13 +78,12 @@ class SequenceCompleteViewModel @Inject constructor(
     }
 
     private fun resetSessionState(initialHighScore: Int) {
-        isScorePersisted = false
+        sessionTracker.beginSession()
         challengesCompletedInternal = 0
         challengesPerLevelInternal = SequenceCompleteUiState.INITIAL_CHALLENGES_PER_LEVEL
         currentChallenge = null
         _uiState.value = SequenceCompleteUiState(
-            highScore = highScore.takeIf { score -> score > 0 }
-                ?: initialHighScore.takeIf { score -> score > 0 }
+            highScore = sessionTracker.sessionHighScoreOr(initialHighScore)
         )
     }
 
@@ -131,16 +116,13 @@ class SequenceCompleteViewModel @Inject constructor(
             _uiState.value.level to challengesPerLevelInternal
         }
 
-        challengesPlayed++
-        challengesWon++
-        lastLevel = maxOf(lastLevel, nextLevel)
-        highScore = maxOf(highScore, newScore)
+        sessionTracker.recordSuccess(newScore, nextLevel)
 
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
-                highScore = highScore,
+                highScore = sessionTracker.highScore,
                 challengesCompleted = challengesCompletedInternal,
                 challengesPerLevel = nextChallengesPerLevel,
                 level = nextLevel,
@@ -154,9 +136,7 @@ class SequenceCompleteViewModel @Inject constructor(
 
     private fun handleFailure(challenge: SequenceChallenge) {
         val remainingLives = _uiState.value.lives - 1
-        challengesPlayed++
-        challengesLost++
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        sessionTracker.recordFailure(_uiState.value.level)
         _uiState.update {
             it.copy(
                 lives = remainingLives,
@@ -186,25 +166,12 @@ class SequenceCompleteViewModel @Inject constructor(
     }
 
     private fun persistScoreIfNeeded() {
-        if (isScorePersisted) return
-        isScorePersisted = true
         val finalScore = _uiState.value.score
-        highScore = maxOf(highScore, finalScore)
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
-        val updatedStats = GameStats(
-            gameId = currentGameId,
-            highScore = highScore,
-            challengesPlayed = challengesPlayed,
-            challengesWon = challengesWon,
-            challengesLost = challengesLost,
-            lastLevel = lastLevel
-        )
-        val existingStats = previousStats
-        previousStats = updatedStats
+        val persistRequest = sessionTracker.buildPersistRequest(finalScore, _uiState.value.level) ?: return
         viewModelScope.launch {
-            updateGameStatsUseCase(existingStats, updatedStats)
-            if (finalScore > 0) {
-                updateSequenceCompleteScoreUseCase(finalScore)
+            updateGameStatsUseCase(persistRequest.previousStats, persistRequest.updatedStats)
+            if (persistRequest.finalScore > 0) {
+                updateSequenceCompleteScoreUseCase(persistRequest.finalScore)
             }
         }
     }

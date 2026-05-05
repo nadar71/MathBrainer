@@ -8,8 +8,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.domain.model.EnigmaC
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.domain.use_cases.GenerateEnigmaChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.domain.use_cases.UpdateEnigmaScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.presentation.state.EnigmaUiState
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.GameSessionTracker
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.delay
@@ -27,30 +27,14 @@ class EnigmaViewModel @Inject constructor(
     private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
-
-    private var currentGameId: String = GameTypes.ENIGMA.id
-    private var previousStats: GameStats? = null
-    private var highScore: Int = 0
-    private var challengesPlayed: Int = 0
-    private var challengesWon: Int = 0
-    private var challengesLost: Int = 0
-    private var lastLevel: Int = 1
-
-    private var isScorePersisted = false
+    private val sessionTracker = GameSessionTracker(GameTypes.ENIGMA.id)
 
     private val _uiState = MutableStateFlow(EnigmaUiState())
     val uiState: StateFlow<EnigmaUiState> = _uiState.asStateFlow()
 
     fun initialize(gameId: String, fallbackHighScore: Int = 0) {
         viewModelScope.launch {
-            val stats = getGameStatsUseCase(gameId)
-            currentGameId = gameId
-            previousStats = stats
-            highScore = stats?.highScore ?: fallbackHighScore
-            challengesPlayed = stats?.challengesPlayed ?: 0
-            challengesWon = stats?.challengesWon ?: 0
-            challengesLost = stats?.challengesLost ?: 0
-            lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
+            sessionTracker.loadStats(gameId, fallbackHighScore, getGameStatsUseCase::invoke)
             resetSessionState(fallbackHighScore)
             launchNewChallenge()
         }
@@ -85,10 +69,9 @@ class EnigmaViewModel @Inject constructor(
     }
 
     private fun resetSessionState(initialHighScore: Int) {
-        isScorePersisted = false
+        sessionTracker.beginSession()
         _uiState.value = EnigmaUiState(
-            highScore = highScore.takeIf { score -> score > 0 }
-                ?: initialHighScore.takeIf { score -> score > 0 }
+            highScore = sessionTracker.sessionHighScoreOr(initialHighScore)
         )
     }
 
@@ -113,18 +96,14 @@ class EnigmaViewModel @Inject constructor(
 
 
     private fun handleSuccess() {
-        challengesPlayed++
-        challengesWon++
         promoteLevel()
         val newScore = _uiState.value.score + SCORE_INCREMENT
-
-        highScore = maxOf(highScore, newScore)
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        sessionTracker.recordSuccess(newScore, _uiState.value.level)
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
-                highScore = highScore,
+                highScore = sessionTracker.highScore,
             )
         }
         startDelayedChallenge()
@@ -132,9 +111,7 @@ class EnigmaViewModel @Inject constructor(
 
     private fun handleFailure() {
         val remainingLives = _uiState.value.lives - 1
-        challengesPlayed++
-        challengesLost++
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        sessionTracker.recordFailure(_uiState.value.level)
         _uiState.update { it.copy(lives = remainingLives, feedback = ChallengeUiState.Feedback.FAILURE) }
 
         if (remainingLives <= 0) {
@@ -156,7 +133,7 @@ class EnigmaViewModel @Inject constructor(
 
     private fun promoteLevel() {
         _uiState.update { it.copy(level = it.level + 1) }
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        sessionTracker.recordProgress(_uiState.value.level)
     }
 
     private fun onGameOver() {
@@ -165,25 +142,12 @@ class EnigmaViewModel @Inject constructor(
     }
 
     private fun persistScoreIfNeeded() {
-        if (isScorePersisted) return
-        isScorePersisted = true
         val finalScore = _uiState.value.score
-        highScore = maxOf(highScore, finalScore)
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
-        val updatedStats = GameStats(
-            gameId = currentGameId,
-            highScore = highScore,
-            challengesPlayed = challengesPlayed,
-            challengesWon = challengesWon,
-            challengesLost = challengesLost,
-            lastLevel = lastLevel
-        )
-        val existingStats = previousStats
-        previousStats = updatedStats
+        val persistRequest = sessionTracker.buildPersistRequest(finalScore, _uiState.value.level) ?: return
         viewModelScope.launch {
-            updateGameStatsUseCase(existingStats, updatedStats)
-            if (finalScore > 0) {
-                updateEnigmaScoreUseCase(finalScore)
+            updateGameStatsUseCase(persistRequest.previousStats, persistRequest.updatedStats)
+            if (persistRequest.finalScore > 0) {
+                updateEnigmaScoreUseCase(persistRequest.finalScore)
             }
         }
     }
