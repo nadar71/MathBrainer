@@ -8,6 +8,7 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.domain.model
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.domain.use_cases.GenerateDoubleNumberChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.domain.use_cases.UpdateDoubleNumberScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation.state.DoubleNumberUiState
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.ArithmeticChallengeProgression
 import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.CountdownChallengeLoop
 import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.GameSessionTracker
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
@@ -28,12 +29,13 @@ class DoubleNumberViewModel @Inject constructor(
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
     private val sessionTracker = GameSessionTracker(GameTypes.DOUBLE_NUMBER.id)
-    private var operandRangeMin = 1
-    private var operandRangeMax = 100
-
-    private var timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
+    private val progression = ArithmeticChallengeProgression(
+        initialChallengesPerLevel = DoubleNumberUiState().challengesPerLevel,
+        challengesPerLevelIncrement = 0,
+        promotionThreshold = ArithmeticChallengeProgression.PromotionThreshold.ON_TARGET,
+        timerIncrementProvider = { LEVEL_TIMER_INCREMENT }
+    )
     private val challengeLoop = CountdownChallengeLoop(viewModelScope, COUNTDOWN_STEP, NEXT_CHALLENGE_DELAY)
-    private var challengesCompleted = 0
     private val _uiState = MutableStateFlow(DoubleNumberUiState())
     val uiState: StateFlow<DoubleNumberUiState> = _uiState.asStateFlow()
 
@@ -77,10 +79,7 @@ class DoubleNumberViewModel @Inject constructor(
     private fun resetSessionState(initialHighScore: Int) {
         challengeLoop.cancelAll()
         sessionTracker.beginSession()
-        operandRangeMin = 1
-        operandRangeMax = 100
-        timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
-        challengesCompleted = 0
+        progression.reset()
         _uiState.value = DoubleNumberUiState(
             highScore = sessionTracker.sessionHighScoreOr(initialHighScore)
         )
@@ -89,8 +88,8 @@ class DoubleNumberViewModel @Inject constructor(
     private suspend fun launchNewChallenge(resetTimer: Boolean) {
         val challenge = generateDoubleNumberChallengeUseCase(
             DoubleNumberConfig(
-                min = operandRangeMin,
-                max = operandRangeMax
+                min = progression.operandRangeMin,
+                max = progression.operandRangeMax
             )
         )
 
@@ -99,8 +98,8 @@ class DoubleNumberViewModel @Inject constructor(
                 challenge = challenge,
                 inputValue = "",
                 feedback = null,
-                timeRemaining = timerLength,
-                totalTime = timerLength
+                timeRemaining = progression.timerLength,
+                totalTime = progression.timerLength
             )
         }
 
@@ -111,32 +110,33 @@ class DoubleNumberViewModel @Inject constructor(
 
     private fun startTimer() {
         challengeLoop.startCountdown(
-            durationMs = timerLength,
+            durationMs = progression.timerLength,
             onTick = { remaining -> _uiState.update { it.copy(timeRemaining = remaining) } },
             onExpired = ::handleCountdownExpired
         )
     }
 
     private fun handleSuccess() {
-        challengesCompleted++
         val newScore = _uiState.value.score + SCORE_INCREMENT
-        var updatedTimer = timerLength
+        val progressionUpdate = progression.recordSuccess(_uiState.value.level)
+        val nextLevel = progressionUpdate.nextLevel
 
-        if (challengesCompleted >= _uiState.value.challengesPerLevel) {
-            challengesCompleted = 0
-            promoteLevel()
-            updatedTimer = timerLength
+        if (nextLevel != null) {
+            _uiState.update { it.copy(level = nextLevel) }
+            sessionTracker.recordProgress(nextLevel)
         }
 
-        sessionTracker.recordSuccess(newScore, _uiState.value.level)
+        val currentLevel = nextLevel ?: _uiState.value.level
+        sessionTracker.recordSuccess(newScore, currentLevel)
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = sessionTracker.highScore,
-                challengesCompleted = challengesCompleted,
-                timeRemaining = updatedTimer,
-                totalTime = updatedTimer
+                challengesCompleted = progressionUpdate.challengesCompleted,
+                challengesPerLevel = progressionUpdate.challengesPerLevel,
+                timeRemaining = progressionUpdate.timerLength,
+                totalTime = progressionUpdate.timerLength
             )
         }
         startDelayedChallenge()
@@ -181,14 +181,6 @@ class DoubleNumberViewModel @Inject constructor(
             shouldLaunch = { !_uiState.value.isGameOver },
             onLaunch = { launchNewChallenge(resetTimer = true) }
         )
-    }
-
-    private fun promoteLevel() {
-        _uiState.update { it.copy(level = it.level + 1) }
-        sessionTracker.recordProgress(_uiState.value.level)
-        operandRangeMin = operandRangeMax
-        operandRangeMax = 100 * _uiState.value.level + 50 * (_uiState.value.level - 1)
-        timerLength += LEVEL_TIMER_INCREMENT
     }
 
     private fun onGameOver() {

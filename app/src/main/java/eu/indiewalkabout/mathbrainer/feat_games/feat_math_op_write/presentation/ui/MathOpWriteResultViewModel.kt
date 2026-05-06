@@ -9,6 +9,7 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.model.WriteResultScoreCategory
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.GenerateMathWriteChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.domain.use_cases.UpdateWriteResultScoreUseCase
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.ArithmeticChallengeProgression
 import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.CountdownChallengeLoop
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation.state.MathWriteUiState
 import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.GameSessionTracker
@@ -35,10 +36,6 @@ class MathOpWriteResultViewModel @Inject constructor(
     private val scoreCategory: WriteResultScoreCategory
         get() = WriteResultScoreCategory.fromOperation(operationParam)
 
-
-    // random range of number to be processed
-    private var operandRangeMin = 1
-    private var operandRangeMax = 100
     // multiplication data range
     private val multiplicationConfig = OperationConfig(
         minOperand = 1,
@@ -51,11 +48,24 @@ class MathOpWriteResultViewModel @Inject constructor(
         maxOperandLow = 11,
         maxOperandHigh = 15
     )
-
-    private var challengesPerLevel: Int = 10 // num. levels to complete before next level
-    private var challengesCompleted = 0
-
-    private var timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
+    private val progression = ArithmeticChallengeProgression(
+        initialChallengesPerLevel = 10,
+        challengesPerLevelIncrement = 2,
+        promotionThreshold = ArithmeticChallengeProgression.PromotionThreshold.AFTER_TARGET,
+        timerIncrementProvider = { level -> 1_000L * level },
+        multiplicationConfig = ArithmeticChallengeProgression.OperationBoundsConfig(
+            initialLowMax = multiplicationConfig.maxOperandLow,
+            initialHighMax = multiplicationConfig.maxOperandHigh,
+            lowIncrement = 1,
+            highIncrement = 5
+        ),
+        divisionConfig = ArithmeticChallengeProgression.OperationBoundsConfig(
+            initialLowMax = divisionConfig.maxOperandLow,
+            initialHighMax = divisionConfig.maxOperandHigh,
+            lowIncrement = 1,
+            highIncrement = 2
+        )
+    )
     private val challengeLoop = CountdownChallengeLoop(viewModelScope, COUNTDOWN_STEP, NEXT_CHALLENGE_DELAY)
     // game state
     private val _uiState = MutableStateFlow(MathWriteUiState())
@@ -73,15 +83,7 @@ class MathOpWriteResultViewModel @Inject constructor(
     private fun resetSessionState() {
         challengeLoop.cancelAll()
         sessionTracker.beginSession()
-        operandRangeMin = 1
-        operandRangeMax = 100
-        multiplicationConfig.maxOperandLow = 15
-        multiplicationConfig.maxOperandHigh = 30
-        divisionConfig.maxOperandLow = 11
-        divisionConfig.maxOperandHigh = 15
-        challengesPerLevel = 10
-        challengesCompleted = 0
-        timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
+        progression.reset()
         _uiState.value = MathWriteUiState(
             highScore = sessionTracker.sessionHighScoreOr()
         )
@@ -120,14 +122,14 @@ class MathOpWriteResultViewModel @Inject constructor(
         val challenge = generateMathWriteChallengeUseCase(
             MathWriteConfig(
                 operationCode = operationParam,
-                min = operandRangeMin,
-                max = operandRangeMax,
+                min = progression.operandRangeMin,
+                max = progression.operandRangeMax,
                 multMin = multiplicationConfig.minOperand,
-                multLowMax = multiplicationConfig.maxOperandLow,
-                multHighMax = multiplicationConfig.maxOperandHigh,
+                multLowMax = requireNotNull(progression.currentMultiplicationConfig).lowMax,
+                multHighMax = requireNotNull(progression.currentMultiplicationConfig).highMax,
                 divMin = divisionConfig.minOperand,
-                divLowMax = divisionConfig.maxOperandLow,
-                divHighMax = divisionConfig.maxOperandHigh
+                divLowMax = requireNotNull(progression.currentDivisionConfig).lowMax,
+                divHighMax = requireNotNull(progression.currentDivisionConfig).highMax
             )
         )
 
@@ -136,8 +138,8 @@ class MathOpWriteResultViewModel @Inject constructor(
                 challenge = challenge,
                 inputValue = "",
                 feedback = null,
-                timeRemaining = timerLength,
-                totalTime = timerLength
+                timeRemaining = progression.timerLength,
+                totalTime = progression.timerLength
             )
         }
 
@@ -148,33 +150,33 @@ class MathOpWriteResultViewModel @Inject constructor(
 
     private fun startTimer() {
         challengeLoop.startCountdown(
-            durationMs = timerLength,
+            durationMs = progression.timerLength,
             onTick = { remaining -> _uiState.update { it.copy(timeRemaining = remaining) } },
             onExpired = ::handleCountdownExpired
         )
     }
 
     private fun handleSuccess() {
-        challengesCompleted++
         val newScore = _uiState.value.score + SCORE_INCREMENT
-        var updatedTimer = timerLength
+        val progressionUpdate = progression.recordSuccess(_uiState.value.level)
+        val nextLevel = progressionUpdate.nextLevel
 
-        if (challengesCompleted > challengesPerLevel) {
-            challengesCompleted = 0
-            promoteLevel()
-            updatedTimer = timerLength
+        if (nextLevel != null) {
+            _uiState.update { it.copy(level = nextLevel) }
+            sessionTracker.recordProgress(nextLevel)
         }
 
-        sessionTracker.recordSuccess(newScore, _uiState.value.level)
+        val currentLevel = nextLevel ?: _uiState.value.level
+        sessionTracker.recordSuccess(newScore, currentLevel)
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = sessionTracker.highScore,
-                challengesCompleted = challengesCompleted,
-                challengesPerLevel = challengesPerLevel,
-                timeRemaining = updatedTimer,
-                totalTime = updatedTimer
+                challengesCompleted = progressionUpdate.challengesCompleted,
+                challengesPerLevel = progressionUpdate.challengesPerLevel,
+                timeRemaining = progressionUpdate.timerLength,
+                totalTime = progressionUpdate.timerLength
             )
         }
         startDelayedChallenge()
@@ -213,21 +215,6 @@ class MathOpWriteResultViewModel @Inject constructor(
             shouldLaunch = { !_uiState.value.isGameOver },
             onLaunch = { launchNewChallenge(resetTimer = true) }
         )
-    }
-
-    // Increases the current level by 1 and updates the game parameters accordingly.
-    private fun promoteLevel() {
-        _uiState.update { it.copy(level = it.level + 1) }
-        sessionTracker.recordProgress(_uiState.value.level)
-        operandRangeMin = operandRangeMax
-        operandRangeMax = 100 * _uiState.value.level + 50 * (_uiState.value.level - 1)
-        multiplicationConfig.maxOperandHigh += 5
-        multiplicationConfig.maxOperandLow  += 1
-        divisionConfig.maxOperandHigh       += 2
-        divisionConfig.maxOperandLow        += 1
-        challengesPerLevel += 2
-        challengesCompleted = 0
-        timerLength += 1_000 * _uiState.value.level
     }
 
     private fun onGameOver() {

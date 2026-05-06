@@ -9,6 +9,7 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.domain.model
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.domain.model.MathChooseConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.domain.use_cases.GenerateMathChooseChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.domain.use_cases.UpdateChooseResultScoreUseCase
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.ArithmeticChallengeProgression
 import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.CountdownChallengeLoop
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_choose.presentation.state.MathChooseUiState
 import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.GameSessionTracker
@@ -34,9 +35,6 @@ class MathOpChooseResultViewModel @Inject constructor(
 
     private var scoreCategory = ChooseResultScoreCategory.fromOperation(operationParam)
 
-    // random range of number to be processed
-    private var operandRangeMin = 1
-    private var operandRangeMax = 100
     // multiplication data range
     private val multiplicationConfig = OperationConfig(
         minOperand = 1,
@@ -50,11 +48,28 @@ class MathOpChooseResultViewModel @Inject constructor(
         maxOperandHigh = 15
     )
 
-    private var challengesPerLevel: Int = 10
-    private var challengesCompleted = 0
-    private var optionsCount = MIN_OPTIONS
-
-    private var timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
+    private val progression = ArithmeticChallengeProgression(
+        initialChallengesPerLevel = 10,
+        challengesPerLevelIncrement = 2,
+        promotionThreshold = ArithmeticChallengeProgression.PromotionThreshold.AFTER_TARGET,
+        timerIncrementProvider = { level -> 1_000L * level },
+        optionsConfig = ArithmeticChallengeProgression.OptionsConfig(
+            initialCount = MIN_OPTIONS,
+            maxCount = MAX_OPTIONS
+        ),
+        multiplicationConfig = ArithmeticChallengeProgression.OperationBoundsConfig(
+            initialLowMax = multiplicationConfig.maxOperandLow,
+            initialHighMax = multiplicationConfig.maxOperandHigh,
+            lowIncrement = 1,
+            highIncrement = 5
+        ),
+        divisionConfig = ArithmeticChallengeProgression.OperationBoundsConfig(
+            initialLowMax = divisionConfig.maxOperandLow,
+            initialHighMax = divisionConfig.maxOperandHigh,
+            lowIncrement = 1,
+            highIncrement = 2
+        )
+    )
     private val challengeLoop = CountdownChallengeLoop(viewModelScope, COUNTDOWN_STEP, NEXT_CHALLENGE_DELAY)
     // game state
     private val _uiState = MutableStateFlow(MathChooseUiState())
@@ -73,16 +88,7 @@ class MathOpChooseResultViewModel @Inject constructor(
         scoreCategory = ChooseResultScoreCategory.fromOperation(operationParam)
         challengeLoop.cancelAll()
         sessionTracker.beginSession()
-        operandRangeMin = 1
-        operandRangeMax = 100
-        multiplicationConfig.maxOperandLow = 15
-        multiplicationConfig.maxOperandHigh = 30
-        divisionConfig.maxOperandLow = 11
-        divisionConfig.maxOperandHigh = 15
-        challengesPerLevel = 10
-        challengesCompleted = 0
-        optionsCount = MIN_OPTIONS
-        timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
+        progression.reset()
         _uiState.value = MathChooseUiState(
             highScore = sessionTracker.sessionHighScoreOr(initialHighScore)
         )
@@ -108,25 +114,25 @@ class MathOpChooseResultViewModel @Inject constructor(
         val challenge = generateMathChooseChallengeUseCase(
             MathChooseConfig(
                 operationCode = operationParam,
-                min = operandRangeMin,
-                max = operandRangeMax,
+                min = progression.operandRangeMin,
+                max = progression.operandRangeMax,
                 multMin = multiplicationConfig.minOperand,
-                multLowMax = multiplicationConfig.maxOperandLow,
-                multHighMax = multiplicationConfig.maxOperandHigh,
+                multLowMax = requireNotNull(progression.currentMultiplicationConfig).lowMax,
+                multHighMax = requireNotNull(progression.currentMultiplicationConfig).highMax,
                 divMin = divisionConfig.minOperand,
-                divLowMax = divisionConfig.maxOperandLow,
-                divHighMax = divisionConfig.maxOperandHigh,
+                divLowMax = requireNotNull(progression.currentDivisionConfig).lowMax,
+                divHighMax = requireNotNull(progression.currentDivisionConfig).highMax,
                 optionOffset = OPTION_OFFSET
             ),
-            optionsCount = optionsCount
+            optionsCount = requireNotNull(progression.optionsCount)
         )
 
         _uiState.update {
             it.copy(
                 challenge = challenge,
                 feedback = null,
-                timeRemaining = timerLength,
-                totalTime = timerLength
+                timeRemaining = progression.timerLength,
+                totalTime = progression.timerLength
             )
         }
 
@@ -137,33 +143,33 @@ class MathOpChooseResultViewModel @Inject constructor(
 
     private fun startTimer() {
         challengeLoop.startCountdown(
-            durationMs = timerLength,
+            durationMs = progression.timerLength,
             onTick = { remaining -> _uiState.update { it.copy(timeRemaining = remaining) } },
             onExpired = ::handleCountdownExpired
         )
     }
 
     private fun handleSuccess() {
-        challengesCompleted++
         val newScore = _uiState.value.score + SCORE_INCREMENT
-        var updatedTimer = timerLength
+        val progressionUpdate = progression.recordSuccess(_uiState.value.level)
+        val nextLevel = progressionUpdate.nextLevel
 
-        if (challengesCompleted > challengesPerLevel) {
-            challengesCompleted = 0
-            promoteLevel()
-            updatedTimer = timerLength
+        if (nextLevel != null) {
+            _uiState.update { it.copy(level = nextLevel) }
+            sessionTracker.recordProgress(nextLevel)
         }
 
-        sessionTracker.recordSuccess(newScore, _uiState.value.level)
+        val currentLevel = nextLevel ?: _uiState.value.level
+        sessionTracker.recordSuccess(newScore, currentLevel)
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = sessionTracker.highScore,
-                challengesCompleted = challengesCompleted,
-                challengesPerLevel = challengesPerLevel,
-                timeRemaining = updatedTimer,
-                totalTime = updatedTimer
+                challengesCompleted = progressionUpdate.challengesCompleted,
+                challengesPerLevel = progressionUpdate.challengesPerLevel,
+                timeRemaining = progressionUpdate.timerLength,
+                totalTime = progressionUpdate.timerLength
             )
         }
         startDelayedChallenge()
@@ -202,21 +208,6 @@ class MathOpChooseResultViewModel @Inject constructor(
             shouldLaunch = { !_uiState.value.isGameOver },
             onLaunch = { launchNewChallenge(resetTimer = true) }
         )
-    }
-
-    private fun promoteLevel() {
-        _uiState.update { it.copy(level = it.level + 1) }
-        sessionTracker.recordProgress(_uiState.value.level)
-        operandRangeMin = operandRangeMax
-        operandRangeMax = 100 * _uiState.value.level + 50 * (_uiState.value.level - 1)
-        multiplicationConfig.maxOperandHigh += 5
-        multiplicationConfig.maxOperandLow += 1
-        divisionConfig.maxOperandHigh += 2
-        divisionConfig.maxOperandLow += 1
-        challengesPerLevel += 2
-        challengesCompleted = 0
-        timerLength += 1_000 * _uiState.value.level
-        optionsCount = (optionsCount + 1).coerceAtMost(MAX_OPTIONS)
     }
 
     private fun onGameOver() {

@@ -9,6 +9,7 @@ import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.model.RandomOperationConfig
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.use_cases.GenerateRandomOperationChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domain.use_cases.UpdateRandomOperationScoreUseCase
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.ArithmeticChallengeProgression
 import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.CountdownChallengeLoop
 import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.GameSessionTracker
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
@@ -29,9 +30,6 @@ class RandomOperationViewModel @Inject constructor(
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
     private val sessionTracker = GameSessionTracker(GameTypes.RANDOM_OPERATION.id)
-    // random range of number to be processed
-    private var operandRangeMin = 1
-    private var operandRangeMax = 100
 
     // multiplication data range
     private val multiplicationConfig = OperationConfig(
@@ -46,11 +44,24 @@ class RandomOperationViewModel @Inject constructor(
         maxOperandLow = 11,
         maxOperandHigh = 15
     )
-
-    private var challengesPerLevel: Int = 12
-    private var challengesCompleted = 0
-
-    private var timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
+    private val progression = ArithmeticChallengeProgression(
+        initialChallengesPerLevel = 12,
+        challengesPerLevelIncrement = 5,
+        promotionThreshold = ArithmeticChallengeProgression.PromotionThreshold.AFTER_TARGET,
+        timerIncrementProvider = { 5_000L },
+        multiplicationConfig = ArithmeticChallengeProgression.OperationBoundsConfig(
+            initialLowMax = multiplicationConfig.maxOperandLow,
+            initialHighMax = multiplicationConfig.maxOperandHigh,
+            lowIncrement = 1,
+            highIncrement = 5
+        ),
+        divisionConfig = ArithmeticChallengeProgression.OperationBoundsConfig(
+            initialLowMax = divisionConfig.maxOperandLow,
+            initialHighMax = divisionConfig.maxOperandHigh,
+            lowIncrement = 1,
+            highIncrement = 2
+        )
+    )
     private val challengeLoop = CountdownChallengeLoop(viewModelScope, COUNTDOWN_STEP, NEXT_CHALLENGE_DELAY)
     private val _uiState = MutableStateFlow(RandomOperationUiState())
     val uiState: StateFlow<RandomOperationUiState> = _uiState.asStateFlow()
@@ -82,32 +93,24 @@ class RandomOperationViewModel @Inject constructor(
     private fun resetSessionState(initialHighScore: Int) {
         challengeLoop.cancelAll()
         sessionTracker.beginSession()
-        operandRangeMin = 1
-        operandRangeMax = 100
-        multiplicationConfig.maxOperandLow = 15
-        multiplicationConfig.maxOperandHigh = 30
-        divisionConfig.maxOperandLow = 11
-        divisionConfig.maxOperandHigh = 15
-        challengesPerLevel = 12
-        challengesCompleted = 0
-        timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
+        progression.reset()
         _uiState.value = RandomOperationUiState(
             highScore = sessionTracker.sessionHighScoreOr(initialHighScore),
-            challengesPerLevel = challengesPerLevel
+            challengesPerLevel = progression.challengesPerLevel
         )
     }
 
     private suspend fun launchNewChallenge(resetTimer: Boolean) {
         val challenge = generateRandomOperationChallengeUseCase(
             RandomOperationConfig(
-                min = operandRangeMin,
-                max = operandRangeMax,
+                min = progression.operandRangeMin,
+                max = progression.operandRangeMax,
                 multMin = multiplicationConfig.minOperand,
-                multLowMax = multiplicationConfig.maxOperandLow,
-                multHighMax = multiplicationConfig.maxOperandHigh,
+                multLowMax = requireNotNull(progression.currentMultiplicationConfig).lowMax,
+                multHighMax = requireNotNull(progression.currentMultiplicationConfig).highMax,
                 divMin = divisionConfig.minOperand,
-                divLowMax = divisionConfig.maxOperandLow,
-                divHighMax = divisionConfig.maxOperandHigh
+                divLowMax = requireNotNull(progression.currentDivisionConfig).lowMax,
+                divHighMax = requireNotNull(progression.currentDivisionConfig).highMax
             )
         )
 
@@ -115,8 +118,8 @@ class RandomOperationViewModel @Inject constructor(
             it.copy(
                 challenge = challenge,
                 feedback = null,
-                timeRemaining = timerLength,
-                totalTime = timerLength
+                timeRemaining = progression.timerLength,
+                totalTime = progression.timerLength
             )
         }
 
@@ -127,33 +130,33 @@ class RandomOperationViewModel @Inject constructor(
 
     private fun startTimer() {
         challengeLoop.startCountdown(
-            durationMs = timerLength,
+            durationMs = progression.timerLength,
             onTick = { remaining -> _uiState.update { it.copy(timeRemaining = remaining) } },
             onExpired = ::handleCountdownExpired
         )
     }
 
     private fun handleSuccess() {
-        challengesCompleted++
         val newScore = _uiState.value.score + SCORE_INCREMENT
-        var updatedTimer = timerLength
+        val progressionUpdate = progression.recordSuccess(_uiState.value.level)
+        val nextLevel = progressionUpdate.nextLevel
 
-        if (challengesCompleted > challengesPerLevel) {
-            challengesCompleted = 0
-            promoteLevel()
-            updatedTimer = timerLength
+        if (nextLevel != null) {
+            _uiState.update { it.copy(level = nextLevel) }
+            sessionTracker.recordProgress(nextLevel)
         }
 
-        sessionTracker.recordSuccess(newScore, _uiState.value.level)
+        val currentLevel = nextLevel ?: _uiState.value.level
+        sessionTracker.recordSuccess(newScore, currentLevel)
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
                 highScore = sessionTracker.highScore,
-                challengesCompleted = challengesCompleted,
-                challengesPerLevel = challengesPerLevel,
-                timeRemaining = updatedTimer,
-                totalTime = updatedTimer
+                challengesCompleted = progressionUpdate.challengesCompleted,
+                challengesPerLevel = progressionUpdate.challengesPerLevel,
+                timeRemaining = progressionUpdate.timerLength,
+                totalTime = progressionUpdate.timerLength
             )
         }
         startDelayedChallenge()
@@ -199,22 +202,6 @@ class RandomOperationViewModel @Inject constructor(
             shouldLaunch = { !_uiState.value.isGameOver },
             onLaunch = { launchNewChallenge(resetTimer = true) }
         )
-    }
-
-    // Increases the current level by 1 and updates the game parameters accordingly.
-    private fun promoteLevel() {
-        _uiState.update { it.copy(level = it.level + 1) }
-        sessionTracker.recordProgress(_uiState.value.level)
-        val level = _uiState.value.level
-        operandRangeMin = operandRangeMax
-        operandRangeMax = 100 * level + 50 * (level - 1)
-        multiplicationConfig.maxOperandHigh += 5
-        multiplicationConfig.maxOperandLow += 1
-        divisionConfig.maxOperandHigh += 2
-        divisionConfig.maxOperandLow += 1
-        challengesPerLevel += 5
-        challengesCompleted = 0
-        timerLength += 5_000L
     }
 
     private fun onGameOver() {
