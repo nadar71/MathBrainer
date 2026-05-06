@@ -12,6 +12,7 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_random_operation.domai
 import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.ArithmeticChallengeProgression
 import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.CountdownChallengeLoop
 import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.GameSessionTracker
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.TimedChallengeRoundCoordinator
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
@@ -61,6 +62,11 @@ class RandomOperationViewModel @Inject constructor(
             lowIncrement = 1,
             highIncrement = 2
         )
+    )
+    private val roundCoordinator = TimedChallengeRoundCoordinator(
+        scoreIncrement = SCORE_INCREMENT,
+        progression = progression,
+        sessionTracker = sessionTracker
     )
     private val challengeLoop = CountdownChallengeLoop(viewModelScope, COUNTDOWN_STEP, NEXT_CHALLENGE_DELAY)
     private val _uiState = MutableStateFlow(RandomOperationUiState())
@@ -137,42 +143,38 @@ class RandomOperationViewModel @Inject constructor(
     }
 
     private fun handleSuccess() {
-        val newScore = _uiState.value.score + SCORE_INCREMENT
-        val progressionUpdate = progression.recordSuccess(_uiState.value.level)
-        val nextLevel = progressionUpdate.nextLevel
-
-        if (nextLevel != null) {
-            _uiState.update { it.copy(level = nextLevel) }
-            sessionTracker.recordProgress(nextLevel)
-        }
-
-        val currentLevel = nextLevel ?: _uiState.value.level
-        sessionTracker.recordSuccess(newScore, currentLevel)
+        val result = roundCoordinator.onSuccess(
+            currentScore = _uiState.value.score,
+            currentLevel = _uiState.value.level
+        )
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
-                score = newScore,
-                highScore = sessionTracker.highScore,
-                challengesCompleted = progressionUpdate.challengesCompleted,
-                challengesPerLevel = progressionUpdate.challengesPerLevel,
-                timeRemaining = progressionUpdate.timerLength,
-                totalTime = progressionUpdate.timerLength
+                score = result.newScore,
+                highScore = result.highScore,
+                level = result.level,
+                challengesCompleted = result.challengesCompleted,
+                challengesPerLevel = result.challengesPerLevel,
+                timeRemaining = result.timerLength,
+                totalTime = result.timerLength
             )
         }
         startDelayedChallenge()
     }
 
     private fun handleFailure() {
-        val remainingLives = _uiState.value.lives - 1
-        sessionTracker.recordFailure(_uiState.value.level)
+        val result = roundCoordinator.onFailure(
+            currentLives = _uiState.value.lives,
+            currentLevel = _uiState.value.level
+        )
         _uiState.update {
             it.copy(
-                lives = remainingLives,
+                lives = result.remainingLives,
                 feedback = ChallengeUiState.Feedback.FAILURE
             )
         }
 
-        if (remainingLives <= 0) {
+        if (result.isGameOver) {
             onGameOver()
         } else {
             startDelayedChallenge()
@@ -180,17 +182,19 @@ class RandomOperationViewModel @Inject constructor(
     }
 
     private fun handleCountdownExpired() {
-        val remainingLives = _uiState.value.lives - 1
-        sessionTracker.recordFailure(_uiState.value.level)
+        val result = roundCoordinator.onFailure(
+            currentLives = _uiState.value.lives,
+            currentLevel = _uiState.value.level
+        )
         _uiState.update {
             it.copy(
-                lives = remainingLives,
+                lives = result.remainingLives,
                 feedback = ChallengeUiState.Feedback.FAILURE,
                 timeRemaining = 0L
             )
         }
 
-        if (remainingLives <= 0) {
+        if (result.isGameOver) {
             onGameOver()
         } else {
             startDelayedChallenge()
