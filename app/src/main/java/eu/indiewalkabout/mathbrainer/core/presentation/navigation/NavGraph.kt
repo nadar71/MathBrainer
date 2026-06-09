@@ -1,12 +1,10 @@
 package eu.indiewalkabout.mathbrainer.core.presentation.navigation
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,13 +38,6 @@ fun NavGraph(
     navController: NavHostController,
     startDestination: String = ScreenRoutes.Home.route
 ) {
-    // Log navigation events
-    LaunchedEffect(navController) {
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            Log.d("Navigation", "Navigated to: ${destination.route}")
-        }
-    }
-
     NavHost(
         navController = navController,
         startDestination = startDestination

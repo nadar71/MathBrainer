@@ -1,6 +1,5 @@
 package eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases
 
-import android.util.Log
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository.MathBrainerRepository
 import javax.inject.Inject
@@ -20,7 +19,6 @@ class UpdateGameStatsUseCase @Inject constructor(
             highScore = max(currentStats.highScore, updatedStats.highScore),
             lastLevel = max(currentStats.lastLevel, updatedStats.lastLevel)
         )
-        Log.d("UpdateGameStatsUseCase", "Merged stats: $mergedStats")
         repository.insertGameStats(mergedStats)
     }
 }

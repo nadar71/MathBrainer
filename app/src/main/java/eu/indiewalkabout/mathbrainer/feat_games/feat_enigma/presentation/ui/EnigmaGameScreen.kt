@@ -1,5 +1,7 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.presentation.ui
 
+// Enigma presents equation-style logic puzzles that the player solves by finding the missing value.
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,16 +19,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
@@ -43,21 +42,12 @@ fun EnigmaGameScreen(
     viewModel: EnigmaViewModel = hiltViewModel(),
 ) {
     val gameId = GameTypes.ENIGMA.id
-    val gameStats by viewModel.gameStats.collectAsState()
-    var hasStarted by remember(gameId) { mutableStateOf(false) }
 
     LaunchedEffect(gameId, initialHighScore) {
-        viewModel.refreshGameStat(gameId, initialHighScore)
+        viewModel.initialize(gameId, initialHighScore)
     }
 
-    LaunchedEffect(gameId, gameStats) {
-        if (!hasStarted && gameStats != null) {
-            viewModel.startGame()
-            hasStarted = true
-        }
-    }
-
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -69,7 +59,7 @@ fun EnigmaGameScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = {
-                    viewModel.onQuitGame()
+                    viewModel.onBackPressed()
                     onBack()
                 }) {
                     Icon(
@@ -128,15 +118,15 @@ fun EnigmaGameScreen(
                 feedback = state.feedback,
                 inputValue = state.inputValue,
                 onDigitPressed = { digit -> viewModel.onDigitPressed(digit) },
-                onDelete = { viewModel.onDelete() },
-                onSubmit = { viewModel.submitAnswer() }
+                onDelete = { viewModel.onDeletePressed() },
+                onSubmit = { viewModel.onSubmitPressed() }
             )
         }
     }
 
     if (state.isGameOver) {
         GameOverDialog(onDismiss = {
-            viewModel.onQuitGame()
+            viewModel.onBackPressed()
             onBack()
         })
     }

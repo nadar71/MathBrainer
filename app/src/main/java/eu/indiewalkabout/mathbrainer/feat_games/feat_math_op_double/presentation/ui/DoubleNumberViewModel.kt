@@ -8,12 +8,13 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.domain.model
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.domain.use_cases.GenerateDoubleNumberChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.domain.use_cases.UpdateDoubleNumberScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_double.presentation.state.DoubleNumberUiState
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.ArithmeticChallengeProgression
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.CountdownChallengeLoop
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.GameSessionTracker
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.TimedChallengeRoundCoordinator
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,44 +29,26 @@ class DoubleNumberViewModel @Inject constructor(
     private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
-
-    private var highScore: Int = 0
-    private var challengesPlayed: Int = 0
-    private var challengesWon: Int = 0
-    private var challengesLost: Int = 0
-    private var lastLevel: Int = 1
-
-    private val _gameStats = MutableStateFlow<GameStats?>(null)
-    val gameStats: StateFlow<GameStats?> = _gameStats.asStateFlow()
-
-    private var operandRangeMin = 1
-    private var operandRangeMax = 100
-
-    private var timerLength = ChallengeUiState.INITIAL_TIMER_LENGTH
-    private var timerJob: Job? = null
-    private var challengesCompleted = 0
-    private var isScorePersisted = false // flag to prevent double writes to the DB
-
+    private val sessionTracker = GameSessionTracker(GameTypes.DOUBLE_NUMBER.id)
+    private val progression = ArithmeticChallengeProgression(
+        initialChallengesPerLevel = DoubleNumberUiState().challengesPerLevel,
+        challengesPerLevelIncrement = 0,
+        promotionThreshold = ArithmeticChallengeProgression.PromotionThreshold.ON_TARGET,
+        timerIncrementProvider = { LEVEL_TIMER_INCREMENT }
+    )
+    private val roundCoordinator = TimedChallengeRoundCoordinator(
+        scoreIncrement = SCORE_INCREMENT,
+        progression = progression,
+        sessionTracker = sessionTracker
+    )
+    private val challengeLoop = CountdownChallengeLoop(viewModelScope, COUNTDOWN_STEP, NEXT_CHALLENGE_DELAY)
     private val _uiState = MutableStateFlow(DoubleNumberUiState())
     val uiState: StateFlow<DoubleNumberUiState> = _uiState.asStateFlow()
 
-    fun refreshGameStat(gameId: String, fallbackHighScore: Int = 0) {
+    fun initialize(gameId: String, fallbackHighScore: Int = 0) {
         viewModelScope.launch {
-            val stats = getGameStatsUseCase(gameId)
-            _gameStats.value = stats
-            highScore = stats?.highScore ?: fallbackHighScore
-            challengesPlayed = stats?.challengesPlayed ?: 0
-            challengesWon = stats?.challengesWon ?: 0
-            challengesLost = stats?.challengesLost ?: 0
-            lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
-            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
-        }
-    }
-
-    fun startGame(initialHighScore: Int = 0) {
-        isScorePersisted = false
-        _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 } ?: initialHighScore.takeIf { it > 0 }) }
-        viewModelScope.launch {
+            sessionTracker.loadStats(gameId, fallbackHighScore, getGameStatsUseCase::invoke)
+            resetSessionState(fallbackHighScore)
             launchNewChallenge(resetTimer = true)
         }
     }
@@ -75,7 +58,7 @@ class DoubleNumberViewModel @Inject constructor(
         _uiState.update { it.copy(inputValue = (it.inputValue + digit.toString()).take(7)) }
     }
 
-    fun onDelete() {
+    fun onDeletePressed() {
         if (_uiState.value.isGameOver) return
         _uiState.update { current ->
             val newValue = if (current.inputValue.isNotEmpty()) current.inputValue.dropLast(1) else ""
@@ -83,10 +66,10 @@ class DoubleNumberViewModel @Inject constructor(
         }
     }
 
-    fun submitAnswer() {
+    fun onSubmitPressed() {
         val challenge = _uiState.value.challenge ?: return
         val attempt = _uiState.value.inputValue.toIntOrNull() ?: return
-        timerJob?.cancel()
+        challengeLoop.cancelCountdown()
 
         if (attempt == challenge.answer) {
             handleSuccess()
@@ -95,15 +78,24 @@ class DoubleNumberViewModel @Inject constructor(
         }
     }
 
-    fun onQuitGame() {
+    fun onBackPressed() {
         persistScoreIfNeeded()
+    }
+
+    private fun resetSessionState(initialHighScore: Int) {
+        challengeLoop.cancelAll()
+        sessionTracker.beginSession()
+        progression.reset()
+        _uiState.value = DoubleNumberUiState(
+            highScore = sessionTracker.sessionHighScoreOr(initialHighScore)
+        )
     }
 
     private suspend fun launchNewChallenge(resetTimer: Boolean) {
         val challenge = generateDoubleNumberChallengeUseCase(
             DoubleNumberConfig(
-                min = operandRangeMin,
-                max = operandRangeMax
+                min = progression.operandRangeMin,
+                max = progression.operandRangeMax
             )
         )
 
@@ -112,8 +104,8 @@ class DoubleNumberViewModel @Inject constructor(
                 challenge = challenge,
                 inputValue = "",
                 feedback = null,
-                timeRemaining = timerLength,
-                totalTime = timerLength
+                timeRemaining = progression.timerLength,
+                totalTime = progression.timerLength
             )
         }
 
@@ -123,59 +115,46 @@ class DoubleNumberViewModel @Inject constructor(
     }
 
     private fun startTimer() {
-        timerJob?.cancel()
-        timerJob = viewModelScope.launch {
-            var remaining = timerLength
-            while (remaining > 0) {
-                delay(COUNTDOWN_STEP)
-                remaining -= COUNTDOWN_STEP
-                _uiState.update { it.copy(timeRemaining = remaining) }
-            }
-            handleCountdownExpired()
-        }
+        challengeLoop.startCountdown(
+            durationMs = progression.timerLength,
+            onTick = { remaining -> _uiState.update { it.copy(timeRemaining = remaining) } },
+            onExpired = ::handleCountdownExpired
+        )
     }
 
     private fun handleSuccess() {
-        challengesPlayed++
-        challengesWon++
-        challengesCompleted++
-        val newScore = _uiState.value.score + SCORE_INCREMENT
-        var updatedTimer = timerLength
-
-        if (challengesCompleted >= _uiState.value.challengesPerLevel) {
-            challengesCompleted = 0
-            promoteLevel()
-            updatedTimer = timerLength
-        }
-
-        highScore = maxOf(highScore, newScore)
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        val result = roundCoordinator.onSuccess(
+            currentScore = _uiState.value.score,
+            currentLevel = _uiState.value.level
+        )
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
-                score = newScore,
-                highScore = highScore,
-                challengesCompleted = challengesCompleted,
-                timeRemaining = updatedTimer,
-                totalTime = updatedTimer
+                score = result.newScore,
+                highScore = result.highScore,
+                level = result.level,
+                challengesCompleted = result.challengesCompleted,
+                challengesPerLevel = result.challengesPerLevel,
+                timeRemaining = result.timerLength,
+                totalTime = result.timerLength
             )
         }
         startDelayedChallenge()
     }
 
     private fun handleFailure() {
-        val remainingLives = _uiState.value.lives - 1
-        challengesPlayed++
-        challengesLost++
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        val result = roundCoordinator.onFailure(
+            currentLives = _uiState.value.lives,
+            currentLevel = _uiState.value.level
+        )
         _uiState.update {
             it.copy(
-                lives = remainingLives,
+                lives = result.remainingLives,
                 feedback = ChallengeUiState.Feedback.FAILURE
             )
         }
 
-        if (remainingLives <= 0) {
+        if (result.isGameOver) {
             onGameOver()
         } else {
             startDelayedChallenge()
@@ -183,18 +162,18 @@ class DoubleNumberViewModel @Inject constructor(
     }
 
     private fun handleCountdownExpired() {
-        val remainingLives = _uiState.value.lives - 1
-        challengesPlayed++
-        challengesLost++
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        val result = roundCoordinator.onFailure(
+            currentLives = _uiState.value.lives,
+            currentLevel = _uiState.value.level
+        )
         _uiState.update {
             it.copy(
-                lives = remainingLives,
+                lives = result.remainingLives,
                 feedback = ChallengeUiState.Feedback.FAILURE,
                 timeRemaining = 0L
             )
         }
-        if (remainingLives <= 0) {
+        if (result.isGameOver) {
             onGameOver()
         } else {
             startDelayedChallenge()
@@ -202,48 +181,25 @@ class DoubleNumberViewModel @Inject constructor(
     }
 
     private fun startDelayedChallenge() {
-        viewModelScope.launch {
-            delay(NEXT_CHALLENGE_DELAY)
-            if (!_uiState.value.isGameOver) {
-                launchNewChallenge(resetTimer = true)
-            }
-        }
-    }
-
-    private fun promoteLevel() {
-        _uiState.update { it.copy(level = it.level + 1) }
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
-        operandRangeMin = operandRangeMax
-        operandRangeMax = 100 * _uiState.value.level + 50 * (_uiState.value.level - 1)
-        timerLength += LEVEL_TIMER_INCREMENT
+        challengeLoop.scheduleNextChallenge(
+            shouldLaunch = { !_uiState.value.isGameOver },
+            onLaunch = { launchNewChallenge(resetTimer = true) }
+        )
     }
 
     private fun onGameOver() {
-        timerJob?.cancel()
+        challengeLoop.cancelAll()
         _uiState.update { it.copy(isGameOver = true) }
         persistScoreIfNeeded()
     }
 
     private fun persistScoreIfNeeded() {
-        if (isScorePersisted) return
-        isScorePersisted = true
         val finalScore = _uiState.value.score
-        highScore = maxOf(highScore, finalScore)
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
-        val updatedStats = GameStats(
-            gameId = GameTypes.DOUBLE_NUMBER.id,
-            highScore = highScore,
-            challengesPlayed = challengesPlayed,
-            challengesWon = challengesWon,
-            challengesLost = challengesLost,
-            lastLevel = lastLevel
-        )
-        val previousStats = _gameStats.value
-        _gameStats.value = updatedStats
+        val persistRequest = sessionTracker.buildPersistRequest(finalScore, _uiState.value.level) ?: return
         viewModelScope.launch {
-            updateGameStatsUseCase(previousStats, updatedStats)
-            if (finalScore > 0) {
-                updateDoubleNumberScoreUseCase(finalScore)
+            updateGameStatsUseCase(persistRequest.previousStats, persistRequest.updatedStats)
+            if (persistRequest.finalScore > 0) {
+                updateDoubleNumberScoreUseCase(persistRequest.finalScore)
             }
         }
     }

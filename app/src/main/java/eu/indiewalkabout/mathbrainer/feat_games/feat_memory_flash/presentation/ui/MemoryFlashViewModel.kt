@@ -9,8 +9,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_memory_flash.domain.model.M
 import eu.indiewalkabout.mathbrainer.feat_games.feat_memory_flash.domain.use_cases.GenerateMemoryFlashChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_memory_flash.domain.use_cases.UpdateMemoryFlashScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_memory_flash.presentation.state.MemoryFlashUiState
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.GameSessionTracker
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.delay
@@ -28,46 +28,30 @@ class MemoryFlashViewModel @Inject constructor(
     private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
-
-    private var highScore: Int = 0
-    private var challengesPlayed: Int = 0
-    private var challengesWon: Int = 0
-    private var challengesLost: Int = 0
-    private var lastLevel: Int = 1
-
-    private val _gameStats = MutableStateFlow<GameStats?>(null)
-    val gameStats: StateFlow<GameStats?> = _gameStats.asStateFlow()
+    private val sessionTracker = GameSessionTracker(GameTypes.MEMORY_FLASH.id)
 
     private var challengesCompletedInternal = 0
     private var challengesPerLevelInternal = INITIAL_CHALLENGES_PER_LEVEL
-    private var isScorePersisted = false
     private var currentChallenge: MemoryFlashChallenge? = null
 
     private val _uiState = MutableStateFlow(MemoryFlashUiState())
     val uiState: StateFlow<MemoryFlashUiState> = _uiState.asStateFlow()
 
-    fun refreshGameStat(gameId: String, fallbackHighScore: Int = 0) {
+    fun initialize(gameId: String, fallbackHighScore: Int = 0) {
         viewModelScope.launch {
-            val stats = getGameStatsUseCase(gameId)
-            _gameStats.value = stats
-            highScore = stats?.highScore ?: fallbackHighScore
-            challengesPlayed = stats?.challengesPlayed ?: 0
-            challengesWon = stats?.challengesWon ?: 0
-            challengesLost = stats?.challengesLost ?: 0
-            lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
-            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
+            sessionTracker.loadStats(gameId, fallbackHighScore, getGameStatsUseCase::invoke)
+            startGame(initialHighScore = fallbackHighScore)
         }
     }
 
-    fun startGame(initialHighScore: Int = 0) {
-        isScorePersisted = false
+    private fun startGame(initialHighScore: Int = 0) {
+        sessionTracker.beginSession()
         challengesCompletedInternal = 0
         challengesPerLevelInternal = INITIAL_CHALLENGES_PER_LEVEL
 
         _uiState.update {
             it.copy(
-                highScore = highScore.takeIf { score -> score > 0 }
-                    ?: initialHighScore.takeIf { score -> score > 0 },
+                highScore = sessionTracker.sessionHighScoreOr(initialHighScore),
                 score = 0,
                 level = 1,
                 lives = 3,
@@ -93,7 +77,7 @@ class MemoryFlashViewModel @Inject constructor(
         }
     }
 
-    fun onDelete() {
+    fun onDeletePressed() {
         if (_uiState.value.isGameOver || _uiState.value.isReadyForNext || _uiState.value.isSequenceVisible) return
         _uiState.update { current ->
             val newValue = if (current.inputValue.isNotEmpty()) current.inputValue.dropLast(1) else ""
@@ -101,7 +85,7 @@ class MemoryFlashViewModel @Inject constructor(
         }
     }
 
-    fun submitAnswer() {
+    fun onSubmitPressed() {
         if (_uiState.value.isGameOver || _uiState.value.isReadyForNext || _uiState.value.isSequenceVisible) return
         val challenge = currentChallenge ?: return
         val attempt = _uiState.value.inputValue
@@ -113,12 +97,12 @@ class MemoryFlashViewModel @Inject constructor(
         }
     }
 
-    fun onNextChallenge() {
+    fun onNextPressed() {
         if (_uiState.value.isGameOver || !_uiState.value.isReadyForNext) return
         viewModelScope.launch { launchNewChallenge() }
     }
 
-    fun onQuitGame() {
+    fun onBackPressed() {
         persistScoreIfNeeded()
     }
 
@@ -158,16 +142,13 @@ class MemoryFlashViewModel @Inject constructor(
             _uiState.value.level to challengesPerLevelInternal
         }
 
-        challengesPlayed++
-        challengesWon++
-        lastLevel = maxOf(lastLevel, nextLevel)
-        highScore = maxOf(highScore, newScore)
+        sessionTracker.recordSuccess(newScore, nextLevel)
 
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
-                highScore = highScore,
+                highScore = sessionTracker.highScore,
                 challengesCompleted = challengesCompletedInternal,
                 challengesPerLevel = nextChallengesPerLevel,
                 level = nextLevel,
@@ -180,9 +161,7 @@ class MemoryFlashViewModel @Inject constructor(
 
     private fun handleFailure(challenge: MemoryFlashChallenge) {
         val remainingLives = _uiState.value.lives - 1
-        challengesPlayed++
-        challengesLost++
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        sessionTracker.recordFailure(_uiState.value.level)
         _uiState.update {
             it.copy(
                 lives = remainingLives,
@@ -212,25 +191,12 @@ class MemoryFlashViewModel @Inject constructor(
     }
 
     private fun persistScoreIfNeeded() {
-        if (isScorePersisted) return
-        isScorePersisted = true
         val finalScore = _uiState.value.score
-        highScore = maxOf(highScore, finalScore)
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
-        val updatedStats = GameStats(
-            gameId = GameTypes.MEMORY_FLASH.id,
-            highScore = highScore,
-            challengesPlayed = challengesPlayed,
-            challengesWon = challengesWon,
-            challengesLost = challengesLost,
-            lastLevel = lastLevel
-        )
-        val previousStats = _gameStats.value
-        _gameStats.value = updatedStats
+        val persistRequest = sessionTracker.buildPersistRequest(finalScore, _uiState.value.level) ?: return
         viewModelScope.launch {
-            updateGameStatsUseCase(previousStats, updatedStats)
-            if (finalScore > 0) {
-                updateMemoryFlashScoreUseCase(finalScore)
+            updateGameStatsUseCase(persistRequest.previousStats, persistRequest.updatedStats)
+            if (persistRequest.finalScore > 0) {
+                updateMemoryFlashScoreUseCase(persistRequest.finalScore)
             }
         }
     }

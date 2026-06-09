@@ -8,8 +8,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.domain.model.Co
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.domain.use_cases.GenerateCountObjectsChallengeUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.domain.use_cases.UpdateCountObjectsScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.state.CountObjectsUiState
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.GameSessionTracker
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.Job
@@ -28,54 +28,24 @@ class CountObjectsViewModel @Inject constructor(
     private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
-
-    private var highScore: Int = 0
-    private var challengesPlayed: Int = 0
-    private var challengesWon: Int = 0
-    private var challengesLost: Int = 0
-    private var lastLevel: Int = 1
-
-    private val _gameStats = MutableStateFlow<GameStats?>(null)
-    val gameStats: StateFlow<GameStats?> = _gameStats.asStateFlow()
-
+    private val sessionTracker = GameSessionTracker(GameTypes.QUICK_COUNT.id)
     private var maxItemsToCount = INITIAL_MAX_ITEMS
     private var memorizeDuration = CountObjectsUiState.INITIAL_MEMORIZE_DURATION
     private var timerJob: Job? = null
     private var challengesCompleted = 0
-    private var isScorePersisted = false // flag to prevent double writes to the DB
 
     private val _uiState = MutableStateFlow(CountObjectsUiState())
     val uiState: StateFlow<CountObjectsUiState> = _uiState.asStateFlow()
 
-    fun refreshGameStat(gameId: String, fallbackHighScore: Int = 0) {
+    fun initialize(gameId: String, fallbackHighScore: Int = 0) {
         viewModelScope.launch {
-            val stats = getGameStatsUseCase(gameId)
-            _gameStats.value = stats
-            highScore = stats?.highScore ?: fallbackHighScore
-            challengesPlayed = stats?.challengesPlayed ?: 0
-            challengesWon = stats?.challengesWon ?: 0
-            challengesLost = stats?.challengesLost ?: 0
-            lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
-            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
+            sessionTracker.loadStats(gameId, fallbackHighScore, getGameStatsUseCase::invoke)
+            resetSessionState(fallbackHighScore)
+            launchNewChallenge(resetTimer = true)
         }
     }
 
-    fun startGame() {
-        isScorePersisted = false
-        _uiState.update {
-            it.copy(
-                highScore = highScore.takeIf { score -> score > 0 },
-                challengesPerLevel = INITIAL_CHALLENGES_PER_LEVEL,
-                challengesCompleted = 0,
-                level = 1,
-                score = 0,
-                lives = 3
-            )
-        }
-        viewModelScope.launch { launchNewChallenge(resetTimer = true) }
-    }
-
-    fun submitAnswer(answer: Int) {
+    fun onAnswerSelected(answer: Int) {
         val challenge = _uiState.value.challenge ?: return
         if (_uiState.value.isGameOver || _uiState.value.isShowingItems || _uiState.value.showNextButton) return
 
@@ -86,13 +56,25 @@ class CountObjectsViewModel @Inject constructor(
         }
     }
 
-    fun onNextChallenge() {
+    fun onNextPressed() {
         if (_uiState.value.isGameOver) return
         viewModelScope.launch { launchNewChallenge(resetTimer = true) }
     }
 
-    fun onQuitGame() {
+    fun onBackPressed() {
         persistScoreIfNeeded()
+    }
+
+    private fun resetSessionState(initialHighScore: Int) {
+        timerJob?.cancel()
+        sessionTracker.beginSession()
+        maxItemsToCount = INITIAL_MAX_ITEMS
+        memorizeDuration = CountObjectsUiState.INITIAL_MEMORIZE_DURATION
+        challengesCompleted = 0
+        _uiState.value = CountObjectsUiState(
+            highScore = sessionTracker.sessionHighScoreOr(initialHighScore),
+            challengesPerLevel = INITIAL_CHALLENGES_PER_LEVEL
+        )
     }
 
     private fun launchNewChallenge(resetTimer: Boolean) {
@@ -128,8 +110,6 @@ class CountObjectsViewModel @Inject constructor(
     }
 
     private fun handleSuccess() {
-        challengesPlayed++
-        challengesWon++
         val newChallengesCompleted = _uiState.value.challengesCompleted + 1
         val newScore = _uiState.value.score + SCORE_INCREMENT
         var newLevel = _uiState.value.level
@@ -142,13 +122,12 @@ class CountObjectsViewModel @Inject constructor(
             updatedMemorizeDuration = memorizeDuration
         }
 
-        highScore = maxOf(highScore, newScore)
-        lastLevel = maxOf(lastLevel, newLevel)
+        sessionTracker.recordSuccess(newScore, newLevel)
         _uiState.update {
             it.copy(
                 feedback = ChallengeUiState.Feedback.SUCCESS,
                 score = newScore,
-                highScore = highScore,
+                highScore = sessionTracker.highScore,
                 challengesCompleted = if (newChallengesCompleted >= it.challengesPerLevel) 0 else newChallengesCompleted,
                 memorizeDurationMs = updatedMemorizeDuration,
                 showNextButton = true,
@@ -166,9 +145,7 @@ class CountObjectsViewModel @Inject constructor(
 
     private fun handleFailure() {
         val remainingLives = _uiState.value.lives - 1
-        challengesPlayed++
-        challengesLost++
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        sessionTracker.recordFailure(_uiState.value.level)
         _uiState.update {
             it.copy(
                 lives = remainingLives,
@@ -184,7 +161,7 @@ class CountObjectsViewModel @Inject constructor(
 
     private fun promoteLevel() {
         _uiState.update { it.copy(level = it.level + 1) }
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        sessionTracker.recordProgress(_uiState.value.level)
         if (_uiState.value.level < LEVEL_ITEMS_CAP) {
             maxItemsToCount += ITEMS_INCREMENT
         }
@@ -198,25 +175,12 @@ class CountObjectsViewModel @Inject constructor(
     }
 
     private fun persistScoreIfNeeded() {
-        if (isScorePersisted) return
-        isScorePersisted = true
         val finalScore = _uiState.value.score
-        highScore = maxOf(highScore, finalScore)
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
-        val updatedStats = GameStats(
-            gameId = GameTypes.QUICK_COUNT.id,
-            highScore = highScore,
-            challengesPlayed = challengesPlayed,
-            challengesWon = challengesWon,
-            challengesLost = challengesLost,
-            lastLevel = lastLevel
-        )
-        val previousStats = _gameStats.value
-        _gameStats.value = updatedStats
+        val persistRequest = sessionTracker.buildPersistRequest(finalScore, _uiState.value.level) ?: return
         viewModelScope.launch {
-            updateGameStatsUseCase(previousStats, updatedStats)
-            if (finalScore > 0) {
-                updateCountObjectsScoreUseCase(finalScore)
+            updateGameStatsUseCase(persistRequest.previousStats, persistRequest.updatedStats)
+            if (persistRequest.finalScore > 0) {
+                updateCountObjectsScoreUseCase(persistRequest.finalScore)
             }
         }
     }

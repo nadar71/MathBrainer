@@ -1,6 +1,5 @@
 package eu.indiewalkabout.mathbrainer.feat_home.presentation.ui
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,8 +27,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.core.presentation.navigation.GameRouteResolver
 import eu.indiewalkabout.mathbrainer.core.presentation.navigation.ScreenRoutes
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.GameGrid
@@ -41,11 +41,7 @@ fun HomeScreen(
     navController: NavHostController,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val state by homeViewModel.uiState.collectAsState()
-    Log.d(
-        "HomeScreen",
-        "uiState changed: isLoading=${'$'}{state.isLoading}, games=${'$'}{state.games.size}"
-    )
+    val state by homeViewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -65,7 +61,6 @@ fun HomeScreen(
                         .padding(4.dp)
                         .clickable(
                             onClick = {
-                                Log.d("HomeScreen", "Statistics selected")
                                 navController.navigate(ScreenRoutes.Statistics.route)
                             }
                         ),
@@ -80,7 +75,6 @@ fun HomeScreen(
                         .padding(4.dp)
                         .clickable(
                             onClick = {
-                                Log.d("HomeScreen", "Credits selected")
                                 navController.navigate(ScreenRoutes.GameSettings.route)
                             }
                         ),
@@ -105,13 +99,10 @@ fun HomeScreen(
             )
             when {
                 state.isLoading -> {
-                    Log.d("HomeScreen", "Showing LoadingContent")
                     LoadingContent(padding)
                 }
 
                 !state.error.isNullOrEmpty() -> {
-                    Log.e("HomeScreen", "Error state: ${state.error}")
-                    // Show error UI
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -128,81 +119,15 @@ fun HomeScreen(
                 }
 
                 else -> {
-                    Log.d("HomeScreen", "Showing GameGrid with ${'$'}{state.games.size} games")
                     GameGrid(
                         modifier = Modifier.padding(top = 16.dp),
                         paddingValues = padding,
                         games = state.games,
                         showMinimal = true,
                         onGameSelected = { game ->
-                            Log.d("HomeScreen", "Game selected: ${game.definition.id}")
                             when (val gameType = GameTypes.fromId(game.definition.id)) {
-                                GameTypes.SUM_WRITE, GameTypes.DIFF_WRITE, GameTypes.MULT_WRITE, GameTypes.DIV_WRITE, GameTypes.MIX_WRITE -> {
-                                    navController.navigate(
-                                        ScreenRoutes.MathWriteGame.createRoute(
-                                            operation = game.definition.id
-                                        )
-                                    )
-                                }
-
-                                GameTypes.SUM_CHOOSE, GameTypes.DIFF_CHOOSE, GameTypes.MULT_CHOOSE, GameTypes.DIV_CHOOSE, GameTypes.MIX_CHOOSE -> {
-                                    navController.navigate(
-                                        ScreenRoutes.MathChooseGame.createRoute(
-                                            operation = game.definition.id
-                                        )
-                                    )
-                                }
-
-                                GameTypes.RANDOM_OPERATION -> {
-                                    navController.navigate(
-                                        ScreenRoutes.RandomOperationGame.route
-                                    )
-                                }
-
-                                GameTypes.MEMORY_FLASH -> {
-                                    navController.navigate(
-                                        ScreenRoutes.MemoryFlashGame.route
-                                    )
-                                }
-
-                                GameTypes.DOUBLE_NUMBER -> {
-                                    navController.navigate(
-                                        ScreenRoutes.DoubleNumberGame.route
-                                    )
-                                }
-
-                                GameTypes.QUICK_COUNT -> {
-                                    navController.navigate(
-                                        ScreenRoutes.CountObjectsGame.route
-                                    )
-                                }
-
-                                GameTypes.NUMBER_ORDER -> {
-                                    navController.navigate(
-                                        ScreenRoutes.NumberOrderGame.route
-                                    )
-                                }
-
-                                GameTypes.SEQUENCE_COMPLETE -> {
-                                    navController.navigate(
-                                        ScreenRoutes.SequenceCompleteGame.route
-                                    )
-                                }
-
-                                GameTypes.FALLING_OPS -> {
-                                    navController.navigate(
-                                        ScreenRoutes.FallingOpsGame.route
-                                    )
-                                }
-
-                                GameTypes.ENIGMA -> {
-                                    navController.navigate(
-                                        ScreenRoutes.EnigmaGame.route
-                                    )
-                                }
-
-
                                 null -> navController.navigate(ScreenRoutes.Home.route)
+                                else -> navController.navigate(GameRouteResolver.resolve(gameType))
                             }
                         },
                     )
@@ -212,5 +137,4 @@ fun HomeScreen(
         }
     }
 }
-
 

@@ -8,8 +8,8 @@ import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.domain.use_cases
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.domain.use_cases.UpdateFallingOpsScoreUseCase
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.state.FallingOperationItem
 import eu.indiewalkabout.mathbrainer.feat_games.feat_falling_op.presentation.state.FallingOpsUiState
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.session.GameSessionTracker
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
-import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.GetGameStatsUseCase
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.use_cases.UpdateGameStatsUseCase
 import kotlinx.coroutines.Job
@@ -31,15 +31,7 @@ class FallingOpsViewModel @Inject constructor(
     private val getGameStatsUseCase: GetGameStatsUseCase,
     private val updateGameStatsUseCase: UpdateGameStatsUseCase
 ) : ViewModel() {
-
-    private var highScore: Int = 0
-    private var challengesPlayed: Int = 0
-    private var challengesWon: Int = 0
-    private var challengesLost: Int = 0
-    private var lastLevel: Int = 1
-
-    private val _gameStats = MutableStateFlow<GameStats?>(null)
-    val gameStats: StateFlow<GameStats?> = _gameStats.asStateFlow()
+    private val sessionTracker = GameSessionTracker(GameTypes.FALLING_OPS.id)
 
     private val _uiState = MutableStateFlow(FallingOpsUiState())
     val uiState: StateFlow<FallingOpsUiState> = _uiState.asStateFlow()
@@ -49,32 +41,14 @@ class FallingOpsViewModel @Inject constructor(
     private var nextId = 0
     private var speedPerSecond = BASE_SPEED
     private var spawnIntervalMs = BASE_SPAWN_INTERVAL_MS
-    private var isScorePersisted = false
-
-    fun refreshGameStat(gameId: String, fallbackHighScore: Int = 0) {
+    fun initialize(gameId: String, fallbackHighScore: Int = 0) {
         viewModelScope.launch {
-            val stats = getGameStatsUseCase(gameId)
-            _gameStats.value = stats
-            highScore = stats?.highScore ?: fallbackHighScore
-            challengesPlayed = stats?.challengesPlayed ?: 0
-            challengesWon = stats?.challengesWon ?: 0
-            challengesLost = stats?.challengesLost ?: 0
-            lastLevel = stats?.lastLevel?.takeIf { it > 0 } ?: 1
-            _uiState.update { it.copy(highScore = highScore.takeIf { score -> score > 0 }) }
+            sessionTracker.loadStats(gameId, fallbackHighScore, getGameStatsUseCase::invoke)
+            resetSessionState(fallbackHighScore)
+            addOperation()
+            startFallingLoop()
+            startSpawnLoop()
         }
-    }
-
-    fun startGame(initialHighScore: Int = 0) {
-        stopJobs()
-        isScorePersisted = false
-        nextId = 0
-        updateDifficulty(level = 1)
-        _uiState.value = FallingOpsUiState(
-            highScore = highScore.takeIf { score -> score > 0 } ?: initialHighScore.takeIf { it > 0 }
-        )
-        addOperation()
-        startFallingLoop()
-        startSpawnLoop()
     }
 
     fun onDigitPressed(digit: Int) {
@@ -84,14 +58,14 @@ class FallingOpsViewModel @Inject constructor(
         _uiState.update { it.copy(input = currentInput + digit.toString()) }
     }
 
-    fun onDelete() {
+    fun onDeletePressed() {
         if (_uiState.value.isGameOver) return
         val currentInput = _uiState.value.input
         if (currentInput.isEmpty()) return
         _uiState.update { it.copy(input = currentInput.dropLast(1)) }
     }
 
-    fun onSubmit() {
+    fun onSubmitPressed() {
         if (_uiState.value.isGameOver) return
         val inputValue = _uiState.value.input.toIntOrNull()
         if (inputValue == null) {
@@ -101,9 +75,7 @@ class FallingOpsViewModel @Inject constructor(
 
         val matches = _uiState.value.operations.filter { it.definition.result == inputValue }
         if (matches.isEmpty()) {
-            challengesPlayed++
-            challengesLost++
-            lastLevel = maxOf(lastLevel, _uiState.value.level)
+            sessionTracker.recordFailure(_uiState.value.level)
             _uiState.update {
                 it.copy(
                     input = "",
@@ -122,24 +94,20 @@ class FallingOpsViewModel @Inject constructor(
         var explodedThisLevel = updatedExploded
         var updatedOperations = remaining
 
-        challengesPlayed++
-        challengesWon++
-
         if (updatedExploded >= _uiState.value.targetPerLevel) {
             updatedLevel += 1
             updatedTarget = _uiState.value.targetPerLevel + TARGET_INCREMENT
             explodedThisLevel = 0
             updatedOperations = emptyList()
             updateDifficulty(updatedLevel)
-            lastLevel = maxOf(lastLevel, updatedLevel)
         }
 
-        highScore = maxOf(highScore, updatedScore)
+        sessionTracker.recordSuccess(updatedScore, updatedLevel)
 
         _uiState.update {
             it.copy(
                 score = updatedScore,
-                highScore = highScore,
+                highScore = sessionTracker.highScore,
                 operations = updatedOperations,
                 explodedThisLevel = explodedThisLevel,
                 level = updatedLevel,
@@ -150,8 +118,18 @@ class FallingOpsViewModel @Inject constructor(
         }
     }
 
-    fun onQuitGame() {
+    fun onBackPressed() {
         persistScoreIfNeeded()
+    }
+
+    private fun resetSessionState(initialHighScore: Int) {
+        stopJobs()
+        sessionTracker.beginSession()
+        nextId = 0
+        updateDifficulty(level = 1)
+        _uiState.value = FallingOpsUiState(
+            highScore = sessionTracker.sessionHighScoreOr(initialHighScore)
+        )
     }
 
     private fun addOperation() {
@@ -204,9 +182,7 @@ class FallingOpsViewModel @Inject constructor(
 
     private fun handleLifeLost() {
         val remainingLives = _uiState.value.lives - 1
-        challengesPlayed++
-        challengesLost++
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
+        sessionTracker.recordFailure(_uiState.value.level)
         _uiState.update {
             it.copy(
                 lives = remainingLives,
@@ -227,25 +203,12 @@ class FallingOpsViewModel @Inject constructor(
     }
 
     private fun persistScoreIfNeeded() {
-        if (isScorePersisted) return
-        isScorePersisted = true
         val finalScore = _uiState.value.score
-        highScore = maxOf(highScore, finalScore)
-        lastLevel = maxOf(lastLevel, _uiState.value.level)
-        val updatedStats = GameStats(
-            gameId = GameTypes.FALLING_OPS.id,
-            highScore = highScore,
-            challengesPlayed = challengesPlayed,
-            challengesWon = challengesWon,
-            challengesLost = challengesLost,
-            lastLevel = lastLevel
-        )
-        val previousStats = _gameStats.value
-        _gameStats.value = updatedStats
+        val persistRequest = sessionTracker.buildPersistRequest(finalScore, _uiState.value.level) ?: return
         viewModelScope.launch {
-            updateGameStatsUseCase(previousStats, updatedStats)
-            if (finalScore > 0) {
-                updateFallingOpsScoreUseCase(finalScore)
+            updateGameStatsUseCase(persistRequest.previousStats, persistRequest.updatedStats)
+            if (persistRequest.finalScore > 0) {
+                updateFallingOpsScoreUseCase(persistRequest.finalScore)
             }
         }
     }

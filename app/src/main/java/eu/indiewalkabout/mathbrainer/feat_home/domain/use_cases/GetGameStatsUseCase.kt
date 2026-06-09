@@ -1,6 +1,5 @@
 package eu.indiewalkabout.mathbrainer.feat_home.domain.use_cases
 
-import android.util.Log
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.model.GameStats
 import eu.indiewalkabout.mathbrainer.feat_statistics.domain.repository.MathBrainerRepository
@@ -14,7 +13,7 @@ class GetGameStatsUseCase @Inject constructor(
 ) {
     private val supportedGameIds = GameTypes.entries.map { it.id }
 
-    suspend operator fun invoke(): Flow<Map<String, GameStats>> {
+    operator fun invoke(): Flow<Map<String, GameStats>> {
         return repository.observeGameStats()
             .map { stats ->
                 val statsMap = stats.associateBy { it.gameId }.toMutableMap()
@@ -26,8 +25,7 @@ class GetGameStatsUseCase @Inject constructor(
                 }
                 statsMap.toMap()
             }
-            .catch { throwable ->
-                Log.e("GetGameStatsUseCase", "Error while getting game stats", throwable)
+            .catch {
                 emit(supportedGameIds.associateWith { GameStats(gameId = it) })
             }
     }

@@ -1,5 +1,7 @@
 package eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.ui
 
+// Quick Count asks the player to memorize and then identify how many objects were shown.
+
 import android.content.Context
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Canvas
@@ -25,7 +27,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.components.GameOverDialog
 import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
@@ -62,20 +64,11 @@ fun CountObjectsGameScreen(
     viewModel: CountObjectsViewModel = hiltViewModel(),
 ) {
     val gameId = GameTypes.QUICK_COUNT.id
-    val gameStats by viewModel.gameStats.collectAsState()
-    var hasStarted by remember(gameId) { mutableStateOf(false) }
 
     LaunchedEffect(gameId, initialHighScore) {
-        viewModel.refreshGameStat(gameId, initialHighScore)
+        viewModel.initialize(gameId, initialHighScore)
     }
-
-    LaunchedEffect(gameId, gameStats) {
-        if (!hasStarted && gameStats != null) {
-            viewModel.startGame()
-            hasStarted = true
-        }
-    }
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -87,7 +80,7 @@ fun CountObjectsGameScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = {
-                    viewModel.onQuitGame()
+                    viewModel.onBackPressed()
                     onBack()
                 }) {
                     Icon(
@@ -146,12 +139,12 @@ fun CountObjectsGameScreen(
             AnswersGrid (
                 options = state.challenge?.answerOptions.orEmpty(),
                 enabled = !state.isShowingItems && !state.isGameOver,
-                onOptionSelected = { viewModel.submitAnswer(it) }
+                onOptionSelected = { viewModel.onAnswerSelected(it) }
             )
 
             if (state.showNextButton && !state.isGameOver) {
                 Button(
-                    onClick = { viewModel.onNextChallenge() },
+                    onClick = { viewModel.onNextPressed() },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = stringResource(id = R.string.quick_count_relaunch))
@@ -162,7 +155,7 @@ fun CountObjectsGameScreen(
 
     if (state.isGameOver) {
         GameOverDialog(onDismiss = {
-            viewModel.onQuitGame()
+            viewModel.onBackPressed()
             onBack()
         })
     }
