@@ -1,82 +1,111 @@
 <resources>
+    <!-- Ads -->
+    <string name="ads_banner_placeholder">Advertisement</string>
+
     <string name="app_name">MathBrainer</string>
-    <string name="play">Play</string>
-    <string name="math_brainer">Math Brainer</string>
-    <string name="_2">2</string>
-    <string name="_1">1</string>
-    <string name="op">op</string>
-    <string name="score">Score</string>
-    <string name="button">Button</string>
-    <string name="nan">nan</string>
-    <string name="todo">TODO</string>
-    <string name="level">Level</string>
-    <string name="_0">0</string>
-    <string name="lives">Lives</string>
-    <string name="your_answer">Your Answer</string>
-    <string name="statistics">Statistics</string>
-    <string name="scoreMain">Score</string>
-    <string name="settings">settings</string>
-    <string name="the_double_is"> X   2 = </string>
-    <string name="hints">Hints</string>
+    <!-- - - - - - - - - - - - - - - - - Home Screen - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="math_brainer_title">Math Brainer</string>
+    <string name="home_tagline">Choose your next brain training.</string>
+    <string name="home_progress_title">Track your progress</string>
+    <string name="home_progress_body">Check highscores or read the credits.</string>
+    <string name="statistics_title">Your numbers !</string>
+    <string name="credits_title_short">Credits</string>
+    <string name="highscore_with_value">Highscore: %1$d</string>
+    <string name="no_high_score">No high score yet</string>
+    <string name="game_played_count">Played: %1$d</string>
+    <string name="math_write_played_count">Played: %1$d</string>
+    <string name="math_write_win_loss">Wins: %1$d \nLosses: %2$d</string>
+    <string name="math_write_win_percentage">Win %%: %1$d</string>
+    <string name="math_write_best_level">Best level: %1$d</string>
+    <string name="game_win_loss">Wins: %1$d \nLosses: %2$d</string>
+    <string name="game_win_percentage">Win %%: %1$d</string>
+    <string name="game_best_level">Best level: %1$d</string>
 
-    <string name="backgroundimg">backgroundImg</string>
+    <string name="sum_choose_title">Sum - Choose</string>
+    <string name="sum_choose_description">Pick the right result for the sum.</string>
+    <string name="diff_choose_title">Diff - Choose</string>
+    <string name="diff_choose_description">Pick the right result for the difference.</string>
+    <string name="mult_choose_title">Multiplication - Choose</string>
+    <string name="mult_choose_description">Pick the right result for the multiplication.</string>
+    <string name="div_choose_title">Division - Choose</string>
+    <string name="div_choose_description">Pick the right result for the division.</string>
 
-    <string name="hint1btntext">hint1BtnText</string>
-    <string name="hint2btntext">hint2BtnText</string>
-    <string name="hint3btntext">hint3BtnText</string>
-    <string name="hint">Hint</string>
+    <string name="sum_write_title">Sum - Write</string>
+    <string name="sum_write_description">Write the right result for the sum.</string>
+    <string name="diff_write_title">Diff - Write</string>
+    <string name="diff_write_description">Write the right result for the difference.</string>
+    <string name="mult_write_title">Multiplication - Write</string>
+    <string name="mult_write_description">Write the right result for the multiplication.</string>
+    <string name="div_write_title">Division - Write</string>
+    <string name="div_write_description">Write the right result for the division.</string>
+
+    <string name="mix_choose_title">Mixed Ops - Choose</string>
+    <string name="mix_choose_description">Choose results for mixed operations.</string>
+    <string name="mix_write_title">Mixed Ops - Write</string>
+    <string name="mix_write_description">Write results for mixed operations.</string>
+
+    <string name="quick_count_title">Quick Count</string>
+    <string name="quick_count_description">Count the objects before time runs out.</string>
+    <string name="double_number_title">Double Number</string>
+    <string name="double_number_description">Double the number as quickly as you can.</string>
+    <string name="number_order_title">Number Order</string>
+    <string name="number_order_description">Order the numbers correctly.</string>
+    <string name="sequence_complete_title">Sequence Solver</string>
+    <string name="sequence_complete_description">Complete the sequence by finding the missing number.</string>
+    <string name="enigma_title">Enigma</string>
+    <string name="enigma_subtitle">Decode the symbols and solve the final equation.</string>
+    <string name="enigma_prompt">Find the hidden values and solve the last line.</string>
+    <string name="random_operations_title">Random Operations</string>
+    <string name="random_operations_description">Solve random math operations.</string>
+    <string name="random_operations_subtitle">Choose the operation that makes the equation true.</string>
+    <string name="memory_flash_title">Memory Flash</string>
+    <string name="memory_flash_subtitle">Memorize the digits, then type them back.</string>
+    <string name="memory_flash_instruction">Memorize this sequence while it is visible.</string>
+    <string name="memory_flash_prompt">Enter the sequence from memory to score points.</string>
+    <string name="memory_flash_hidden_sequence">\? ? ?</string>
+    <string name="memory_flash_success">Great recall! Get ready for the next pattern.</string>
+    <string name="memory_flash_failure">That pattern was different. Try the next one.</string>
+    <string name="memory_flash_challenges_label">Round %1$d of %2$d</string>
+    <string name="next_challenge">Next challenge</string>
+    <string name="score_label">Score: %1$d</string>
+    <string name="high_score_label">Best: %1$d</string>
+    <string name="level_label">Level %1$d</string>
+    <string name="lives_label">Lives: %1$d</string>
+    <string name="falling_ops_title">Falling Ops</string>
+    <string name="falling_ops_description">Clear the falling operations before they reach the keypad.</string>
+    <string name="falling_ops_subtitle">Type results to stop the fall.</string>
+    <string name="falling_ops_instructions">Type the result to clear all matching operations before they reach the line.</string>
 
 
-    <string name="plusSign">+</string>
-    <string name="differenceSign">-</string>
-    <string name="multSign">x</string>
-    <string name="divSign">/</string>
+    <string name="navigate_back">Back</string>
+    <string name="math_write_title">Write the result</string>
+    <string name="math_write_subtitle">Solve the operation before time runs out</string>
+    <string name="math_choose_title">Choose the result</string>
+    <string name="math_choose_subtitle">Pick the correct answer before time runs out</string>
+    <string name="random_operations_instruction">Which operation makes this equation true?</string>
+    <string name="write_result_placeholder">Type your answer</string>
+    <string name="wrong_answer">Wrong answer</string>
+    <string name="delete_label">Delete</string>
+    <string name="submit_label">Submit</string>
+    <string name="current_input">Current input: %1$s</string>
+    <string name="game_over_title">Game over</string>
+    <string name="game_over_body">You have finished all available lives.</string>
+    <string name="lives_with_value">Lives: %1$d</string>
+    <string name="score_with_value">Score: %1$d</string>
+    <string name="level_with_value">Level %1$d</string>
 
 
-    <string name="choice_01">choice_01</string>
-    <string name="choice_02">choice_02</string>
-    <string name="choice_03">choice_03</string>
 
-    <string name="operand_01value">operand_01Value</string>
-    <string name="operand_02value">operand_02Value</string>
-    <string name="operand_03value">operand_03Value</string>
-    <string name="operand_04value">operand_04Value</string>
-    <string name="operand_05value">operand_05Value</string>
-    <string name="operand_06value">operand_06Value</string>
-    <string name="operand_07value">operand_07Value</string>
-    <string name="operand_08value">operand_08Value</string>
-
-    <string name="answer_01value">1</string>
-    <string name="answer_02value">2</string>
-    <string name="answer_03value">3</string>
-    <string name="answer_04value">4</string>
-    <string name="answer_05value">5</string>
-    <string name="answer_06value">6</string>
-    <string name="answer_07value">7</string>
-    <string name="answer_08value">8</string>
-    <string name="answer_09value">9</string>
+    <!-- - - - - - - - - - - - - - - - - - - - Credits - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="credits_title">Credits</string>
+    <string name="credits_subtitle">Thanks for playing and supporting MathBrainer.</string>
+    <string name="credits_attributions_title">Idea, Development and Design</string>
+    <string name="credits_text">Simone Mapelli</string>
+    <string name="gdpr_text">Touch here for GDPR Consent Withdraw.</string>
+    <string name="gdpr_title">GDPR &amp; Privacy</string>
 
 
-    <string name="write_quick_result">Write quick result</string>
-    <string name="quick_count">Quick Count</string>
-    <string name="resultchoosestatsvalues">resultChooseStatsValues</string>
-    <string name="choose_quick_result">Choose quick result</string>
-    <string name="doubling">Doubling</string>
-    <string name="falling_ops">Falling Ops</string>
-    <string name="fallingstatsvalues">fallingStatsValues</string>
-    <string name="doublingstatsvalues">doublingStatsValues</string>
-    <string name="countstatsvalues">countStatsValues</string>
-    <string name="numbers_order">Numbers order</string>
-    <string name="numberorderstatsvalues">numberOrderStatsValues</string>
-    <string name="random_ops">Random Ops</string>
-    <string name="randomopsstatsvalues">randomOpsStatsValues</string>
-    <string name="sounds_sequence">Sounds Sequence</string>
-    <string name="soundseqstatsvalues">soundSeqStatsValues</string>
-    <string name="choose_your_game">Choose your Game</string>
-    <string name="resultwritestatsvalues">resultWriteStatsValues</string>
-
-    <string name="equalSign">=</string>
-    <string name="new_label">New</string>
+    <!-- OLD -->
 
     <string name="count_objects_question">How many objects ?</string>
     <string name="click_order_instructions">Memorize order, then click circles in order by number.</string>
@@ -84,48 +113,52 @@
     <string name="quick_count_instructions">Count objects. </string>
     <string name="choose_op_instructions">Choose the correct answer :</string>
     <string name="random_op_instructions">Choose the correct operation :</string>
-    <string name="quick_count_relaunch">Show again</string>
+    <string name="quick_count_relaunch">Try again</string>
 
     <string name="total_highscore_label">Total Highscore</string>
     <string name="highscore_label">Highscore</string>
     <string name="highscore_plural_label">Highscores</string>
 
-    <!-- - - - - - - - - - - - - - - - - Choose game btn - - - - - - - - - - - - - - - - - - - - -->
-    <string name="choose_result_allop_text"> + - x / \n_ _ _ _</string>
-    <string name="choose_ops_allop_text"> A ? B \n_ _ _ _</string>
-    <string name="choose_result_sum_text">   +   \n_ _ _ _ </string>
-    <string name="choose_result_diff_text">   -   \n_ _ _ _ </string>
-    <string name="choose_result_mult_text">   x   \n_ _ _ _ </string>
-    <string name="choose_result_div_text">   /   \n_ _ _ _ </string>
-    <string name="write_result_allop_text">+ - x / </string>
+    <!-- - - - - - - - - - - - - - - - -  Games btn logo - - - - - - - - - - - - - - - - - - - - -->
+    <string name="game_card_choose_result_allop_text"    > +  –  x  :\n– – – – </string>
+    <string name="game_card_choose_random_operation_text"> A  ?  B  \n– – – – </string>
+    <string name="game_card_choose_result_sum_text"      >   +    \n– – – – </string>
+    <string name="game_card_choose_result_diff_text"     >   –    \n– – – – </string>
+    <string name="game_card_choose_result_mult_text"     >   x    \n– – – – </string>
+    <string name="game_card_choose_result_div_text"      >   :    \n– – – – </string>
 
+    <string name="game_card_write_result_allop_text">+  –  x  : \n        </string>
+    <string name="game_card_write_result_sum_text"  >   +    \n        </string>
+    <string name="game_card_write_result_diff_text" >   –    \n        </string>
+    <string name="game_card_write_result_mult_text" >   x    \n        </string>
+    <string name="game_card_write_result_div_text"  >   :    \n        </string>
+    <string name="game_card_double_number_title"    >   2x   \n        </string>
+    <string name="game_card_sequence_complete_text" >1  2  4  ?\n        </string>
+    <string name="game_card_memory_flash_text"      >✦  ✦  ✦\n        </string>
+    <string name="game_card_falling_ops_text"       >  ↓  \n+  –  x  :</string>
+    <string name="game_card_enigma_text"            >△  □  ?\n        </string>
 
-    <!-- - - - - - - - - - - - - - - - - - - - Credits - - - - - - - - - - - - - - - - - - - - - -->
-    <string name="credits_title">Credits &amp; GDPR </string>
-    <string name="credits_text" translatable="false">
-        <b>CREDITS</b>\n\n
-        <b>Idea, Development and Design</b>\n\n Simone Mapelli\n
-        <a href='http://www.indie-walkabout.eu/'>www.indie-walkabout.eu </a>\n\n
-
-    </string>
-
-    <string name="gdpr_text" translatable="false">
-        <b>GDPR</b>\n\n Touch here for GDPR Consent Withdraw.
-    </string>
-
+    <string name="sequence_rule_reveal">Rule: %1$s</string>
+    <string name="sequence_correct_answer">Missing number: %1$d</string>
+    <string name="sequence_prompt">Fill the missing number to finish the sequence.</string>
+    <string name="sequence_again">Again</string>
+    <string name="sequence_feedback_success">OK ! Try next.</string>
+    <string name="sequence_feedback_failure">Wrong…check rule and try the next one.</string>
 
 
     <!-- - - - - - - - - - - - - - - - - Dialogs Strings - - - - - - - - - - - - - - - - - - - - -->
-    <string name="wrong_str">Wrong...</string>
+    <string name="wrong_str">Wrong…</string>
     <string name="ok_str">OK !</string>
     <string name="next_str">Next</string>
-
     <string name="gameover_str">GAME OVER !</string>
 
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <!--                   String for Settings                       -->
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
+    <!-- - - - - - - - - - - - - - - - - - Settings - - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="settings_gdpr_btn_title">Privacy &amp; Ad Consent</string>
+    <string name="gdpr_btn_key">gdpr_withdraw</string>
+    <string name="gdpr_btn_title">GDPR</string>
+    <string name="gdpr_btn_summary">Manage your ad personalization consent</string>
+    <string name="gdpr_dialog_will_show_again">Consent has been reset. You\'ll be asked again.</string>
+    <string name="gdpr_dialog_reset_done">Consent choice done.</string>
     <!-- - - - - - - - - - - - - - - - - Category titles - - - - - - - - - - - - - - - - - - - - -->
     <string name="category_settings_title">Settings</string>
     <string name="category_help_title">Help</string>
@@ -133,33 +166,6 @@
     <!-- Settings menu item -->
     <string name="main_settings_menu_item">Settings</string>
 
-    <!-- Settings activity title -->
-    <string name="main_settings_title">AlgoVisio Settings</string>
-
-
-    <!-- Strings for editing Some Value -->
-    <string name="settings_some_value_label">Some value : </string>
-    <string name="settings_some_value_key" translatable="false">some_value_key</string>
-    <string name="settings_some_value_default" translatable="false">0</string>
-
-    <!-- Strings For Order-By Preference [CHAR LIMIT=30] -->
-    <string name="settings_order_by_label">Order By</string>
-    <string name="settings_order_by_key" translatable="false">order_by</string>
-    <string name="settings_order_by_default" translatable="false">@string/settings_order_by_NAME_value</string>
-
-    <!-- Label for order-by magnitude option [CHAR LIMIT=20] -->
-    <string name="settings_order_by_NAME_label">Name</string>
-    <string name="settings_order_by_NAME_value" translatable="false">name</string>
-
-    <!-- Label for order-by most recent option [CHAR LIMIT=20] -->
-    <string name="settings_order_by_DATE_label">Date</string>
-    <string name="settings_order_by_DATE_value" translatable="false">date</string>
-
-    <!-- - - - - - - - - - - - - - - - - - GDPR  - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <string name="gdpr_btn_key">gdpr_withdraw</string>
-    <string name="gdpr_btn_title">GDPR</string>
-    <string name="gdpr_btn_summary">GDPR Consent Withdraw.</string>
-    <string name="question_mark">\?</string>
 
 
 </resources>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 
     <application
@@ -12,20 +11,9 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.ui.GameCreditsActivity"></activity>
-        <!-- ADMOB -->
-        <!-- Sample AdMob App ID:        ca-app-pub-3940256099942544~3347511713 -->
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_key_app_id" />
 
         <activity
-            android:name=".core.notused.MainActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".presentation.ui.HomeGameActivity"
+            android:name=".feat_home.presentation.ui.HomeGameActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:exported="true">
@@ -36,43 +24,20 @@
         </activity>
 
         <activity
-            android:name=".presentation.ui.HighscoresActivity"
+            android:name=".feat_games.feat_sound_seq.presentation.ui.SoundsSeqActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
 
-        <activity
-            android:name=".presentation.games.arithmetic.Math_Op_Write_Result_Activity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".presentation.games.othergames.CountObjectsActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".presentation.games.arithmetic.DoubleNumberActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".presentation.games.othergames.FallingOperationsActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".presentation.games.othergames.NumberOrderActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".presentation.games.arithmetic.RandomOperationActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".presentation.games.othergames.SoundsSeqActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity android:name=".presentation.games.arithmetic.Math_Op_Choose_Result_Activity" />
+        <!-- ADMOB -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_key_app_id" />
+
+        <!-- ADMOB -->
+        <!-- Sample AdMob App ID:        ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_key_app_id" />
 
 
         <!-- test lib -->
