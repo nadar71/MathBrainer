@@ -1,3 +1,6 @@
+
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -16,8 +19,8 @@ android {
         applicationId = "eu.indiewalkabout.mathbrainer"
         minSdk = 26
         targetSdk = 35
-        versionCode = 10
-        versionName = "2.0.0"
+        versionCode = 11
+        versionName = "3.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -302,4 +305,3 @@ dependencies {
 
 
 }*/
-
