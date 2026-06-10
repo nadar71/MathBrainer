@@ -18,7 +18,7 @@ import eu.indiewalkabout.mathbrainer.AppMathBrainer
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun AdMobBannerView(
-    adUnitId: String = "ca-app-pub-3940256099942544/6300978111", // test id
+    adUnitId: String,
     modifier: Modifier = Modifier.fillMaxWidth()
 ) {
     if (!AppMathBrainer.canRequestAdsFlag) return

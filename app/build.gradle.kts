@@ -44,6 +44,7 @@ android {
     buildFeatures {
         dataBinding = true  // TODO : OLD, to delete
         compose = true
+        buildConfig = true
     }
 }
 
