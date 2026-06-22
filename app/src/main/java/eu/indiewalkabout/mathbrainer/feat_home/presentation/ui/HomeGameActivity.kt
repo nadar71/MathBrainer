@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.AndroidEntryPoint
 import eu.indiewalkabout.mathbrainer.AppMathBrainer
+import eu.indiewalkabout.mathbrainer.BuildConfig
 import eu.indiewalkabout.mathbrainer.core.presentation.navigation.NavGraph
 import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
 import eu.indiewalkabout.mathbrainer.feat_ads.util.ConsentManager
@@ -16,8 +17,9 @@ import eu.indiewalkabout.mathbrainer.feat_ads.util.RequestConfigurationUtils
 class HomeGameActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Set your test devices.
-        RequestConfigurationUtils.setTestDeviceIds()
+        if (BuildConfig.DEBUG) {
+            RequestConfigurationUtils.setTestDeviceIds()
+        }
         ConsentManager.requestConsent(this, this@HomeGameActivity) { canRequestAds ->
             AppMathBrainer.canRequestAdsFlag = canRequestAds
             MobileAds.initialize(this)
@@ -31,5 +33,4 @@ class HomeGameActivity : ComponentActivity() {
         }
     }
 }
-
 
