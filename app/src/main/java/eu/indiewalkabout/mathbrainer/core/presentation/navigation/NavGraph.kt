@@ -5,14 +5,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.feat_ads.presentation.AdMobBannerView
 import eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui.GameCreditsScreen
@@ -31,160 +30,131 @@ import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeViewModel
 import eu.indiewalkabout.mathbrainer.feat_settings.presentation.ui.GameSettingsScreen
 import eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui.StatisticScreen
 import eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui.StatisticViewModel
-import java.net.URLDecoder
 
 @Composable
 fun NavGraph(
-    navController: NavHostController,
-    startDestination: String = ScreenRoutes.Home.route
+    navigationState: NavigationState = rememberNavigationState(),
+    navigator: Navigator = rememberNavigator(navigationState)
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = startDestination
-    ) {
+    val saveableStateHolder = rememberSaveableStateHolder()
+    val entryDecorators = listOf(
+        rememberSaveableStateHolderNavEntryDecorator<AppRoute>(saveableStateHolder)
+    )
 
-        // --- Home ---
-        composable(ScreenRoutes.Home.route) {
-            val viewModel = hiltViewModel<HomeViewModel>()
-            ScreenWithBottomBanner {
-                HomeScreen(
-                    navController = navController,
-                    homeViewModel = viewModel
-                )
+    NavDisplay<AppRoute>(
+        backStack = navigationState.backStack,
+        onBack = navigator::back,
+        entryDecorators = entryDecorators,
+        entryProvider = { route ->
+            NavEntry<AppRoute>(route) { currentRoute ->
+                when (currentRoute) {
+                    HomeRoute -> {
+                        val viewModel = hiltViewModel<HomeViewModel>()
+                        ScreenWithBottomBanner {
+                            HomeScreen(
+                                onStatisticsClick = { navigator.navigate(StatisticsRoute) },
+                                onSettingsClick = { navigator.navigate(GameSettingsRoute) },
+                                onGameSelected = navigator::navigate,
+                                homeViewModel = viewModel
+                            )
+                        }
+                    }
+
+                    is MathWriteRoute -> {
+                        ScreenWithBottomBanner {
+                            MathWriteGameScreen(
+                                operation = currentRoute.operation,
+                                onBack = navigator::back
+                            )
+                        }
+                    }
+
+                    is MathChooseRoute -> {
+                        ScreenWithBottomBanner {
+                            MathChooseGameScreen(
+                                operation = currentRoute.operation,
+                                onBack = navigator::back
+                            )
+                        }
+                    }
+
+                    DoubleNumberRoute -> {
+                        ScreenWithBottomBanner {
+                            DoubleNumberGameScreen(onBack = navigator::back)
+                        }
+                    }
+
+                    RandomOperationRoute -> {
+                        ScreenWithBottomBanner {
+                            RandomOperationGameScreen(onBack = navigator::back)
+                        }
+                    }
+
+                    MemoryFlashRoute -> {
+                        ScreenWithBottomBanner {
+                            MemoryFlashGameScreen(onBack = navigator::back)
+                        }
+                    }
+
+                    NumberOrderRoute -> {
+                        ScreenWithBottomBanner {
+                            NumberOrderGameScreen(onBack = navigator::back)
+                        }
+                    }
+
+                    CountObjectsRoute -> {
+                        ScreenWithBottomBanner {
+                            CountObjectsGameScreen(onBack = navigator::back)
+                        }
+                    }
+
+                    SequenceCompleteRoute -> {
+                        ScreenWithBottomBanner {
+                            SequenceCompleteGameScreen(onBack = navigator::back)
+                        }
+                    }
+
+                    FallingOpsRoute -> {
+                        ScreenWithBottomBanner {
+                            FallingOpsGameScreen(onBack = navigator::back)
+                        }
+                    }
+
+                    EnigmaRoute -> {
+                        ScreenWithBottomBanner {
+                            EnigmaGameScreen(onBack = navigator::back)
+                        }
+                    }
+
+                    GameSettingsRoute -> {
+                        ScreenWithBottomBanner {
+                            GameSettingsScreen(
+                                onBack = navigator::back,
+                                onCreditsClick = { navigator.navigate(GameCreditsRoute) }
+                            )
+                        }
+                    }
+
+                    GameCreditsRoute -> {
+                        ScreenWithBottomBanner {
+                            GameCreditsScreen(onBack = navigator::back)
+                        }
+                    }
+
+                    StatisticsRoute -> {
+                        val viewModel = hiltViewModel<StatisticViewModel>()
+                        ScreenWithBottomBanner {
+                            StatisticScreen(
+                                onBack = navigator::back,
+                                onGameSelected = navigator::navigate,
+                                statisticViewModel = viewModel
+                            )
+                        }
+                    }
+                }
             }
         }
-
-        // --- MathWrite Game ---
-        composable(
-            route = ScreenRoutes.MathWriteGame.route,
-            arguments = listOf(
-                navArgument("operation") { type = NavType.StringType }
-            )
-        ) { backStackEntry ->
-            val encodedOperation = backStackEntry.arguments?.getString("operation") ?: "+"
-            val operation = URLDecoder.decode(encodedOperation, "UTF-8")
-
-            ScreenWithBottomBanner {
-                MathWriteGameScreen(
-                    operation = operation,
-                    onBack = { navController.popBackStack() }
-                )
-            }
-        }
-
-        // --- MathChoose Game ---
-        composable(
-            route = ScreenRoutes.MathChooseGame.route,
-            arguments = listOf(
-                navArgument("operation") { type = NavType.StringType }
-            )
-        ) { backStackEntry ->
-            val encodedOperation = backStackEntry.arguments?.getString("operation") ?: "+"
-            val operation = java.net.URLDecoder.decode(encodedOperation, "UTF-8")
-
-            ScreenWithBottomBanner {
-                MathChooseGameScreen(
-                    operation = operation,
-                    onBack = { navController.popBackStack() }
-                )
-            }
-        }
-
-        // --- Double Number Game ---
-        composable(route = ScreenRoutes.DoubleNumberGame.route) {
-            ScreenWithBottomBanner {
-                DoubleNumberGameScreen(
-                    onBack = { navController.popBackStack() }
-                )
-            }
-        }
-
-        // --- Random Operation Game ---
-        composable(route = ScreenRoutes.RandomOperationGame.route) {
-            ScreenWithBottomBanner {
-                RandomOperationGameScreen(
-                    onBack = { navController.popBackStack() }
-                )
-            }
-        }
-
-        // --- Memory Flash Game ---
-        composable(route = ScreenRoutes.MemoryFlashGame.route) {
-            ScreenWithBottomBanner {
-                MemoryFlashGameScreen(
-                    onBack = { navController.popBackStack() }
-                )
-            }
-        }
-
-        // --- Number Order Game ---
-        composable(route = ScreenRoutes.NumberOrderGame.route) {
-            ScreenWithBottomBanner {
-                NumberOrderGameScreen(
-                    onBack = { navController.popBackStack() }
-                )
-            }
-        }
-
-        // --- Count Objects Game ---
-        composable(route = ScreenRoutes.CountObjectsGame.route) {
-            ScreenWithBottomBanner {
-                CountObjectsGameScreen(onBack = { navController.popBackStack() })
-            }
-        }
-
-        // --- Sequence Completion Game ---
-        composable(route = ScreenRoutes.SequenceCompleteGame.route) {
-            ScreenWithBottomBanner {
-                SequenceCompleteGameScreen(
-                    onBack = { navController.popBackStack() }
-                )
-            }
-        }
-
-        // --- Falling Operations Game ---
-        composable(route = ScreenRoutes.FallingOpsGame.route) {
-            ScreenWithBottomBanner {
-                FallingOpsGameScreen(
-                    onBack = { navController.popBackStack() }
-                )
-            }
-        }
-
-        // --- Enigma Game ---
-        composable(route = ScreenRoutes.EnigmaGame.route) {
-            ScreenWithBottomBanner {
-                EnigmaGameScreen(
-                    onBack = { navController.popBackStack() }
-                )
-            }
-        }
-
-        // --- Settings ---
-        composable(ScreenRoutes.GameSettings.route) {
-            ScreenWithBottomBanner {
-                GameSettingsScreen(
-                    onBack = { navController.popBackStack() },
-                    onCreditsClick = { navController.navigate(ScreenRoutes.GameCredits.route) }
-                )
-            }
-        }
-        
-        // --- Credits ---
-        composable(ScreenRoutes.GameCredits.route) {
-            ScreenWithBottomBanner {
-                GameCreditsScreen(onBack = { navController.popBackStack() })
-            }
-        }
-
-        // --- Statistics ---
-        composable(ScreenRoutes.Statistics.route) {
-            val viewModel = hiltViewModel<StatisticViewModel>()
-            ScreenWithBottomBanner {
-                StatisticScreen(navController = navController, statisticViewModel = viewModel)
-            }
-        }
-    }
+    )
 }
 
 @Composable

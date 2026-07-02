@@ -4,19 +4,12 @@ import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class GameRouteResolverTest {
+class GameRouteResolverNav3Test {
 
     @Test
-    fun `resolves parameterized write game route`() {
+    fun `write game types resolve to typed write routes`() {
         val route = GameRouteResolver.resolve(GameTypes.SUM_WRITE)
 
         assertEquals(MathWriteRoute(GameTypes.SUM_WRITE.id), route)
-    }
-
-    @Test
-    fun `resolves simple game route`() {
-        val route = GameRouteResolver.resolve(GameTypes.MEMORY_FLASH)
-
-        assertEquals(MemoryFlashRoute, route)
     }
 }

@@ -28,17 +28,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
+import eu.indiewalkabout.mathbrainer.core.presentation.navigation.AppRoute
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.presentation.navigation.GameRouteResolver
-import eu.indiewalkabout.mathbrainer.core.presentation.navigation.ScreenRoutes
+import eu.indiewalkabout.mathbrainer.core.presentation.navigation.HomeRoute
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.GameGrid
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.components.LoadingContent
 
 @Composable
 fun HomeScreen(
-    navController: NavHostController,
+    onStatisticsClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+    onGameSelected: (AppRoute) -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val state by homeViewModel.uiState.collectAsStateWithLifecycle()
@@ -59,11 +61,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .size(32.dp)
                         .padding(4.dp)
-                        .clickable(
-                            onClick = {
-                                navController.navigate(ScreenRoutes.Statistics.route)
-                            }
-                        ),
+                        .clickable(onClick = onStatisticsClick),
                     contentScale = ContentScale.Fit
                 )
 
@@ -73,11 +71,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .size(32.dp)
                         .padding(4.dp)
-                        .clickable(
-                            onClick = {
-                                navController.navigate(ScreenRoutes.GameSettings.route)
-                            }
-                        ),
+                        .clickable(onClick = onSettingsClick),
                     contentScale = ContentScale.Fit
                 )
             }
@@ -125,10 +119,7 @@ fun HomeScreen(
                         games = state.games,
                         showMinimal = true,
                         onGameSelected = { game ->
-                            when (val gameType = GameTypes.fromId(game.definition.id)) {
-                                null -> navController.navigate(ScreenRoutes.Home.route)
-                                else -> navController.navigate(GameRouteResolver.resolve(gameType))
-                            }
+                            onGameSelected(game.definition.id.toRoute())
                         },
                     )
                 }
@@ -138,3 +129,8 @@ fun HomeScreen(
     }
 }
 
+private fun String.toRoute(): AppRoute {
+    return GameTypes.fromId(this)
+        ?.let(GameRouteResolver::resolve)
+        ?: HomeRoute
+}
