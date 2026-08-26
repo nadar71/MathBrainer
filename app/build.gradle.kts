@@ -128,9 +128,6 @@ dependencies {
     implementation(libs.playservices.ads)
     implementation(libs.user.messaging.platform)
 
-    // Unity
-    implementation(libs.unity.ads)
-
     // Preference
     implementation(libs.androidx.preference.ktx)
 
@@ -273,9 +270,6 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_vers"
     implementation "androidx.room:room-ktx:$room_vers"
         testImplementation "androidx.room:room-testing:$room_vers"
-
-    // Unity
-    implementation 'com.unity3d.ads:unity-ads:4.7.0'
 
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_vers"

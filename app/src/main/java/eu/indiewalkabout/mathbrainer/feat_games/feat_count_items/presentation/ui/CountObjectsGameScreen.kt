@@ -50,6 +50,7 @@ import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
 import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.components.CountObjectsHeader
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.components.Placement
+import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.util.calculateCountObjectScale
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -258,8 +259,7 @@ private fun AnswersGrid(
 private fun generatePlacements(
     itemCount: Int,
     canvasSize: IntSize,
-    memoImages: List<ImageBitmap>,
-    scale: Float = 0.2f
+    memoImages: List<ImageBitmap>
 ): List<Placement> {
     val placements = mutableListOf<Placement>()
     val maxWidth = canvasSize.width
@@ -267,6 +267,12 @@ private fun generatePlacements(
 
     repeat(itemCount) { index ->
         val baseImage = memoImages[index % memoImages.size]
+        val scale = calculateCountObjectScale(
+            imageWidth = baseImage.width,
+            imageHeight = baseImage.height,
+            canvasWidth = canvasSize.width,
+            canvasHeight = canvasSize.height
+        )
         val scaledImage = baseImage.scale(scale)
         val scaledWidth = scaledImage.width
         val scaledHeight = scaledImage.height
