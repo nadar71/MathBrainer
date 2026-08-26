@@ -13,6 +13,8 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity
+import java.util.Locale
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,6 +27,18 @@ class ReleaseSmokeTest {
 
     private val targetContext
         get() = InstrumentationRegistry.getInstrumentation().targetContext
+
+    @Test
+    fun activeLocale_matchesExpectedMatrixLocale() {
+        val expectedTag = requireNotNull(
+            InstrumentationRegistry.getArguments().getString(EXPECTED_LOCALE_ARGUMENT)
+        ) { "Missing instrumentation argument: $EXPECTED_LOCALE_ARGUMENT" }
+        val expectedLocale = Locale.forLanguageTag(expectedTag)
+        val activeLocale = targetContext.resources.configuration.locales[0]
+
+        assertEquals("Active language", expectedLocale.language, activeLocale.language)
+        assertEquals("Active country", expectedLocale.country, activeLocale.country)
+    }
 
     @Test
     fun coreNavigationAndGames_surviveActivityRecreation() {
@@ -83,6 +97,7 @@ class ReleaseSmokeTest {
     }
 
     private companion object {
+        const val EXPECTED_LOCALE_ARGUMENT = "expectedLocale"
         const val SCREEN_TIMEOUT_MILLIS = 15_000L
     }
 }

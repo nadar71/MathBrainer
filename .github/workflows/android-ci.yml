@@ -3,7 +3,7 @@ name: Android CI
 on:
   pull_request:
   push:
-    branches: [develop, main]
+    branches: [develop, master]
   schedule:
     - cron: "17 3 * * *"
   workflow_dispatch:
@@ -46,7 +46,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4
       - name: Run lint and merged-manifest checks
         run: ./gradlew $GRADLE_ARGS :app:lintDebug :app:verifyReleaseManifest
-      - name: Archive private lint evidence
+      - name: Upload non-sensitive lint report
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
@@ -95,8 +95,29 @@ jobs:
           target: google_apis
           profile: pixel_2
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -prop persist.sys.locale=${{ matrix.locale }}
-          script: ./gradlew $GRADLE_ARGS :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=eu.indiewalkabout.mathbrainer.ReleaseSmokeTest
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            set -euo pipefail
+            locale='${{ matrix.locale }}'
+            language="${locale%%-*}"
+            country="${locale##*-}"
+            adb root
+            adb wait-for-device
+            adb shell settings put system system_locales "$locale"
+            adb shell setprop persist.sys.locale "$locale"
+            adb shell setprop persist.sys.language "$language"
+            adb shell setprop persist.sys.country "$country"
+            adb shell setprop ctl.restart zygote
+            adb wait-for-device
+            until adb shell pm path android >/dev/null 2>&1; do sleep 2; done
+            test "$(adb shell getprop persist.sys.locale | tr -d '\r')" = "$locale"
+            ./gradlew $GRADLE_ARGS :app:installDebug
+            if adb shell cmd locale help >/dev/null 2>&1; then
+              adb shell cmd locale set-app-locales eu.indiewalkabout.mathbrainer --locales "$locale"
+            fi
+            ./gradlew $GRADLE_ARGS :app:connectedDebugAndroidTest \
+              -Pandroid.testInstrumentationRunnerArguments.class=eu.indiewalkabout.mathbrainer.ReleaseSmokeTest \
+              -Pandroid.testInstrumentationRunnerArguments.expectedLocale="$locale"
 
   tablet-smoke:
     name: ${{ matrix.profile-name }}-${{ matrix.locale }}-api-${{ matrix.api }}
@@ -126,8 +147,29 @@ jobs:
           target: google_apis
           profile: ${{ matrix.profile }}
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -prop persist.sys.locale=${{ matrix.locale }}
-          script: ./gradlew $GRADLE_ARGS :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=eu.indiewalkabout.mathbrainer.ReleaseSmokeTest
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            set -euo pipefail
+            locale='${{ matrix.locale }}'
+            language="${locale%%-*}"
+            country="${locale##*-}"
+            adb root
+            adb wait-for-device
+            adb shell settings put system system_locales "$locale"
+            adb shell setprop persist.sys.locale "$locale"
+            adb shell setprop persist.sys.language "$language"
+            adb shell setprop persist.sys.country "$country"
+            adb shell setprop ctl.restart zygote
+            adb wait-for-device
+            until adb shell pm path android >/dev/null 2>&1; do sleep 2; done
+            test "$(adb shell getprop persist.sys.locale | tr -d '\r')" = "$locale"
+            ./gradlew $GRADLE_ARGS :app:installDebug
+            if adb shell cmd locale help >/dev/null 2>&1; then
+              adb shell cmd locale set-app-locales eu.indiewalkabout.mathbrainer --locales "$locale"
+            fi
+            ./gradlew $GRADLE_ARGS :app:connectedDebugAndroidTest \
+              -Pandroid.testInstrumentationRunnerArguments.class=eu.indiewalkabout.mathbrainer.ReleaseSmokeTest \
+              -Pandroid.testInstrumentationRunnerArguments.expectedLocale="$locale"
 
   instrumentation-smoke:
     name: instrumentation-smoke
@@ -172,13 +214,13 @@ jobs:
             -storepass "$password" -keypass "$password" -alias "$KEY_ALIAS" \
             -keyalg RSA -keysize 2048 -validity 1 \
             -dname "CN=Math Brainer CI Validation,OU=CI,O=Non-Production,C=XX"
-      - name: Build minified bundle and release evidence
+      - name: Build and inspect minified CI-only bundle
         run: |
-          mkdir -p app/build/reports
           ./gradlew $GRADLE_ARGS :app:bundleRelease :app:verifyReleaseManifest
-          ./gradlew $GRADLE_ARGS :app:dependencies > app/build/reports/dependencies.txt
-          jarsigner -verify -verbose -certs app/build/outputs/bundle/release/app-release.aab > app/build/reports/release-signature.txt
-          sha256sum app/build/outputs/bundle/release/app-release.aab > app/build/reports/app-release.aab.sha256
+          ./gradlew $GRADLE_ARGS :app:dependencies
+          test -s app/build/outputs/mapping/release/mapping.txt
+          test -s app/build/outputs/mapping/release/resources.txt
+          jarsigner -verify -verbose -certs app/build/outputs/bundle/release/app-release.aab
       - name: Smoke minified release APK
         uses: ReactiveCircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
         with:
@@ -187,19 +229,24 @@ jobs:
           target: google_apis
           profile: pixel_2
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -prop persist.sys.locale=en-US
-          script: ./gradlew $GRADLE_ARGS -Pandroid.testBuildType=release :app:connectedReleaseAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=eu.indiewalkabout.mathbrainer.ReleaseSmokeTest
-      # Workflow artifacts remain repository-access-controlled and are never release assets.
-      - name: Archive private CI-only release evidence
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: ci-only-release-evidence-${{ github.sha }}
-          path: |
-            app/build/outputs/bundle/release/app-release.aab
-            app/build/outputs/mapping/release/mapping.txt
-            app/build/outputs/mapping/release/resources.txt
-            app/build/reports/dependencies.txt
-            app/build/reports/release-signature.txt
-            app/build/reports/app-release.aab.sha256
-          if-no-files-found: error
-          retention-days: 7
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            set -euo pipefail
+            locale='en-US'
+            adb root
+            adb wait-for-device
+            adb shell settings put system system_locales "$locale"
+            adb shell setprop persist.sys.locale "$locale"
+            adb shell setprop persist.sys.language en
+            adb shell setprop persist.sys.country US
+            adb shell setprop ctl.restart zygote
+            adb wait-for-device
+            until adb shell pm path android >/dev/null 2>&1; do sleep 2; done
+            test "$(adb shell getprop persist.sys.locale | tr -d '\r')" = "$locale"
+            ./gradlew $GRADLE_ARGS -Pandroid.testBuildType=release :app:installRelease
+            if adb shell cmd locale help >/dev/null 2>&1; then
+              adb shell cmd locale set-app-locales eu.indiewalkabout.mathbrainer --locales "$locale"
+            fi
+            ./gradlew $GRADLE_ARGS -Pandroid.testBuildType=release :app:connectedReleaseAndroidTest \
+              -Pandroid.testInstrumentationRunnerArguments.class=eu.indiewalkabout.mathbrainer.ReleaseSmokeTest \
+              -Pandroid.testInstrumentationRunnerArguments.expectedLocale="$locale"
