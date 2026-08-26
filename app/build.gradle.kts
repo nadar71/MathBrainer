@@ -12,6 +12,7 @@ plugins {
 
 val googleTestAdMobAppId = "ca-app-pub-3940256099942544~3347511713"
 val googleTestBannerAdId = "ca-app-pub-3940256099942544/6300978111"
+val googleTestDeviceId = "33BE2250B43518CCDA7DE426D04EE231"
 
 val localReleaseProperties = Properties().apply {
     val propertiesFile = rootProject.file("keystore.properties")
@@ -62,12 +63,14 @@ android {
             resValue("string", "admob_app_id", googleTestAdMobAppId)
             resValue("string", "admob_key_app_id", googleTestAdMobAppId)
             buildConfigField("String", "ADMOB_BANNER_ID", "\"$googleTestBannerAdId\"")
+            buildConfigField("String", "ADMOB_TEST_DEVICE_ID", "\"$googleTestDeviceId\"")
         }
 
         getByName("release") {
             resValue("string", "admob_app_id", releaseAdMobAppId)
             resValue("string", "admob_key_app_id", releaseAdMobAppId)
             buildConfigField("String", "ADMOB_BANNER_ID", "\"$releaseBannerAdId\"")
+            buildConfigField("String", "ADMOB_TEST_DEVICE_ID", "\"\"")
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             proguardFiles(

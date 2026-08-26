@@ -7,12 +7,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import eu.indiewalkabout.mathbrainer.R
+import eu.indiewalkabout.mathbrainer.BuildConfig
 import eu.indiewalkabout.mathbrainer.feat_ads.presentation.AdMobBannerView
 import eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui.GameCreditsScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.ui.CountObjectsGameScreen
@@ -164,7 +163,7 @@ private fun ScreenWithBottomBanner(content: @Composable () -> Unit) {
             content()
         }
         AdMobBannerView(
-            adUnitId = stringResource(R.string.admob_key_bottom_banner),
+            adUnitId = BuildConfig.ADMOB_BANNER_ID,
             modifier = Modifier.fillMaxWidth()
         )
     }

@@ -10,7 +10,7 @@ class RequestConfigurationUtils {
 
     companion object {
         fun setTestDeviceIds() {
-            if (!BuildConfig.DEBUG) return
+            if (!BuildConfig.DEBUG || TEST_DEVICE_ID.isBlank()) return
             val testDeviceIds = listOf(TEST_DEVICE_ID)
             val configuration =
                 RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
