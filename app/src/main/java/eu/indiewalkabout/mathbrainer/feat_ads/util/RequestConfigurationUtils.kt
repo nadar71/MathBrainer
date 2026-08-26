@@ -1,20 +1,66 @@
 package eu.indiewalkabout.mathbrainer.feat_ads.util
 
-import eu.indiewalkabout.mathbrainer.BuildConfig
+import android.content.Context
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
-import eu.indiewalkabout.mathbrainer.AppMathBrainer.Companion.TEST_DEVICE_ID
+import java.util.concurrent.atomic.AtomicBoolean
 
+object RequestConfigurationUtils {
+    fun testDeviceIds(isDebug: Boolean, configuredId: String): List<String> =
+        if (isDebug && configuredId.isNotBlank()) listOf(configuredId) else emptyList()
+}
 
-class RequestConfigurationUtils {
+internal interface MobileAdsClient {
+    fun setTestDeviceIds(testDeviceIds: List<String>)
 
-    companion object {
-        fun setTestDeviceIds() {
-            if (!BuildConfig.DEBUG || TEST_DEVICE_ID.isBlank()) return
-            val testDeviceIds = listOf(TEST_DEVICE_ID)
-            val configuration =
-                RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-            MobileAds.setRequestConfiguration(configuration)
+    fun initialize()
+}
+
+internal class GoogleMobileAdsClient(
+    private val context: Context
+) : MobileAdsClient {
+    override fun setTestDeviceIds(testDeviceIds: List<String>) {
+        val configuration = RequestConfiguration.Builder()
+            .setTestDeviceIds(testDeviceIds)
+            .build()
+        MobileAds.setRequestConfiguration(configuration)
+    }
+
+    override fun initialize() {
+        MobileAds.initialize(context) {}
+    }
+}
+
+internal interface InitializationGate {
+    fun tryAcquire(): Boolean
+
+    fun release()
+}
+
+private object ProcessInitializationGate : InitializationGate {
+    private val initialized = AtomicBoolean(false)
+
+    override fun tryAcquire(): Boolean = initialized.compareAndSet(false, true)
+
+    override fun release() {
+        initialized.set(false)
+    }
+}
+
+internal class MobileAdsInitializer(
+    private val gate: InitializationGate = ProcessInitializationGate
+) {
+    fun initialize(client: MobileAdsClient, testDeviceIds: List<String>) {
+        if (!gate.tryAcquire()) return
+
+        try {
+            if (testDeviceIds.isNotEmpty()) {
+                client.setTestDeviceIds(testDeviceIds)
+            }
+            client.initialize()
+        } catch (error: Throwable) {
+            gate.release()
+            throw error
         }
     }
 }

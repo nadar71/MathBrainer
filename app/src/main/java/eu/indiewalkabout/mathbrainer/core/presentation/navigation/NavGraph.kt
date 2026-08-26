@@ -13,6 +13,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import eu.indiewalkabout.mathbrainer.BuildConfig
 import eu.indiewalkabout.mathbrainer.feat_ads.presentation.AdMobBannerView
+import eu.indiewalkabout.mathbrainer.feat_ads.util.AdsState
 import eu.indiewalkabout.mathbrainer.feat_credits.presentation.ui.GameCreditsScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.ui.CountObjectsGameScreen
 import eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.presentation.ui.EnigmaGameScreen
@@ -32,6 +33,8 @@ import eu.indiewalkabout.mathbrainer.feat_statistics.presentation.ui.StatisticVi
 
 @Composable
 fun NavGraph(
+    adsState: AdsState,
+    onPrivacyOptionsClick: () -> Unit,
     navigationState: NavigationState = rememberNavigationState(),
     navigator: Navigator = rememberNavigator(navigationState)
 ) {
@@ -49,7 +52,7 @@ fun NavGraph(
                 when (currentRoute) {
                     HomeRoute -> {
                         val viewModel = hiltViewModel<HomeViewModel>()
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             HomeScreen(
                                 onStatisticsClick = { navigator.navigate(StatisticsRoute) },
                                 onSettingsClick = { navigator.navigate(GameSettingsRoute) },
@@ -60,7 +63,7 @@ fun NavGraph(
                     }
 
                     is MathWriteRoute -> {
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             MathWriteGameScreen(
                                 operation = currentRoute.operation,
                                 onBack = navigator::back
@@ -69,7 +72,7 @@ fun NavGraph(
                     }
 
                     is MathChooseRoute -> {
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             MathChooseGameScreen(
                                 operation = currentRoute.operation,
                                 onBack = navigator::back
@@ -78,71 +81,72 @@ fun NavGraph(
                     }
 
                     DoubleNumberRoute -> {
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             DoubleNumberGameScreen(onBack = navigator::back)
                         }
                     }
 
                     RandomOperationRoute -> {
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             RandomOperationGameScreen(onBack = navigator::back)
                         }
                     }
 
                     MemoryFlashRoute -> {
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             MemoryFlashGameScreen(onBack = navigator::back)
                         }
                     }
 
                     NumberOrderRoute -> {
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             NumberOrderGameScreen(onBack = navigator::back)
                         }
                     }
 
                     CountObjectsRoute -> {
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             CountObjectsGameScreen(onBack = navigator::back)
                         }
                     }
 
                     SequenceCompleteRoute -> {
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             SequenceCompleteGameScreen(onBack = navigator::back)
                         }
                     }
 
                     FallingOpsRoute -> {
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             FallingOpsGameScreen(onBack = navigator::back)
                         }
                     }
 
                     EnigmaRoute -> {
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             EnigmaGameScreen(onBack = navigator::back)
                         }
                     }
 
                     GameSettingsRoute -> {
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             GameSettingsScreen(
                                 onBack = navigator::back,
-                                onCreditsClick = { navigator.navigate(GameCreditsRoute) }
+                                onCreditsClick = { navigator.navigate(GameCreditsRoute) },
+                                onPrivacyOptionsClick = onPrivacyOptionsClick
                             )
                         }
                     }
 
                     GameCreditsRoute -> {
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             GameCreditsScreen(onBack = navigator::back)
                         }
                     }
 
                     StatisticsRoute -> {
                         val viewModel = hiltViewModel<StatisticViewModel>()
-                        ScreenWithBottomBanner {
+                        ScreenWithBottomBanner(adsState) {
                             StatisticScreen(
                                 onBack = navigator::back,
                                 onGameSelected = navigator::navigate,
@@ -157,12 +161,16 @@ fun NavGraph(
 }
 
 @Composable
-private fun ScreenWithBottomBanner(content: @Composable () -> Unit) {
+private fun ScreenWithBottomBanner(
+    adsState: AdsState,
+    content: @Composable () -> Unit
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         Box(modifier = Modifier.weight(1f, fill = true)) {
             content()
         }
         AdMobBannerView(
+            adsState = adsState,
             adUnitId = BuildConfig.ADMOB_BANNER_ID,
             modifier = Modifier.fillMaxWidth()
         )

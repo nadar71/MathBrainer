@@ -157,7 +157,7 @@
     <string name="gdpr_btn_key">gdpr_withdraw</string>
     <string name="gdpr_btn_title">GDPR</string>
     <string name="gdpr_btn_summary">Manage your ad personalization consent</string>
-    <string name="gdpr_dialog_will_show_again">Consent has been reset. You\'ll be asked again.</string>
+    <string name="gdpr_dialog_will_show_again">Opening privacy and ad consent options.</string>
     <string name="gdpr_dialog_reset_done">Consent choice done.</string>
     <!-- - - - - - - - - - - - - - - - - Category titles - - - - - - - - - - - - - - - - - - - - -->
     <string name="category_settings_title">Settings</string>
