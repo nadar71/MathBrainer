@@ -183,17 +183,25 @@ val verifyReleaseManifest = tasks.register("verifyReleaseManifest") {
             "The AdMob application ID must use @string/admob_app_id."
         }
 
-        val activities = document.getElementsByTagName("activity")
-        val exportedActivities = (0 until activities.length).mapNotNull { index ->
-            activities.item(index).takeIf {
-                it.attributes.getNamedItem("android:exported")?.nodeValue == "true"
+        val appNamespace = "eu.indiewalkabout.mathbrainer"
+        val exportedAppComponents = listOf("activity", "activity-alias", "service", "receiver")
+            .flatMap { componentType ->
+                val components = document.getElementsByTagName(componentType)
+                (0 until components.length).mapNotNull { index ->
+                    val component = components.item(index)
+                    val componentName = component.attributes.getNamedItem("android:name")?.nodeValue
+                        ?.let { name -> if (name.startsWith('.')) "$appNamespace$name" else name }
+                    componentName?.takeIf {
+                        component.attributes.getNamedItem("android:exported")?.nodeValue == "true" &&
+                            it.startsWith(appNamespace)
+                    }
+                }
             }
-        }
-        check(exportedActivities.size == 1 &&
-            exportedActivities.single().attributes.getNamedItem("android:name")?.nodeValue ==
+        check(exportedAppComponents == listOf(
             "eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity"
+        )
         ) {
-            "Only HomeGameActivity may be exported in the merged release manifest."
+            "Only HomeGameActivity may be exported from the app namespace; found: $exportedAppComponents."
         }
     }
 }
@@ -257,8 +265,6 @@ dependencies {
     implementation(libs.okhttp.urlconnection)
 
     implementation(libs.multidex)
-    implementation(libs.androidx.work.runtime.ktx)
-
     implementation(libs.playservices.ads)
     implementation(libs.user.messaging.platform)
 

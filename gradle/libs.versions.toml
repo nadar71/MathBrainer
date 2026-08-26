@@ -49,7 +49,6 @@ preferenceScreenDsl = "2.10.0"
 loggingInterceptor = "5.0.0-alpha.2"
 multidex = "2.0.1"
 userMessagingPlatform = "3.2.0"
-workRuntimeKtx = "2.10.1"
 
 
 
@@ -60,7 +59,6 @@ accompanist-pager = { module = "com.google.accompanist:accompanist-pager", versi
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
-androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
