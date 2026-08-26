@@ -103,6 +103,8 @@
     <string name="credits_text">Simone Mapelli</string>
     <string name="gdpr_text">Touch here for GDPR Consent Withdraw.</string>
     <string name="gdpr_title">GDPR &amp; Privacy</string>
+    <string name="privacy_policy_title">Privacy policy</string>
+    <string name="privacy_policy_description">Learn how Math Brainer and Indie Walkabout handle data.</string>
 
 
     <!-- OLD -->
