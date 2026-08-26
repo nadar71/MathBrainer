@@ -37,6 +37,7 @@ val releaseKeyPassword = releaseProperty("KEY_PASSWORD")
 android {
     namespace = "eu.indiewalkabout.mathbrainer"
     compileSdk = 36
+    testBuildType = providers.gradleProperty("android.testBuildType").orElse("debug").get()
 
     defaultConfig {
         applicationId = "eu.indiewalkabout.mathbrainer"
@@ -73,7 +74,8 @@ android {
             buildConfigField("String", "ADMOB_BANNER_ID", "\"$releaseBannerAdId\"")
             buildConfigField("String", "ADMOB_TEST_DEVICE_ID", "\"\"")
             signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
