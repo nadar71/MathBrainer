@@ -45,15 +45,26 @@ class ConsentManager {
         requestConsent(GoogleConsentClient(activity), onResult)
     }
 
-    internal fun requestConsent(client: ConsentClient, onResult: (AdsState) -> Unit) {
+    internal fun requestConsent(
+        client: ConsentClient,
+        onResult: (AdsState) -> Unit,
+        isRequestActive: () -> Boolean = { true }
+    ) {
         onResult(AdsState.Loading)
         client.requestConsentInfoUpdate(
             onSuccess = {
+                if (!isRequestActive()) return@requestConsentInfoUpdate
                 client.loadAndShowConsentFormIfRequired { succeeded ->
-                    onResult(client.resolvedState(succeeded))
+                    if (isRequestActive()) {
+                        onResult(client.resolvedState(succeeded))
+                    }
                 }
             },
-            onFailure = { onResult(AdsState.Unavailable) }
+            onFailure = {
+                if (isRequestActive()) {
+                    onResult(AdsState.Unavailable)
+                }
+            }
         )
     }
 
@@ -61,10 +72,17 @@ class ConsentManager {
         showPrivacyOptions(GoogleConsentClient(activity), onResult)
     }
 
-    internal fun showPrivacyOptions(client: ConsentClient, onResult: (AdsState) -> Unit) {
+    internal fun showPrivacyOptions(
+        client: ConsentClient,
+        onResult: (AdsState) -> Unit,
+        isRequestActive: () -> Boolean = { true }
+    ) {
         onResult(AdsState.Loading)
+        if (!isRequestActive()) return
         client.showPrivacyOptionsForm { succeeded ->
-            onResult(client.resolvedState(succeeded))
+            if (isRequestActive()) {
+                onResult(client.resolvedState(succeeded))
+            }
         }
     }
 
@@ -78,39 +96,85 @@ internal class AdsCoordinator(
     private val mobileAdsClient: MobileAdsClient,
     private val testDeviceIds: List<String>
 ) {
+    private val requestLock = Any()
+    private var nextGeneration = 0L
+    private var activeGeneration: Long? = null
+
     fun requestConsent(activity: Activity, onResult: (AdsState) -> Unit) {
-        handleConsent(onResult) { callback ->
-            consentManager.requestConsent(activity, callback)
+        handleConsent(onResult) { isActive, callback ->
+            consentManager.requestConsent(
+                client = GoogleConsentClient(activity),
+                onResult = callback,
+                isRequestActive = isActive
+            )
         }
     }
 
     internal fun requestConsent(client: ConsentClient, onResult: (AdsState) -> Unit) {
-        handleConsent(onResult) { callback ->
-            consentManager.requestConsent(client, callback)
+        handleConsent(onResult) { isActive, callback ->
+            consentManager.requestConsent(client, callback, isActive)
         }
     }
 
     fun showPrivacyOptions(activity: Activity, onResult: (AdsState) -> Unit) {
-        handleConsent(onResult) { callback ->
-            consentManager.showPrivacyOptions(activity, callback)
+        handleConsent(onResult) { isActive, callback ->
+            consentManager.showPrivacyOptions(
+                client = GoogleConsentClient(activity),
+                onResult = callback,
+                isRequestActive = isActive
+            )
         }
     }
 
     internal fun showPrivacyOptions(client: ConsentClient, onResult: (AdsState) -> Unit) {
-        handleConsent(onResult) { callback ->
-            consentManager.showPrivacyOptions(client, callback)
+        handleConsent(onResult) { isActive, callback ->
+            consentManager.showPrivacyOptions(client, callback, isActive)
+        }
+    }
+
+    fun invalidate() {
+        synchronized(requestLock) {
+            nextGeneration += 1
+            activeGeneration = null
         }
     }
 
     private fun handleConsent(
         onResult: (AdsState) -> Unit,
-        request: ((AdsState) -> Unit) -> Unit
+        request: (isActive: () -> Boolean, onState: (AdsState) -> Unit) -> Unit
     ) {
-        request { state ->
-            if (state == AdsState.Allowed) {
-                mobileAdsInitializer.initialize(mobileAdsClient, testDeviceIds)
+        val generation = synchronized(requestLock) {
+            nextGeneration += 1
+            activeGeneration = nextGeneration
+            nextGeneration
+        }
+
+        val isActive = {
+            synchronized(requestLock) {
+                activeGeneration == generation
             }
-            onResult(state)
+        }
+
+        request(isActive) { state ->
+            synchronized(requestLock) {
+                if (activeGeneration != generation) return@synchronized
+
+                val publishedState = if (state == AdsState.Allowed) {
+                    try {
+                        mobileAdsInitializer.initialize(mobileAdsClient, testDeviceIds)
+                        AdsState.Allowed
+                    } catch (_: Exception) {
+                        AdsState.Unavailable
+                    }
+                } else {
+                    state
+                }
+
+                if (publishedState != AdsState.Loading) {
+                    activeGeneration = null
+                }
+                onResult(publishedState)
+            }
         }
     }
 }

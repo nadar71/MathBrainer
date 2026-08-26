@@ -115,6 +115,92 @@ class ConsentManagerTest {
     }
 
     @Test
+    fun `older consent success is ignored after newer privacy request succeeds`() {
+        val olderConsent = FakeConsentClient(canRequestAds = true)
+        val newerPrivacy = FakeConsentClient(canRequestAds = true)
+        val mobileAdsClient = FakeMobileAdsClient()
+        val states = mutableListOf<AdsState>()
+        val coordinator = coordinator(mobileAdsClient)
+
+        coordinator.requestConsent(olderConsent, states::add)
+        coordinator.showPrivacyOptions(newerPrivacy, states::add)
+        newerPrivacy.dismissPrivacyOptions(succeeded = true)
+        olderConsent.completeInfoUpdate()
+
+        assertEquals(
+            listOf(AdsState.Loading, AdsState.Loading, AdsState.Allowed),
+            states
+        )
+        assertFalse(olderConsent.consentFormRequested)
+        assertEquals(1, mobileAdsClient.initializeCalls)
+    }
+
+    @Test
+    fun `newer failure is not overwritten by older consent success`() {
+        val olderConsent = FakeConsentClient(canRequestAds = true)
+        val newerPrivacy = FakeConsentClient(canRequestAds = true)
+        val mobileAdsClient = FakeMobileAdsClient()
+        val states = mutableListOf<AdsState>()
+        val coordinator = coordinator(mobileAdsClient)
+
+        coordinator.requestConsent(olderConsent, states::add)
+        coordinator.showPrivacyOptions(newerPrivacy, states::add)
+        newerPrivacy.dismissPrivacyOptions(succeeded = false)
+        olderConsent.completeInfoUpdate()
+
+        assertEquals(
+            listOf(AdsState.Loading, AdsState.Loading, AdsState.Unavailable),
+            states
+        )
+        assertFalse(olderConsent.consentFormRequested)
+        assertFalse(mobileAdsClient.initialized)
+    }
+
+    @Test
+    fun `callbacks are ignored after coordinator invalidation`() {
+        val consentClient = FakeConsentClient(canRequestAds = true)
+        val mobileAdsClient = FakeMobileAdsClient()
+        val states = mutableListOf<AdsState>()
+        val coordinator = coordinator(mobileAdsClient)
+
+        coordinator.requestConsent(consentClient, states::add)
+        coordinator.invalidate()
+        consentClient.completeInfoUpdate()
+
+        assertEquals(listOf(AdsState.Loading), states)
+        assertFalse(consentClient.consentFormRequested)
+        assertFalse(mobileAdsClient.initialized)
+    }
+
+    @Test
+    fun `Mobile Ads configuration exception fails closed`() {
+        val consentClient = FakeConsentClient(canRequestAds = true)
+        val mobileAdsClient = FakeMobileAdsClient(throwOnConfiguration = true)
+        val states = mutableListOf<AdsState>()
+
+        coordinator(mobileAdsClient).requestConsent(consentClient, states::add)
+        consentClient.completeInfoUpdate()
+        consentClient.dismissConsentForm(succeeded = true)
+
+        assertEquals(listOf(AdsState.Loading, AdsState.Unavailable), states)
+        assertFalse(mobileAdsClient.initialized)
+    }
+
+    @Test
+    fun `Mobile Ads initialization exception fails closed`() {
+        val consentClient = FakeConsentClient(canRequestAds = true)
+        val mobileAdsClient = FakeMobileAdsClient(throwOnInitialization = true)
+        val states = mutableListOf<AdsState>()
+
+        coordinator(mobileAdsClient).requestConsent(consentClient, states::add)
+        consentClient.completeInfoUpdate()
+        consentClient.dismissConsentForm(succeeded = true)
+
+        assertEquals(listOf(AdsState.Loading, AdsState.Unavailable), states)
+        assertFalse(mobileAdsClient.initialized)
+    }
+
+    @Test
     fun `Mobile Ads initialization is idempotent`() {
         val client = FakeMobileAdsClient()
         val initializer = MobileAdsInitializer(FakeInitializationGate())
@@ -216,7 +302,10 @@ private class FakeConsentClient(
     fun dismissPrivacyOptions(succeeded: Boolean) = privacyOptionsDismissed(succeeded)
 }
 
-private class FakeMobileAdsClient : MobileAdsClient {
+private class FakeMobileAdsClient(
+    private val throwOnConfiguration: Boolean = false,
+    private val throwOnInitialization: Boolean = false
+) : MobileAdsClient {
     var initializeCalls = 0
         private set
     var configurationCalls = 0
@@ -228,11 +317,13 @@ private class FakeMobileAdsClient : MobileAdsClient {
         get() = initializeCalls > 0
 
     override fun setTestDeviceIds(testDeviceIds: List<String>) {
+        if (throwOnConfiguration) error("configuration failed")
         configurationCalls += 1
         this.testDeviceIds = testDeviceIds
     }
 
     override fun initialize() {
+        if (throwOnInitialization) error("initialization failed")
         initializeCalls += 1
     }
 }

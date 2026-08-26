@@ -48,6 +48,13 @@ class HomeGameActivity : ComponentActivity() {
         adsCoordinator.requestConsent(this, ::updateAdsState)
     }
 
+    override fun onDestroy() {
+        if (::adsCoordinator.isInitialized) {
+            adsCoordinator.invalidate()
+        }
+        super.onDestroy()
+    }
+
     private fun showPrivacyOptions() {
         adsCoordinator.showPrivacyOptions(this) { state ->
             updateAdsState(state)
