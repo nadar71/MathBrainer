@@ -10,13 +10,13 @@ class GameRouteResolverTest {
     fun `resolves parameterized write game route`() {
         val route = GameRouteResolver.resolve(GameTypes.SUM_WRITE)
 
-        assertEquals("math_write_game/sum_write", route)
+        assertEquals(MathWriteRoute(GameTypes.SUM_WRITE.id), route)
     }
 
     @Test
     fun `resolves simple game route`() {
         val route = GameRouteResolver.resolve(GameTypes.MEMORY_FLASH)
 
-        assertEquals(ScreenRoutes.MemoryFlashGame.route, route)
+        assertEquals(MemoryFlashRoute, route)
     }
 }

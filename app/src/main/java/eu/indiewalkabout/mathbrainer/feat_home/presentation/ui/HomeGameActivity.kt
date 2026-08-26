@@ -3,7 +3,6 @@ package eu.indiewalkabout.mathbrainer.feat_home.presentation.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.AndroidEntryPoint
 import eu.indiewalkabout.mathbrainer.AppMathBrainer
@@ -26,11 +25,9 @@ class HomeGameActivity : ComponentActivity() {
             setContent {
 
                 MathBrainerTheme {
-                    val navController = rememberNavController()
-                    NavGraph(navController = navController)
+                    NavGraph()
                 }
             }
         }
     }
 }
-

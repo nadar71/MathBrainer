@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.android)
@@ -12,7 +13,7 @@ plugins {
 
 android {
     namespace = "eu.indiewalkabout.mathbrainer"
-    compileSdk = 35
+    compileSdk = 36
 
 
     defaultConfig {
@@ -71,6 +72,8 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.animation.core.android)
@@ -79,6 +82,7 @@ dependencies {
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.serialization.json)
 
     // hilt
     implementation(libs.hilt.android)
@@ -123,9 +127,6 @@ dependencies {
     // Ad mob
     implementation(libs.playservices.ads)
     implementation(libs.user.messaging.platform)
-
-    // Unity
-    implementation(libs.unity.ads)
 
     // Preference
     implementation(libs.androidx.preference.ktx)
@@ -269,9 +270,6 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_vers"
     implementation "androidx.room:room-ktx:$room_vers"
         testImplementation "androidx.room:room-testing:$room_vers"
-
-    // Unity
-    implementation 'com.unity3d.ads:unity-ads:4.7.0'
 
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_vers"
