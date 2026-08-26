@@ -184,7 +184,7 @@ val verifyReleaseManifest = tasks.register("verifyReleaseManifest") {
         }
 
         val appNamespace = "eu.indiewalkabout.mathbrainer"
-        val exportedAppComponents = listOf("activity", "activity-alias", "service", "receiver")
+        val exportedAppComponents = listOf("activity", "activity-alias", "service", "receiver", "provider")
             .flatMap { componentType ->
                 val components = document.getElementsByTagName(componentType)
                 (0 until components.length).mapNotNull { index ->
