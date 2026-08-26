@@ -1,4 +1,5 @@
 import java.util.Properties
+import javax.xml.parsers.DocumentBuilderFactory
 
 plugins {
     alias(libs.plugins.android.application)
@@ -154,6 +155,53 @@ tasks.configureEach {
     }
 }
 
+val verifyReleaseManifest = tasks.register("verifyReleaseManifest") {
+    group = "verification"
+    description = "Verifies the merged release manifest has one variant-owned AdMob application ID."
+    dependsOn("processReleaseMainManifest")
+
+    val mergedManifest = layout.buildDirectory.file(
+        "intermediates/merged_manifest/release/processReleaseMainManifest/AndroidManifest.xml"
+    )
+    inputs.file(mergedManifest)
+
+    doLast {
+        val document = DocumentBuilderFactory.newInstance()
+            .newDocumentBuilder()
+            .parse(mergedManifest.get().asFile)
+        val metaData = document.getElementsByTagName("meta-data")
+        val applicationIdEntries = (0 until metaData.length).mapNotNull { index ->
+            metaData.item(index).attributes.getNamedItem("android:name")
+                ?.takeIf { it.nodeValue == "com.google.android.gms.ads.APPLICATION_ID" }
+                ?.let { metaData.item(index) }
+        }
+
+        check(applicationIdEntries.size == 1) {
+            "Expected exactly one com.google.android.gms.ads.APPLICATION_ID entry in the merged release manifest, found ${applicationIdEntries.size}."
+        }
+        check(applicationIdEntries.single().attributes.getNamedItem("android:value")?.nodeValue == "@string/admob_app_id") {
+            "The AdMob application ID must use @string/admob_app_id."
+        }
+
+        val activities = document.getElementsByTagName("activity")
+        val exportedActivities = (0 until activities.length).mapNotNull { index ->
+            activities.item(index).takeIf {
+                it.attributes.getNamedItem("android:exported")?.nodeValue == "true"
+            }
+        }
+        check(exportedActivities.size == 1 &&
+            exportedActivities.single().attributes.getNamedItem("android:name")?.nodeValue ==
+            "eu.indiewalkabout.mathbrainer.feat_home.presentation.ui.HomeGameActivity"
+        ) {
+            "Only HomeGameActivity may be exported in the merged release manifest."
+        }
+    }
+}
+
+tasks.named("check") {
+    dependsOn(verifyReleaseManifest)
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -165,7 +213,6 @@ dependencies {
     implementation(libs.androidx.runtime)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.foundation)
     implementation(libs.foundation.layout)
