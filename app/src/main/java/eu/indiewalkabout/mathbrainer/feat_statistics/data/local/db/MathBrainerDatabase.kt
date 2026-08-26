@@ -24,15 +24,17 @@ abstract class MathBrainerDatabase : RoomDatabase() {
     abstract fun mathBrainerDbDao(): MathBrainerDbDao
 
     companion object {
-        private val DBNAME = "MathBrainerDB"
+        private const val DBNAME = "MathBrainerDB"
 
-        fun getDbInstance(context: Context): MathBrainerDatabase {
+        fun getDbInstance(context: Context): MathBrainerDatabase = createDatabase(context, DBNAME)
+
+        internal fun createDatabase(context: Context, databaseName: String): MathBrainerDatabase {
             return Room.databaseBuilder(
                 context.applicationContext,
                 MathBrainerDatabase::class.java,
-                DBNAME
+                databaseName
             )
-                .fallbackToDestructiveMigration(true)
+                // Fail closed until an upgrade path is proven by a production schema artifact.
                 .build()
         }
     }
