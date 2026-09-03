@@ -1,0 +1,147 @@
+# frozen_string_literal: true
+
+require "fileutils"
+
+platform :android do
+  APP_PACKAGE_NAME = "eu.indiewalkabout.mathbrainer".freeze
+  APP_NAME = "Math Brainer".freeze
+  APP_SHORT_DESCRIPTION = "Train your mind. Master the numbers.".freeze
+  APP_FULL_DESCRIPTION = <<~DESC
+    A quick and easy math brain trainer for free with many game modes, adaptive levels, and short sessions for queue-time practice.
+  DESC
+
+  RELEASE_AAB_PATH = File.join("app", "build", "outputs", "bundle", "release", "app-release.aab")
+  STORE_MEDIA_ROOT = File.join("store-media", "google-play")
+  FASTLANE_METADATA_ROOT = File.join("fastlane", "metadata", "android", "en-US")
+  FASTLANE_IMAGE_ROOT = File.join(FASTLANE_METADATA_ROOT, "images")
+  SELECTION_FILE = File.join(STORE_MEDIA_ROOT, "promotional-screenshots", "SELECTION.md")
+  PHONE_SCREENSHOT_SOURCE = File.join(STORE_MEDIA_ROOT, "promotional-screenshots", "en")
+
+  def project_root
+    File.expand_path("..", __dir__)
+  end
+
+  def copy_required_file(source_path, destination_path)
+    absolute_source = File.join(project_root, source_path)
+    absolute_destination = File.join(project_root, destination_path)
+
+    UI.user_error!("Required store asset not found: #{absolute_source}") unless File.exist?(absolute_source)
+    FileUtils.mkdir_p(File.dirname(absolute_destination))
+    FileUtils.cp(absolute_source, absolute_destination)
+  end
+
+  def selected_phone_screenshots
+    absolute_selection = File.join(project_root, SELECTION_FILE)
+    absolute_source = File.join(project_root, PHONE_SCREENSHOT_SOURCE)
+
+    selection_text = File.read(absolute_selection)
+    selected = selection_text
+      .scan(/`([^`]+\.png)`/)
+      .flatten
+      .uniq
+      .select { |filename| File.exist?(File.join(absolute_source, filename)) }
+
+    if selected.empty?
+      FileUtils.mkdir_p(absolute_source)
+      all_phone_screenshots = Dir.glob(File.join(absolute_source, "*.png"))
+      selected = all_phone_screenshots
+        .map { |path| File.basename(path) }
+        .take(8)
+    end
+
+    selected
+  end
+
+  desc "Build a signed release AAB."
+  lane :build_release_bundle do
+    gradle(task: "bundleRelease")
+  end
+
+  desc "Sync existing store-media assets into fastlane metadata/screenshot layout."
+  lane :sync_store_media do
+    project = project_root
+    metadata_root = File.join(project, FASTLANE_METADATA_ROOT)
+    image_root = File.join(project, FASTLANE_IMAGE_ROOT)
+
+    FileUtils.rm_rf(metadata_root)
+    FileUtils.mkdir_p(image_root)
+    FileUtils.mkdir_p(File.join(image_root, "phoneScreenshots"))
+    FileUtils.mkdir_p(File.join(image_root, "sevenInchScreenshots"))
+    FileUtils.mkdir_p(File.join(image_root, "tenInchScreenshots"))
+
+    copy_required_file(
+      File.join(STORE_MEDIA_ROOT, "icon", "mathbrainer-store-icon-512.png"),
+      File.join(FASTLANE_IMAGE_ROOT, "icon.png")
+    )
+    copy_required_file(
+      File.join(STORE_MEDIA_ROOT, "feature-graphic", "mathbrainer-feature-graphic-1024x500.png"),
+      File.join(FASTLANE_IMAGE_ROOT, "featureGraphic.png")
+    )
+
+    selected_phone_screenshots.each_with_index do |filename, index|
+      copy_required_file(
+        File.join(PHONE_SCREENSHOT_SOURCE, filename),
+        File.join(FASTLANE_IMAGE_ROOT, "phoneScreenshots", "#{index + 1}-#{filename}")
+      )
+    end
+
+    {
+      "tablet-7-inch" => "sevenInchScreenshots",
+      "tablet-10-inch" => "tenInchScreenshots"
+    }.each do |source_folder, destination_folder|
+      source_dir = File.join(project, STORE_MEDIA_ROOT, "promotional-screenshots", source_folder)
+      destination_dir = File.join(image_root, destination_folder)
+      screenshots = Dir.glob(File.join(source_dir, "*.png")).sort
+      UI.user_error!("No tablet screenshots found in #{source_dir}") if screenshots.empty?
+
+      screenshots.each_with_index do |source_file, index|
+        destination_file = File.join(
+          destination_dir,
+          "#{index + 1}-#{File.basename(source_file)}"
+        )
+        FileUtils.cp(source_file, destination_file)
+      end
+    end
+
+    FileUtils.mkdir_p(metadata_root)
+    File.write(File.join(metadata_root, "title.txt"), "#{APP_NAME}\n")
+    File.write(File.join(metadata_root, "short_description.txt"), "#{APP_SHORT_DESCRIPTION}\n")
+    File.write(File.join(metadata_root, "full_description.txt"), APP_FULL_DESCRIPTION)
+
+    UI.message("Store assets prepared for Fastlane at #{metadata_root}/images")
+  end
+
+  desc "Build and upload release AAB to Google Play."
+  lane :store_release do |options|
+    release_track = options[:track] || ENV["PLAY_RELEASE_TRACK"] || "internal"
+    release_status = options[:release_status] || ENV["PLAY_RELEASE_STATUS"] || "completed"
+    aab_path = options[:aab] || RELEASE_AAB_PATH
+    prepare_assets = options.fetch(:prepare_assets, true)
+    json_key_path = ENV["PLAY_STORE_JSON_KEY_PATH"]
+    json_key_data = ENV["PLAY_STORE_JSON_KEY"]
+
+    sync_store_media if prepare_assets
+    build_release_bundle
+
+    absolute_aab_path = File.join(project_root, aab_path)
+    UI.user_error!("Missing release bundle: #{absolute_aab_path}") unless File.exist?(absolute_aab_path)
+    UI.user_error!(
+      "Set PLAY_STORE_JSON_KEY_PATH (file path) or PLAY_STORE_JSON_KEY (base64/json) before running this lane."
+    ) if json_key_path.to_s.empty? && json_key_data.to_s.empty?
+
+    upload_opts = {
+      package_name: APP_PACKAGE_NAME,
+      track: release_track,
+      release_status: release_status,
+      aab: absolute_aab_path,
+      skip_upload_apk: true,
+      skip_upload_changelogs: true,
+      skip_upload_metadata: false,
+      skip_upload_screenshots: false
+    }.compact
+    upload_opts[:json_key] = json_key_path unless json_key_path.to_s.empty?
+    upload_opts[:json_key_data] = json_key_data unless json_key_data.to_s.empty?
+
+    upload_to_play_store(upload_opts)
+  end
+end
