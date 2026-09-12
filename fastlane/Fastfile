@@ -57,6 +57,29 @@ platform :android do
     gradle(task: "bundleRelease")
   end
 
+  desc "Build and upload the release AAB to Google Play internal testing."
+  lane :internal_release do
+    json_key_data = ENV["PLAY_STORE_JSON_KEY"]
+    UI.user_error!("Set PLAY_STORE_JSON_KEY before running this lane.") if json_key_data.to_s.empty?
+
+    build_release_bundle
+    absolute_aab_path = File.join(project_root, RELEASE_AAB_PATH)
+    UI.user_error!("Missing release bundle: #{absolute_aab_path}") unless File.exist?(absolute_aab_path)
+
+    upload_to_play_store(
+      package_name: APP_PACKAGE_NAME,
+      track: "internal",
+      release_status: "completed",
+      aab: absolute_aab_path,
+      json_key_data: json_key_data,
+      skip_upload_apk: true,
+      skip_upload_changelogs: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
   desc "Sync existing store-media assets into fastlane metadata/screenshot layout."
   lane :sync_store_media do
     project = project_root
