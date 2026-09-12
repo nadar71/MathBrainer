@@ -57,4 +57,40 @@ class ReleaseConfigurationTest < Minitest::Test
     end
     refute_match(/inputs:\s*\n(?:.*\n)*?\s+track:/, WORKFLOW, "workflow must not allow a track input")
   end
+
+  def test_release_secrets_are_limited_to_credential_and_fastlane_steps
+    refute_match(/^    env:/, WORKFLOW, "release secrets must not be available to every job step")
+
+    credential_step = workflow_step("Reconstruct and validate release credentials")
+    fastlane_step = workflow_step("Build and publish AAB to Play internal testing")
+
+    assert_equal REQUIRED_SECRETS.sort, secret_names(credential_step).sort
+    assert_equal (REQUIRED_SECRETS - ["ANDROID_KEYSTORE_BASE64"]).sort, secret_names(fastlane_step).sort
+
+    permitted_secret_references = secret_names(credential_step) + secret_names(fastlane_step)
+    assert_equal permitted_secret_references.sort, secret_names(WORKFLOW).sort
+  end
+
+  def test_evidence_verification_requires_signed_aab_and_artifact_upload_always_runs
+    evidence_step = workflow_step("Verify release evidence")
+    artifact_step = workflow_step("Upload internal release evidence")
+
+    assert_includes evidence_step, 'verification_output="$(jarsigner -verify -verbose -certs "$aab_path" 2>&1)"'
+    assert_includes evidence_step, %q(grep -Eq '^jar verified\.$')
+    assert_includes evidence_step, %q(grep -Eiq 'jar is unsigned|unsigned entr(y|ies)')
+    assert_match(/^        if: always\(\)$/, artifact_step, "artifact upload must run after a failed publish")
+  end
+
+  private
+
+  def workflow_step(name)
+    step = WORKFLOW.match(/^      - name: #{Regexp.escape(name)}\n(?<body>.*?)(?=^      - |\z)/m)
+    refute_nil step, "workflow step is missing: #{name}"
+
+    step[:body]
+  end
+
+  def secret_names(text)
+    text.scan(/\$\{\{ secrets\.([A-Z0-9_]+) \}\}/).flatten
+  end
 end
