@@ -7,6 +7,11 @@ class ReleaseConfigurationTest < Minitest::Test
   ROOT = File.expand_path("..", __dir__)
   FASTFILE = File.read(File.join(ROOT, "fastlane", "Fastfile"))
   WORKFLOW = File.read(File.join(ROOT, ".github", "workflows", "release-internal.yml"))
+  RELEASE_DOCUMENTATION = %w[
+    fastlane/README.md
+    docs/release/RELEASE_RUNBOOK.md
+    docs/release/RELEASE_CHECKLIST.md
+  ].map { |path| File.read(File.join(ROOT, path)) }.join("\n")
   REQUIRED_SECRETS = %w[
     PLAY_STORE_JSON_KEY
     ANDROID_KEYSTORE_BASE64
@@ -79,6 +84,18 @@ class ReleaseConfigurationTest < Minitest::Test
     assert_includes evidence_step, %q(grep -Eq '^jar verified\.$')
     assert_includes evidence_step, %q(grep -Eiq 'jar is unsigned|unsigned entr(y|ies)')
     assert_match(/^        if: always\(\)$/, artifact_step, "artifact upload must run after a failed publish")
+  end
+
+  def test_release_documentation_covers_internal_play_operations
+    assert_includes RELEASE_DOCUMENTATION, "google-play-internal"
+    REQUIRED_SECRETS.each do |secret|
+      assert_includes RELEASE_DOCUMENTATION, secret
+    end
+    assert_includes RELEASE_DOCUMENTATION, "internal_release"
+    assert_match(/manual dispatch/i, RELEASE_DOCUMENTATION)
+    assert_match(/increment.*versionCode|versionCode.*increment/i, RELEASE_DOCUMENTATION)
+    assert_includes RELEASE_DOCUMENTATION, "mathbrainer-internal-release-"
+    assert_match(/closed.*production.*separate owner action/i, RELEASE_DOCUMENTATION)
   end
 
   private

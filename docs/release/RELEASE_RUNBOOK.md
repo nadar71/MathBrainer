@@ -14,7 +14,29 @@ Never rebuild an artifact after approval. Any code, resource, dependency,
 configuration, or declaration change creates a new candidate and restarts the
 applicable checks.
 
-## 2. Validate Through Play
+## 2. Publish To Internal Testing
+
+1. Increment `versionCode` in `app/build.gradle.kts` for every Play upload and
+   update `versionName` when the release version changes. A version code already
+   accepted by Play cannot be uploaded again.
+2. Push the immutable candidate and wait for normal CI to pass before starting
+   the release workflow.
+3. In GitHub Actions, manually dispatch `Google Play Internal Release`. The
+   job requires approval through the protected `google-play-internal`
+   environment and runs `bundle exec fastlane android internal_release`.
+4. Confirm the run has uploaded the candidate, then download and retain the
+   `mathbrainer-internal-release-<commit SHA>` artifact. Keep its signed AAB,
+   SHA-256 checksum, release manifest, `mapping.txt`, and `resources.txt` with
+   the release evidence.
+5. Confirm the candidate version is visible in Play Console's internal testing
+   track before giving testers access.
+
+The workflow uploads only to internal testing. It cannot publish to closed or
+production tracks and does not upload or update store media. Closed or
+production promotion is a separate owner action in Play Console after the
+applicable approval and observation gates are met.
+
+## 3. Validate Through Play
 
 1. Upload the exact candidate through Play Internal App Sharing.
 2. Test fresh install and upgrade from the current production version on API
@@ -25,7 +47,7 @@ applicable checks.
 5. Resolve the pre-launch report or record an owner-approved false-positive
    rationale. P1/P2 issues cannot be waived.
 
-## 3. Promote In Stages
+## 4. Promote In Stages
 
 1. Internal testing: observe for at least 24 hours with named tester sign-off.
 2. Closed testing: observe for 3-7 days on representative devices and upgrade
@@ -40,7 +62,7 @@ and observed ad/consent failures. Record stage start/end, population, metrics,
 issues, and approver. Advance only when crash-free users are at least 99.5%,
 user-perceived ANR is below 0.47%, and no new P1/P2 issue is open.
 
-## 4. Close The Release
+## 5. Close The Release
 
 After stable 100% rollout, tag the exact source commit as `v<versionName>` and
 archive final Play approval and rollout evidence. Update the Data Safety review

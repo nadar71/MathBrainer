@@ -17,6 +17,24 @@ Release owner: __________  Version: __________  Commit: __________  Date: ______
   database/schema; no destructive fallback is present.
 - [ ] `PLAY_CONSOLE_CHECKLIST.md` has no open release-blocking item.
 
+## Internal Play Release
+
+- [ ] `versionCode` is incremented in `app/build.gradle.kts` and is higher than
+  the last Play upload; `versionName` is updated when required.
+- [ ] Normal CI checks pass for the immutable candidate before the manual
+  dispatch of `Google Play Internal Release`.
+- [ ] The dispatch is approved through the protected `google-play-internal`
+  environment, which contains `PLAY_STORE_JSON_KEY`,
+  `ANDROID_KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`,
+  `ADMOB_APP_ID`, and `ADMOB_BANNER_ID` as environment secrets.
+- [ ] The workflow invokes `internal_release`, and its
+  `mathbrainer-internal-release-<commit SHA>` evidence artifact is downloaded
+  and retained with the candidate record.
+- [ ] The version is confirmed in Play Console's internal testing track.
+- [ ] No closed or production promotion is requested from this workflow; that
+  promotion is a separate owner action in Play Console. Store media remains
+  unchanged by this workflow.
+
 ## Device And Product Matrix
 
 - [ ] Fresh install and upgrade from production pass through Play Internal App
