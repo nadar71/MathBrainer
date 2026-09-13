@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require "fileutils"
+require "digest"
+
+skip_docs
 
 platform :android do
   APP_PACKAGE_NAME = "eu.indiewalkabout.mathbrainer".freeze
@@ -11,6 +14,7 @@ platform :android do
   DESC
 
   RELEASE_AAB_PATH = File.join("app", "build", "outputs", "bundle", "release", "app-release.aab")
+  RELEASE_AAB_CHECKSUM_PATH = "#{RELEASE_AAB_PATH}.sha256"
   STORE_MEDIA_ROOT = File.join("store-media", "google-play")
   FASTLANE_METADATA_ROOT = File.join("fastlane", "metadata", "android", "en-US")
   FASTLANE_IMAGE_ROOT = File.join(FASTLANE_METADATA_ROOT, "images")
@@ -57,14 +61,20 @@ platform :android do
     gradle(task: "bundleRelease")
   end
 
-  desc "Build and upload the release AAB to Google Play internal testing."
+  desc "Upload the already-built and checksummed release AAB to Google Play internal testing."
   lane :internal_release do
     json_key_data = ENV["PLAY_STORE_JSON_KEY"]
     UI.user_error!("Set PLAY_STORE_JSON_KEY before running this lane.") if json_key_data.to_s.empty?
 
-    build_release_bundle
     absolute_aab_path = File.join(project_root, RELEASE_AAB_PATH)
-    UI.user_error!("Missing release bundle: #{absolute_aab_path}") unless File.exist?(absolute_aab_path)
+    absolute_checksum_path = File.join(project_root, RELEASE_AAB_CHECKSUM_PATH)
+    UI.user_error!("Missing release bundle: #{absolute_aab_path}") unless File.size?(absolute_aab_path)
+    UI.user_error!("Missing release checksum: #{absolute_checksum_path}") unless File.size?(absolute_checksum_path)
+
+    expected_sha256 = File.read(absolute_checksum_path).split.first
+    actual_sha256 = Digest::SHA256.file(absolute_aab_path).hexdigest
+    UI.user_error!("Invalid release checksum: #{absolute_checksum_path}") unless expected_sha256&.match?(/\A[0-9a-f]{64}\z/)
+    UI.user_error!("Release AAB changed after verification.") unless expected_sha256 == actual_sha256
 
     upload_to_play_store(
       package_name: APP_PACKAGE_NAME,

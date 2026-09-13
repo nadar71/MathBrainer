@@ -25,51 +25,47 @@ jobs:
       - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4
       - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
+          ruby-version: "3.3"
           bundler-cache: true
       - name: Verify release configuration contract
         run: ruby test/release_configuration_test.rb
-      - name: Reconstruct and validate release credentials
+      - name: Enforce trusted release ref
         env:
-          PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
-          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          ADMOB_APP_ID: ${{ secrets.ADMOB_APP_ID }}
-          ADMOB_BANNER_ID: ${{ secrets.ADMOB_BANNER_ID }}
+          RELEASE_REF: ${{ github.ref }}
         shell: bash
         run: |
           set -euo pipefail
-          KEYSTORE_FILE="$RUNNER_TEMP/mathbrainer-upload.jks"
-          required_secrets=(
-            PLAY_STORE_JSON_KEY
-            ANDROID_KEYSTORE_BASE64
-            KEYSTORE_PASSWORD
-            KEY_ALIAS
-            KEY_PASSWORD
-            ADMOB_APP_ID
-            ADMOB_BANNER_ID
-          )
-          for secret_name in "${required_secrets[@]}"; do
-            if [ -z "${!secret_name}" ]; then
-              echo "::error::Required release secret ${secret_name} is not set"
+          case "$RELEASE_REF" in
+            refs/heads/master|refs/tags/v*) ;;
+            *)
+              echo "::error::Internal releases are limited to master or v* tags"
               exit 1
-            fi
-          done
+              ;;
+          esac
+      - name: Reconstruct upload keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          KEYSTORE_FILE="$RUNNER_TEMP/mathbrainer-upload.jks"
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "::error::The upload-keystore secret is not set"
+            exit 1
+          fi
           printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_FILE"
           test -s "$KEYSTORE_FILE"
-      - name: Build and publish AAB to Play internal testing
+      - name: Build signed release AAB
         env:
-          PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           ADMOB_APP_ID: ${{ secrets.ADMOB_APP_ID }}
           ADMOB_BANNER_ID: ${{ secrets.ADMOB_BANNER_ID }}
           KEYSTORE_FILE: ${{ runner.temp }}/mathbrainer-upload.jks
-        run: bundle exec fastlane android internal_release
+        run: bundle exec fastlane android build_release_bundle
       - name: Verify release evidence
-        if: always()
         shell: bash
         run: |
           set -euo pipefail
@@ -97,17 +93,58 @@ jobs:
             printf 'GITHUB_SHA=%s\n' "$GITHUB_SHA"
             printf 'versionCode=%s\n' "$version_code"
             printf 'versionName=%s\n' "$version_name"
+            printf 'buildTimestamp=%s\n' "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
           } > "$manifest_path"
+      - name: Encrypt private release evidence
+        id: encrypt_evidence
+        env:
+          RELEASE_EVIDENCE_PASSWORD: ${{ secrets.RELEASE_EVIDENCE_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          if [ -z "$RELEASE_EVIDENCE_PASSWORD" ]; then
+            echo "::error::The release-evidence password is not set"
+            exit 1
+          fi
+          evidence_dir="$RUNNER_TEMP/mathbrainer-release-evidence"
+          plaintext_archive="$RUNNER_TEMP/mathbrainer-release-evidence.tar.gz"
+          encrypted_archive="$evidence_dir/release-evidence.tar.gz.enc"
+          checksum_path="app/build/outputs/bundle/release/app-release.aab.sha256"
+          manifest_path="app/build/outputs/bundle/release/release-manifest.txt"
+          mkdir -p "$evidence_dir"
+          trap 'rm -f "$plaintext_archive"' EXIT
+          tar -czf "$plaintext_archive" \
+            app/build/outputs/bundle/release/app-release.aab \
+            "$checksum_path" \
+            "$manifest_path" \
+            app/build/outputs/mapping/release/mapping.txt \
+            app/build/outputs/mapping/release/resources.txt
+          openssl enc -aes-256-cbc -salt -pbkdf2 -iter 100000 \
+            -in "$plaintext_archive" \
+            -out "$encrypted_archive" \
+            -pass env:RELEASE_EVIDENCE_PASSWORD
+          rm -f "$plaintext_archive"
+          cp "$checksum_path" "$evidence_dir/app-release.aab.sha256"
+          cp "$manifest_path" "$evidence_dir/release-manifest.txt"
+          test -s "$encrypted_archive"
+      - name: Upload verified AAB to Play internal testing
+        env:
+          PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
+        run: bundle exec fastlane android internal_release
+      - name: Confirm uploaded AAB hash is unchanged
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum --check app/build/outputs/bundle/release/app-release.aab.sha256
       - name: Upload internal release evidence
-        if: always()
+        if: always() && steps.encrypt_evidence.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: mathbrainer-internal-release-${{ github.sha }}
           path: |
-            app/build/outputs/bundle/release/app-release.aab
-            app/build/outputs/bundle/release/app-release.aab.sha256
-            app/build/outputs/bundle/release/release-manifest.txt
-            app/build/outputs/mapping/release/mapping.txt
-            app/build/outputs/mapping/release/resources.txt
+            ${{ runner.temp }}/mathbrainer-release-evidence/release-evidence.tar.gz.enc
+            ${{ runner.temp }}/mathbrainer-release-evidence/app-release.aab.sha256
+            ${{ runner.temp }}/mathbrainer-release-evidence/release-manifest.txt
           if-no-files-found: error
           retention-days: 30
