@@ -3,11 +3,9 @@ package eu.indiewalkabout.mathbrainer.core.presentation.components.keyboard
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Backspace
 import androidx.compose.material3.Card
@@ -42,36 +40,45 @@ fun Keypad(
                 .fillMaxWidth()
                 .padding(if (isCompact) 4.dp else 8.dp)
         ) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                contentPadding = PaddingValues(if (isCompact) 2.dp else 4.dp),
+            Column(
                 verticalArrangement = Arrangement.spacedBy(if (isCompact) 2.dp else 4.dp),
-                horizontalArrangement = Arrangement.spacedBy(if (isCompact) 2.dp else 4.dp),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(PaddingValues(if (isCompact) 2.dp else 4.dp))
             ) {
-                items((1..9).toList()) { digit ->
-                    KeypadButton(
-                        text = digit.toString(),
-                        isCompact = isCompact
-                    ) { onDigitPressed(digit) }
+                (1..9).chunked(3).forEach { rowDigits ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(if (isCompact) 2.dp else 4.dp)
+                    ) {
+                        rowDigits.forEach { digit ->
+                            KeypadButton(
+                                modifier = Modifier.weight(1f),
+                                text = digit.toString(),
+                                isCompact = isCompact
+                            ) { onDigitPressed(digit) }
+                        }
+                    }
                 }
-                item { 
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(if (isCompact) 2.dp else 4.dp)
+                ) {
                     KeypadButton(
+                        modifier = Modifier.weight(1f),
                         text = "0",
                         isCompact = isCompact
-                    ) { onDigitPressed(0) } 
-                }
-                item {
+                    ) { onDigitPressed(0) }
                     KeypadButton(
+                        modifier = Modifier.weight(1f),
                         icon = Icons.Default.Backspace,
                         contentDescription = R.string.delete_label,
                         isCompact = isCompact
                     ) {
                         onDelete()
                     }
-                }
-                item {
                     KeypadButton(
+                        modifier = Modifier.weight(1f),
                         text = stringResource(id = R.string.submit_label),
                         highlight = true,
                         isCompact = isCompact

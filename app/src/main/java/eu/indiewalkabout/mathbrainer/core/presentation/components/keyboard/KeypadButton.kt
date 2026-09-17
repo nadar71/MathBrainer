@@ -22,6 +22,7 @@ import eu.indiewalkabout.mathbrainer.core.presentation.theme.MathBrainerTheme
 
 @Composable
 fun KeypadButton(
+    modifier: Modifier = Modifier,
     text: String? = null,
     icon: ImageVector? = null,
     @StringRes contentDescription: Int? = null,
@@ -31,7 +32,7 @@ fun KeypadButton(
     onClick: () -> Unit
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(if (isCompact) 2.dp else 4.dp),
         colors = CardDefaults.cardColors(
