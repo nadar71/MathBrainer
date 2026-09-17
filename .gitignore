@@ -108,3 +108,9 @@ proguard/
 *.aab
 
 *.salive
+
+# Required launcher XMLs must override the developer machine's global *.xml rule.
+!app/src/main/res/drawable-v24/ic_launcher_monochrome.xml
+!app/src/main/res/mipmap-anydpi-v33/
+!app/src/main/res/mipmap-anydpi-v33/ic_launcher.xml
+!app/src/main/res/mipmap-anydpi-v33/ic_launcher_round.xml
