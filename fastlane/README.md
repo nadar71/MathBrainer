@@ -97,6 +97,36 @@ the protected workflow's artifact and approval chain.
 Closed or production promotion is a separate owner action in Play Console after
 the runbook's internal-testing gates are complete.
 
+## Direct production release 3.0.2 (13)
+
+The `Production Release` workflow is a separate, owner-approved manual path for
+release branch `release/3.0.2_13` or tag `v3.0.2`. It uses the protected
+`production-release` environment and requires these secrets:
+
+- `ANDROID_KEYSTORE_BASE64`
+- `KEYSTORE_PASSWORD`
+- `KEY_ALIAS`
+- `KEY_PASSWORD`
+- `ADMOB_APP_ID`
+- `ADMOB_BANNER_ID`
+- `FIREBASE_APP_DISTRIBUTION_JSON_KEY` containing raw service-account JSON
+- `PLAY_PRODUCTION_JSON_KEY` containing raw service-account JSON
+
+It also requires `FIREBASE_APP_ID` set to
+`1:632111455840:android:952c21d10fcd75073aed05` and
+`FIREBASE_TESTER_GROUPS` set to `owner-testers` as environment variables.
+
+The workflow builds and verifies one signed AAB. It distributes that exact file
+to Firebase first, then calls `android production_release` to publish the same
+checksummed file to Play production with status `completed`, rollout `1.0`,
+localized EN/IT release notes, phone/tablet screenshots, icon, and feature
+graphic. It does not upload a GitHub Actions release artifact and does not use
+`RELEASE_EVIDENCE_PASSWORD`.
+
+If Firebase distribution fails, Play publishing does not start. If Firebase
+succeeds but Play fails, rerun only after checking Play Console to ensure version
+code 13 was not accepted; Play version codes cannot be reused after acceptance.
+
 ## Decrypt and retain release evidence
 
 Work in a private directory. Read the retained passphrase without echoing it,

@@ -69,6 +69,27 @@ Release owner: __________  Version: __________  Commit: __________  Date: ______
 - [ ] No test ad identifier, debug banner, placeholder, or sensitive value is
   present in the candidate.
 
+## Direct Production 3.0.2 (13)
+
+- [ ] GitHub environment `production-release` contains all eight required
+  secrets and the exact Firebase app/group variables documented in
+  `fastlane/README.md`.
+- [ ] The Play service account is authorised for production releases and store
+  presence on `eu.indiewalkabout.mathbrainer`.
+- [ ] **Production Release** is manually dispatched from
+  `release/3.0.2_13` or immutable tag `v3.0.2`.
+- [ ] The workflow validates version `3.0.2` / code `13`, builds one signed AAB,
+  and verifies its signature and SHA-256.
+- [ ] The checksummed AAB is distributed to Firebase app
+  `1:632111455840:android:952c21d10fcd75073aed05`, group `owner-testers`,
+  before Play publication begins.
+- [ ] The same AAB appears in Play production with status `completed` and 100%
+  rollout.
+- [ ] EN/IT release notes, phone screenshots, 7-inch screenshots, 10-inch
+  screenshots, icon, and feature graphic are present in Play Console.
+- [ ] No AAB, mapping file, Firebase credential, Play credential, or signing
+  credential was retained as a GitHub Actions artifact.
+
 ## Approval
 
 - [ ] Play pre-launch report has no unresolved P1/P2 blocker.

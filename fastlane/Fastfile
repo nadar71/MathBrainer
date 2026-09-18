@@ -7,19 +7,33 @@ skip_docs
 
 platform :android do
   APP_PACKAGE_NAME = "eu.indiewalkabout.mathbrainer".freeze
-  APP_NAME = "Math Brainer".freeze
-  APP_SHORT_DESCRIPTION = "Train your mind. Master the numbers.".freeze
-  APP_FULL_DESCRIPTION = <<~DESC
-    A quick and easy math brain trainer for free with many game modes, adaptive levels, and short sessions for queue-time practice.
-  DESC
-
   RELEASE_AAB_PATH = File.join("app", "build", "outputs", "bundle", "release", "app-release.aab")
   RELEASE_AAB_CHECKSUM_PATH = "#{RELEASE_AAB_PATH}.sha256"
   STORE_MEDIA_ROOT = File.join("store-media", "google-play")
-  FASTLANE_METADATA_ROOT = File.join("fastlane", "metadata", "android", "en-US")
-  FASTLANE_IMAGE_ROOT = File.join(FASTLANE_METADATA_ROOT, "images")
+  FASTLANE_METADATA_ROOT = File.join("fastlane", "metadata", "android")
   SELECTION_FILE = File.join(STORE_MEDIA_ROOT, "promotional-screenshots", "SELECTION.md")
-  PHONE_SCREENSHOT_SOURCE = File.join(STORE_MEDIA_ROOT, "promotional-screenshots", "en")
+  RELEASE_NOTES = {
+    "en-US" => <<~NOTES,
+      Improved layouts across phones and tablets.
+      More consistent keypad sizing in every game.
+      Refreshed app icon and navigation.
+      Safer consent and ad handling.
+      Better preservation of statistics during upgrades.
+      General stability improvements.
+    NOTES
+    "it-IT" => <<~NOTES
+      Layout migliorati su smartphone e tablet.
+      Dimensioni del tastierino più uniformi in tutti i giochi.
+      Icona e navigazione rinnovate.
+      Gestione più sicura del consenso e degli annunci.
+      Migliore conservazione delle statistiche durante gli aggiornamenti.
+      Miglioramenti generali della stabilità.
+    NOTES
+  }.freeze
+  STORE_LOCALES = {
+    "en-US" => "en",
+    "it-IT" => "it"
+  }.freeze
 
   def project_root
     File.expand_path("..", __dir__)
@@ -34,26 +48,30 @@ platform :android do
     FileUtils.cp(absolute_source, absolute_destination)
   end
 
-  def selected_phone_screenshots
+  def selected_phone_screenshot_names
     absolute_selection = File.join(project_root, SELECTION_FILE)
-    absolute_source = File.join(project_root, PHONE_SCREENSHOT_SOURCE)
-
     selection_text = File.read(absolute_selection)
     selected = selection_text
       .scan(/`([^`]+\.png)`/)
       .flatten
       .uniq
-      .select { |filename| File.exist?(File.join(absolute_source, filename)) }
-
-    if selected.empty?
-      FileUtils.mkdir_p(absolute_source)
-      all_phone_screenshots = Dir.glob(File.join(absolute_source, "*.png"))
-      selected = all_phone_screenshots
-        .map { |path| File.basename(path) }
-        .take(8)
-    end
-
+      .take(8)
+    UI.user_error!("No phone screenshots selected in #{absolute_selection}") if selected.empty?
     selected
+  end
+
+  def verify_release_aab!
+    absolute_aab_path = File.join(project_root, RELEASE_AAB_PATH)
+    absolute_checksum_path = File.join(project_root, RELEASE_AAB_CHECKSUM_PATH)
+    UI.user_error!("Missing release bundle: #{absolute_aab_path}") unless File.size?(absolute_aab_path)
+    UI.user_error!("Missing release checksum: #{absolute_checksum_path}") unless File.size?(absolute_checksum_path)
+
+    expected_sha256 = File.read(absolute_checksum_path).split.first
+    actual_sha256 = Digest::SHA256.file(absolute_aab_path).hexdigest
+    UI.user_error!("Invalid release checksum: #{absolute_checksum_path}") unless expected_sha256&.match?(/\A[0-9a-f]{64}\z/)
+    UI.user_error!("Release AAB changed after verification.") unless expected_sha256 == actual_sha256
+
+    absolute_aab_path
   end
 
   desc "Build a signed release AAB."
@@ -66,15 +84,7 @@ platform :android do
     json_key_data = ENV["PLAY_STORE_JSON_KEY"]
     UI.user_error!("Set PLAY_STORE_JSON_KEY before running this lane.") if json_key_data.to_s.empty?
 
-    absolute_aab_path = File.join(project_root, RELEASE_AAB_PATH)
-    absolute_checksum_path = File.join(project_root, RELEASE_AAB_CHECKSUM_PATH)
-    UI.user_error!("Missing release bundle: #{absolute_aab_path}") unless File.size?(absolute_aab_path)
-    UI.user_error!("Missing release checksum: #{absolute_checksum_path}") unless File.size?(absolute_checksum_path)
-
-    expected_sha256 = File.read(absolute_checksum_path).split.first
-    actual_sha256 = Digest::SHA256.file(absolute_aab_path).hexdigest
-    UI.user_error!("Invalid release checksum: #{absolute_checksum_path}") unless expected_sha256&.match?(/\A[0-9a-f]{64}\z/)
-    UI.user_error!("Release AAB changed after verification.") unless expected_sha256 == actual_sha256
+    absolute_aab_path = verify_release_aab!
 
     upload_to_play_store(
       package_name: APP_PACKAGE_NAME,
@@ -94,54 +104,90 @@ platform :android do
   lane :sync_store_media do
     project = project_root
     metadata_root = File.join(project, FASTLANE_METADATA_ROOT)
-    image_root = File.join(project, FASTLANE_IMAGE_ROOT)
-
     FileUtils.rm_rf(metadata_root)
-    FileUtils.mkdir_p(image_root)
-    FileUtils.mkdir_p(File.join(image_root, "phoneScreenshots"))
-    FileUtils.mkdir_p(File.join(image_root, "sevenInchScreenshots"))
-    FileUtils.mkdir_p(File.join(image_root, "tenInchScreenshots"))
 
-    copy_required_file(
-      File.join(STORE_MEDIA_ROOT, "icon", "mathbrainer-store-icon-512.png"),
-      File.join(FASTLANE_IMAGE_ROOT, "icon.png")
-    )
-    copy_required_file(
-      File.join(STORE_MEDIA_ROOT, "feature-graphic", "mathbrainer-feature-graphic-1024x500.png"),
-      File.join(FASTLANE_IMAGE_ROOT, "featureGraphic.png")
-    )
+    STORE_LOCALES.each do |play_locale, source_locale|
+      locale_root = File.join(FASTLANE_METADATA_ROOT, play_locale)
+      image_root = File.join(locale_root, "images")
 
-    selected_phone_screenshots.each_with_index do |filename, index|
       copy_required_file(
-        File.join(PHONE_SCREENSHOT_SOURCE, filename),
-        File.join(FASTLANE_IMAGE_ROOT, "phoneScreenshots", "#{index + 1}-#{filename}")
+        File.join(STORE_MEDIA_ROOT, "icon", "mathbrainer-store-icon-512.png"),
+        File.join(image_root, "icon.png")
       )
-    end
+      copy_required_file(
+        File.join(STORE_MEDIA_ROOT, "feature-graphic", "mathbrainer-feature-graphic-1024x500.png"),
+        File.join(image_root, "featureGraphic.png")
+      )
 
-    {
-      "tablet-7-inch" => "sevenInchScreenshots",
-      "tablet-10-inch" => "tenInchScreenshots"
-    }.each do |source_folder, destination_folder|
-      source_dir = File.join(project, STORE_MEDIA_ROOT, "promotional-screenshots", source_folder)
-      destination_dir = File.join(image_root, destination_folder)
-      screenshots = Dir.glob(File.join(source_dir, "*.png")).sort
-      UI.user_error!("No tablet screenshots found in #{source_dir}") if screenshots.empty?
-
-      screenshots.each_with_index do |source_file, index|
-        destination_file = File.join(
-          destination_dir,
-          "#{index + 1}-#{File.basename(source_file)}"
+      selected_phone_screenshot_names.each_with_index do |filename, index|
+        copy_required_file(
+          File.join(STORE_MEDIA_ROOT, "promotional-screenshots", source_locale, filename),
+          File.join(image_root, "phoneScreenshots", format("%02d-%s", index + 1, filename))
         )
-        FileUtils.cp(source_file, destination_file)
       end
+
+      {
+        "tablet-7-inch" => "sevenInchScreenshots",
+        "tablet-10-inch" => "tenInchScreenshots"
+      }.each do |source_folder, destination_folder|
+        source_dir = File.join(project, STORE_MEDIA_ROOT, "promotional-screenshots", source_folder, source_locale)
+        screenshots = Dir.glob(File.join(source_dir, "*.png")).sort
+        UI.user_error!("No tablet screenshots found in #{source_dir}") if screenshots.empty?
+
+        screenshots.each_with_index do |source_file, index|
+          copy_required_file(
+            source_file.delete_prefix("#{project}/"),
+            File.join(image_root, destination_folder, format("%02d-%s", index + 1, File.basename(source_file)))
+          )
+        end
+      end
+
+      changelog_path = File.join(project, locale_root, "changelogs", "13.txt")
+      FileUtils.mkdir_p(File.dirname(changelog_path))
+      File.write(changelog_path, RELEASE_NOTES.fetch(play_locale))
     end
 
-    FileUtils.mkdir_p(metadata_root)
-    File.write(File.join(metadata_root, "title.txt"), "#{APP_NAME}\n")
-    File.write(File.join(metadata_root, "short_description.txt"), "#{APP_SHORT_DESCRIPTION}\n")
-    File.write(File.join(metadata_root, "full_description.txt"), APP_FULL_DESCRIPTION)
+    UI.message("Localized store assets prepared for Fastlane at #{metadata_root}")
+  end
 
-    UI.message("Store assets prepared for Fastlane at #{metadata_root}/images")
+  desc "Distribute the verified production AAB to Firebase App Distribution."
+  lane :distribute_firebase do
+    absolute_aab_path = verify_release_aab!
+    configured_aab_path = ENV.fetch("FIREBASE_AAB_PATH", absolute_aab_path)
+    UI.user_error!("FIREBASE_AAB_PATH must reference the verified production AAB.") unless File.expand_path(configured_aab_path) == File.expand_path(absolute_aab_path)
+
+    firebase_app_distribution(
+      app: ENV.fetch("FIREBASE_APP_ID"),
+      android_artifact_type: "AAB",
+      android_artifact_path: absolute_aab_path,
+      groups: ENV.fetch("FIREBASE_TESTER_GROUPS"),
+      release_notes: RELEASE_NOTES.fetch("en-US").strip,
+      service_credentials_file: ENV.fetch("GOOGLE_APPLICATION_CREDENTIALS")
+    )
+  end
+
+  desc "Upload the verified AAB and localized media to Google Play production."
+  lane :production_release do
+    json_key_data = ENV.fetch("PLAY_PRODUCTION_JSON_KEY")
+    UI.user_error!("PLAY_PRODUCTION_JSON_KEY is empty.") if json_key_data.empty?
+    absolute_aab_path = verify_release_aab!
+    sync_store_media
+
+    upload_to_play_store(
+      package_name: APP_PACKAGE_NAME,
+      track: "production",
+      release_status: "completed",
+      rollout: 1.0,
+      aab: absolute_aab_path,
+      json_key_data: json_key_data,
+      metadata_path: File.join(project_root, FASTLANE_METADATA_ROOT),
+      skip_upload_apk: true,
+      skip_upload_changelogs: false,
+      skip_upload_metadata: true,
+      skip_upload_images: false,
+      skip_upload_screenshots: false,
+      sync_image_upload: true
+    )
   end
 
   desc "Build and upload release AAB to Google Play."

@@ -4,9 +4,8 @@
 
 1. Increment `versionCode` in `app/build.gradle.kts` for every Play upload and
    update `versionName` when the release version changes.
-2. Merge the candidate source to `master` or create the intended `v*` tag. The
-   release workflow rejects every ref except `refs/heads/master` and
-   `refs/tags/v*`.
+2. Keep the approved production candidate on `release/3.0.2_13` or tag that
+   exact commit as `v3.0.2`. The direct production workflow rejects other refs.
 3. Confirm the normal unit, lint, manifest, debug-build, and release validation
    checks are green for that immutable commit. CI validation outputs are not the
    production candidate.
@@ -73,21 +72,29 @@ applicable approval and observation gates are met.
 6. Resolve the pre-launch report or record an owner-approved false-positive
    rationale. P1/P2 issues cannot be waived.
 
-## 4. Promote in stages
+## 4. Publish the approved direct production release
 
-1. Internal testing: observe for at least 24 hours with named tester sign-off.
-2. Closed testing: promote the exact internal version and observe for 3-7 days on
-   representative devices and upgrade paths. Restart the window after a
-   candidate change.
-3. Production 5%: observe for at least 24 hours.
-4. Production 20%: observe for at least 24 hours.
-5. Production 50%: observe for at least 24 hours.
-6. Production 100%: promote only after all prior gates remain green.
+1. Confirm the `production-release` environment contains the eight secrets and
+   two variables listed in `fastlane/README.md`, and that the Play service
+   account has production-release and store-presence access for
+   `eu.indiewalkabout.mathbrainer`.
+2. In GitHub Actions, choose **Production Release**, select
+   `release/3.0.2_13` (or immutable tag `v3.0.2`), and manually dispatch it.
+3. Approve the protected environment if required. The workflow verifies version
+   `3.0.2` / code `13` before reading release credentials.
+4. Confirm the job builds the signed AAB once, verifies its signature and
+   SHA-256, distributes that exact AAB to Firebase app
+   `1:632111455840:android:952c21d10fcd75073aed05` group `owner-testers`, and
+   only then starts the Play upload.
+5. Confirm Play production shows version code 13 with status completed and 100%
+   rollout, plus EN/IT release notes, phone/7-inch/10-inch screenshots, icon,
+   and feature graphic.
+6. Confirm Firebase testers received the release and install it successfully.
 
-At every stage inspect Android vitals, Play pre-launch/reviews, support reports,
-and observed ad/consent failures. Record stage start/end, population, metrics,
-issues, and approver. Advance only when crash-free users are at least 99.5%,
-user-perceived ANR is below 0.47%, and no new P1/P2 issue is open.
+If Firebase fails, the Play step is not executed. If Play fails after Firebase
+succeeds, inspect Play Console before retrying; if version code 13 was accepted,
+increment the version code and create a new candidate rather than rebuilding or
+reusing 13.
 
 ## 5. Close the release
 
