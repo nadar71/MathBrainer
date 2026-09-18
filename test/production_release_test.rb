@@ -104,6 +104,8 @@ class ProductionReleaseTest < Minitest::Test
     assert_equal "bundle exec fastlane android production_release",
                  step_config("Publish production release to Google Play").fetch("run")
     assert_includes step("Verify production AAB"), "jarsigner -verify"
+    assert_includes step("Verify production AAB"), 'grep -Eq \'^jar verified\\.$\' "$verification_log"'
+    refute_match(/printf.*\|\s*grep/, step("Verify production AAB"))
     assert_includes step("Verify production AAB"), "sha256sum"
     assert_includes step("Confirm production AAB hash is unchanged"), "sha256sum --check"
     assert_equal "always()", step_config("Remove temporary release credentials").fetch("if")
