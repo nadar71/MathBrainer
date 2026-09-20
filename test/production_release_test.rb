@@ -133,7 +133,7 @@ class ProductionReleaseTest < Minitest::Test
 
     assert_includes production_lane, 'track: "production"'
     assert_includes production_lane, 'release_status: "completed"'
-    assert_includes production_lane, "rollout: 1.0"
+    assert_includes production_lane, 'rollout: "1.0"'
     assert_includes production_lane, 'ENV.fetch("PLAY_PRODUCTION_JSON_KEY")'
     refute_includes production_lane, "build_release_bundle"
 

@@ -177,7 +177,7 @@ platform :android do
       package_name: APP_PACKAGE_NAME,
       track: "production",
       release_status: "completed",
-      rollout: 1.0,
+      rollout: "1.0",
       aab: absolute_aab_path,
       json_key_data: json_key_data,
       metadata_path: File.join(project_root, FASTLANE_METADATA_ROOT),
