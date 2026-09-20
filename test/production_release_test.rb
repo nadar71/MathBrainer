@@ -149,9 +149,10 @@ class ProductionReleaseTest < Minitest::Test
   def test_store_sync_defines_both_locales_and_approved_release_notes
     fastfile = File.read(FASTFILE_PATH, encoding: Encoding::UTF_8)
 
-    %w[en-US it-IT phoneScreenshots sevenInchScreenshots tenInchScreenshots].each do |value|
+    %w[en-GB it-IT phoneScreenshots sevenInchScreenshots tenInchScreenshots].each do |value|
       assert_includes fastfile, value
     end
+    refute_includes fastfile, '"en-US" =>'
     assert_includes fastfile, "Improved layouts across phones and tablets."
     assert_includes fastfile, "Layout migliorati su smartphone e tablet."
     assert_includes fastfile, 'File.join(project, locale_root, "changelogs", "13.txt")'

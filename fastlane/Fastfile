@@ -13,7 +13,7 @@ platform :android do
   FASTLANE_METADATA_ROOT = File.join("fastlane", "metadata", "android")
   SELECTION_FILE = File.join(STORE_MEDIA_ROOT, "promotional-screenshots", "SELECTION.md")
   RELEASE_NOTES = {
-    "en-US" => <<~NOTES,
+    "en-GB" => <<~NOTES,
       Improved layouts across phones and tablets.
       More consistent keypad sizing in every game.
       Refreshed app icon and navigation.
@@ -31,7 +31,7 @@ platform :android do
     NOTES
   }.freeze
   STORE_LOCALES = {
-    "en-US" => "en",
+    "en-GB" => "en",
     "it-IT" => "it"
   }.freeze
 
@@ -161,7 +161,7 @@ platform :android do
       android_artifact_type: "AAB",
       android_artifact_path: absolute_aab_path,
       groups: ENV.fetch("FIREBASE_TESTER_GROUPS"),
-      release_notes: RELEASE_NOTES.fetch("en-US").strip,
+      release_notes: RELEASE_NOTES.fetch("en-GB").strip,
       service_credentials_file: ENV.fetch("GOOGLE_APPLICATION_CREDENTIALS")
     )
   end
