@@ -81,12 +81,13 @@ jobs:
           set -euo pipefail
           aab_path="app/build/outputs/bundle/release/app-release.aab"
           checksum_path="${aab_path}.sha256"
+          verification_log="$RUNNER_TEMP/mathbrainer-jarsigner.log"
           test -s "$aab_path"
           test -s app/build/outputs/mapping/release/mapping.txt
-          verification_output="$(jarsigner -verify -verbose -certs "$aab_path" 2>&1)"
-          printf '%s\n' "$verification_output"
-          printf '%s\n' "$verification_output" | grep -Eq '^jar verified\.$'
-          if printf '%s\n' "$verification_output" | grep -Eiq 'jar is unsigned|unsigned entr(y|ies)'; then
+          jarsigner -verify -verbose -certs "$aab_path" > "$verification_log" 2>&1
+          cat "$verification_log"
+          grep -Eq '^jar verified\.$' "$verification_log"
+          if grep -Eiq 'jar is unsigned|unsigned entr(y|ies)' "$verification_log"; then
             echo "::error::Production AAB contains unsigned content."
             exit 1
           fi
