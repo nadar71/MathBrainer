@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "632111455840",
+    "project_id": "e-rampart-226407",
+    "storage_bucket": "e-rampart-226407.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632111455840:android:05746e0f2eb20e1b3aed05",
+        "android_client_info": {
+          "package_name": "com.indiewalk.watchdog.earthquake"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIo5S7dYsmPNmQTheFkl1rB2WQOQZ67A8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632111455840:android:76571b3604a6c14b3aed05",
+        "android_client_info": {
+          "package_name": "eu.indiewalkabout.fridgemanager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIo5S7dYsmPNmQTheFkl1rB2WQOQZ67A8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632111455840:android:7566f8c706baea763aed05",
+        "android_client_info": {
+          "package_name": "eu.indiewalkabout.fridgemanager.testing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIo5S7dYsmPNmQTheFkl1rB2WQOQZ67A8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632111455840:android:952c21d10fcd75073aed05",
+        "android_client_info": {
+          "package_name": "eu.indiewalkabout.mathbrainer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIo5S7dYsmPNmQTheFkl1rB2WQOQZ67A8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,17 +6,14 @@ require "yaml"
 
 class ReleaseConfigurationTest < Minitest::Test
   ROOT = File.expand_path("..", __dir__)
-  FASTFILE = File.read(File.join(ROOT, "fastlane", "Fastfile"), encoding: Encoding::UTF_8)
-  WORKFLOW = File.read(
-    File.join(ROOT, ".github", "workflows", "release-internal.yml"),
-    encoding: Encoding::UTF_8
-  )
+  FASTFILE = File.read(File.join(ROOT, "fastlane", "Fastfile"))
+  WORKFLOW = File.read(File.join(ROOT, ".github", "workflows", "release-internal.yml"))
   WORKFLOW_CONFIG = YAML.safe_load(WORKFLOW, aliases: true)
   RELEASE_DOCUMENTATION = %w[
     fastlane/README.md
     docs/release/RELEASE_RUNBOOK.md
     docs/release/RELEASE_CHECKLIST.md
-  ].map { |path| File.read(File.join(ROOT, path), encoding: Encoding::UTF_8) }.join("\n")
+  ].map { |path| File.read(File.join(ROOT, path)) }.join("\n")
   REQUIRED_SECRETS = %w[
     PLAY_STORE_JSON_KEY
     ANDROID_KEYSTORE_BASE64
@@ -50,8 +47,7 @@ class ReleaseConfigurationTest < Minitest::Test
     %w[apk changelogs metadata images screenshots].each do |kind|
       assert_includes body, "skip_upload_#{kind}: true"
     end
-    assert_includes body, "verify_release_aab!"
-    assert_includes FASTFILE, "Digest::SHA256.file(absolute_aab_path).hexdigest"
+    assert_includes body, "Digest::SHA256.file(absolute_aab_path).hexdigest"
     refute_includes body, "build_release_bundle", "upload lane must not rebuild the verified AAB"
   end
 

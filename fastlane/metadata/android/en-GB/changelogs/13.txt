@@ -1,0 +1,6 @@
+Improved layouts across phones and tablets.
+More consistent keypad sizing in every game.
+Refreshed app icon and navigation.
+Safer consent and ad handling.
+Better preservation of statistics during upgrades.
+General stability improvements.

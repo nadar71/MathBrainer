@@ -1,27 +1,18 @@
-# 45-Second English Promo Video
+# 30-Second Promo Video Shot List
 
-Final master: `mathbrainer-promo-en-vertical-1080x1920.mp4`
-
-- 0:00-0:03 - Branded Math Brainer opening and tagline.
-- 0:03-0:07 - Scroll through the game catalog.
-- 0:07-0:10 - Addition: choose the correct answer.
-- 0:10-0:14 - Subtraction: type and submit the result.
-- 0:14-0:18 - Random Operations: identify the missing operation.
-- 0:18-0:21 - Memory Flash: recall the hidden sequence.
-- 0:21-0:25 - Falling Operations: enter an answer before the operations fall.
-- 0:25-0:28 - Sequence Solver: complete the number pattern.
-- 0:28-0:32 - Enigma: decode the symbols.
-- 0:32-0:35 - Double Number: calculate and submit the doubled value.
-- 0:35-0:39 - Quick Count: count the objects at a glance.
-- 0:39-0:42 - Number Order: remember and tap the circles in order.
-- 0:42-0:46 - Branded closing card.
+- 0:00-0:04 - Open on the Math Brainer home screen and scroll briefly through the complete game catalog.
+- 0:04-0:08 - Show a fast correct answer in an arithmetic choose game.
+- 0:08-0:13 - Demonstrate Memory Flash: reveal the sequence, then enter it from memory.
+- 0:13-0:18 - Show Quick Count with a colorful object challenge and answer selection.
+- 0:18-0:24 - Feature Falling Operations as the energetic centerpiece, including number entry and submission.
+- 0:24-0:28 - Open statistics to communicate progress tracking and replay value.
+- 0:28-0:30 - Finish on the store icon over the feature-graphic background with `Math Brainer` and `Train your mind. Master the numbers.`
 
 ## Production Notes
 
-- Format: vertical 1080 x 1920, H.264 video with AAC silent stereo track.
-- Runtime: approximately 46 seconds.
-- Language: English.
-- Transitions: short cross-fades between every segment.
-- Footage: authentic emulator gameplay with visible touch indicators.
-- Arithmetic variants are represented once per interaction type: addition for choose-answer and subtraction for write-answer.
-- Network access was disabled during capture to prevent test ads, consent prompts, notifications, and account content from appearing.
+- Record authentic app footage in portrait orientation at 1080p or higher.
+- Keep the final edit at 30 seconds, with direct cuts or short motion-matched transitions.
+- Do not show test ads, consent dialogs, notifications, emulator controls, or debug indicators.
+- Use licensed or original music only, and keep sound effects subordinate to gameplay clarity.
+- Avoid claims, ratings, pricing, awards, or calls to action that could become inaccurate.
+
