@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import eu.indiewalkabout.mathbrainer.R
 import eu.indiewalkabout.mathbrainer.core.data.local.Constants.my_website
+import eu.indiewalkabout.mathbrainer.core.data.local.Constants.privacy_policy_url
 import eu.indiewalkabout.mathbrainer.core.util.GenericUtil.openUrlInBrowserNotCompose
 import eu.indiewalkabout.mathbrainer.feat_credits.presentation.components.CreditsCard
 
@@ -65,11 +66,13 @@ fun GameCreditsScreen(onBack: () -> Unit) {
             
             Spacer(modifier = Modifier.height(16.dp))
 
-            /*CreditsCard(
-                title = stringResource(id = R.string.gdpr_title),
-                description = stringResource(id = R.string.gdpr_text)
-            )*/
+            CreditsCard(
+                title = stringResource(id = R.string.privacy_policy_title),
+                description = stringResource(id = R.string.privacy_policy_description),
+                onClick = {
+                    openUrlInBrowserNotCompose(context, privacy_policy_url)
+                }
+            )
         }
     }
 }
-

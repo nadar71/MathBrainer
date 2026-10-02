@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <!-- A whitelist keeps player statistics while excluding preferences used by ads and consent. -->
+    <cloud-backup>
+        <include domain="database" path="MathBrainerDB" />
+        <include domain="database" path="MathBrainerDB-shm" />
+        <include domain="database" path="MathBrainerDB-wal" />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="database" path="MathBrainerDB" />
+        <include domain="database" path="MathBrainerDB-shm" />
+        <include domain="database" path="MathBrainerDB-wal" />
+    </device-transfer>
+</data-extraction-rules>

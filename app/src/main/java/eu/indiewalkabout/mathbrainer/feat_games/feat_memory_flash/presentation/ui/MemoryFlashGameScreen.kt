@@ -3,6 +3,8 @@ package eu.indiewalkabout.mathbrainer.feat_games.feat_memory_flash.presentation.
 // Memory Flash briefly shows a digit sequence and asks the player to recall it from memory.
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -90,7 +92,8 @@ fun MemoryFlashGameScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             MemoryFlashHeader(state = state)

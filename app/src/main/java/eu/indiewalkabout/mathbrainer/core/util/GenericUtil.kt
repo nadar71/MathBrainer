@@ -4,9 +4,10 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalUriHandler
+import eu.indiewalkabout.mathbrainer.core.observability.AppErrorReporter
+import eu.indiewalkabout.mathbrainer.core.observability.NoOpErrorReporter
 
 object GenericUtil {
 
@@ -21,31 +22,41 @@ object GenericUtil {
         context.startActivity(intent)
     }
 
-    fun openAppStore(context: Context,appPackageName: String) {
-        val context = context
-        val marketUri_01 = Uri.parse("market://details?id=$appPackageName")
-        val marketUri_02 = Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
+    fun openAppStore(
+        context: Context,
+        appPackageName: String,
+        errorReporter: AppErrorReporter = NoOpErrorReporter
+    ) {
+        val marketUri = Uri.parse("market://details?id=$appPackageName")
+        val webUri = Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
 
         try {
-            Log.d("openAppStore", "store uri: $marketUri_01")
             context.startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    marketUri_01
+                    marketUri
                 )
             )
-        } catch (anfe: ActivityNotFoundException) {
+        } catch (_: ActivityNotFoundException) {
             try {
-                Log.d("openAppStore", "store uri: $marketUri_02")
                 context.startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
-                        marketUri_02
+                        webUri
                     )
                 )
-            } catch (e: ActivityNotFoundException){
-                Log.e("OpenAppStore", "Error opening app store", e)
+            } catch (_: ActivityNotFoundException) {
+                reportAppStoreUnavailable(errorReporter)
             }
+        }
+    }
+
+    internal fun reportAppStoreUnavailable(errorReporter: AppErrorReporter) {
+        runCatching {
+            errorReporter.record(
+                error = IllegalStateException("Unable to open app store."),
+                context = mapOf("operation" to "open_app_store")
+            )
         }
     }
 

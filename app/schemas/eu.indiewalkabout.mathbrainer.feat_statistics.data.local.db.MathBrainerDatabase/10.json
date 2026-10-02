@@ -1,0 +1,295 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 10,
+    "identityHash": "d8af78ea6d950712b4098b07d9b3a89f",
+    "entities": [
+      {
+        "tableName": "GameScores",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `global_score` INTEGER NOT NULL, `doublenumber_game_score` INTEGER NOT NULL, `sum_choose_result_game_score` INTEGER NOT NULL, `diff_choose_result_game_score` INTEGER NOT NULL, `mult_choose_result_game_score` INTEGER NOT NULL, `div_choose_result_game_score` INTEGER NOT NULL, `mix_choose_result_game_score` INTEGER NOT NULL, `sum_write_result_game_score` INTEGER NOT NULL, `diff_write_result_game_score` INTEGER NOT NULL, `mult_write_result_game_score` INTEGER NOT NULL, `div_write_result_game_score` INTEGER NOT NULL, `mix_write_result_game_score` INTEGER NOT NULL, `random_op_game_score` INTEGER NOT NULL, `count_objects_game_score` INTEGER NOT NULL, `number_order_game_score` INTEGER NOT NULL, `memory_flash_game_score` INTEGER NOT NULL, `sequence_complete_game_score` INTEGER NOT NULL, `falling_ops_game_score` INTEGER NOT NULL, `enigma_game_score` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "global_score",
+            "columnName": "global_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "doublenumber_game_score",
+            "columnName": "doublenumber_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sum_choose_result_game_score",
+            "columnName": "sum_choose_result_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "diff_choose_result_game_score",
+            "columnName": "diff_choose_result_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mult_choose_result_game_score",
+            "columnName": "mult_choose_result_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "div_choose_result_game_score",
+            "columnName": "div_choose_result_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mix_choose_result_game_score",
+            "columnName": "mix_choose_result_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sum_write_result_game_score",
+            "columnName": "sum_write_result_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "diff_write_result_game_score",
+            "columnName": "diff_write_result_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mult_write_result_game_score",
+            "columnName": "mult_write_result_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "div_write_result_game_score",
+            "columnName": "div_write_result_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mix_write_result_game_score",
+            "columnName": "mix_write_result_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "random_op_game_score",
+            "columnName": "random_op_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "count_objects_game_score",
+            "columnName": "count_objects_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "number_order_game_score",
+            "columnName": "number_order_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "memory_flash_game_score",
+            "columnName": "memory_flash_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sequence_complete_game_score",
+            "columnName": "sequence_complete_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "falling_ops_game_score",
+            "columnName": "falling_ops_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "enigma_game_score",
+            "columnName": "enigma_game_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "GameStatistics",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `operations_executed` INTEGER NOT NULL, `operations_ok` INTEGER NOT NULL, `operations_ko` INTEGER NOT NULL, `sums` INTEGER NOT NULL, `differences` INTEGER NOT NULL, `multiplications` INTEGER NOT NULL, `divisions` INTEGER NOT NULL, `doublings` INTEGER NOT NULL, `level_upgrades` INTEGER NOT NULL, `lives_missed` INTEGER NOT NULL, `objects_counted` INTEGER NOT NULL, `numbers_in_order` INTEGER NOT NULL, `games_played` INTEGER NOT NULL, `games_lose` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "operations_executed",
+            "columnName": "operations_executed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "operations_ok",
+            "columnName": "operations_ok",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "operations_ko",
+            "columnName": "operations_ko",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sums",
+            "columnName": "sums",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "differences",
+            "columnName": "differences",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "multiplications",
+            "columnName": "multiplications",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "divisions",
+            "columnName": "divisions",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "doublings",
+            "columnName": "doublings",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "level_upgrades",
+            "columnName": "level_upgrades",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lives_missed",
+            "columnName": "lives_missed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "objects_counted",
+            "columnName": "objects_counted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "numbers_in_order",
+            "columnName": "numbers_in_order",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "games_played",
+            "columnName": "games_played",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "games_lose",
+            "columnName": "games_lose",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "GameStats",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameId` TEXT NOT NULL, `highScore` INTEGER NOT NULL, `challengesPlayed` INTEGER NOT NULL, `challengesWon` INTEGER NOT NULL, `challengesLost` INTEGER NOT NULL, `lastLevel` INTEGER NOT NULL, PRIMARY KEY(`gameId`))",
+        "fields": [
+          {
+            "fieldPath": "gameId",
+            "columnName": "gameId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "highScore",
+            "columnName": "highScore",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "challengesPlayed",
+            "columnName": "challengesPlayed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "challengesWon",
+            "columnName": "challengesWon",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "challengesLost",
+            "columnName": "challengesLost",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastLevel",
+            "columnName": "lastLevel",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gameId"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd8af78ea6d950712b4098b07d9b3a89f')"
+    ]
+  }
+}

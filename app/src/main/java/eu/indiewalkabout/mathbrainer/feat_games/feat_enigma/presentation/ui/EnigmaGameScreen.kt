@@ -3,6 +3,8 @@ package eu.indiewalkabout.mathbrainer.feat_games.feat_enigma.presentation.ui
 // Enigma presents equation-style logic puzzles that the player solves by finding the missing value.
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -88,7 +90,8 @@ fun EnigmaGameScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             EnigmaHeader(state)

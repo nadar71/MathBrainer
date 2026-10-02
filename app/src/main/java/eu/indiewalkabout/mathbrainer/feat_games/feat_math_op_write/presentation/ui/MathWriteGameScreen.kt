@@ -3,6 +3,8 @@ package eu.indiewalkabout.mathbrainer.feat_games.feat_math_op_write.presentation
 // Write Result presents an arithmetic expression and asks the player to type the correct answer.
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -87,7 +89,8 @@ fun MathWriteGameScreen(
             modifier = Modifier.Companion
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             HeaderInfo(
