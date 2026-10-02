@@ -1,6 +1,0 @@
-Layout migliorati su smartphone e tablet.
-Dimensioni del tastierino più uniformi in tutti i giochi.
-Icona e navigazione rinnovate.
-Gestione più sicura del consenso e degli annunci.
-Migliore conservazione delle statistiche durante gli aggiornamenti.
-Miglioramenti generali della stabilità.
