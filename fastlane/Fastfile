@@ -10,6 +10,7 @@ platform :android do
   RELEASE_AAB_PATH = File.join("app", "build", "outputs", "bundle", "release", "app-release.aab")
   RELEASE_AAB_CHECKSUM_PATH = "#{RELEASE_AAB_PATH}.sha256"
   STORE_MEDIA_ROOT = File.join("store-media", "google-play")
+  STORE_LISTING_ROOT = File.join(STORE_MEDIA_ROOT, "listing")
   FASTLANE_METADATA_ROOT = File.join("fastlane", "metadata", "android")
   SELECTION_FILE = File.join(STORE_MEDIA_ROOT, "promotional-screenshots", "SELECTION.md")
   RELEASE_NOTES = {
@@ -111,6 +112,15 @@ platform :android do
       image_root = File.join(locale_root, "images")
 
       copy_required_file(
+        File.join(STORE_LISTING_ROOT, play_locale, "short_description.txt"),
+        File.join(locale_root, "short_description.txt")
+      )
+      copy_required_file(
+        File.join(STORE_LISTING_ROOT, play_locale, "full_description.txt"),
+        File.join(locale_root, "full_description.txt")
+      )
+
+      copy_required_file(
         File.join(STORE_MEDIA_ROOT, "icon", "mathbrainer-store-icon-512.png"),
         File.join(image_root, "icon.png")
       )
@@ -150,6 +160,25 @@ platform :android do
     UI.message("Localized store assets prepared for Fastlane at #{metadata_root}")
   end
 
+  desc "Publish localized store descriptions to the live Google Play listing."
+  lane :publish_store_metadata do
+    json_key_data = ENV.fetch("PLAY_PRODUCTION_JSON_KEY")
+    UI.user_error!("PLAY_PRODUCTION_JSON_KEY is empty.") if json_key_data.empty?
+    sync_store_media
+
+    upload_to_play_store(
+      package_name: APP_PACKAGE_NAME,
+      track: "production",
+      json_key_data: json_key_data,
+      metadata_path: File.join(project_root, FASTLANE_METADATA_ROOT),
+      skip_upload_apk: true,
+      skip_upload_changelogs: true,
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
   desc "Distribute the verified production AAB to Firebase App Distribution."
   lane :distribute_firebase do
     absolute_aab_path = verify_release_aab!
@@ -183,7 +212,7 @@ platform :android do
       metadata_path: File.join(project_root, FASTLANE_METADATA_ROOT),
       skip_upload_apk: true,
       skip_upload_changelogs: false,
-      skip_upload_metadata: true,
+      skip_upload_metadata: false,
       skip_upload_images: false,
       skip_upload_screenshots: false,
       sync_image_upload: true
