@@ -59,7 +59,7 @@ class NumberOrderViewModel @Inject constructor(
                 _uiState.update { it.copy(revealedCount = revealed) }
             }
         } else {
-            handleFailure()
+            handleFailure(index)
         }
     }
 
@@ -99,6 +99,7 @@ class NumberOrderViewModel @Inject constructor(
                 feedback = null,
                 showNextButton = false,
                 revealedCount = 0,
+                wrongMarkerIndex = null,
                 challengeId = it.challengeId + 1
             )
         }
@@ -153,13 +154,14 @@ class NumberOrderViewModel @Inject constructor(
 
 
 
-    private fun handleFailure() {
+    private fun handleFailure(index: Int) {
         val remainingLives = _uiState.value.lives - 1
         sessionTracker.recordFailure(_uiState.value.level)
         _uiState.update {
             it.copy(
                 lives = remainingLives,
                 feedback = ChallengeUiState.Feedback.FAILURE,
+                wrongMarkerIndex = index,
                 showNextButton = remainingLives > 0
             )
         }

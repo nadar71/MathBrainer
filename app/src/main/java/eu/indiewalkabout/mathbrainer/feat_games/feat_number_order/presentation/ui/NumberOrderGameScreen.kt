@@ -48,6 +48,7 @@ import eu.indiewalkabout.mathbrainer.core.presentation.components.ResultBanner
 import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.domain.model.NumberMarker
 import eu.indiewalkabout.mathbrainer.feat_games.feat_number_order.presentation.components.NumberOrderHeader
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.roundActionLabel
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -67,6 +68,29 @@ fun NumberOrderGameScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
+        bottomBar = {
+            if (state.showNextButton && !state.isGameOver) {
+                Column(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    ResultBanner(
+                        text = stringResource(
+                            if (state.feedback == ChallengeUiState.Feedback.FAILURE)
+                                R.string.wrong_answer else R.string.ok_str
+                        ),
+                        color = if (state.feedback == ChallengeUiState.Feedback.FAILURE)
+                            MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+                    )
+                    Button(
+                        onClick = viewModel::onNextPressed,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = stringResource(id = roundActionLabel(state.feedback)))
+                    }
+                }
+            }
+        },
         topBar = {
             Row(
                 modifier = Modifier
@@ -120,23 +144,17 @@ fun NumberOrderGameScreen(
                 isMemorizing = state.isMemorizing,
                 challengeKey = state.challenge?.placementSeed ?: state.challengeId,
                 revealedCount = state.revealedCount,
+                wrongMarkerIndex = state.wrongMarkerIndex,
                 onMarkerTapped = viewModel::onMarkerTapped,
                 memorizingColor = primaryColor,
                 solvedColor = primaryContainerColor,
-                defaultColor = onSecondaryColor
+                defaultColor = onSecondaryColor,
+                errorColor = MaterialTheme.colorScheme.error
             )
 
 
             when (state.feedback) {
-                ChallengeUiState.Feedback.SUCCESS -> ResultBanner(
-                    text = stringResource(id = R.string.ok_str),
-                    color = MaterialTheme.colorScheme.primary
-                )
-
-                ChallengeUiState.Feedback.FAILURE -> ResultBanner(
-                    text = stringResource(id = R.string.wrong_answer),
-                    color = MaterialTheme.colorScheme.error
-                )
+                ChallengeUiState.Feedback.SUCCESS, ChallengeUiState.Feedback.FAILURE -> Unit
                 null -> if (state.isMemorizing)
                     ResultBanner(
                         text = stringResource(id = R.string.click_order_instructions),
@@ -149,14 +167,6 @@ fun NumberOrderGameScreen(
                     )
             }
 
-            if (state.showNextButton && !state.isGameOver) {
-                Button(
-                    onClick = { viewModel.onNextPressed() },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = stringResource(id = R.string.quick_count_relaunch))
-                }
-            }
         }
     }
 
@@ -176,10 +186,12 @@ private fun NumberOrderCanvas(
     isMemorizing: Boolean,
     challengeKey: Int,
     revealedCount: Int,
+    wrongMarkerIndex: Int?,
     onMarkerTapped: (Int) -> Unit,
     memorizingColor: Color,
     solvedColor: Color,
     defaultColor: Color,
+    errorColor: Color,
     modifier: Modifier = Modifier
         .fillMaxWidth()
         .height(320.dp)
@@ -212,6 +224,7 @@ private fun NumberOrderCanvas(
         markers.forEach { marker ->
             val isSolved = marker.index < revealedCount
             val baseColor = when {
+                marker.index == wrongMarkerIndex -> errorColor
                 isMemorizing -> memorizingColor
                 isSolved -> solvedColor
                 else -> defaultColor
