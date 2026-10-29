@@ -51,6 +51,8 @@ import eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.components.CountObjectsHeader
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.components.Placement
 import eu.indiewalkabout.mathbrainer.feat_games.feat_count_items.presentation.util.calculateCountObjectScale
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.roundActionLabel
+import eu.indiewalkabout.mathbrainer.feat_games.shared.presentation.shouldShowCountAnswers
 import eu.indiewalkabout.mathbrainer.feat_home.domain.model.GameTypes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -137,18 +139,20 @@ fun CountObjectsGameScreen(
                 null -> Unit
             }
 
-            AnswersGrid (
-                options = state.challenge?.answerOptions.orEmpty(),
-                enabled = !state.isShowingItems && !state.isGameOver,
-                onOptionSelected = { viewModel.onAnswerSelected(it) }
-            )
+            if (shouldShowCountAnswers(state.isShowingItems, state.feedback, state.isGameOver)) {
+                AnswersGrid(
+                    options = state.challenge?.answerOptions.orEmpty(),
+                    enabled = true,
+                    onOptionSelected = { viewModel.onAnswerSelected(it) }
+                )
+            }
 
             if (state.showNextButton && !state.isGameOver) {
                 Button(
                     onClick = { viewModel.onNextPressed() },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = stringResource(id = R.string.quick_count_relaunch))
+                    Text(text = stringResource(id = roundActionLabel(state.feedback)))
                 }
             }
         }

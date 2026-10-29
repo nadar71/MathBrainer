@@ -151,7 +151,7 @@
     <!-- - - - - - - - - - - - - - - - - Dialogs Strings - - - - - - - - - - - - - - - - - - - - -->
     <string name="wrong_str">Wrong…</string>
     <string name="ok_str">OK !</string>
-    <string name="next_str">Next</string>
+    <string name="next_str">Next!</string>
     <string name="gameover_str">GAME OVER !</string>
 
     <!-- - - - - - - - - - - - - - - - - - Settings - - - - - - - - - - - - - - - - - - - - - - -->

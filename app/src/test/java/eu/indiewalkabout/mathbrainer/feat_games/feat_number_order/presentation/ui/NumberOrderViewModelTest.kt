@@ -72,6 +72,31 @@ class NumberOrderViewModelTest {
     }
 
     @Test
+    fun `wrong tap stays highlighted until retry starts a new round`() = runTest(dispatcher) {
+        val viewModel = createViewModel(FakeMathBrainerRepository())
+        viewModel.initialize("number_order", 0)
+        runCurrent()
+        advanceTimeBy(2_000)
+        runCurrent()
+
+        viewModel.onMarkerTapped(1)
+        assertEquals(1, viewModel.uiState.value.wrongMarkerIndex)
+        assertEquals(2, viewModel.uiState.value.lives)
+        assertEquals(
+            eu.indiewalkabout.mathbrainer.core.presentation.state.ChallengeUiState.Feedback.FAILURE,
+            viewModel.uiState.value.feedback
+        )
+        viewModel.onMarkerTapped(0)
+        assertEquals(1, viewModel.uiState.value.wrongMarkerIndex)
+
+        viewModel.onNextPressed()
+        runCurrent()
+        org.junit.Assert.assertNull(viewModel.uiState.value.wrongMarkerIndex)
+        org.junit.Assert.assertNull(viewModel.uiState.value.feedback)
+        assertTrue(viewModel.uiState.value.isMemorizing)
+    }
+
+    @Test
     fun `quit persists number order score only once`() = runTest(dispatcher) {
         val repository = FakeMathBrainerRepository()
         val viewModel = createViewModel(repository)

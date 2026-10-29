@@ -19,6 +19,7 @@ data class NumberOrderUiState(
     val selectedNumbers: List<Int> = emptyList(),
     val showNextButton: Boolean = false,
     val revealedCount: Int = 0,
+    val wrongMarkerIndex: Int? = null,
     val challengeId: Int = 0,
 ):ChallengeUiState<NumberOrderChallenge>(
     challenge = challenge,
